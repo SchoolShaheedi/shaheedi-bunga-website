@@ -1,0 +1,1342 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gurmat Vidyala</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Noto+Serif+Gurmukhi:wght@400;600;700&family=Noto+Sans+Gurmukhi:wght@400;600&display=swap">
+
+<style>
+*,*::before,*::after{ box-sizing:border-box; }
+
+:root{
+  --bg:#F7F6F2; --panel:#FFFFFF; --panel-2:#EFEDE6;
+  --ink:#14161C; --ink-2:#3D434F; --dim:#697082;
+  --line:rgba(20,22,28,.15); --line-2:rgba(20,22,28,.07);
+  --gold:#8A6C27; --gold-2:#6C5218; --royal:#2C4A9A;
+  --btn-bg:#14161C; --btn-fg:#F7F6F2;
+  --shadow:0 1px 2px rgba(20,22,28,.05), 0 10px 26px rgba(20,22,28,.07);
+  --on:#F6F3EA; --on-dim:rgba(246,243,234,.82); --on-gold:#EBD08A;
+  --giant-stroke:rgba(20,22,28,.34);
+  --ease:cubic-bezier(.22,.68,0,1);
+  --sans:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --serif:"Source Serif 4",Georgia,serif;
+  --navH:104px;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#07080E; --panel:#0E1120; --panel-2:#151A31;
+    --ink:#F4F1E8; --ink-2:#C6C9D7; --dim:#8E93AC;
+    --line:rgba(244,241,232,.15); --line-2:rgba(244,241,232,.07);
+    --gold:#C6A24A; --gold-2:#E9CE83; --royal:#7A95F0;
+    --btn-bg:#F4F1E8; --btn-fg:#0E1120;
+    --shadow:0 1px 2px rgba(0,0,0,.45), 0 12px 32px rgba(0,0,0,.4);
+    --giant-stroke:rgba(244,241,232,.26);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#07080E; --panel:#0E1120; --panel-2:#151A31;
+  --ink:#F4F1E8; --ink-2:#C6C9D7; --dim:#8E93AC;
+  --line:rgba(244,241,232,.15); --line-2:rgba(244,241,232,.07);
+  --gold:#C6A24A; --gold-2:#E9CE83; --royal:#7A95F0;
+  --btn-bg:#F4F1E8; --btn-fg:#0E1120;
+  --shadow:0 1px 2px rgba(0,0,0,.45), 0 12px 32px rgba(0,0,0,.4);
+  --giant-stroke:rgba(244,241,232,.26);
+}
+
+html{ -webkit-text-size-adjust:100%; }
+body{ margin:0; background:var(--bg); color:var(--ink); font-family:var(--serif); font-size:17.5px; line-height:1.65; overflow-x:clip; }
+img{ max-width:100%; display:block; }
+[hidden]{ display:none !important; }
+button,input,select,textarea{ font:inherit; color:inherit; }
+a{ color:inherit; text-decoration:none; }
+:focus-visible{ outline:2px solid var(--gold); outline-offset:3px; }
+h1,h2,h3,h4{ font-family:var(--sans); margin:0; font-weight:600; letter-spacing:-.02em; text-wrap:balance; }
+.gm{ font-family:"Noto Sans Gurmukhi",sans-serif; }
+.gm-s{ font-family:"Noto Serif Gurmukhi",serif; }
+.wrap{ width:min(1240px,92vw); margin-inline:auto; }
+.kick{ font-family:var(--sans); font-size:11.5px; font-weight:600; letter-spacing:.22em; text-transform:uppercase; color:var(--gold); }
+.tnum{ font-variant-numeric:tabular-nums; }
+.sr{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); }
+
+/* ── nav ─── */
+.nav{ position:sticky; top:0; z-index:80; background:var(--bg); border-bottom:1px solid var(--line); }
+.nav-a{ display:flex; align-items:center; gap:22px; padding:13px 0; }
+.mark{ display:flex; align-items:center; gap:12px; margin-right:auto; }
+.mark img{ width:42px; height:42px; }
+.mark .nm{ font-family:var(--sans); font-weight:600; font-size:14.5px; letter-spacing:.13em; text-transform:uppercase; line-height:1.15; }
+.mark .sub{ display:block; font-size:10.5px; letter-spacing:.17em; text-transform:uppercase; color:var(--gold); margin-top:3px; font-weight:500; }
+.nav-a .links{ display:flex; gap:22px; }
+.nav-a .links a{ font-family:var(--sans); font-size:14px; color:var(--dim); padding:4px 0; border-bottom:2px solid transparent; }
+.nav-a .links a:hover{ color:var(--ink); }
+.nav-a .links a.on{ color:var(--ink); border-bottom-color:var(--gold); }
+.tools{ display:flex; align-items:center; gap:9px; }
+.seg-sm{ display:flex; border:1px solid var(--line); border-radius:999px; overflow:hidden; }
+.seg-sm button{ background:none; border:0; padding:6px 11px; cursor:pointer; font-size:12px; font-family:var(--sans); letter-spacing:.04em; color:var(--dim); }
+.seg-sm button[aria-pressed="true"]{ background:var(--ink); color:var(--bg); font-weight:600; }
+.icon-btn{ background:none; border:1px solid var(--line); border-radius:999px; width:36px; height:36px; display:grid; place-items:center; cursor:pointer; color:var(--dim); flex:0 0 auto; }
+.icon-btn:hover{ color:var(--ink); border-color:var(--ink); }
+.icon-btn svg{ width:17px; height:17px; fill:none; stroke:currentColor; stroke-width:1.7; stroke-linecap:round; }
+.give-btn{ background:var(--gold); color:#fff; font-family:var(--sans); font-weight:600; font-size:12.5px; letter-spacing:.09em; text-transform:uppercase; padding:11px 19px; border-radius:999px; border:0; cursor:pointer; }
+:root[data-theme="dark"] .give-btn{ color:#0E1120; }
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .give-btn{ color:#0E1120; } }
+.give-btn:hover{ background:var(--gold-2); }
+.nav-b{ display:flex; gap:22px; padding:10px 0 11px; border-top:1px solid var(--line-2); overflow-x:auto; scrollbar-width:none; }
+.nav-b::-webkit-scrollbar{ display:none; }
+.nav-b a{ font-family:var(--sans); font-size:11.5px; font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:var(--dim); white-space:nowrap; }
+.nav-b a:hover,.nav-b a.on{ color:var(--gold); }
+.menu-btn{ display:none; }
+
+/* ── drawer ─── */
+.drawer{ position:fixed; inset:0; z-index:150; background:var(--bg); opacity:0; visibility:hidden; overflow-y:auto; transition:opacity .28s ease, visibility .28s ease; }
+.drawer.open{ opacity:1; visibility:visible; }
+.drawer-in{ min-height:100%; padding:18px 0 46px; }
+.drawer-top{ display:flex; align-items:center; gap:12px; padding-bottom:18px; border-bottom:1px solid var(--line); }
+.drawer-top img{ width:40px; height:40px; }
+.drawer-top .nm{ font-family:var(--sans); font-weight:600; font-size:13.5px; letter-spacing:.13em; text-transform:uppercase; line-height:1.15; margin-right:auto; }
+.drawer-top .nm span{ display:block; font-size:10px; letter-spacing:.16em; color:var(--gold); margin-top:3px; }
+.dgroup{ padding:22px 0 0; }
+.dgroup h4{ font-family:var(--sans); font-size:10.5px; font-weight:600; letter-spacing:.19em; text-transform:uppercase; color:var(--gold); margin-bottom:6px; }
+.dgroup a{ display:block; padding:12px 0; border-bottom:1px solid var(--line-2); font-family:var(--sans); font-size:20px; font-weight:500; }
+.dgroup a:hover,.dgroup a.on{ color:var(--gold); }
+.dgroup.small a{ font-size:16.5px; font-weight:400; padding:10px 0; }
+.drawer-foot{ display:flex; flex-wrap:wrap; align-items:center; gap:14px; padding-top:26px; }
+@media (max-width:980px){ .menu-btn{ display:grid; } .nav-a .seg-sm{ display:none; } }
+@media (min-width:981px){ .drawer{ display:none; } }
+
+/* ══════════ THE JOURNEY — native scroll, sticky chapters ══════════ */
+.journey-wrap{ position:relative; }
+
+/* each chapter is a tall section; its stage pins while you scroll through it */
+.ch{ position:relative; height:230vh; view-timeline:--ch block; }
+.ch-stage{ position:sticky; top:var(--navH); height:calc(100vh - var(--navH)); overflow:hidden; }
+.ch-bg{ position:absolute; inset:0; overflow:hidden; }
+.ch-bg img{ width:100%; height:100%; object-fit:cover; will-change:transform; }
+.ch-veil{ position:absolute; inset:0;
+  background:
+    linear-gradient(180deg, rgba(5,6,11,.66) 0%, rgba(5,6,11,.30) 26%, rgba(5,6,11,.82) 76%, rgba(5,6,11,.95) 100%),
+    linear-gradient(100deg, rgba(5,6,11,.82) 0%, rgba(5,6,11,.44) 42%, transparent 68%); }
+.ch-in{ position:relative; z-index:2; height:100%; display:flex; flex-direction:column; justify-content:flex-end;
+  padding:0 0 clamp(74px,11vh,120px); }
+
+.ch-num{ font-family:var(--sans); font-size:11.5px; font-weight:600; letter-spacing:.24em; text-transform:uppercase; color:var(--on-gold); }
+
+/* ── C · the name inks itself on ── */
+.ch-name{ font-family:"Noto Serif Gurmukhi",serif; font-weight:700; line-height:1.06;
+  font-size:clamp(44px,9.8vw,150px); white-space:nowrap; margin:8px 0 4px; width:max-content; max-width:100%;
+  background-repeat:no-repeat; background-size:cover; background-position:center 38%;
+  -webkit-background-clip:text; background-clip:text; color:transparent; -webkit-text-fill-color:transparent;
+  -webkit-text-stroke:1.7px rgba(246,243,234,.60); paint-order:stroke fill;
+  filter:brightness(2.5) saturate(.42) contrast(1.3);
+  -webkit-mask-image:linear-gradient(90deg,#000 42%,rgba(0,0,0,.35) 50%,transparent 58%);
+          mask-image:linear-gradient(90deg,#000 42%,rgba(0,0,0,.35) 50%,transparent 58%);
+  -webkit-mask-size:240% 100%; mask-size:240% 100%;
+  -webkit-mask-position:0% 0; mask-position:0% 0;
+  -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat; }
+.ch-en{ font-family:var(--sans); font-weight:700; font-size:clamp(23px,3.6vw,46px); letter-spacing:-.03em; color:var(--on); }
+.ch-blurb{ max-width:52ch; margin:14px 0 0; font-size:18px; color:var(--on-dim); }
+.ch-learn{ list-style:none; margin:16px 0 0; padding:0; display:flex; flex-wrap:wrap; gap:8px 10px; max-width:64ch; }
+.ch-learn li{ font-family:var(--sans); font-size:12.5px; letter-spacing:.05em; color:var(--on-dim);
+  border:1px solid rgba(246,243,234,.28); border-radius:999px; padding:7px 14px; }
+.ch-acts{ display:flex; flex-wrap:wrap; gap:11px; margin-top:24px; }
+
+/* ── A · the corridor: two Gurmat Sangeet classes travel sideways ── */
+.corridor{ position:relative; height:340vh; view-timeline:--corr block; }
+.corr-stage{ position:sticky; top:var(--navH); height:calc(100vh - var(--navH)); overflow:hidden; }
+.corr-track{ display:flex; width:200%; height:100%; will-change:transform; }
+.corr-panel{ position:relative; width:50%; height:100%; overflow:hidden; }
+.corr-panel .ch-bg img{ width:100%; height:100%; object-fit:cover; }
+.corr-rail{ position:absolute; left:0; right:0; bottom:clamp(52px,8vh,78px); z-index:5; }
+.corr-rail .wrap{ display:flex; align-items:center; gap:12px;
+  font-family:var(--sans); font-size:11.5px; font-weight:600; letter-spacing:.2em; text-transform:uppercase; color:var(--on-dim); }
+.corr-rail i{ display:block; height:1px; flex:1; background:rgba(246,243,234,.28); position:relative; }
+.corr-rail i::after{ content:""; position:absolute; left:0; top:0; height:1px; width:0; background:var(--on-gold); }
+
+/* ── arrival + finale ── */
+.ch.arrival .ch-in,.ch.finale .ch-in{ justify-content:center; align-items:center; text-align:center; }
+.ch.arrival .ch-name,.ch.finale .ch-name{ margin-inline:auto; }
+.arr-en{ font-family:var(--sans); font-weight:700; text-transform:uppercase; letter-spacing:.05em;
+  font-size:clamp(21px,6vw,90px); line-height:1.02; width:max-content; max-width:100%; margin-inline:auto;
+  background-repeat:no-repeat; background-size:cover; background-position:center;
+  -webkit-background-clip:text; background-clip:text; color:transparent; -webkit-text-fill-color:transparent;
+  -webkit-text-stroke:2px rgba(246,243,234,.55); paint-order:stroke fill;
+  filter:brightness(2.5) saturate(.42) contrast(1.3);
+  -webkit-mask-image:linear-gradient(90deg,#000 42%,rgba(0,0,0,.35) 50%,transparent 58%);
+          mask-image:linear-gradient(90deg,#000 42%,rgba(0,0,0,.35) 50%,transparent 58%);
+  -webkit-mask-size:240% 100%; mask-size:240% 100%;
+  -webkit-mask-position:0% 0; mask-position:0% 0;
+  -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat; }
+.arr-sub{ font-family:var(--sans); font-size:12px; font-weight:500; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--on-dim); display:flex; align-items:center; gap:clamp(10px,2.4vw,24px); margin-top:16px; }
+.arr-sub::before,.arr-sub::after{ content:""; height:1px; width:clamp(16px,6vw,90px); background:var(--on-gold); }
+.arr-free{ font-family:var(--sans); font-weight:700; font-size:clamp(17px,2.4vw,30px); color:var(--on-gold); margin-top:24px; letter-spacing:-.02em; }
+.scroll-cue{ margin-top:30px; font-family:var(--sans); font-size:11.5px; font-weight:500; letter-spacing:.2em;
+  text-transform:uppercase; color:var(--on-dim); display:flex; flex-direction:column; align-items:center; gap:8px; }
+.scroll-cue span{ display:block; width:1px; height:34px; background:linear-gradient(var(--on-gold),transparent); }
+.fin-links{ display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:12px; margin-top:26px; width:min(760px,90vw); }
+.fin-links a{ border:1px solid rgba(246,243,234,.3); border-radius:6px; padding:20px 18px; text-align:left; }
+.fin-links a:hover{ border-color:var(--on-gold); }
+.fin-links b{ display:block; font-family:var(--sans); font-size:16.5px; font-weight:600; color:var(--on); }
+.fin-links span{ display:block; font-size:14px; color:var(--on-dim); margin-top:4px; }
+
+/* ── journey chrome ── */
+.j-prog{ position:fixed; top:var(--navH); left:0; height:3px; width:100%; transform-origin:0 50%; transform:scaleX(0);
+  background:var(--on-gold); z-index:70; }
+.j-rail{ position:fixed; right:clamp(9px,1.8vw,22px); top:50%; transform:translateY(-50%); z-index:70;
+  display:flex; flex-direction:column; gap:11px; }
+.j-rail a{ width:11px; height:11px; border-radius:50%; border:1px solid rgba(246,243,234,.55);
+  transition:transform .3s var(--ease), background .3s; }
+.j-rail a:hover{ background:rgba(246,243,234,.45); }
+.j-rail a.on{ background:var(--on-gold); border-color:var(--on-gold); transform:scale(1.45); }
+.j-skip{ position:fixed; left:0; right:0; bottom:clamp(14px,2.6vh,26px); z-index:70; pointer-events:none; }
+.j-skip .wrap{ display:flex; }
+.j-skip a{ margin-left:auto; pointer-events:auto; font-family:var(--sans); font-size:12px; font-weight:600;
+  letter-spacing:.13em; text-transform:uppercase; color:var(--on-dim);
+  border-bottom:1px solid rgba(246,243,234,.35); padding-bottom:2px; }
+.j-skip a:hover{ color:var(--on-gold); border-color:var(--on-gold); }
+
+/* ══ scroll-driven timelines ══ */
+@supports (animation-timeline: view()){
+  html.sda .ch-bg img{
+    animation-name:jZoom; animation-timing-function:linear; animation-fill-mode:both;
+    animation-duration:auto; animation-timeline:--ch; animation-range:entry 0% exit 100%; }
+  html.sda .ch-num,html.sda .ch-body{
+    animation-name:jRise,jSink; animation-timing-function:linear,linear;
+    animation-fill-mode:both,both; animation-duration:auto,auto;
+    animation-timeline:--ch,--ch;
+    animation-range:entry 62% contain 22%, contain 84% exit 60%; }
+  html.sda .ch-name,html.sda .arr-en{
+    animation-name:jInk,jSink; animation-timing-function:linear,linear;
+    animation-fill-mode:both,both; animation-duration:auto,auto;
+    animation-timeline:--ch,--ch;
+    animation-range:entry 56% contain 32%, contain 84% exit 60%; }
+  html.sda .corr-panel .ch-num,html.sda .corr-panel .ch-body{
+    animation-name:jRise; animation-timing-function:linear; animation-fill-mode:both;
+    animation-duration:auto; animation-timeline:--corr; animation-range:entry 70% contain 12%; }
+  html.sda .corr-panel .ch-name{
+    animation-name:jInk; animation-timing-function:linear; animation-fill-mode:both;
+    animation-duration:auto; animation-timeline:--corr; animation-range:entry 64% contain 18%; }
+  html.sda .corr-track{
+    animation-name:jSlide; animation-timing-function:linear; animation-fill-mode:both;
+    animation-duration:auto; animation-timeline:--corr; animation-range:contain 0% contain 100%; }
+  html.sda .corr-rail i::after{
+    animation-name:jGrow; animation-timing-function:linear; animation-fill-mode:both;
+    animation-duration:auto; animation-timeline:--corr; animation-range:contain 0% contain 100%; }
+  html.sda .j-prog{
+    animation-name:jGrowX; animation-timing-function:linear; animation-fill-mode:both;
+    animation-duration:auto; animation-timeline:scroll(root block); }
+}
+/* without .sda the corridor simply stacks, so both classes stay readable */
+html:not(.sda) .corridor{ height:auto; }
+html:not(.sda) .corr-stage{ position:relative; top:0; height:auto; overflow:visible; }
+html:not(.sda) .corr-track{ display:block; width:100%; }
+html:not(.sda) .corr-panel{ width:100%; height:clamp(560px,86vh,880px); }
+html:not(.sda) .corr-rail,html:not(.sda) .j-prog{ display:none; }
+@keyframes jZoom{ from{ transform:scale(1.02); } to{ transform:scale(1.17); } }
+@keyframes jRise{ from{ opacity:0; transform:translateY(38px); } to{ opacity:1; transform:none; } }
+@keyframes jSink{ from{ opacity:1; transform:none; } to{ opacity:0; transform:translateY(-26px); } }
+@keyframes jInk{
+  from{ -webkit-mask-position:100% 0; mask-position:100% 0; opacity:.55; }
+  to{ -webkit-mask-position:0% 0; mask-position:0% 0; opacity:1; } }
+@keyframes jSlide{ from{ transform:translateX(0); } to{ transform:translateX(-50%); } }
+@keyframes jGrow{ from{ width:0; } to{ width:100%; } }
+@keyframes jGrowX{ from{ transform:scaleX(0); } to{ transform:scaleX(1); } }
+
+/* ══ fallback where scroll-driven animations are unsupported ══ */
+@supports not (animation-timeline: view()){
+  .ch{ height:auto; }
+  .ch-stage{ position:relative; top:0; height:clamp(560px,86vh,880px); }
+  .ch-name,.arr-en{ -webkit-mask-image:none; mask-image:none; }
+  .corridor{ height:auto; }
+  .corr-stage{ position:relative; top:0; height:auto; overflow:visible; }
+  .corr-track{ display:block; width:100%; }
+  .corr-panel{ width:100%; height:clamp(560px,86vh,880px); }
+  .corr-rail{ display:none; }
+  .j-prog{ display:none; }
+}
+
+@media (prefers-reduced-motion:reduce){
+  .ch{ height:auto; }
+  .ch-stage{ position:relative; top:0; height:clamp(560px,86vh,880px); }
+  .corridor{ height:auto; }
+  .corr-stage{ position:relative; top:0; height:auto; overflow:visible; }
+  .corr-track{ display:block; width:100%; }
+  .corr-panel{ width:100%; height:clamp(560px,86vh,880px); }
+  .ch-bg img,.ch-num,.ch-body,.ch-name,.arr-en,.corr-track,.j-prog{ animation:none !important; }
+  .ch-name,.arr-en{ -webkit-mask-image:none !important; mask-image:none !important; opacity:1 !important; }
+  .ch-num,.ch-body{ opacity:1 !important; transform:none !important; }
+  .corr-rail,.j-prog{ display:none; }
+}
+
+@media (max-width:900px){
+  .ch{ height:200vh; }
+  .corridor{ height:300vh; }
+  .ch-learn{ display:none; }
+  .j-rail{ display:none; }
+}
+
+/* ══════════ inner pages ══════════ */
+.page[hidden]{ display:none; }
+.sec{ padding:76px 0; }
+.sec-head{ display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:18px; padding-bottom:18px; border-bottom:1px solid var(--line); margin-bottom:30px; }
+.sec-head h2{ font-size:clamp(26px,3.9vw,44px); line-height:1.04; font-weight:700; }
+.sec-head h2 .gm-s{ display:block; font-size:.4em; font-weight:600; color:var(--gold); letter-spacing:0; margin-bottom:8px; }
+.sec-head .more{ font-family:var(--sans); font-size:13px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--gold); white-space:nowrap; }
+.banner{ position:relative; overflow:hidden; min-height:300px; display:flex; align-items:flex-end; }
+.banner img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:0; }
+.banner::after{ content:""; position:absolute; inset:0; background:linear-gradient(180deg, rgba(7,8,14,.36), rgba(7,8,14,.86) 78%, var(--bg) 100%); z-index:1; }
+.banner .wrap{ position:relative; z-index:2; padding:44px 0 38px; }
+.banner h1{ font-size:clamp(29px,4.8vw,58px); line-height:1.02; letter-spacing:-.032em; font-weight:700; color:var(--on); }
+.banner h1 .gm-s{ display:block; font-size:.4em; font-weight:600; color:var(--on-gold); letter-spacing:0; margin-bottom:10px; }
+.banner p{ max-width:58ch; margin:16px 0 0; color:var(--on-dim); font-size:18px; }
+
+.nowbar{ display:flex; flex-wrap:wrap; align-items:center; gap:11px 18px; background:var(--panel); border:1px solid var(--line); border-radius:6px; padding:15px 20px; margin-bottom:22px; box-shadow:var(--shadow); }
+.dot{ width:9px; height:9px; border-radius:50%; background:var(--gold); }
+.nowbar .lab{ font-family:var(--sans); font-size:11.5px; font-weight:600; letter-spacing:.18em; text-transform:uppercase; color:var(--gold); }
+.nowbar .val{ font-family:var(--sans); font-size:17px; font-weight:600; }
+.nowbar .cd{ margin-left:auto; color:var(--dim); font-size:14.5px; }
+.chips{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:18px; }
+.chip{ background:transparent; border:1px solid var(--line); border-radius:999px; padding:9px 16px; cursor:pointer; font-family:var(--sans); font-size:12.5px; letter-spacing:.05em; color:var(--dim); }
+.chip:hover{ color:var(--ink); border-color:var(--ink); }
+.chip[aria-pressed="true"]{ background:var(--ink); color:var(--bg); border-color:var(--ink); font-weight:600; }
+.tt{ display:grid; gap:10px; }
+.tt-row{ display:grid; grid-template-columns:110px 1fr auto auto; gap:20px; align-items:center; background:var(--panel); border:1px solid var(--line); border-left:3px solid var(--gold); border-radius:5px; padding:17px 20px; box-shadow:var(--shadow); }
+.tt-row[data-mode="online"]{ border-left-color:var(--royal); }
+.tt-row.hide{ display:none; }
+.tt-row .when b{ display:block; font-family:var(--sans); font-size:11.5px; font-weight:600; letter-spacing:.16em; text-transform:uppercase; color:var(--gold); margin-bottom:3px; }
+.tt-row[data-mode="online"] .when b{ color:var(--royal); }
+.tt-row .when span{ font-family:var(--sans); font-size:19px; font-weight:600; }
+.tt-row h3{ font-size:20px; }
+.tt-row h3 .gm-s{ color:var(--gold); font-size:.8em; margin-right:9px; font-weight:600; letter-spacing:0; }
+.tt-row .meta{ margin:4px 0 0; font-size:14.5px; color:var(--dim); }
+.tt-row .mode{ font-family:var(--sans); font-size:10.5px; font-weight:600; letter-spacing:.13em; text-transform:uppercase; border:1px solid currentColor; border-radius:999px; padding:5px 11px; color:var(--gold); }
+.tt-row[data-mode="online"] .mode{ color:var(--royal); }
+.tt-row .go{ font-family:var(--sans); font-size:12.5px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; border-bottom:2px solid var(--gold); padding-bottom:2px; white-space:nowrap; }
+.tt-note{ margin:15px 0 0; font-size:14px; color:var(--dim); font-style:italic; }
+.empty{ padding:32px 0; color:var(--dim); text-align:center; }
+.cards{ display:grid; grid-template-columns:repeat(auto-fit,minmax(238px,1fr)); gap:16px; }
+.card{ position:relative; overflow:hidden; border-radius:6px; min-height:306px; display:flex; flex-direction:column; justify-content:flex-end; padding:24px 22px; isolation:isolate; }
+.card .bg{ position:absolute; inset:0; z-index:-2; overflow:hidden; background:#20284F; }
+.card .bg img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition:transform 1.2s var(--ease); }
+.card:hover .bg img{ transform:scale(1.08); }
+.card .bg::after{ content:""; position:absolute; inset:0; background:linear-gradient(180deg, rgba(7,8,14,.18) 0%, rgba(7,8,14,.62) 46%, rgba(7,8,14,.94) 100%); }
+.card .gm-s{ font-size:22px; color:var(--on-gold); font-weight:600; letter-spacing:0; }
+.card h3{ font-size:21px; margin-top:6px; color:var(--on); }
+.card p{ margin:8px 0 0; font-size:14.5px; color:var(--on-dim); line-height:1.55; }
+.card .age{ position:absolute; top:17px; left:22px; font-family:var(--sans); font-size:10.5px; font-weight:600; letter-spacing:.13em; text-transform:uppercase; color:var(--on-dim); border:1px solid rgba(246,243,234,.3); border-radius:999px; padding:5px 11px; }
+.shelf{ display:grid; grid-template-columns:repeat(auto-fit,minmax(268px,1fr)); gap:16px; }
+.vol{ background:var(--panel); border:1px solid var(--line); border-radius:6px; padding:24px; box-shadow:var(--shadow); display:flex; flex-direction:column; gap:9px; }
+.vol .gm-s{ font-size:21px; color:var(--gold); font-weight:600; letter-spacing:0; }
+.vol h3{ font-size:19.5px; }
+.vol p{ margin:0; font-size:15px; color:var(--ink-2); line-height:1.6; }
+.vol .tagrow{ display:flex; flex-wrap:wrap; gap:7px; margin-top:auto; padding-top:12px; }
+.tag{ font-family:var(--sans); font-size:10.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; border:1px solid var(--line); border-radius:999px; padding:4px 10px; color:var(--dim); }
+.tag.live{ border-color:var(--gold); color:var(--gold); }
+.tag.soon{ border-style:dashed; }
+.legal{ display:flex; flex-wrap:wrap; gap:14px 40px; align-items:center; padding:28px 0; border-top:1px solid var(--line); font-size:15.5px; color:var(--ink-2); }
+.legal b{ font-family:var(--sans); font-size:10.5px; font-weight:600; letter-spacing:.16em; text-transform:uppercase; color:var(--gold); display:block; margin-bottom:4px; }
+.legal a{ border-bottom:1px solid var(--line); }
+.prose{ max-width:70ch; }
+.prose p{ margin:0 0 18px; color:var(--ink-2); line-height:1.78; }
+.prose h3{ font-size:20.5px; margin:32px 0 10px; }
+.prose ul{ margin:0 0 18px; padding-left:1.2em; color:var(--ink-2); }
+.prose li{ margin-bottom:8px; }
+.prose .pull{ font-family:var(--sans); font-size:20px; font-weight:500; line-height:1.42; color:var(--ink); border-left:3px solid var(--gold); padding-left:20px; margin:26px 0; letter-spacing:-.01em; }
+.split{ display:grid; grid-template-columns:1.35fr .65fr; gap:52px; align-items:start; }
+.factbox{ background:var(--panel); border:1px solid var(--line); border-radius:6px; padding:24px; box-shadow:var(--shadow); }
+.factbox dt{ font-family:var(--sans); font-size:10.5px; font-weight:600; letter-spacing:.15em; text-transform:uppercase; color:var(--gold); margin-top:16px; }
+.factbox dt:first-child{ margin-top:0; }
+.factbox dd{ margin:5px 0 0; font-size:16px; }
+.venues{ display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:16px; }
+.venue{ background:var(--panel); border:1px solid var(--line); border-radius:6px; padding:20px 22px; box-shadow:var(--shadow); }
+.venue h4{ font-size:17px; margin-bottom:5px; }
+.venue p{ margin:0; font-size:14.5px; color:var(--dim); }
+.form{ background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:clamp(24px,3.2vw,38px); box-shadow:var(--shadow); }
+.fgrid{ display:grid; grid-template-columns:1fr 1fr; gap:19px; }
+.field{ display:flex; flex-direction:column; gap:7px; }
+.field.full{ grid-column:1/-1; }
+.field label{ font-family:var(--sans); font-size:11.5px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-2); }
+.field input[type=text],.field input[type=email],.field input[type=tel],.field select,.field textarea{ background:var(--bg); border:1px solid var(--line); border-radius:5px; padding:12px 13px; font-size:16px; font-family:var(--sans); }
+.field textarea{ min-height:92px; resize:vertical; font-family:var(--serif); font-size:16.5px; }
+.field .hint{ font-size:13.5px; color:var(--dim); }
+.field .err{ font-size:13.5px; color:#B03A2E; font-family:var(--sans); }
+:root[data-theme="dark"] .field .err{ color:#FF8B7A; }
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .field .err{ color:#FF8B7A; } }
+.field.bad input,.field.bad select,.field.bad textarea{ border-color:#B03A2E; }
+.checks{ display:grid; gap:10px; }
+.check{ display:flex; gap:11px; align-items:flex-start; font-size:16px; cursor:pointer; }
+.check input{ margin-top:5px; width:17px; height:17px; accent-color:var(--gold); flex:0 0 auto; }
+.form .btn{ margin-top:24px; }
+.done{ background:var(--panel); border:1px solid var(--gold); border-radius:8px; padding:36px; text-align:center; box-shadow:var(--shadow); }
+.done h3{ font-size:25px; margin-bottom:10px; }
+.done p{ color:var(--ink-2); margin:0 auto; max-width:50ch; }
+.modeseg{ display:flex; border:1px solid var(--line); border-radius:999px; padding:4px; width:max-content; margin-bottom:26px; background:var(--panel); }
+.modeseg button{ background:none; border:0; border-radius:999px; padding:11px 22px; cursor:pointer; font-family:var(--sans); font-size:13px; font-weight:600; letter-spacing:.07em; color:var(--dim); }
+.modeseg button[aria-pressed="true"]{ background:var(--ink); color:var(--bg); }
+.seg{ display:flex; background:var(--bg); border:1px solid var(--line); border-radius:999px; padding:4px; margin-bottom:18px; width:max-content; }
+.seg button{ background:none; border:0; border-radius:999px; padding:10px 23px; cursor:pointer; font-family:var(--sans); font-size:13px; font-weight:600; letter-spacing:.07em; text-transform:uppercase; color:var(--dim); }
+.seg button[aria-pressed="true"]{ background:var(--gold); color:#fff; }
+:root[data-theme="dark"] .seg button[aria-pressed="true"]{ color:#0E1120; }
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .seg button[aria-pressed="true"]{ color:#0E1120; } }
+.amts{ display:grid; grid-template-columns:repeat(4,1fr); gap:9px; }
+.amt{ background:var(--bg); border:1px solid var(--line); border-radius:5px; padding:16px 8px; cursor:pointer; text-align:center; font-family:var(--sans); font-size:20px; font-weight:600; }
+.amt[aria-pressed="true"]{ border-color:var(--gold); background:color-mix(in srgb,var(--gold) 14%, transparent); color:var(--gold-2); }
+.custom{ margin-top:9px; display:flex; align-items:center; gap:10px; background:var(--bg); border:1px solid var(--line); border-radius:5px; padding:12px 15px; }
+.custom span{ color:var(--dim); font-family:var(--sans); font-size:15px; }
+.custom input{ flex:1; background:none; border:0; font-family:var(--sans); font-size:17px; font-weight:600; outline:none; min-width:0; }
+.outcome{ margin:20px 0 0; padding:17px 19px; background:var(--panel-2); border-left:3px solid var(--gold); border-radius:4px; font-size:16px; line-height:1.5; }
+.outcome .ga{ display:block; margin-top:7px; font-size:14px; color:var(--gold-2); }
+.foot{ border-top:1px solid var(--line); padding:50px 0 30px; margin-top:76px; }
+.foot-grid{ display:grid; grid-template-columns:1.7fr 1fr 1fr 1fr; gap:32px; }
+.foot h4{ font-family:var(--sans); font-size:11px; font-weight:600; letter-spacing:.17em; text-transform:uppercase; color:var(--gold); margin-bottom:13px; }
+.foot a{ display:block; padding:5px 0; color:var(--dim); font-size:15.5px; }
+.foot a:hover{ color:var(--ink); }
+.foot .blurb{ color:var(--dim); font-size:16px; max-width:34ch; }
+.foot-base{ margin-top:36px; padding-top:20px; border-top:1px solid var(--line); display:flex; flex-wrap:wrap; gap:8px 26px; font-size:13.5px; color:var(--dim); }
+
+@media (max-width:980px){
+  .split,.fgrid{ grid-template-columns:1fr; }
+  .split{ gap:32px; }
+  .nav-a .links{ display:none; }
+  .foot-grid{ grid-template-columns:1fr 1fr; }
+  .ch-learn{ display:none; }
+}
+@media (max-width:680px){
+  .tt-row{ grid-template-columns:1fr; gap:10px; }
+  .tt-row .mode,.tt-row .go{ justify-self:start; }
+  .amts{ grid-template-columns:repeat(2,1fr); }
+  .mark .nm{ font-size:12.5px; }
+  .foot-grid{ grid-template-columns:1fr; }
+  .ch-blurb{ font-size:16.5px; }
+  .deck-ui .skip{ display:none; }
+}
+</style>
+
+<header class="nav" id="nav">
+  <div class="wrap">
+    <div class="nav-a">
+      <a class="mark" href="#/">
+        <img src="IMG_SEAL" alt="Shaheedi Bunga Gurmat Vidyala">
+        <span><span class="nm">Shaheedi Bunga</span><span class="sub">Gurmat Vidyala · Leicester</span></span>
+      </a>
+      <nav class="links" id="navLinks">
+        <a href="#/timetable" data-route="timetable">Timetable</a>
+        <a href="#/classes" data-route="classes">Classes</a>
+        <a href="#/library" data-route="library">Library</a>
+        <a href="#/register" data-route="register">Register</a>
+        <a href="#/about" data-route="about">About</a>
+      </nav>
+      <div class="tools">
+        <div class="seg-sm" role="group" aria-label="Language">
+          <button type="button" data-lang="en" aria-pressed="true">EN</button>
+          <button type="button" class="gm" data-lang="pa" aria-pressed="false">ਪੰਜਾਬੀ</button>
+        </div>
+        <button class="icon-btn" id="themeBtn" type="button" aria-label="Switch theme">
+          <svg viewBox="0 0 24 24" id="themeIcon" aria-hidden="true"></svg>
+        </button>
+        <a class="give-btn" href="#/donate">Donate</a>
+        <button class="icon-btn menu-btn" id="menuBtn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="drawer">
+          <svg viewBox="0 0 24 24" id="menuIcon" aria-hidden="true"></svg>
+        </button>
+      </div>
+    </div>
+    <nav class="nav-b" id="navProgs" aria-label="Classes"></nav>
+  </div>
+</header>
+
+<div class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="Menu">
+  <div class="drawer-in wrap">
+    <div class="drawer-top">
+      <img src="IMG_SEAL" alt="">
+      <span class="nm">Shaheedi Bunga<span>Gurmat Vidyala</span></span>
+      <button class="icon-btn" id="drawerClose" type="button" aria-label="Close menu">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <div class="dgroup">
+      <h4>Pages</h4>
+      <a href="#/" data-route="">The journey</a>
+      <a href="#/timetable" data-route="timetable">Timetable</a>
+      <a href="#/classes" data-route="classes">Classes</a>
+      <a href="#/library" data-route="library">Library</a>
+      <a href="#/register" data-route="register">Register</a>
+      <a href="#/about" data-route="about">About</a>
+    </div>
+    <div class="dgroup small" id="drawerProgs"><h4>All classes</h4></div>
+    <div class="drawer-foot">
+      <a class="give-btn" href="#/donate">Donate</a>
+      <div class="seg-sm" role="group" aria-label="Language">
+        <button type="button" data-lang="en" aria-pressed="true">EN</button>
+        <button type="button" class="gm" data-lang="pa" aria-pressed="false">ਪੰਜਾਬੀ</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<main>
+<!-- ═══ THE JOURNEY (home) ═══ -->
+<div class="page" id="p-home">
+  <div class="j-prog" id="jProg" aria-hidden="true"></div>
+  <nav class="j-rail" id="jRail" aria-label="Chapters"></nav>
+  <div class="j-skip"><div class="wrap"><a href="#/timetable">Skip to the timetable</a></div></div>
+  <div class="journey-wrap" id="journey"></div>
+</div>
+
+<!-- ═══ TIMETABLE ═══ -->
+<div class="page" id="p-timetable" hidden>
+  <section class="banner"><img src="IMG_REG" alt="">
+    <div class="wrap"><h1><span class="gm-s">ਸਮਾਂ-ਸਾਰਣੀ</span>Timetable</h1>
+      <p>Every class we run, in person across Leicester&rsquo;s gurdwaras and online. Nothing to book
+         for the in-person classes — turn up. For the online ones, register once.</p></div></section>
+  <section class="sec"><div class="wrap">
+    <div class="nowbar"><span class="dot" aria-hidden="true"></span>
+      <span class="lab" id="nowLab2">Next class</span><span class="val" id="nowVal2">—</span>
+      <span class="cd" id="nowCd2"></span></div>
+    <div class="chips" role="group" aria-label="Filter classes">
+      <button class="chip" type="button" data-f="all" aria-pressed="true">Everything</button>
+      <button class="chip" type="button" data-f="inperson" aria-pressed="false">In person</button>
+      <button class="chip" type="button" data-f="online" aria-pressed="false">Online</button>
+      <button class="chip" type="button" data-f="kids" aria-pressed="false">Children</button>
+      <button class="chip" type="button" data-f="adults" aria-pressed="false">Adults</button>
+      <button class="chip" type="button" data-f="music" aria-pressed="false">Kirtan &amp; jori</button>
+    </div>
+    <div class="tt" id="ttFull"></div>
+    <p class="empty" id="ttEmpty" hidden>Nothing matches that filter — try Everything.</p>
+    <p class="tt-note">These days and times are placeholders. The real timetable is on Instagram and
+       still needs to be transferred here.</p>
+    <div style="margin-top:52px">
+      <div class="sec-head"><h2 style="font-size:clamp(22px,3vw,32px)">Where we teach</h2></div>
+      <div class="venues">
+        <div class="venue"><h4>Gurdwara Guru Tegh Bahadur Ji</h4><p>106 East Park Road, Leicester LE5 4QB</p></div>
+        <div class="venue"><h4>Sri Dashmesh Sahib Gurdwara</h4><p>Leicester</p></div>
+        <div class="venue"><h4>Online</h4><p>Joining link sent by email after you register</p></div>
+      </div>
+      <p class="tt-note">Both venue names are confirmed from public listings; the full list needs checking with you.</p>
+    </div>
+  </div></section>
+</div>
+
+<!-- ═══ CLASSES ═══ -->
+<div class="page" id="p-classes" hidden>
+  <section class="sec"><div class="wrap">
+    <div class="sec-head"><h2><span class="gm-s">ਜਮਾਤਾਂ</span>All classes</h2>
+      <a class="more" href="#/timetable">See the timetable →</a></div>
+    <div class="prose" style="margin-bottom:30px">
+      <p>Eight programmes, all free, all taught by volunteers. Some run weekly through the year, some
+         are seasonal. If you have never done any of this before, start with Santhia — everything else
+         is easier once you can read Gurbani properly.</p></div>
+    <div class="cards" id="cardsAll"></div>
+  </div></section>
+</div>
+
+<!-- ═══ CLASS DETAIL ═══ -->
+<div class="page" id="p-class" hidden>
+  <section class="banner"><img id="clsImg" alt="">
+    <div class="wrap"><h1><span class="gm-s" id="clsGm"></span><span id="clsEn"></span></h1>
+      <p id="clsBlurb"></p></div></section>
+  <section class="sec"><div class="wrap split">
+    <div class="prose">
+      <h3>What you&rsquo;ll learn</h3><ul id="clsLearn"></ul>
+      <h3>What to bring</h3><ul id="clsBring"></ul>
+      <p id="clsNote"></p>
+      <a class="btn btn-p" id="clsCta" href="#/register">Register</a>
+    </div>
+    <dl class="factbox">
+      <dt>When</dt><dd id="clsWhen"></dd>
+      <dt>Where</dt><dd id="clsWhere"></dd>
+      <dt>Who it&rsquo;s for</dt><dd id="clsAge"></dd>
+      <dt>Level</dt><dd id="clsLevel"></dd>
+      <dt>Cost</dt><dd>Free</dd>
+    </dl>
+  </div></section>
+</div>
+
+<!-- ═══ LIBRARY ═══ -->
+<div class="page" id="p-library" hidden>
+  <section class="banner"><img src="IMG_LIB" alt="">
+    <div class="wrap"><h1><span class="gm-s">ਪੋਥੀਆਂ ਤੇ ਗ੍ਰੰਥ</span>Library</h1>
+      <p>The granths, pothis and recordings we teach from — published free, for anyone, with no login
+         and no charge.</p></div></section>
+  <section class="sec"><div class="wrap">
+    <div class="prose" style="margin-bottom:34px">
+      <p>A bunga was never only a classroom; it held the books. This is ours. Everything here is either
+         a granth our students read in class, a volume our vidhvaans reference in katha, or a recording
+         of a talk we have already given.</p>
+      <p class="pull">If a text is good enough to teach from, it is good enough to give away.</p></div>
+    <div class="sec-head"><h2 style="font-size:clamp(22px,3vw,32px)"><span class="gm-s">ਗ੍ਰੰਥ ਤੇ ਪੋਥੀਆਂ</span>Granths &amp; pothis</h2></div>
+    <div class="shelf" id="shelfGranths"></div>
+    <div class="sec-head" style="margin-top:52px"><h2 style="font-size:clamp(22px,3vw,32px)"><span class="gm-s">ਪ੍ਰਸਤੁਤੀਆਂ</span>Presentations &amp; talks</h2></div>
+    <div class="shelf" id="shelfTalks"></div>
+    <div class="sec-head" style="margin-top:52px"><h2 style="font-size:clamp(22px,3vw,32px)"><span class="gm-s">ਸਾਡੀਆਂ ਕਿਤਾਬਾਂ</span>Our own editions</h2></div>
+    <div class="prose" style="margin-bottom:22px">
+      <p>Two bilingual editions we are typesetting ourselves, from scanned originals — the Gurmukhi as
+         it was written, with a clear modern rendering and English alongside.</p></div>
+    <div class="shelf" id="shelfBooks"></div>
+  </div></section>
+</div>
+
+<!-- ═══ REGISTER ═══ -->
+<div class="page" id="p-register" hidden>
+  <section class="banner"><img src="IMG_REG" alt="">
+    <div class="wrap"><h1><span class="gm-s">ਰਜਿਸਟਰ</span>Register</h1>
+      <p>Two things need registering: our online classes, and the Gurbani Vidhya Camp. Everything in
+         person you can simply turn up to.</p></div></section>
+  <section class="sec"><div class="wrap">
+    <div class="modeseg" role="group" aria-label="What are you registering for?">
+      <button type="button" data-mode="online" aria-pressed="true">Online classes</button>
+      <button type="button" data-mode="camp" aria-pressed="false">Gurbani Vidhya Camp</button>
+    </div>
+    <div id="modeOnline">
+      <div class="split">
+        <form class="form" id="regForm" novalidate>
+          <div class="fgrid">
+            <div class="field"><label for="rName">Student&rsquo;s name</label><input id="rName" type="text" autocomplete="name">
+              <span class="err" hidden>Please tell us the student&rsquo;s name.</span></div>
+            <div class="field"><label for="rAge">Age group</label>
+              <select id="rAge"><option value="">Choose…</option><option>Under 8</option><option>8–12</option><option>13–17</option><option>18 and over</option></select>
+              <span class="err" hidden>Please choose an age group.</span></div>
+            <div class="field full" id="guardWrap" hidden><label for="rGuard">Parent or guardian&rsquo;s name</label>
+              <input id="rGuard" type="text">
+              <span class="hint">Required for under-18s, because our online classes are supervised.</span>
+              <span class="err" hidden>We need a parent or guardian&rsquo;s name for under-18s.</span></div>
+            <div class="field"><label for="rEmail">Email</label><input id="rEmail" type="email" autocomplete="email">
+              <span class="err" hidden>Please enter an email we can send the link to.</span></div>
+            <div class="field"><label for="rPhone">Phone <span style="text-transform:none;letter-spacing:0;font-weight:400">(optional)</span></label>
+              <input id="rPhone" type="tel" autocomplete="tel"></div>
+            <div class="field full"><label>Which online classes?</label>
+              <div class="checks" id="rClasses">
+                <label class="check"><input type="checkbox" value="Monday Night Talk"><span>Monday Night Talk</span></label>
+                <label class="check"><input type="checkbox" value="Online Santhiya"><span>Online Santhiya</span></label>
+                <label class="check"><input type="checkbox" value="Jori &amp; Tabla"><span>Jori &amp; Tabla</span></label>
+                <label class="check"><input type="checkbox" value="Tanti Saaj Kirtan"><span>Tanti Saaj Kirtan</span></label>
+              </div>
+              <span class="err" hidden>Choose at least one class.</span></div>
+            <div class="field"><label for="rLevel">Level</label>
+              <select id="rLevel"><option>Complete beginner</option><option>Some experience</option><option>Continuing student</option></select></div>
+            <div class="field"><label for="rWhere">Country or city</label><input id="rWhere" type="text" placeholder="Leicester, UK">
+              <span class="hint">So we can give you the class time in your timezone.</span></div>
+            <div class="field full"><label class="check"><input type="checkbox" id="rConsent">
+              <span>I&rsquo;m happy for Shaheedi Bunga to contact me about class details. We don&rsquo;t share
+                    your details and we run no third-party tracking.</span></label>
+              <span class="err" hidden>We need your consent before we can email you.</span></div>
+          </div>
+          <button class="btn btn-p" type="submit">Send my registration</button>
+        </form>
+        <dl class="factbox">
+          <dt>Cost</dt><dd>Free, like every class we run.</dd>
+          <dt>How it works</dt><dd>Register once. The joining link comes by email and stays the same each week.</dd>
+          <dt>Under 18s</dt><dd>A parent or guardian&rsquo;s name is required, and sessions are supervised by DBS-checked volunteers.</dd>
+          <dt>Missed a week</dt><dd>Nothing to do — just come back. Nobody is dropped for missing sessions.</dd>
+        </dl>
+      </div>
+      <div id="regDone" hidden><div class="done"><h3>Registration received</h3><p id="regDoneMsg"></p>
+        <p style="margin-top:16px;font-size:14px;color:var(--dim)">Mockup only — nothing was sent.</p></div></div>
+    </div>
+    <div id="modeCamp" hidden>
+      <div class="prose" style="margin-bottom:30px">
+        <p>The <strong>Gurbani Vidhya Camp</strong> runs over two weeks at Gurdwara Guru Tegh Bahadur Ji,
+           9am to 3pm daily. Previous camps have gone through the complete Paath Bodh of Sri Guru Granth
+           Sahib Ji Maharaj and Vaaran Bhai Gurdas Ji, with vidhiarthis following in their own pothi sahibs.</p>
+        <p>Alongside the santhia there are katha workshops with visiting vidhvaans, kirtan workshops on
+           jori and tanti saaj, and shastar vidhya sessions including horse riding. Places are limited.</p></div>
+      <div class="split">
+        <form class="form" id="campForm" novalidate>
+          <div class="fgrid">
+            <div class="field"><label for="cName">Child&rsquo;s name</label><input id="cName" type="text">
+              <span class="err" hidden>Please tell us the child&rsquo;s name.</span></div>
+            <div class="field"><label for="cAge">Age</label>
+              <select id="cAge"><option value="">Choose…</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option><option>13</option><option>14</option><option>15</option><option>16</option></select>
+              <span class="err" hidden>Please choose an age. The camp is for ages 7 and up.</span></div>
+            <div class="field full"><label for="cGuard">Parent or guardian&rsquo;s name</label><input id="cGuard" type="text">
+              <span class="err" hidden>We need a parent or guardian&rsquo;s name.</span></div>
+            <div class="field"><label for="cEmail">Parent&rsquo;s email</label><input id="cEmail" type="email">
+              <span class="err" hidden>Please enter an email we can reach you on.</span></div>
+            <div class="field"><label for="cPhone">Parent&rsquo;s phone</label><input id="cPhone" type="tel">
+              <span class="err" hidden>We need a phone number for the camp.</span></div>
+            <div class="field"><label for="cEmName">Emergency contact name</label><input id="cEmName" type="text">
+              <span class="err" hidden>Please give an emergency contact.</span></div>
+            <div class="field"><label for="cEmPhone">Emergency contact phone</label><input id="cEmPhone" type="tel">
+              <span class="err" hidden>Please give an emergency contact number.</span></div>
+            <div class="field full"><label for="cWeeks">Which sessions?</label>
+              <select id="cWeeks"><option>Both weeks</option><option>First week only</option><option>Second week only</option></select></div>
+            <div class="field full"><label for="cMed">Medical, dietary or access needs</label>
+              <textarea id="cMed" placeholder="Allergies, medication, anything our sevadaars should know. Write none if there is nothing."></textarea>
+              <span class="hint">Kept only for the duration of the camp and seen only by the camp lead.</span></div>
+            <div class="field full"><label class="check"><input type="checkbox" id="cConsent">
+              <span>I am this child&rsquo;s parent or guardian and I consent to them attending the camp.</span></label>
+              <span class="err" hidden>We need a parent or guardian&rsquo;s consent.</span></div>
+            <div class="field full"><label class="check"><input type="checkbox" id="cPhoto">
+              <span>Optional: I consent to photographs of my child being used by Shaheedi Bunga. You can
+                    say no and it changes nothing about their place.</span></label>
+              <span class="hint">Left unticked by default, and you can withdraw it at any time.</span></div>
+          </div>
+          <button class="btn btn-p" type="submit">Request a place</button>
+        </form>
+        <dl class="factbox">
+          <dt>Where</dt><dd>Gurdwara Guru Tegh Bahadur Ji, 106 East Park Road, Leicester LE5 4QB</dd>
+          <dt>Times</dt><dd>9:00 – 15:00 daily, over two weeks</dd>
+          <dt>Ages</dt><dd>7 and up</dd>
+          <dt>Cost</dt><dd>Free. Langar is provided.</dd>
+          <dt>Bring</dt><dd>A pothi sahib if you have one, and a water bottle.</dd>
+          <dt>Dates</dt><dd>Announced each year — this year&rsquo;s dates still need confirming.</dd>
+        </dl>
+      </div>
+      <div id="campDone" hidden><div class="done"><h3>Place requested</h3><p id="campDoneMsg"></p>
+        <p style="margin-top:16px;font-size:14px;color:var(--dim)">Mockup only — nothing was sent.</p></div></div>
+    </div>
+  </div></section>
+</div>
+
+<!-- ═══ DONATE ═══ -->
+<div class="page" id="p-donate" hidden>
+  <section class="banner"><img src="IMG_DON" alt="">
+    <div class="wrap"><h1><span class="gm-s">ਸਹਿਯੋਗ</span>Keep every class free</h1>
+      <p>We&rsquo;re volunteer-run. Donations pay for instruments, pothis, hall hire and camp places —
+         never salaries.</p></div></section>
+  <section class="sec"><div class="wrap split">
+    <div>
+      <div class="prose" style="margin-bottom:26px">
+        <p>We have never charged for a class and we do not intend to start. That only works because the
+           sangat pays for it instead — a jori costs what a jori costs whether or not the child holding
+           it can afford one.</p></div>
+      <div class="seg" role="group" aria-label="Giving frequency">
+        <button type="button" data-freq="monthly" aria-pressed="true">Monthly</button>
+        <button type="button" data-freq="once" aria-pressed="false">Give once</button></div>
+      <div class="amts" role="group" aria-label="Amount">
+        <button class="amt" type="button" data-amt="10" aria-pressed="false">£10</button>
+        <button class="amt" type="button" data-amt="25" aria-pressed="true">£25</button>
+        <button class="amt" type="button" data-amt="60" aria-pressed="false">£60</button>
+        <button class="amt" type="button" data-amt="150" aria-pressed="false">£150</button></div>
+      <label class="custom"><span>£</span><input id="customAmt" type="number" min="1" step="1" inputmode="numeric" placeholder="Other amount" aria-label="Other amount in pounds"></label>
+      <p class="outcome" id="outcome"></p>
+      <button class="btn btn-p" type="button" id="giveGo">Give £25 monthly</button>
+      <p style="font-size:13.5px;color:var(--dim);margin-top:14px">Gift Aid adds 25p to every pound at no cost to you.</p>
+    </div>
+    <dl class="factbox">
+      <dt>Registered charity</dt><dd class="tnum">1185103</dd>
+    </dl>
+  </div></section>
+</div>
+
+<!-- ═══ ABOUT ═══ -->
+<div class="page" id="p-about" hidden>
+  <section class="sec"><div class="wrap split">
+    <div class="prose">
+      <h2 style="font-size:clamp(27px,4vw,44px);font-weight:700;margin-bottom:22px">
+        <span class="gm-s" style="display:block;font-size:.4em;color:var(--gold);margin-bottom:9px;letter-spacing:0">ਸਾਡੇ ਬਾਰੇ</span>About the school</h2>
+      <p>Shaheedi Bunga Gurmat Vidyala is a volunteer-run Sikh school in Leicester. We teach Gurbani
+         santhia, kirtan on tanti saaj, jori, gatka, katha and Sikh history — across the city&rsquo;s
+         gurdwaras and online — and we have never charged anyone for any of it.</p>
+      <p class="pull">Education is what nurtures and strengthens the next generation, mentally and physically.</p>
+      <p>The aim is narrow and specific: that a child can read Gurbani correctly in larreevaar, sing it
+         in its raag on a tanti saaj instrument, keep taal on the jori, stand in the akhaara, and know
+         the history they came from. Everything we run serves one of those five things.</p>
+      <h3>How it works</h3>
+      <p>Weekly classes run through the year at the gurdwaras. Online classes run for people who cannot
+         get to Leicester — which now includes students well outside the UK. Once a year the Gurbani
+         Vidhya Camp condenses all of it into two weeks, with visiting vidhvaans teaching katha, kirtan
+         and shastar vidhya.</p>
+      <p>Everything we teach from is published in the <a href="#/library" style="border-bottom:1px solid var(--gold)">library</a>,
+         and the katha we record goes out on YouTube — including a separate channel for children.</p>
+      <h3>Who teaches</h3>
+      <p>Volunteers. Some are ustaads in their own right, some are former students now teaching the class
+         below them. Anyone working with under-18s is DBS-checked.</p>
+      <p style="font-size:15px;color:var(--dim);font-style:italic">Some of this wording is drafted rather
+         than approved — the founding story, dates and named teachers should come from you.</p>
+    </div>
+    <dl class="factbox">
+      <dt>Registered charity</dt><dd class="tnum">1185103</dd>
+      <dt>Email</dt><dd>administrator@shaheedibunga.com</dd>
+      <dt>Phone</dt><dd class="tnum">07872 606373</dd>
+      <dt>Camp enquiries</dt><dd>shaheedibunga@outlook.com</dd>
+      <dt>Contact details</dt><dd style="font-size:14px;color:var(--dim)">Taken from public listings — please confirm before publishing.</dd>
+    </dl>
+  </div></section>
+</div>
+
+</main>
+
+<footer class="foot" id="foot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div><h4>Shaheedi Bunga</h4><p class="blurb">Educate, inspire, and connect on the Sikhi path together.</p></div>
+      <div><h4>Learn</h4><a href="#/timetable">Timetable</a><a href="#/classes">All classes</a><a href="#/register">Register</a></div>
+      <div><h4>Read</h4><a href="#/library">Library</a><a href="#/about">About the school</a></div>
+      <div><h4>More</h4><a href="#/donate">Donate</a></div>
+    </div>
+    <div class="foot-base">
+      <span>© 2026 Shaheedi Bunga</span>
+      <span>Registered charity <span class="tnum">1185103</span></span>
+      <span>No third-party tracking on this site</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var CH_ARRIVAL="IMG_CH1", CH_FINALE="IMG_CH10";
+  function el(t,c,x){ var n=document.createElement(t); if(c)n.className=c; if(x!=null)n.textContent=x; return n; }
+  function two(n){ return (n<10?"0":"")+n; }
+
+  /* ── theme ── */
+  var SUN='<circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.4 5.4l1.6 1.6M17 17l1.6 1.6M18.6 5.4L17 7M7 17l-1.6 1.6"/>';
+  var MOON='<path d="M20 14.6A8.2 8.2 0 1 1 9.4 4a6.6 6.6 0 0 0 10.6 10.6Z"/>';
+  var themeBtn=document.getElementById("themeBtn"), themeIcon=document.getElementById("themeIcon");
+  function eff(){ var t=document.documentElement.getAttribute("data-theme");
+    return t || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark":"light"); }
+  function paintTheme(){ var d=eff()==="dark"; themeIcon.innerHTML=d?SUN:MOON;
+    themeBtn.setAttribute("aria-label", d?"Switch to light mode":"Switch to dark mode"); }
+  try{ var s=localStorage.getItem("sb-theme"); if(s==="dark"||s==="light") document.documentElement.setAttribute("data-theme",s); }catch(e){}
+  paintTheme();
+  themeBtn.addEventListener("click",function(){ var n=eff()==="dark"?"light":"dark";
+    document.documentElement.setAttribute("data-theme",n);
+    try{ localStorage.setItem("sb-theme",n); }catch(e){} paintTheme(); });
+  matchMedia("(prefers-color-scheme: dark)").addEventListener("change", paintTheme);
+
+  /* ── data ── */
+  var PROGS=[
+    { slug:"santhia", gm:"ਸੰਥਿਆ", en:"Gurbani Santhia", age:"Children & adults", img:"IMG_CH2",
+      short:"Reading Gurbani correctly, ang by ang, in larreevaar.",
+      blurb:"Learning to read Gurbani as it is written — larreevaar, with correct uchaaran — is the foundation every other class rests on.",
+      learn:["Correct uchaaran","Reading larreevaar","Working through a pothi","Reading in sangat"],
+      bring:["A gutka or pothi if you have one — we lend them if not","Something to cover your head"],
+      when:"Weekly, evenings", where:"Leicester gurdwara", level:"Beginner to continuing", online:false },
+    { slug:"online-santhia", gm:"ਆਨਲਾਈਨ ਸੰਥਿਆ", en:"Online Santhiya", age:"All ages, worldwide", img:"IMG_ONLINE",
+      short:"The same santhia, taught live over video for anyone who cannot reach Leicester.",
+      blurb:"Santhia does not need a room. We run the same larreevaar reading and uchaaran class live over video, with the pankti on screen so you can follow whether you are in Leicester or another country entirely.",
+      learn:["The same syllabus as the in-person class","Reading from the pankti on screen","Correcting uchaaran live, one student at a time","Recordings if you miss a week"],
+      bring:["Nothing but a screen and somewhere quiet","A gutka or pothi if you have one"],
+      when:"Weekly, evenings", where:"Online", level:"Beginner to continuing", online:true },
+    { slug:"kirtan", gm:"ਤੰਤੀ ਸਾਜ਼ ਕੀਰਤਨ", en:"Kirtan on Tanti Saaj", age:"Ages 8+", img:"IMG_CH3",
+      short:"Raag-based kirtan on dilruba, taus and saranda.",
+      blurb:"Kirtan as it was kept before the harmonium — on the bowed string instruments, taught from the prachin reets rather than from recordings.",
+      learn:["Bowing the dilruba or taus","Tuning by ear","Aroh, avroh and raag phrases","Prachin reets"],
+      bring:["An instrument if you own one — we have a few to lend","A tuner is useful but not required"],
+      when:"Weekly, evenings", where:"Leicester gurdwara, and online", level:"Beginner and continuing", online:true },
+    { slug:"jori", gm:"ਜੋੜੀ", en:"Jori & Tabla", age:"Ages 8+", img:"IMG_CH4",
+      short:"Taal, theka and hand technique on the jori.",
+      blurb:"The jori is its own tradition, not a variant of the tabla. We teach both, starting with hand technique and the taals used in Gurmat Sangeet.",
+      learn:["Hand position and basic bols","Theka for common taals","Keeping laya","Tihai and variations"],
+      bring:["Nothing — instruments are provided in class"],
+      when:"Weekly, evenings", where:"Online", level:"Beginner upwards", online:true },
+    { slug:"gatka", gm:"ਗਤਕਾ", en:"Gatka Akhaara", age:"Ages 7+", img:"IMG_CH5",
+      short:"Shastar vidya, discipline and fitness in the akhaara.",
+      blurb:"The akhaara is where shastar vidya is trained as it was meant to be — footwork first, then the shastar, with a fight night for those who want to test it.",
+      learn:["Pentra footwork","Soti and farri","Other shastar","Conditioning"],
+      bring:["Loose clothing you can move in","A dastaar or head covering","Water"],
+      when:"Weekly, evenings", where:"Leicester", level:"All levels, separate youth group", online:false },
+    { slug:"archery", gm:"ਤੀਰਅੰਦਾਜ਼ੀ", en:"Khalsa Archery", age:"Ages 10+", img:"IMG_ARCHERY",
+      short:"Teerandaazi — the bow, trained as shastar vidya rather than sport.",
+      blurb:"The bow was a Sikh weapon long before it was a sport. We train stance, draw and release as part of shastar vidya, and run the National Sikh Archery Tournament at Guru Tegh Bahadur Gurdwara.",
+      learn:["Stance, nocking, draw and release","Shooting at 10 metres, then 15","Care and stringing of the bow","Competing at the National Sikh Archery Tournament"],
+      bring:["Nothing — bows and arrows are provided","Clothing you can draw a bow in"],
+      when:"Seasonal, with an annual tournament", where:"Guru Tegh Bahadur Gurdwara, 106 East Park Road, Leicester LE5 4QB",
+      level:"Ages 10–15 shoot at 10m, 16+ at 15m", online:false },
+    { slug:"katha", gm:"ਕਥਾ ਵਿਚਾਰ", en:"Katha Vichaar", age:"Adults", img:"IMG_CH6",
+      short:"Larreevaar katha of Sri Guru Granth Sahib Ji.",
+      blurb:"Going through Sri Guru Granth Sahib Ji and Sri Nanak Prakash in order, slowly, with the granths open in front of us.",
+      learn:["Unpacking a tuk word by word","Sanskrit and Braj vocabulary","How the teekas approach a pankti","Sri Nanak Prakash as narrative"],
+      bring:["A notebook","Your own pothi if you prefer"],
+      when:"Weekly", where:"Leicester gurdwara, and published to YouTube", level:"Open to all", online:false },
+    { slug:"itihaas", gm:"ਇਤਿਹਾਸ ਜਮਾਤ", en:"Itihaas Jamaat", age:"Children", img:"IMG_CH7",
+      short:"Sikh history from the Gurus through to the Misls.",
+      blurb:"History taught as story — the Gurus, the Shaheeds, the Misls — so that children know the people they are named after.",
+      learn:["The ten Gurus, in order","The Chaar Sahibzaade","Banda Singh Bahadur and the Misls","Telling it to someone else"],
+      bring:["Nothing at all"],
+      when:"Weekly, weekends", where:"Leicester gurdwara", level:"Children, split by age", online:false },
+    { slug:"camp", gm:"ਗੁਰਬਾਣੀ ਵਿੱਦਿਆ ਕੈਂਪ", en:"Gurbani Vidhya Camp", age:"Ages 7+", img:"IMG_CH8",
+      short:"A two-week camp of santhia, katha, kirtan and shastar vidhya.",
+      blurb:"Two weeks at Gurdwara Guru Tegh Bahadur Ji, 9am to 3pm daily. Previous camps have gone through the complete Paath Bodh of Sri Guru Granth Sahib Ji Maharaj and Vaaran Bhai Gurdas Ji.",
+      learn:["Shudh uchaaran with vishraams","Katha with visiting vidhvaans","Kirtan on jori and tanti saaj","Shastar vidhya and horse riding"],
+      bring:["A pothi sahib if you have one","A water bottle — langar is provided"],
+      when:"Two weeks, 9:00 – 15:00 daily", where:"Gurdwara Guru Tegh Bahadur Ji, Leicester LE5 4QB",
+      level:"Ages 7 and up", online:true },
+    { slug:"saptah", gm:"ਸਪਤਾਹ ਪਾਠ", en:"Saptah Path", age:"Open to all", img:"IMG_CH9",
+      short:"Weeklong paath with sangat taking turns.",
+      blurb:"A full saptah with sangat reading in turns through the day and night. Come and read, come and listen, or come and do seva in the langar.",
+      learn:["Reading in turn as part of a raul","How a saptah is run","Seva around a continuous paath"],
+      bring:["Nothing — rotas are arranged on the day"],
+      when:"Announced for Gurpurabs", where:"Leicester gurdwara", level:"Anyone who can read Gurbani", online:false }
+  ];
+
+  var CLASSES=[
+    { day:1,h:19,m:30,mins:60, gm:"ਵਿਚਾਰ", en:"Monday Night Talk", slug:null,
+      meta:"Open discussion on Sikhi and daily life · all ages", mode:"online", tags:["online","adults"] },
+    { day:2,h:18,m:0,mins:90, gm:"ਸੰਥਿਆ", en:"Gurbani Santhia", slug:"santhia",
+      meta:"Larreevaar reading and correct uchaaran · children and adults", mode:"inperson", tags:["inperson","kids","adults"] },
+    { day:6,h:18,m:0,mins:75, gm:"ਆਨਲਾਈਨ ਸੰਥਿਆ", en:"Online Santhiya", slug:"online-santhia",
+      meta:"The same santhia class, live over video · open worldwide", mode:"online", tags:["online","kids","adults"] },
+    { day:3,h:19,m:0,mins:90, gm:"ਕੀਰਤਨ", en:"Kirtan on Tanti Saaj", slug:"kirtan",
+      meta:"Dilruba, taus and saranda from the prachin reets · beginners welcome", mode:"inperson", tags:["inperson","adults","music"] },
+    { day:4,h:18,m:30,mins:60, gm:"ਜੋੜੀ", en:"Jori & Tabla", slug:"jori",
+      meta:"Taal, theka and hand technique · ages 8 and up", mode:"online", tags:["online","kids","music"] },
+    { day:5,h:19,m:0,mins:90, gm:"ਗਤਕਾ", en:"Gatka Akhaara", slug:"gatka",
+      meta:"Shastar vidya foundations · ages 7 and up", mode:"inperson", tags:["inperson","kids"] },
+    { day:0,h:11,m:0,mins:90, gm:"ਇਤਿਹਾਸ", en:"Itihaas Jamaat", slug:"itihaas",
+      meta:"Sikh history from the Gurus to the Misls · children", mode:"inperson", tags:["inperson","kids"] }
+  ];
+  var DAYS=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+
+  var GRANTHS=[
+    { gm:"ਸੰਥਿਆ ਗ੍ਰੰਥ", en:"Santheya Granths", d:"The reading and pronunciation texts our santhia students work through, ang by ang.", tags:["Gurmukhi","Published"] },
+    { gm:"ਕਥਾ ਗ੍ਰੰਥ", en:"Katha Granths", d:"Commentary volumes and teekas referenced in weekly katha.", tags:["Gurmukhi","Published"] },
+    { gm:"ਕੀਰਤਨ ਗ੍ਰੰਥ", en:"Kirtan Granths", d:"Reet and raag references for the tanti saaj classes.", tags:["Coming soon"] },
+    { gm:"ਤਬਲਾ ਗ੍ਰੰਥ", en:"Tabla Granths", d:"Taal and bol references for jori and tabla students, including Hindi sources.", tags:["Coming soon"] }
+  ];
+  var TALKS=[
+    { gm:"ਨਾਨਕ ਪ੍ਰਕਾਸ਼", en:"Sri Nanak Prakash", d:"The life of Guru Nanak Dev Ji in verse, presented section by section as we work through it in katha.", tags:["Presentation","Published"] },
+    { gm:"ਹਫ਼ਤਾਵਾਰੀ", en:"Weekly Talks", d:"Notes and recordings from Monday Night Talk, going back several years.", tags:["Talks","Published"] }
+  ];
+  var BOOKS=[
+    { gm:"ਵਿਚਾਰ ਸਾਗਰ", en:"Vichar Sagar", d:"A bilingual Gurmukhi and English edition, typeset from two scanned originals. Tarangs one to four complete.", tags:["In progress"] },
+    { gm:"ਬਚਨ ਸੈਂ", en:"Bachan Sain", d:"Original Punjabi with a clear modern rendering, plain English and notes alongside. Part one complete.", tags:["In progress"] }
+  ];
+
+  /* ── nav + drawer lists ── */
+  var navProgs=document.getElementById("navProgs"), dProgs=document.getElementById("drawerProgs");
+  PROGS.forEach(function(p){
+    var a=el("a",null,p.en); a.href="#/class/"+p.slug; a.dataset.route="class/"+p.slug; navProgs.appendChild(a);
+    var b=el("a",null,p.en); b.href="#/class/"+p.slug; b.dataset.route="class/"+p.slug; dProgs.appendChild(b);
+  });
+
+  /* ══════════ THE JOURNEY — built as real scrolling sections ══════════ */
+  var CORRIDOR = [];   /* horizontal corridor held back — see note in the build log */
+  var journey = document.getElementById("journey"), jRail = document.getElementById("jRail");
+  var sections = [];                          /* {el, label} in document order */
+
+  function chBody(p, n){
+    var body = el("div","ch-body");
+    body.appendChild(el("h2","ch-en", p.en));
+    body.appendChild(el("p","ch-blurb", p.blurb));
+    var ul = el("ul","ch-learn");
+    p.learn.forEach(function(t){ ul.appendChild(el("li",null,t)); });
+    body.appendChild(ul);
+    var acts = el("div","ch-acts");
+    var a1 = el("a","btn btn-on","About this class"); a1.href = "#/class/"+p.slug; acts.appendChild(a1);
+    if(p.online){ var a2 = el("a","btn btn-on-g","Register"); a2.href = "#/register"; acts.appendChild(a2); }
+    body.appendChild(acts);
+    return body;
+  }
+  function bgOf(src){
+    var bg = el("div","ch-bg"), im = document.createElement("img");
+    im.src = src; im.alt = ""; bg.appendChild(im); return bg;
+  }
+  function addSection(node, label){
+    journey.appendChild(node); sections.push({ el:node, label:label });
+    node.id = "chap-" + sections.length;
+  }
+
+  /* ── arrival ── */
+  (function(){
+    var sec = el("section","ch arrival");
+    var stage = el("div","ch-stage");
+    stage.appendChild(bgOf(CH_ARRIVAL));
+    stage.appendChild(el("div","ch-veil"));
+    var inn = el("div","ch-in"), w = el("div","wrap");
+    w.appendChild(el("p","ch-num","The journey · ten classes"));
+    var gn = el("div","ch-name gm-s","ਸ਼ਹੀਦੀ ਬੁੰਗਾ"); gn.style.backgroundImage = "url("+CH_ARRIVAL+")"; w.appendChild(gn);
+    var ge = el("div","arr-en","Shaheedi Bunga"); ge.style.backgroundImage = "url("+CH_ARRIVAL+")"; w.appendChild(ge);
+    var body = el("div","ch-body");
+    body.appendChild(el("p","arr-sub","Gurmat Vidyala · Leicester, United Kingdom"));
+    body.appendChild(el("p","ch-blurb","A bunga was a residence and school built beside a gurdwara, where students lived while they learned. Scroll, and travel through ours."));
+    body.appendChild(el("p","arr-free","Every class is free."));
+    var cue = el("div","scroll-cue"); cue.appendChild(el("em",null,"Scroll to begin")); cue.appendChild(el("span"));
+    cue.querySelector("em").style.fontStyle = "normal";
+    body.appendChild(cue);
+    w.appendChild(body);
+    inn.appendChild(w); stage.appendChild(inn); sec.appendChild(stage);
+    addSection(sec, "Arrival");
+  })();
+
+  /* ── the classes, in order; the two sangeet classes share a corridor ── */
+  var classNo = 0, i = 0;
+  while(i < PROGS.length){
+    var p = PROGS[i];
+    if(CORRIDOR.indexOf(p.slug) === 0){
+      /* horizontal corridor holding this class and the next */
+      var pair = [PROGS[i], PROGS[i+1]];
+      var sec = el("section","corridor");
+      var stage = el("div","corr-stage"), track = el("div","corr-track");
+      pair.forEach(function(pp){
+        classNo++;
+        var panel = el("div","corr-panel");
+        panel.appendChild(bgOf(pp.img));
+        panel.appendChild(el("div","ch-veil"));
+        var inn = el("div","ch-in"), w = el("div","wrap");
+        w.appendChild(el("p","ch-num","Class "+two(classNo)+" of 10 · "+pp.age));
+        var n = el("div","ch-name gm-s", pp.gm); n.style.backgroundImage = "url("+pp.img+")"; w.appendChild(n);
+        w.appendChild(chBody(pp, classNo));
+        inn.appendChild(w); panel.appendChild(inn); track.appendChild(panel);
+      });
+      stage.appendChild(track);
+      var rail = el("div","corr-rail"), rw = el("div","wrap");
+      rw.appendChild(el("span",null,"Gurmat Sangeet"));
+      rw.appendChild(el("i")); rw.appendChild(el("span",null,"Two classes"));
+      rail.appendChild(rw); stage.appendChild(rail);
+      sec.appendChild(stage);
+      addSection(sec, "Gurmat Sangeet");
+      i += 2; continue;
+    }
+    classNo++;
+    var sec2 = el("section","ch");
+    var stage2 = el("div","ch-stage");
+    stage2.appendChild(bgOf(p.img));
+    stage2.appendChild(el("div","ch-veil"));
+    var inn2 = el("div","ch-in"), w2 = el("div","wrap");
+    w2.appendChild(el("p","ch-num","Class "+two(classNo)+" of 10 · "+p.age));
+    var n2 = el("div","ch-name gm-s", p.gm); n2.style.backgroundImage = "url("+p.img+")"; w2.appendChild(n2);
+    w2.appendChild(chBody(p, classNo));
+    inn2.appendChild(w2); stage2.appendChild(inn2); sec2.appendChild(stage2);
+    addSection(sec2, p.en);
+    i++;
+  }
+
+  /* ── finale ── */
+  (function(){
+    var sec = el("section","ch finale");
+    var stage = el("div","ch-stage");
+    stage.appendChild(bgOf(CH_FINALE));
+    stage.appendChild(el("div","ch-veil"));
+    var inn = el("div","ch-in"), w = el("div","wrap");
+    w.appendChild(el("p","ch-num","End of the journey"));
+    var fn = el("div","ch-name gm-s","ਸ਼ੁਰੂ ਕਰੋ"); fn.style.backgroundImage = "url("+CH_FINALE+")"; w.appendChild(fn);
+    var body = el("div","ch-body");
+    body.appendChild(el("h2","ch-en","Where to start"));
+    body.appendChild(el("p","ch-blurb","You have seen the whole school. Beginners are welcome in every class, nothing costs anything, and there is nothing to book for the in-person sessions."));
+    var links = el("div","fin-links");
+    [["#/timetable","Timetable","What is on this week"],
+     ["#/register","Register","Online classes and the camp"],
+     ["#/library","Library","Every granth we teach from"],
+     ["#/donate","Donate","Keep every class free"]].forEach(function(t){
+      var a = el("a"); a.href = t[0];
+      a.appendChild(el("b",null,t[1])); a.appendChild(el("span",null,t[2]));
+      links.appendChild(a);
+    });
+    body.appendChild(links);
+    w.appendChild(body);
+    inn.appendChild(w); stage.appendChild(inn); sec.appendChild(stage);
+    addSection(sec, "Where to start");
+  })();
+
+  /* ── rail dots (navigation, not hijack) ── */
+  sections.forEach(function(s){
+    var a = el("a"); a.href = "#" + s.el.id; a.setAttribute("aria-label", s.label); a.title = s.label;
+    a.addEventListener("click", function(ev){
+      ev.preventDefault();
+      s.el.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block:"start" });
+    });
+    jRail.appendChild(a);
+  });
+  var railDots = [].slice.call(jRail.children);
+
+  /* Only enable scroll-driven motion once a live timeline actually reports a value.
+     If it never does, the page stays fully visible instead of animating to nothing. */
+  (function enableScrollMotion(){
+    if(reduce) return;
+    if(!(window.CSS && CSS.supports && CSS.supports("animation-timeline","view()"))) return;
+    if(typeof ViewTimeline === "undefined") return;
+    var subject = sections[0] && sections[0].el;
+    if(!subject) return;
+    var tries = 0;
+    function attempt(){
+      tries++;
+      var live = false;
+      try{
+        var tl = new ViewTimeline({ subject: subject, axis: "block" });
+        live = tl.currentTime != null;
+      }catch(e){ live = false; }
+      if(live){ document.documentElement.classList.add("sda"); return; }
+      if(tries < 8) setTimeout(attempt, 150);
+    }
+    attempt();
+    addEventListener("scroll", function once(){
+      removeEventListener("scroll", once);
+      if(!document.documentElement.classList.contains("sda")) attempt();
+    }, { passive:true, once:true });
+  })();
+
+  /* highlight the chapter you are in */
+  var supportsSDA = CSS && CSS.supports && CSS.supports("animation-timeline: view()");
+  if("IntersectionObserver" in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        var n = sections.findIndex(function(s){ return s.el === e.target; });
+        if(e.isIntersecting){
+          if(!supportsSDA || reduce) e.target.classList.add("in");
+          railDots.forEach(function(d,k){ d.classList.toggle("on", k === n); });
+        }
+      });
+    }, { rootMargin:"-45% 0px -45% 0px", threshold:0 });
+    sections.forEach(function(s){ io.observe(s.el); });
+  } else {
+    sections.forEach(function(s){ s.el.classList.add("in"); });
+  }
+
+  /* nav height drives the deck's top edge */
+  var navEl=document.getElementById("nav");
+  function measureNav(){ document.documentElement.style.setProperty("--navH", navEl.offsetHeight+"px"); }
+  measureNav(); addEventListener("resize", measureNav);
+
+  /* ── inner pages ── */
+  function ttRow(c){
+    var row=el("div","tt-row"); row.dataset.mode=c.mode; row.dataset.tags=c.tags.join(" ");
+    var when=el("div","when");
+    when.appendChild(el("b",null,DAYS[c.day].slice(0,3).toUpperCase()));
+    when.appendChild(el("span",null,two(c.h)+":"+two(c.m)));
+    row.appendChild(when);
+    var mid=el("div"), h=el("h3");
+    h.appendChild(el("span","gm-s",c.gm)); h.appendChild(document.createTextNode(c.en));
+    mid.appendChild(h); mid.appendChild(el("p","meta",c.meta)); row.appendChild(mid);
+    row.appendChild(el("span","mode", c.mode==="online"?"Online":"In person"));
+    if(c.slug){ var a=el("a","go","About this class"); a.href="#/class/"+c.slug; row.appendChild(a); }
+    else if(c.mode==="online"){ var r=el("a","go","Register"); r.href="#/register"; row.appendChild(r); }
+    else row.appendChild(el("span"));
+    return row;
+  }
+  var ttFull=document.getElementById("ttFull");
+  CLASSES.forEach(function(c){ ttFull.appendChild(ttRow(c)); });
+  var chips=document.querySelectorAll(".chip"), ttEmpty=document.getElementById("ttEmpty");
+  chips.forEach(function(ch){
+    ch.addEventListener("click",function(){
+      chips.forEach(function(o){ o.setAttribute("aria-pressed",String(o===ch)); });
+      var f=ch.dataset.f, shown=0;
+      ttFull.querySelectorAll(".tt-row").forEach(function(r){
+        var ok = f==="all" || r.dataset.tags.split(" ").indexOf(f)>-1;
+        r.classList.toggle("hide",!ok); if(ok) shown++; });
+      ttEmpty.hidden = shown>0; });
+  });
+  function nextClass(){
+    var now=new Date(), best=null, bestD=Infinity, liveC=null;
+    CLASSES.forEach(function(c){
+      for(var wk=0;wk<2;wk++){
+        var d=new Date(now);
+        d.setDate(now.getDate()+((c.day-now.getDay()+7)%7)+wk*7);
+        d.setHours(c.h,c.m,0,0);
+        var delta=d-now;
+        if(delta<=0 && delta>-c.mins*60000) liveC=c;
+        if(delta>0 && delta<bestD){ bestD=delta; best={c:c,at:d}; } }
+    });
+    var lab="Next class", val="—", cd="";
+    if(liveC){ lab="Happening now"; val=liveC.en;
+      cd = liveC.mode==="online" ? "Online — join late, that's fine" : "In person in Leicester";
+    } else if(best){
+      val=best.c.en;
+      var mins=Math.round(bestD/60000), dd=Math.floor(mins/1440), hh=Math.floor((mins%1440)/60), mm=mins%60, parts=[];
+      if(dd) parts.push(dd+(dd===1?" day":" days"));
+      if(hh) parts.push(hh+"h");
+      if(!dd && mm) parts.push(mm+"m");
+      cd = DAYS[best.c.day]+" "+two(best.c.h)+":"+two(best.c.m)+" · in "+(parts.join(" ")||"under a minute");
+    }
+    var a=document.getElementById("nowLab2");
+    if(a){ a.textContent=lab;
+      document.getElementById("nowVal2").textContent=val;
+      document.getElementById("nowCd2").textContent=cd; }
+  }
+  nextClass(); setInterval(nextClass,30000);
+
+  var cardsAll=document.getElementById("cardsAll");
+  PROGS.forEach(function(p){
+    var a=el("a","card"); a.href="#/class/"+p.slug;
+    var bg=el("div","bg"), im=document.createElement("img");
+    im.src=p.img; im.alt=""; im.loading="lazy"; bg.appendChild(im); a.appendChild(bg);
+    a.appendChild(el("span","age",p.age));
+    a.appendChild(el("span","gm-s",p.gm));
+    a.appendChild(el("h3",null,p.en));
+    a.appendChild(el("p",null,p.short));
+    cardsAll.appendChild(a);
+  });
+
+  function vol(v){
+    var d=el("div","vol");
+    d.appendChild(el("span","gm-s",v.gm));
+    d.appendChild(el("h3",null,v.en));
+    d.appendChild(el("p",null,v.d));
+    var row=el("div","tagrow");
+    v.tags.forEach(function(t){
+      row.appendChild(el("span","tag"+(t==="Published"?" live":(t.indexOf("Coming")===0||t==="In progress"?" soon":"")),t)); });
+    d.appendChild(row); return d;
+  }
+  GRANTHS.forEach(function(v){ document.getElementById("shelfGranths").appendChild(vol(v)); });
+  TALKS.forEach(function(v){ document.getElementById("shelfTalks").appendChild(vol(v)); });
+  BOOKS.forEach(function(v){ document.getElementById("shelfBooks").appendChild(vol(v)); });
+
+  function fillClass(slug){
+    var p=null; PROGS.forEach(function(x){ if(x.slug===slug) p=x; });
+    if(!p) return false;
+    document.getElementById("clsImg").src=p.img;
+    document.getElementById("clsGm").textContent=p.gm;
+    document.getElementById("clsEn").textContent=p.en;
+    document.getElementById("clsBlurb").textContent=p.blurb;
+    var lw=document.getElementById("clsLearn"); lw.textContent="";
+    p.learn.forEach(function(t){ lw.appendChild(el("li",null,t)); });
+    var bw=document.getElementById("clsBring"); bw.textContent="";
+    p.bring.forEach(function(t){ bw.appendChild(el("li",null,t)); });
+    document.getElementById("clsWhen").textContent=p.when;
+    document.getElementById("clsWhere").textContent=p.where;
+    document.getElementById("clsAge").textContent=p.age;
+    document.getElementById("clsLevel").textContent=p.level;
+    var cta=document.getElementById("clsCta"), note=document.getElementById("clsNote");
+    if(p.slug==="camp"){ cta.hidden=false; cta.textContent="Request a camp place";
+      note.textContent="Places are limited, so register early. The form asks for a parent or guardian's consent."; }
+    else if(p.online){ cta.hidden=false; cta.textContent="Register for online classes";
+      note.textContent="This class runs online, so register once and we'll email you the joining link."; }
+    else { cta.hidden=true;
+      note.textContent="This class runs in person and there is nothing to book — just come along."; }
+    document.title=p.en+" · Shaheedi Bunga";
+    return true;
+  }
+
+  /* register */
+  var modeOnline=document.getElementById("modeOnline"), modeCamp=document.getElementById("modeCamp");
+  document.querySelectorAll(".modeseg button").forEach(function(b){
+    b.addEventListener("click",function(){
+      document.querySelectorAll(".modeseg button").forEach(function(o){ o.setAttribute("aria-pressed",String(o===b)); });
+      var camp=b.dataset.mode==="camp";
+      modeOnline.hidden=camp; modeCamp.hidden=!camp; });
+  });
+  function setErr(input,on){
+    var f=input.closest(".field"); f.classList.toggle("bad",on);
+    var e=f.querySelector(".err"); if(e) e.hidden=!on;
+  }
+  var EMAIL=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  var form=document.getElementById("regForm"), ageSel=document.getElementById("rAge"),
+      guardWrap=document.getElementById("guardWrap");
+  function isMinor(){ return ["Under 8","8–12","13–17"].indexOf(ageSel.value)>-1; }
+  ageSel.addEventListener("change",function(){ guardWrap.hidden=!isMinor(); });
+  form.addEventListener("submit",function(ev){
+    ev.preventDefault(); var ok=true;
+    var name=document.getElementById("rName"), email=document.getElementById("rEmail"),
+        guard=document.getElementById("rGuard"), consent=document.getElementById("rConsent");
+    if(!name.value.trim()){ setErr(name,true); ok=false; } else setErr(name,false);
+    if(!ageSel.value){ setErr(ageSel,true); ok=false; } else setErr(ageSel,false);
+    if(isMinor() && !guard.value.trim()){ setErr(guard,true); ok=false; } else setErr(guard,false);
+    if(!EMAIL.test(email.value.trim())){ setErr(email,true); ok=false; } else setErr(email,false);
+    var picked=[].slice.call(document.querySelectorAll("#rClasses input:checked")).map(function(c){ return c.value; });
+    document.querySelector("#rClasses").closest(".field").querySelector(".err").hidden = picked.length>0;
+    if(!picked.length) ok=false;
+    consent.closest(".field").querySelector(".err").hidden = consent.checked;
+    if(!consent.checked) ok=false;
+    if(!ok){ var b=form.querySelector(".field.bad, .err:not([hidden])");
+      if(b) b.scrollIntoView({block:"center",behavior:reduce?"auto":"smooth"}); return; }
+    var list = picked.length===1 ? picked[0] : picked.slice(0,-1).join(", ")+" and "+picked[picked.length-1];
+    document.getElementById("regDoneMsg").textContent =
+      "Thanks — we've got "+name.value.trim()+" down for "+list+". A volunteer will email "+
+      email.value.trim()+" with the joining link before the next session.";
+    form.closest(".split").hidden=true;
+    document.getElementById("regDone").hidden=false;
+    scrollTo({top:0,behavior:reduce?"auto":"smooth"});
+  });
+  var campForm=document.getElementById("campForm");
+  campForm.addEventListener("submit",function(ev){
+    ev.preventDefault(); var ok=true;
+    ["cName","cGuard","cEmName","cEmPhone","cPhone"].forEach(function(id){
+      var n=document.getElementById(id);
+      if(!n.value.trim()){ setErr(n,true); ok=false; } else setErr(n,false); });
+    var age=document.getElementById("cAge");
+    if(!age.value){ setErr(age,true); ok=false; } else setErr(age,false);
+    var em=document.getElementById("cEmail");
+    if(!EMAIL.test(em.value.trim())){ setErr(em,true); ok=false; } else setErr(em,false);
+    var cons=document.getElementById("cConsent");
+    cons.closest(".field").querySelector(".err").hidden = cons.checked;
+    if(!cons.checked) ok=false;
+    if(!ok){ var b=campForm.querySelector(".field.bad, .err:not([hidden])");
+      if(b) b.scrollIntoView({block:"center",behavior:reduce?"auto":"smooth"}); return; }
+    document.getElementById("campDoneMsg").textContent =
+      "Thanks — we've requested a place for "+document.getElementById("cName").value.trim()+
+      " ("+document.getElementById("cWeeks").value.toLowerCase()+"). We'll email "+em.value.trim()+
+      " to confirm, with the kit list. Photo consent: "+(document.getElementById("cPhoto").checked?"given":"not given")+".";
+    campForm.closest(".split").hidden=true;
+    document.getElementById("campDone").hidden=false;
+    scrollTo({top:0,behavior:reduce?"auto":"smooth"});
+  });
+
+  /* donate */
+  var OUT={10:"buys a santhia pothi for a new student.",25:"covers a jori practice session for the whole class.",
+           60:"pays a month of hall hire at one gurdwara.",150:"sends a child to the Gurbani Vidhya Camp."};
+  var freq="monthly", amount=25;
+  var outcome=document.getElementById("outcome"), giveGo=document.getElementById("giveGo"),
+      customIn=document.getElementById("customAmt");
+  function money(n){ return "£"+n.toLocaleString("en-GB",{maximumFractionDigits:2}); }
+  function renderGive(){
+    var per = freq==="monthly" ? " a month" : "";
+    var tail = OUT[amount] || "goes straight into instruments, pothis and hall hire.";
+    var yearly = freq==="monthly" ? amount*12*1.25 : null;
+    outcome.textContent = money(amount)+per+" "+tail;
+    var ga=el("span","ga");
+    ga.textContent = "With Gift Aid that is worth "+money(amount*1.25)+
+      (yearly ? " a month — "+money(yearly)+" over a year." : ".");
+    outcome.appendChild(ga);
+    giveGo.textContent = "Give "+money(amount)+(freq==="monthly"?" monthly":" once");
+  }
+  document.querySelectorAll(".seg button").forEach(function(b){
+    b.addEventListener("click",function(){ freq=b.dataset.freq;
+      document.querySelectorAll(".seg button").forEach(function(o){ o.setAttribute("aria-pressed",String(o===b)); });
+      renderGive(); });
+  });
+  var amtBtns=document.querySelectorAll(".amt");
+  amtBtns.forEach(function(b){
+    b.addEventListener("click",function(){ amount=parseInt(b.dataset.amt,10);
+      amtBtns.forEach(function(o){ o.setAttribute("aria-pressed",String(o===b)); });
+      customIn.value=""; renderGive(); });
+  });
+  customIn.addEventListener("input",function(){
+    var v=parseFloat(customIn.value);
+    if(v>0){ amount=v; amtBtns.forEach(function(o){ o.setAttribute("aria-pressed","false"); }); renderGive(); } });
+  renderGive();
+
+  /* language toggles (all groups stay in sync) */
+  document.querySelectorAll(".seg-sm button").forEach(function(b){
+    b.addEventListener("click",function(){
+      document.querySelectorAll(".seg-sm button").forEach(function(o){
+        o.setAttribute("aria-pressed",String(o.dataset.lang===b.dataset.lang)); });
+    });
+  });
+
+  /* drawer */
+  var BURGER='<path d="M4 7h16M4 12h16M4 17h16"/>';
+  var drawer=document.getElementById("drawer"), menuBtn=document.getElementById("menuBtn"),
+      menuIcon=document.getElementById("menuIcon"), drawerClose=document.getElementById("drawerClose");
+  menuIcon.innerHTML=BURGER;
+  function setMenu(open){
+    drawer.classList.toggle("open",open);
+    menuBtn.setAttribute("aria-expanded",String(open));
+    menuBtn.setAttribute("aria-label",open?"Close menu":"Open menu");
+    if(open){ var f=drawer.querySelector(".dgroup a"); if(f) f.focus(); } else menuBtn.focus();
+  }
+  menuBtn.addEventListener("click",function(){ setMenu(!drawer.classList.contains("open")); });
+  drawerClose.addEventListener("click",function(){ setMenu(false); });
+  addEventListener("keydown",function(e){
+    if(e.key==="Escape" && drawer.classList.contains("open")) setMenu(false); });
+
+  /* ── router ── */
+  var PAGES={"":"p-home","timetable":"p-timetable","classes":"p-classes","library":"p-library",
+             "register":"p-register","donate":"p-donate","about":"p-about"};
+  var TITLES={"":"Gurmat Vidyala","timetable":"Timetable · Shaheedi Bunga","classes":"All classes · Shaheedi Bunga",
+              "library":"Library · Shaheedi Bunga","register":"Register · Shaheedi Bunga",
+              "donate":"Donate · Shaheedi Bunga","about":"About · Shaheedi Bunga"};
+  var foot=document.getElementById("foot");
+  function route(){
+    var raw=(location.hash||"#/").replace(/^#\/?/,""), id=null, key=raw;
+    if(raw.indexOf("class/")===0){
+      id = fillClass(raw.slice(6)) ? "p-class" : "p-home";
+      if(id==="p-home"){ key=""; document.title=TITLES[""]; }
+    } else {
+      id=PAGES[raw]||"p-home";
+      if(!PAGES[raw]) key="";
+      document.title=TITLES[key]||"Gurmat Vidyala";
+    }
+    document.querySelectorAll(".page").forEach(function(pg){ pg.hidden = pg.id!==id; });
+    var home = id==="p-home";
+    document.querySelectorAll("#navLinks a, #navProgs a, #drawer a[data-route]").forEach(function(a){
+      a.classList.toggle("on", a.dataset.route===raw); });
+    if(drawer.classList.contains("open")){
+      drawer.classList.remove("open");
+      menuBtn.setAttribute("aria-expanded","false");
+      menuBtn.setAttribute("aria-label","Open menu");
+    }
+    scrollTo({top:0,behavior:"auto"});
+    measureNav();
+  }
+  addEventListener("hashchange",route);
+  route();
+})();
+</script>

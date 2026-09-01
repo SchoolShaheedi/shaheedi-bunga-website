@@ -1,0 +1,366 @@
+<title>Larivaar to Pad Ched</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Jost:wght@400;500&family=Noto+Serif+Gurmukhi:wght@400;500;600&family=Spectral:wght@300;400;600&display=swap">
+
+<style>
+:root{
+  --cream:#F5F0E6; --paper:#FFFDF7; --navy:#20284F; --navy-2:#3D4360;
+  --gold:#C6A24A; --gold-deep:#9A7A2C; --royal:#2C4A9A;
+  --rule:#DCD3BE; --muted:#6F748C;
+  --f-disp:"Cormorant Garamond",Georgia,serif;
+  --f-body:"Spectral",Georgia,serif;
+  --f-util:"Jost",system-ui,sans-serif;
+  --f-gur:"Noto Serif Gurmukhi",serif;
+  --ease:cubic-bezier(0.05,0.70,0.10,1.00);
+  --t:0;                     /* 0 → 1, the scrub value */
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--cream); color:var(--navy);
+  font-family:var(--f-body); line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:60rem; margin:0 auto; padding:0 clamp(1.25rem,4vw,3rem)}
+
+header{padding:clamp(2.5rem,6vw,4.5rem) 0 0}
+.eyebrow{
+  font-family:var(--f-util); font-size:.7rem; font-weight:500;
+  letter-spacing:.18em; text-transform:uppercase; color:var(--gold-deep); margin:0;
+}
+h1{
+  font-family:var(--f-disp); font-weight:600; letter-spacing:-.015em;
+  font-size:clamp(2.4rem,6vw,3.6rem); line-height:1.02; margin:.5rem 0 0;
+  text-wrap:balance;
+}
+.stand{
+  font-size:1.08rem; font-weight:300; color:var(--navy-2);
+  max-width:44ch; margin:1rem 0 0;
+}
+
+/* ---------------------------------------------------------- the stage */
+.stage{
+  margin-top:clamp(2rem,5vw,3.5rem);
+  background:var(--paper); border:1px solid var(--rule);
+  padding:clamp(1.5rem,4vw,3rem) clamp(1rem,3vw,2.5rem) clamp(1.25rem,3vw,2rem);
+  box-shadow:0 1px 2px #20284f0d, 0 18px 40px -28px #20284f40;
+}
+
+/* phase chips */
+.phases{display:flex; gap:.4rem; flex-wrap:wrap; justify-content:center; margin-bottom:clamp(1.5rem,4vw,2.5rem)}
+.phase{
+  font-family:var(--f-util); font-size:.66rem; font-weight:500;
+  letter-spacing:.13em; text-transform:uppercase;
+  padding:.3rem .7rem; border:1px solid var(--rule); color:var(--muted);
+  border-radius:2px; transition:all .25s var(--ease); white-space:nowrap;
+}
+.phase.on{background:var(--navy); border-color:var(--navy); color:var(--cream)}
+
+/* the line itself */
+.tuk{
+  font-family:var(--f-gur); font-weight:500;
+  font-size:clamp(1.15rem,4.1vw,2.5rem); line-height:1.95;
+  text-align:center; color:var(--navy);
+  display:flex; flex-wrap:wrap; justify-content:center; align-items:baseline;
+  align-content:center; min-height:4.6em;
+}
+/* Each word is its own box. The gap between them IS the animation —
+   larivaar has none, pad ched has one. */
+.w{
+  display:inline-block; white-space:nowrap;
+  margin-inline-end:calc(var(--t2) * 0.34em);
+  transition:margin-inline-end .08s linear;
+}
+.w:last-child{margin-inline-end:0}
+
+/* the recitation sweep — one akhara at a time */
+.a{ transition:color .18s var(--ease), text-shadow .18s var(--ease); }
+.a.lit{ color:var(--gold-deep); text-shadow:0 0 .5em #C6A24A55; }
+.a.past{ color:var(--navy); }
+
+.gloss{
+  text-align:center; margin-top:1.4rem; min-height:3.2em;
+  opacity:calc((var(--t) - .72) * 3.6);
+  transition:opacity .1s linear;
+}
+.gloss .en{
+  font-family:var(--f-disp); font-style:italic; font-weight:300;
+  font-size:clamp(1rem,2.6vw,1.45rem); color:var(--navy-2); line-height:1.35;
+  max-width:34ch; margin:0 auto;
+}
+.gloss .src{
+  font-family:var(--f-util); font-size:.66rem; letter-spacing:.13em;
+  text-transform:uppercase; color:var(--muted); margin:.6rem 0 0;
+}
+
+/* caption that narrates the current phase */
+.say{
+  text-align:center; margin-top:clamp(1.25rem,3vw,2rem);
+  padding-top:clamp(1rem,2.5vw,1.5rem); border-top:1px solid var(--rule);
+  font-size:.95rem; color:var(--navy-2); min-height:3.4em;
+  max-width:46ch; margin-inline:auto;
+}
+.say b{color:var(--navy); font-weight:600}
+
+/* ------------------------------------------------------------ scrubber */
+.scrub{margin-top:clamp(1.25rem,3vw,2rem)}
+.scrub label{
+  display:flex; justify-content:space-between; align-items:baseline;
+  font-family:var(--f-util); font-size:.66rem; letter-spacing:.13em;
+  text-transform:uppercase; color:var(--muted); margin-bottom:.6rem;
+}
+.scrub label b{color:var(--navy); font-variant-numeric:tabular-nums; font-weight:500}
+input[type=range]{
+  -webkit-appearance:none; appearance:none; width:100%; height:2px;
+  background:var(--rule); outline:none; margin:1rem 0;
+}
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none; width:1.5rem; height:1.5rem; border-radius:50%;
+  background:var(--gold); border:3px solid var(--paper);
+  box-shadow:0 1px 6px #20284f4d; cursor:grab;
+}
+input[type=range]::-moz-range-thumb{
+  width:1.5rem; height:1.5rem; border-radius:50%; background:var(--gold);
+  border:3px solid var(--paper); box-shadow:0 1px 6px #20284f4d; cursor:grab;
+}
+input[type=range]:focus-visible::-webkit-slider-thumb{outline:2px solid var(--royal); outline-offset:2px}
+.hint{
+  font-family:var(--f-util); font-size:.68rem; letter-spacing:.06em;
+  color:var(--muted); text-align:center; margin:.2rem 0 0;
+}
+.controls{display:flex; gap:.5rem; justify-content:center; margin-top:1rem; flex-wrap:wrap}
+.btn{
+  font-family:var(--f-util); font-size:.7rem; font-weight:500; letter-spacing:.1em;
+  text-transform:uppercase; padding:.55rem 1.1rem; cursor:pointer;
+  background:transparent; border:1px solid var(--navy); color:var(--navy);
+  border-radius:2px; transition:background-color .18s var(--ease), color .18s var(--ease);
+}
+.btn:hover{background:var(--navy); color:var(--cream)}
+.btn[aria-pressed="true"]{background:var(--gold); border-color:var(--gold); color:var(--navy)}
+
+/* ------------------------------------------------------------- explain */
+.explain{padding:clamp(3rem,7vw,5rem) 0 clamp(4rem,8vw,6rem)}
+.grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(15rem,1fr)); gap:clamp(1.5rem,3vw,2.5rem); margin-top:2rem}
+.card h3{
+  font-family:var(--f-disp); font-size:1.35rem; font-weight:600;
+  margin:0 0 .5rem; letter-spacing:-.005em;
+}
+.card .n{
+  font-family:var(--f-util); font-size:.66rem; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--gold-deep); display:block; margin-bottom:.6rem;
+}
+.card p{margin:0; font-size:.95rem; color:var(--navy-2)}
+h2{
+  font-family:var(--f-disp); font-weight:600; letter-spacing:-.01em;
+  font-size:clamp(1.8rem,4.5vw,2.6rem); line-height:1.06; margin:0; text-wrap:balance;
+}
+.note{
+  margin-top:clamp(2rem,5vw,3rem); padding:1.25rem 1.5rem;
+  border-left:3px solid var(--gold); background:var(--paper);
+}
+.note p{margin:0; font-size:.95rem; color:var(--navy-2)}
+.note p + p{margin-top:.7rem}
+.note b{color:var(--navy)}
+.gur-inline{font-family:var(--f-gur); font-size:1.05em}
+
+@media (prefers-reduced-motion:reduce){
+  *{transition:none !important}
+}
+</style>
+
+<header class="wrap">
+  <p class="eyebrow">Santhiya Vidyala · scroll mechanic prototype</p>
+  <h1>ਲੜੀਵਾਰ → ਪਦ ਛੇਦ</h1>
+  <p class="stand">The line the page is built around, and the thing santhiya actually
+    teaches. Drag the handle — or press Play — to see how it behaves on scroll.</p>
+</header>
+
+<main class="wrap">
+  <section class="stage">
+    <div class="phases">
+      <span class="phase" data-ph="0">1 · Larivaar — the chain</span>
+      <span class="phase" data-ph="1">2 · The break</span>
+      <span class="phase" data-ph="2">3 · Pad ched</span>
+      <span class="phase" data-ph="3">4 · Recitation</span>
+    </div>
+
+    <p class="tuk" id="tuk" lang="pa"></p>
+
+    <div class="gloss">
+      <p class="en">By the Guru's grace one contemplates this knowledge;<br>reading and
+        reading again, one receives honour.</p>
+      <p class="src">Working translation — to be confirmed by an ustad</p>
+    </div>
+
+    <p class="say" id="say"></p>
+
+    <div class="scrub">
+      <label for="r"><span>Scroll position</span><b id="pct">0%</b></label>
+      <input id="r" type="range" min="0" max="1000" value="0" step="1"
+             aria-label="Scrub the animation">
+      <p class="hint">This is exactly what the page's scroll will drive.</p>
+      <div class="controls">
+        <button class="btn" id="play" aria-pressed="false">Play</button>
+        <button class="btn" id="reset">Reset</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="explain">
+    <h2>What is actually happening</h2>
+    <div class="grid">
+      <div class="card">
+        <span class="n">Phase 1 · 0–35%</span>
+        <h3>The chain</h3>
+        <p>The tuk sits as one unbroken run of letters — no spaces at all. This is
+          <b>larivaar</b>, the form Gurbani is written in. A reader who has not been
+          taught cannot tell where one word ends and the next begins.</p>
+      </div>
+      <div class="card">
+        <span class="n">Phase 2 · 35–62%</span>
+        <h3>The break</h3>
+        <p>Gaps open between the words, left to right, each one a fraction behind the
+          last. It reads as a chain unlinking rather than a block stretching — which is
+          the whole point, because the divisions are being <b>found</b>, not applied.</p>
+      </div>
+      <div class="card">
+        <span class="n">Phase 3 · 62–72%</span>
+        <h3>Pad ched</h3>
+        <p>The line settles into <b>pad ched</b> — word-separated. Eight units where a
+          moment ago there was one. The English gloss fades in beneath.</p>
+      </div>
+      <div class="card">
+        <span class="n">Phase 4 · 72–100%</span>
+        <h3>Recitation</h3>
+        <p>Each akhara lights in turn at reading pace, the way an ustad would take a
+          student through it. Not a typing effect — a <b>reading</b> effect, and it
+          settles rather than races.</p>
+      </div>
+    </div>
+
+    <div class="note">
+      <p><b>Why this belongs on this page and nowhere else.</b> Every other class page
+        can be described. Santhiya can be <i>performed</i> — the scroll does the exact
+        thing the class teaches, which is finding the divisions in the chain. Nobody
+        visiting will have seen a website do this.</p>
+      <p><b>Two things I need from you.</b> First, the English gloss above is my working
+        translation and should be checked by an ustad before it goes near the live site.
+        Second — if there is a teaching example where breaking the chain in the wrong
+        place changes the meaning, that would be the single strongest thing on the whole
+        page. I have not invented one, and I would not: it needs to come from the vidyala.</p>
+      <p><b>On the source.</b> The tuk is the one on your own Gurbani Santhiya Camp
+        posters. Worth noting the poster renders it <i>without</i> word spaces —
+        a Canva font-shaping bug, but it happens to show the larivaar form by accident.</p>
+    </div>
+  </section>
+</main>
+
+<script>
+(function(){
+  "use strict";
+
+  /* The tuk, as pad ched — the form we animate TO.
+     Split on spaces; every gap here is a real word boundary, so no matra
+     or conjunct is ever cut across. */
+  var WORDS = ["ਗੁਰਪਰਸਾਦੀ","ਵਿਦਿਆ","ਵੀਚਾਰੈ","ਪੜਿ","ਪੜਿ","ਪਾਵੈ","ਮਾਨੁ\u00A0॥"];
+
+  /* Split a word into aksharas — a consonant plus everything that hangs off it.
+     Intl.Segmenter gets Gurmukhi grapheme clusters right; the regex fallback
+     keeps combining marks (U+0A00–U+0A7F range) attached to their base. */
+  function aksharas(word){
+    if (typeof Intl !== "undefined" && Intl.Segmenter){
+      var seg = new Intl.Segmenter("pa", { granularity: "grapheme" });
+      return Array.from(seg.segment(word), function(s){ return s.segment; });
+    }
+    return word.match(/[\s\S][਀-ਃ਼ਾ-੍ੰੱੵ]*/g) || [word];
+  }
+
+  var tuk = document.getElementById("tuk");
+  var cells = [];
+  WORDS.forEach(function(w){
+    var span = document.createElement("span");
+    span.className = "w";
+    aksharas(w).forEach(function(a){
+      var el = document.createElement("span");
+      el.className = "a";
+      el.textContent = a;
+      span.appendChild(el);
+      cells.push(el);
+    });
+    tuk.appendChild(span);
+  });
+
+  var root = document.documentElement;
+  var range = document.getElementById("r");
+  var pct = document.getElementById("pct");
+  var say = document.getElementById("say");
+  var phaseEls = Array.prototype.slice.call(document.querySelectorAll(".phase"));
+
+  var SAY = [
+    "One unbroken run of letters. <b>Larivaar</b> — the form Gurbani is written in. Where does the first word end?",
+    "The divisions open, left to right. This is the work of the class: not adding spaces, but <b>knowing where they fall</b>.",
+    "<b>Pad ched.</b> Eight units where a moment ago there was one continuous chain.",
+    "Now read it the way it is taught — one akhara at a time, at the pace a student would be taken through it."
+  ];
+
+  function clamp(v,a,b){ return Math.min(b, Math.max(a, v)); }
+
+  function apply(t){
+    root.style.setProperty("--t", t.toFixed(4));
+
+    /* t2 drives the word gap: 0 up to 35%, opening through to 62%. */
+    var t2 = clamp((t - 0.35) / 0.27, 0, 1);
+    root.style.setProperty("--t2", t2.toFixed(4));
+
+    /* Stagger the opening so it unlinks rather than stretches. */
+    var ws = tuk.querySelectorAll(".w");
+    for (var i = 0; i < ws.length; i++){
+      var local = clamp((t - 0.35 - i * 0.018) / 0.24, 0, 1);
+      ws[i].style.marginInlineEnd = (local * 0.34).toFixed(3) + "em";
+    }
+    if (ws.length) ws[ws.length - 1].style.marginInlineEnd = "0";
+
+    /* Recitation sweep across aksharas, 72% → 100%. */
+    var head = (t - 0.72) / 0.28 * cells.length;
+    for (var j = 0; j < cells.length; j++){
+      cells[j].classList.toggle("lit", t > 0.72 && j <= head && j > head - 2.2);
+      cells[j].classList.toggle("past", t > 0.72 && j <= head - 2.2);
+    }
+
+    var ph = t < 0.35 ? 0 : t < 0.62 ? 1 : t < 0.72 ? 2 : 3;
+    phaseEls.forEach(function(el, k){ el.classList.toggle("on", k === ph); });
+    say.innerHTML = SAY[ph];
+    pct.textContent = Math.round(t * 100) + "%";
+  }
+
+  range.addEventListener("input", function(){ stop(); apply(range.value / 1000); });
+
+  /* Play — eases toward 1 rather than stepping linearly, so it previews the
+     weight the real scroll follower will have. */
+  var raf = null, playBtn = document.getElementById("play");
+  function stop(){
+    if (raf) cancelAnimationFrame(raf);
+    raf = null; playBtn.setAttribute("aria-pressed", "false"); playBtn.textContent = "Play";
+  }
+  playBtn.addEventListener("click", function(){
+    if (raf) { stop(); return; }
+    playBtn.setAttribute("aria-pressed", "true"); playBtn.textContent = "Pause";
+    var v = (+range.value >= 995) ? 0 : +range.value;
+    (function step(){
+      v += (1000 - v) * 0.012 + 1.1;
+      if (v >= 999){ v = 1000; }
+      range.value = v; apply(v / 1000);
+      if (v >= 1000){ stop(); return; }
+      raf = requestAnimationFrame(step);
+    })();
+  });
+  document.getElementById("reset").addEventListener("click", function(){
+    stop(); range.value = 0; apply(0);
+  });
+
+  var m = /[?&]t=([0-9.]+)/.exec(location.search);
+  var start = m ? Math.min(1, Math.max(0, parseFloat(m[1]))) : 0;
+  range.value = Math.round(start * 1000);
+  apply(start);
+})();
+</script>

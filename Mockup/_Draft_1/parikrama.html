@@ -1,0 +1,1566 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Parikrama</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=Noto+Serif+Gurmukhi:wght@400;600;700&display=swap">
+
+<style>
+*,*::before,*::after{ box-sizing:border-box; }
+html{ scroll-behavior:auto; }
+body{
+  margin:0; background:#04050C; color:#F4F1E8;
+  font-family:"Source Serif 4",Georgia,serif;
+  --gold:#E9CE83; --dim:rgba(244,241,232,.66);
+  --sans:"Archivo","Helvetica Neue",Arial,sans-serif;
+  overflow-x:clip;
+}
+canvas{ display:block; position:fixed; inset:0; z-index:0; }
+
+/* the scroll runway — nothing in it, it only gives the page length */
+.runway{ height:820vh; position:relative; z-index:1; pointer-events:none; }
+
+/* ─────────── fixed furniture ─────────── */
+.nav{ position:fixed; top:0; left:0; right:0; z-index:8;
+  display:flex; align-items:center; justify-content:space-between; gap:24px;
+  padding:16px clamp(18px,3.4vw,40px);
+  background:linear-gradient(to bottom, rgba(4,5,12,.82), rgba(4,5,12,0));
+  border-bottom:1px solid rgba(233,206,131,.14); }
+.brand{ display:flex; flex-direction:column; gap:1px; text-decoration:none; flex:0 0 auto; }
+.brand-gm{ font-family:"Noto Serif Gurmukhi",serif; font-weight:700;
+  font-size:17px; line-height:1.15; color:#F6F3EA; }
+.brand-en{ font-family:var(--sans); font-size:9.5px; font-weight:600;
+  letter-spacing:.24em; text-transform:uppercase; color:var(--gold); }
+.links{ display:flex; gap:clamp(14px,2.2vw,30px); margin-left:auto; }
+.links a{ font-family:var(--sans); font-size:11.5px; font-weight:600;
+  letter-spacing:.14em; text-transform:uppercase; color:rgba(244,241,232,.82);
+  text-decoration:none; padding:6px 0; border-bottom:1px solid transparent; transition:.22s ease; }
+.links a:hover,.links a:focus-visible{ color:var(--gold); border-bottom-color:var(--gold); }
+.nav-end{ display:flex; align-items:center; gap:14px; flex:0 0 auto; }
+.nav-cta{ font-family:var(--sans); font-size:11px; font-weight:600; letter-spacing:.16em;
+  text-transform:uppercase; text-decoration:none; color:var(--gold);
+  border:1px solid rgba(233,206,131,.5); padding:9px 18px; border-radius:2px; transition:.22s ease; }
+.nav-cta:hover{ background:rgba(233,206,131,.14); }
+.menu-btn{ display:none; align-items:center; gap:9px; background:none; cursor:pointer;
+  border:1px solid rgba(244,241,232,.24); border-radius:2px; padding:9px 13px; }
+.menu-btn span{ display:block; width:15px; height:1.5px; background:#F4F1E8; transition:.25s ease; }
+.menu-btn em{ font-family:var(--sans); font-size:10.5px; font-weight:600; letter-spacing:.16em;
+  text-transform:uppercase; font-style:normal; color:#F4F1E8; }
+.menu-btn span{ display:none; }
+.menu-btn:focus-visible,.links a:focus-visible,.nav-cta:focus-visible,.brand:focus-visible{
+  outline:2px solid var(--gold); outline-offset:3px; }
+
+.menu{ position:fixed; inset:0; z-index:9; background:rgba(4,5,12,.97);
+  display:flex; flex-direction:column; justify-content:center; gap:30px;
+  padding:96px clamp(24px,7vw,80px) 48px; }
+.menu nav{ display:flex; flex-direction:column; }
+.menu nav a{ display:flex; flex-direction:column; gap:4px; text-decoration:none;
+  padding:18px 0; border-bottom:1px solid rgba(244,241,232,.12); }
+.menu nav a b{ font-family:"Source Serif 4",Georgia,serif; font-weight:600;
+  font-size:clamp(23px,5.4vw,34px); color:#F6F3EA; letter-spacing:-.01em; }
+.menu nav a i{ font-family:var(--sans); font-size:11px; font-style:normal;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--dim); }
+.menu nav a:hover b,.menu nav a:focus-visible b{ color:var(--gold); }
+.menu-foot{ font-family:var(--sans); font-size:10.5px; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--dim); margin:0; }
+
+.draft-tag{ position:fixed; left:clamp(18px,3.4vw,40px); bottom:22px; z-index:6;
+  pointer-events:none; }
+
+@media (max-width:900px){
+  .links{ display:none; }
+  .menu-btn{ display:flex; }
+}
+@media (max-width:520px){
+  .nav-cta{ display:none; }
+}
+.kick{ font-family:var(--sans); font-size:11px; font-weight:600; letter-spacing:.24em;
+       text-transform:uppercase; color:var(--gold); margin:0; }
+.tag{ font-family:var(--sans); font-size:10.5px; font-weight:600; letter-spacing:.18em;
+      text-transform:uppercase; color:var(--dim); border:1px solid rgba(244,241,232,.24);
+      border-radius:999px; padding:6px 13px; }
+.meta{ font-family:var(--sans); font-size:11px; letter-spacing:.16em;
+       text-transform:uppercase; color:var(--dim); }
+.meta b{ color:var(--gold); font-weight:600; }
+
+/* progress rail */
+.rail{ position:fixed; right:clamp(18px,3.4vw,40px); top:50%; transform:translateY(-50%);
+       z-index:6; display:flex; flex-direction:column; gap:9px; pointer-events:none; }
+.rail i{ width:2px; height:22px; background:rgba(244,241,232,.18); display:block;
+         transition:background .5s ease; }
+.rail i.on{ background:var(--gold); }
+@media (max-width:760px){ .rail{ display:none; } }
+
+/* ─────────── chapters ─────────── */
+.stage{ position:fixed; inset:0; z-index:5; pointer-events:none;
+        display:flex; align-items:center;
+        padding:0 clamp(20px,6vw,88px); }
+.ch{ position:absolute; left:clamp(20px,6vw,88px); right:clamp(20px,6vw,88px);
+     max-width:min(620px,80vw); opacity:0; transform:translateY(18px);
+     will-change:opacity,transform; }
+.ch.right{ left:auto; right:clamp(20px,6vw,88px); text-align:right; }
+.scrim{ position:fixed; inset:0; z-index:4; pointer-events:none; opacity:0;
+        background:linear-gradient(100deg, rgba(4,5,12,.96) 0%, rgba(4,5,12,.92) 32%,
+                   rgba(4,5,12,.66) 50%, rgba(4,5,12,.20) 66%, rgba(4,5,12,0) 78%); }
+.scrim.flip{ background:linear-gradient(260deg, rgba(4,5,12,.96) 0%, rgba(4,5,12,.92) 32%,
+                   rgba(4,5,12,.66) 50%, rgba(4,5,12,.20) 66%, rgba(4,5,12,0) 78%); }
+
+.gm{ font-family:"Noto Serif Gurmukhi",serif; font-weight:700;
+     font-size:clamp(36px,6.2vw,88px); line-height:1.06; color:#F7F4EC;
+     text-shadow:0 6px 46px rgba(0,0,0,.9); margin:0; }
+.en{ font-family:var(--sans); font-weight:700; text-transform:uppercase;
+     font-size:clamp(13px,2vw,26px); letter-spacing:.24em; color:var(--gold);
+     margin:12px 0 0; text-shadow:0 2px 26px rgba(0,0,0,.9); }
+.eyebrow{ font-family:var(--sans); font-size:11px; font-weight:600; letter-spacing:.26em;
+          text-transform:uppercase; color:var(--gold); margin:0 0 16px; }
+h2{ font-family:"Source Serif 4",Georgia,serif; font-weight:600;
+    font-size:clamp(24px,3.5vw,46px); line-height:1.18; margin:0; letter-spacing:-.01em;
+    text-shadow:0 4px 34px rgba(0,0,0,.92); }
+.body{ margin:20px 0 0; max-width:46ch; font-size:clamp(15px,1.5vw,19px);
+       color:rgba(244,241,232,.9); line-height:1.68; text-shadow:0 2px 24px rgba(0,0,0,1); }
+.ch.right .body{ margin-left:auto; }
+.note{ margin:22px 0 0; font-family:var(--sans); font-size:11.5px; letter-spacing:.16em;
+       text-transform:uppercase; color:var(--dim); }
+
+.where{ margin:24px 0 0; padding:20px 0 0; border-top:1px solid rgba(233,206,131,.28);
+        display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:14px 26px; }
+.where div{ display:flex; flex-direction:column; gap:3px; }
+.where dt{ font-family:var(--sans); font-size:10px; font-weight:600; letter-spacing:.2em;
+           text-transform:uppercase; color:var(--gold); }
+.where dd{ margin:0; font-size:14.5px; color:rgba(244,241,232,.88); line-height:1.45; }
+@media (max-width:700px){ .where{ display:none; } }
+
+.cta{ margin:30px 0 0; display:flex; gap:12px; flex-wrap:wrap; pointer-events:auto; }
+.ch.right .cta{ justify-content:flex-end; }
+.btn{ font-family:var(--sans); font-size:12px; font-weight:600; letter-spacing:.16em;
+      text-transform:uppercase; text-decoration:none; padding:14px 24px; border-radius:2px;
+      border:1px solid rgba(233,206,131,.5); color:var(--gold); transition:.25s ease; }
+.btn:hover{ background:rgba(233,206,131,.12); }
+.btn.solid{ background:var(--gold); color:#0A0A10; border-color:var(--gold); }
+.btn.solid:hover{ background:#F3DDA0; }
+
+.cue{ position:fixed; left:50%; bottom:26px; transform:translateX(-50%); z-index:6;
+      font-family:var(--sans); font-size:10.5px; letter-spacing:.26em; text-transform:uppercase;
+      color:var(--dim); pointer-events:none; transition:opacity .5s ease; }
+.cue span{ display:block; text-align:center; margin-top:8px; animation:bob 2.4s ease-in-out infinite; }
+@keyframes bob{ 0%,100%{ transform:translateY(0); opacity:.55; } 50%{ transform:translateY(6px); opacity:1; } }
+@media (prefers-reduced-motion:reduce){ .cue span{ animation:none; } }
+
+.fallback{ position:fixed; inset:0; display:none; place-items:center; text-align:center;
+           padding:30px; z-index:9; background:#04050C; }
+.fallback p{ max-width:46ch; color:var(--dim); line-height:1.7; }
+body.nogl .fallback{ display:grid; }
+body.nogl canvas,body.nogl .stage,body.nogl .rail,body.nogl .cue,body.nogl .scrim{ display:none; }
+[hidden]{ display:none !important; }
+</style>
+
+<div class="scrim" id="scrimA"></div>
+<div class="scrim flip" id="scrimB"></div>
+
+<header class="nav">
+  <a class="brand" href="#home">
+    <span class="brand-gm">ਸ਼ਹੀਦੀ ਬੁੰਗਾ</span>
+    <span class="brand-en">Shaheedi Bunga</span>
+  </a>
+  <nav class="links" aria-label="Main">
+    <a href="#classes">Classes</a>
+    <a href="#akharas">Akharas &amp; Vidyalas</a>
+    <a href="#library">Library</a>
+    <a href="#events">Events</a>
+    <a href="#about">About</a>
+  </nav>
+  <div class="nav-end">
+    <a class="nav-cta" href="#donate">Donate</a>
+    <button class="menu-btn" type="button" id="menuBtn" aria-expanded="false" aria-controls="menu">
+      <span></span><span></span><span></span>
+      <em>Menu</em>
+    </button>
+  </div>
+</header>
+
+<div class="menu" id="menu" hidden>
+  <nav aria-label="All pages">
+    <a href="#classes"><b>Classes</b><i>Timetable, venues, how to join</i></a>
+    <a href="#akharas"><b>Akharas &amp; Vidyalas</b><i>Archery, Gatka, Santhiya, Kirtan</i></a>
+    <a href="#library"><b>Library</b><i>Granths, katha, recordings</i></a>
+    <a href="#events"><b>Events</b><i>Camps, samagams, gurpurabs</i></a>
+    <a href="#about"><b>About</b><i>The bunga, the trustees, the charity</i></a>
+    <a href="#donate"><b>Donate</b><i>Give, Gift Aid, sponsor a student</i></a>
+  </nav>
+  <p class="menu-foot">Registered charity in England &amp; Wales &middot; 1185103</p>
+</div>
+
+<span class="tag draft-tag">Not final</span>
+
+<div class="stage">
+  <div class="ch" data-ch="0">
+    <p class="gm">ਸ਼ਹੀਦੀ ਬੁੰਗਾ</p>
+    <p class="en">Shaheedi&nbsp;Bunga</p>
+    <p class="body">The place of the martyrs.</p>
+  </div>
+
+  <div class="ch" data-ch="1">
+    <p class="eyebrow">Amritsar</p>
+    <h2>Around this water stood more than seventy bungas.</h2>
+    <p class="body">Raised by the misls and the jathas who kept watch over the Darbar Sahib.
+      Each one was a residence &mdash; and each one was a school.</p>
+  </div>
+
+  <div class="ch right" data-ch="2">
+    <p class="eyebrow">What was taught</p>
+    <h2>Santhiya. Shastar&nbsp;vidya. Itihaas. Kirtan.</h2>
+    <p class="body">A bunga was where a Sikh came to learn to read Gurbani correctly, to hold a
+      shastar, to keep the rehat, and to sing the raags as they were given.</p>
+  </div>
+
+  <div class="ch" data-ch="3">
+    <p class="eyebrow">What happened to them</p>
+    <h2>Almost all of them were pulled down.</h2>
+    <p class="body">Cleared through the last century as the parikrama was widened. Of more than
+      seventy, a handful of towers still stand at the water&rsquo;s edge.</p>
+  </div>
+
+  <div class="ch right" data-ch="4">
+    <p class="eyebrow">The one we are named for</p>
+    <h2>Shaheedan da Bunga.</h2>
+    <p class="body">The bunga of the shaheedi jatha &mdash; the Singhs who gave their heads for the
+      Panth, and taught in between. The building is gone. The teaching was never the building.</p>
+  </div>
+
+  <div class="ch" data-ch="5">
+    <p class="eyebrow">Students teaching worldwide</p>
+    <h2>So we raise it again, on whatever ground we are given.</h2>
+    <p class="body">A gurdwara hall in Leicester on a Tuesday night. A vidyala in Panjab. And
+      students who learned here, now teaching where they live. A bunga is not a place. It is what
+      happens inside it.</p>
+    <dl class="where">
+      <div><dt>Africa</dt><dd>Nairobi, Kenya</dd></div>
+      <div><dt>Europe</dt><dd>Germany &middot; Netherlands</dd></div>
+      <div><dt>United Kingdom</dt><dd>Leicester &middot; Nottingham &middot; Birmingham &middot; East London &middot; Southall &middot; Scotland</dd></div>
+      <div><dt>Middle East</dt><dd>Kuwait</dd></div>
+      <div><dt>Asia</dt><dd>Panjab</dd></div>
+      <div><dt>Oceania</dt><dd>Australia</dd></div>
+    </dl>
+    <div class="cta">
+      <a class="btn solid" href="#classes">Find a class</a>
+      <a class="btn" href="#about">What we teach</a>
+    </div>
+    <p class="note">Registered charity in England &amp; Wales &middot; 1185103</p>
+  </div>
+</div>
+
+<div class="rail" id="rail"></div>
+
+<div class="cue" id="cue">Scroll<span>&darr;</span></div>
+
+<div class="runway"></div>
+
+<div class="fallback">
+  <p>This page needs WebGL, which this browser or device has not made available.
+     The finished site would fall back to a photographic version of the same journey.</p>
+</div>
+
+<script>__THREE__</script>
+<script>
+(function(){
+"use strict";
+
+/* ── guard ── */
+function hasGL(){ try{ var c=document.createElement("canvas");
+  return !!(c.getContext("webgl2")||c.getContext("webgl")); }catch(e){ return false; } }
+if(typeof THREE==="undefined" || !hasGL()){ document.body.classList.add("nogl"); return; }
+
+var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* ─────────────────── renderer / scene ─────────────────── */
+var scene = new THREE.Scene();
+var camera = new THREE.PerspectiveCamera(40, innerWidth/innerHeight, 0.4, 1400);
+
+var renderer = new THREE.WebGLRenderer({ antialias:true, alpha:false, powerPreference:"high-performance" });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 1.85));
+renderer.setSize(innerWidth, innerHeight);
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+var LOWSPEC = innerWidth < 900 || (navigator.hardwareConcurrency || 8) <= 4;
+var SHADOWS = false;
+renderer.shadowMap.enabled = SHADOWS && !LOWSPEC;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.toneMapping = THREE.NoToneMapping;   // ACES is applied in the bloom composite
+document.body.appendChild(renderer.domElement);
+
+scene.fog = new THREE.FogExp2(0x100E18, 0.0023);
+
+/* ─────────────────── materials ─────────────────── */
+function mat(o){ o.side = THREE.DoubleSide; return new THREE.MeshStandardMaterial(o); }
+
+/* ── procedural surface maps ────────────────────────────────────
+   Flat untextured colour is the loudest "this is a render" tell.
+   These are drawn on canvases at load: lime-plaster grain for the
+   stone, hammered repoussé for the gold, and a wave pattern that
+   gives the sarovar a real rippled reflection of the sky.        */
+function grainTex(size, density){
+  var c = document.createElement("canvas"); c.width = c.height = size;
+  var x = c.getContext("2d");
+  x.fillStyle = "#b4b4b4"; x.fillRect(0, 0, size, size);
+  var n = size * size * density, i;
+  for(i = 0; i < n; i++){
+    x.fillStyle = "rgba(0,0,0," + (0.03 + Math.random() * 0.09).toFixed(3) + ")";
+    x.fillRect(Math.random()*size, Math.random()*size, 1 + Math.random()*2, 1 + Math.random()*2);
+  }
+  for(i = 0; i < size / 2; i++){          // blotches of damp and limewash
+    x.fillStyle = (i % 2 ? "rgba(255,255,255," : "rgba(0,0,0,") +
+                  (0.015 + Math.random()*0.045).toFixed(3) + ")";
+    x.beginPath();
+    x.ellipse(Math.random()*size, Math.random()*size,
+              3 + Math.random()*22, 3 + Math.random()*18,
+              Math.random()*3.14, 0, 6.2832);
+    x.fill();
+  }
+  var t = new THREE.CanvasTexture(c);
+  t.wrapS = t.wrapT = THREE.RepeatWrapping;
+  return t;
+}
+
+function repousseTex(size){
+  var c = document.createElement("canvas"); c.width = c.height = size;
+  var x = c.getContext("2d");
+  x.fillStyle = "#7a7a7a"; x.fillRect(0, 0, size, size);
+  var cell = size / 4;
+  for(var gy = 0; gy < 4; gy++) for(var gx = 0; gx < 4; gx++){
+    var cx = (gx + 0.5) * cell, cy = (gy + 0.5) * cell, k, p, a;
+    for(k = 0; k < 6; k++){
+      x.strokeStyle = k % 2 ? "rgba(255,255,255,.42)" : "rgba(0,0,0,.34)";
+      x.lineWidth = cell * 0.030;
+      x.beginPath(); x.arc(cx, cy, cell * 0.08 + k * cell * 0.048, 0, 6.2832); x.stroke();
+    }
+    for(p = 0; p < 8; p++){
+      a = p / 8 * 6.2832;
+      x.fillStyle = "rgba(255,255,255,.30)";
+      x.beginPath();
+      x.ellipse(cx + Math.cos(a) * cell * 0.31, cy + Math.sin(a) * cell * 0.31,
+                cell * 0.095, cell * 0.045, a, 0, 6.2832);
+      x.fill();
+      x.fillStyle = "rgba(0,0,0,.22)";
+      x.beginPath();
+      x.ellipse(cx + Math.cos(a) * cell * 0.31, cy + Math.sin(a) * cell * 0.31 + cell * 0.03,
+                cell * 0.085, cell * 0.030, a, 0, 6.2832);
+      x.fill();
+    }
+  }
+  var t = new THREE.CanvasTexture(c);
+  t.wrapS = t.wrapT = THREE.RepeatWrapping;
+  return t;
+}
+
+function waveNormalTex(size){
+  var c = document.createElement("canvas"); c.width = c.height = size;
+  var x = c.getContext("2d"), img = x.createImageData(size, size);
+  for(var j = 0; j < size; j++) for(var i = 0; i < size; i++){
+    var u = i / size * 6.2832, v = j / size * 6.2832;
+    /* slope of a few summed swells, encoded as a tangent-space normal */
+    var dz = 0.55 * Math.cos(v * 6) * 0.9
+           + 0.30 * Math.cos(v * 13 + u * 1.7) * 1.3
+           + 0.15 * Math.cos(v * 27 + u * 0.6) * 2.2;
+    var dx = 0.10 * Math.cos(u * 4 + v * 2) * 0.8;
+    var n = 1 / Math.sqrt(dx*dx + dz*dz*0.10 + 1), o = (j * size + i) * 4;
+    img.data[o]   = Math.round((dx * n * 0.5 + 0.5) * 255);
+    img.data[o+1] = Math.round((dz * 0.30 * n * 0.5 + 0.5) * 255);
+    img.data[o+2] = Math.round((n * 0.5 + 0.5) * 255);
+    img.data[o+3] = 255;
+  }
+  x.putImageData(img, 0, 0);
+  var t = new THREE.CanvasTexture(c);
+  t.wrapS = t.wrapT = THREE.RepeatWrapping;
+  return t;
+}
+
+var TEX_GRAIN = grainTex(256, 0.16),
+    TEX_REP   = repousseTex(256),
+    TEX_WAVE  = waveNormalTex(128);
+
+var mMarble  = mat({ color:0xCEC3A6, roughness:0.80, metalness:0.01 });
+var mMarbleD = mat({ color:0xA1957B, roughness:0.90, metalness:0.01 });
+var mInlay   = mat({ color:0x9A7A52, roughness:0.70, metalness:0.04 });
+var mGold    = mat({ color:0xD2A445, roughness:0.24, metalness:0.94,
+                     emissive:0xA06A15, emissiveIntensity:0.52 });
+var mGoldD   = mat({ color:0xA88231, roughness:0.32, metalness:0.92,
+                     emissive:0x7C5312, emissiveIntensity:0.38 });
+var mDark    = mat({ color:0x0B0A10, roughness:1 });
+var mBulb    = new THREE.MeshBasicMaterial({ color:0xFFC178, toneMapped:false });
+mBulb.color.multiplyScalar(1.35);   // HDR: bulbs sit above 1.0 so they bloom
+var mFlag    = mat({ color:0xA3641C, roughness:0.94 });
+var mPole    = mat({ color:0x8A7A5E, roughness:0.95 });
+var mWarm    = (function(){
+  var c = document.createElement("canvas"); c.width = 4; c.height = 96;
+  var x = c.getContext("2d"), g = x.createLinearGradient(0,96,0,0);
+  g.addColorStop(0.00, "#FFC271");   // the floor, where the lamps stand
+  g.addColorStop(0.30, "#8A4E14");
+  g.addColorStop(0.70, "#251405");
+  g.addColorStop(1.00, "#080502");   // the ceiling, unlit
+  x.fillStyle = g; x.fillRect(0,0,4,96);
+  var t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace;
+  return mat({ color:0x0A0704, roughness:1, emissive:0xFFFFFF,
+               emissiveMap:t, emissiveIntensity:0.30 });
+})();          // lit interiors
+var mStone   = mat({ color:0x9C8F74, roughness:0.94 });                  // bunga walls
+var mStoneD  = mat({ color:0x7C6F58, roughness:0.96 });
+var mStoneL  = mat({ color:0xBBAC89, roughness:0.92 });
+var mBrick   = mat({ color:0x8A6746, roughness:0.95 });                  // Ramgarhia towers
+var mLand    = mat({ color:0x171410, roughness:1 });
+var mTree    = mat({ color:0x2A2C1C, roughness:1 });
+var mPave    = mat({ color:0x796E56, roughness:0.90 });
+var mPaveD   = mat({ color:0x574E3C, roughness:0.95 });
+
+/* Give every surface relief, and give the gold something to reflect.
+   Cloned textures share one GPU upload but carry their own tiling. */
+function tiled(src, n){ var t = src.clone(); t.repeat.set(n, n); t.needsUpdate = true; return t; }
+
+[[mMarble,4],[mMarbleD,4],[mStone,3],[mStoneD,3],[mStoneL,3],
+ [mPave,6],[mPaveD,6],[mBrick,3],[mInlay,4],[mPole,2],[mFlag,2]].forEach(function(pair){
+  pair[0].bumpMap = tiled(TEX_GRAIN, pair[1]);
+  pair[0].bumpScale = 0.06;
+  pair[0].envMapIntensity = 0.32;
+});
+[[mGold,3],[mGoldD,4]].forEach(function(pair){
+  pair[0].bumpMap = tiled(TEX_REP, pair[1]);
+  pair[0].bumpScale = 0.09;
+  pair[0].envMapIntensity = 1.55;
+});
+
+(function(){
+  /* an equirectangular amrit-vela sky, pre-filtered into a real IBL */
+  var c = document.createElement("canvas"); c.width = 512; c.height = 256;
+  var x = c.getContext("2d");
+  var g = x.createLinearGradient(0, 0, 0, 256);
+  g.addColorStop(0.00, "#04050C"); g.addColorStop(0.42, "#0A0D1C");
+  g.addColorStop(0.62, "#171B33"); g.addColorStop(0.78, "#2A2540");
+  g.addColorStop(0.90, "#4A3346"); g.addColorStop(1.00, "#6E4529");
+  x.fillStyle = g; x.fillRect(0, 0, 512, 256);
+  var rg = x.createRadialGradient(392, 198, 0, 392, 198, 168);
+  rg.addColorStop(0.00, "rgba(255,164,84,0.80)");
+  rg.addColorStop(0.45, "rgba(214,118,64,0.28)");
+  rg.addColorStop(1.00, "rgba(214,118,64,0)");
+  x.fillStyle = rg; x.fillRect(0, 0, 512, 256);
+  var tex = new THREE.CanvasTexture(c);
+  tex.mapping = THREE.EquirectangularReflectionMapping;
+  tex.colorSpace = THREE.SRGBColorSpace;
+  var pm = new THREE.PMREMGenerator(renderer);
+  pm.compileEquirectangularShader();
+  scene.environment = pm.fromEquirectangular(tex).texture;
+  pm.dispose(); tex.dispose();
+})();
+
+/* ─────────────────── primitive helpers ─────────────────── */
+var BOX = new THREE.BoxGeometry(1,1,1);
+var CYL = new THREE.CylinderGeometry(0.5,0.5,1,12);
+var CYL8= new THREE.CylinderGeometry(0.5,0.5,1,8);
+
+function box(w,h,d,m,x,y,z){
+  var o = new THREE.Mesh(BOX,m); o.scale.set(w,h,d); o.position.set(x||0,y||0,z||0); return o;
+}
+function cyl(r,h,m,x,y,z,seg){
+  var o = new THREE.Mesh(seg===8?CYL8:CYL,m); o.scale.set(r*2,h,r*2);
+  o.position.set(x||0,y||0,z||0); return o;
+}
+
+var torusCache = {};
+function torus(r,tube){
+  var k = r.toFixed(3)+"_"+tube.toFixed(3);
+  if(!torusCache[k]) torusCache[k] = new THREE.TorusGeometry(r,tube,7,18,Math.PI);
+  return torusCache[k];
+}
+
+var domeCache = {};
+function domeGeo(radius,height,petal){
+  var k = radius.toFixed(3)+"_"+height.toFixed(3)+"_"+(petal?1:0);
+  if(domeCache[k]) return domeCache[k];
+  var p = petal
+    ? [[0.00,0.00],[1.00,0.02],[1.06,0.09],[1.00,0.20],[0.94,0.34],
+       [0.82,0.50],[0.64,0.68],[0.44,0.83],[0.24,0.94],[0.09,1.01],[0.00,1.03]]
+    : [[0.00,0.00],[0.96,0.03],[1.00,0.13],[0.97,0.30],[0.88,0.48],
+       [0.72,0.66],[0.52,0.82],[0.30,0.94],[0.12,1.01],[0.00,1.04]];
+  var pts = p.map(function(q){ return new THREE.Vector2(q[0]*radius, q[1]*height); });
+  domeCache[k] = new THREE.LatheGeometry(pts, petal?46:28);
+  return domeCache[k];
+}
+function dome(radius,height,m,petal){ return new THREE.Mesh(domeGeo(radius,height,petal), m); }
+
+/* kalash finial */
+function finial(s,m){
+  var g = new THREE.Group();
+  g.add(cyl(0.075*s, 0.55*s, m, 0, 0.275*s, 0, 8));
+  var b1 = new THREE.Mesh(new THREE.SphereGeometry(0.20*s,12,10), m); b1.position.y=0.66*s; g.add(b1);
+  g.add(cyl(0.05*s, 0.30*s, m, 0, 0.95*s, 0, 8));
+  var b2 = new THREE.Mesh(new THREE.SphereGeometry(0.11*s,10,8), m); b2.position.y=1.14*s; g.add(b2);
+  var tip = new THREE.Mesh(new THREE.ConeGeometry(0.05*s,0.34*s,8), m); tip.position.y=1.34*s; g.add(tip);
+  return g;
+}
+
+/* An arcaded wall: one solid panel with real arched openings cut through it,
+   standing on y=0 in the XY plane. Extruded, so the reveals catch light and
+   you can see into the building through every arch. */
+var wallCache = {};
+function arcadeWall(width,height,bays,m,thick){
+  var key = [width,height,bays,thick].map(function(v){ return (+v).toFixed(3); }).join("_");
+  var geo = wallCache[key];
+  if(!geo){
+    var span = width/bays, pierW = span*0.30,
+        r = (span - pierW)/2 * 0.97,
+        colH = Math.max(height*0.40, height - r - height*0.17);
+    var sh = new THREE.Shape();
+    sh.moveTo(-width/2, 0); sh.lineTo(width/2, 0);
+    sh.lineTo(width/2, height); sh.lineTo(-width/2, height); sh.closePath();
+    for(var j=0;j<bays;j++){
+      var cx = -width/2 + j*span + span/2, x0 = cx - r, x1 = cx + r;
+      var h = new THREE.Path();
+      h.moveTo(x0, 0);
+      h.lineTo(x0, colH);
+      h.absarc(cx, colH, r, Math.PI, 0, true);
+      h.lineTo(x1, 0);
+      h.closePath();
+      sh.holes.push(h);
+    }
+    geo = new THREE.ExtrudeGeometry(sh, { depth:thick, bevelEnabled:false, curveSegments:11 });
+    geo.translate(0, 0, -thick/2);
+    geo.computeVertexNormals();
+    wallCache[key] = geo;
+  }
+  var g = new THREE.Group();
+  g.add(new THREE.Mesh(geo, m));
+  /* a moulded band along the head of the wall */
+  g.add(box(width*1.02, height*0.055, thick*1.35, m, 0, height - height*0.028, 0));
+  return g;
+}
+
+/* four arcaded walls around a square */
+function arcadeRing(width,height,bays,m,thick){
+  var g = new THREE.Group(), h = width/2;
+  [[0,h,0],[Math.PI,-h,0],[Math.PI/2,0,0],[-Math.PI/2,0,0]].forEach(function(cfg,i){
+    var w = arcadeWall(width,height,bays,m,thick);
+    w.rotation.y = cfg[0];
+    if(i<2) w.position.z = cfg[1];
+    else    w.position.x = (i===2? h : -h);
+    g.add(w);
+  });
+  return g;
+}
+
+/* merlon / balustrade band around a square footprint */
+function parapet(width,h,step,m,y){
+  var n = 0, d = new THREE.Object3D(), half = width/2;
+  var cap = [];
+  for(var x=-half; x<=half+0.001; x+=step){ cap.push([x,half]); cap.push([x,-half]); }
+  for(var z=-half+step; z<=half-step+0.001; z+=step){ cap.push([half,z]); cap.push([-half,z]); }
+  var inst = new THREE.InstancedMesh(BOX, m, cap.length);
+  cap.forEach(function(p){
+    d.position.set(p[0], y + h/2, p[1]);
+    d.scale.set(step*0.46, h, step*0.46);
+    d.updateMatrix(); inst.setMatrixAt(n++, d.matrix);
+  });
+  inst.count = n; return inst;
+}
+
+/* small domed kiosk (chhatri) */
+function chhatri(s,mCol,mDom,tall){
+  var g = new THREE.Group(), off = 0.40*s, H = 1.10*s*(tall||1);
+  [[-off,-off],[off,-off],[-off,off],[off,off]].forEach(function(p){
+    g.add(cyl(0.075*s, H, mCol, p[0], H/2, p[1], 8));
+  });
+  g.add(box(1.16*s, 0.14*s, 1.16*s, mCol, 0, H+0.07*s, 0));
+  var d = dome(0.56*s, 0.66*s, mDom, true); d.position.y = H+0.14*s; g.add(d);
+  var f = finial(0.40*s, mDom); f.position.y = H + 0.80*s; g.add(f);
+  return g;
+}
+
+/* Rounded pinnacles, not square merlons — the parapets of the Harmandir
+   "terminate with several rounded pinnacles". */
+var pinGeo = null;
+function pinnacles(width,h,step,m,y){
+  if(!pinGeo){
+    var pts = [[0.00,1.00],[0.05,0.90],[0.11,0.76],[0.16,0.60],[0.21,0.46],
+               [0.17,0.32],[0.23,0.15],[0.21,0.00],[0.00,0.00]]
+      .map(function(q){ return new THREE.Vector2(q[0], q[1]); });
+    pinGeo = new THREE.LatheGeometry(pts, 9);
+    pinGeo.computeVertexNormals();
+  }
+  var half = width/2, cap = [], d = new THREE.Object3D(), n = 0;
+  for(var x=-half; x<=half+0.001; x+=step){ cap.push([x,half]); cap.push([x,-half]); }
+  for(var z=-half+step; z<=half-step+0.001; z+=step){ cap.push([half,z]); cap.push([-half,z]); }
+  var inst = new THREE.InstancedMesh(pinGeo, m, cap.length);
+  cap.forEach(function(q){
+    d.position.set(q[0], y, q[1]);
+    d.rotation.set(0,0,0);
+    d.scale.set(h*1.15, h, h*1.15);
+    d.updateMatrix(); inst.setMatrixAt(n++, d.matrix);
+  });
+  inst.count = n; return inst;
+}
+
+/* The bracketed underside of a chhajja eave. */
+function brackets(width,y,h,step,m,into){
+  var half = width/2, pts = [], d = new THREE.Object3D(), n = 0;
+  for(var x=-half; x<=half+0.001; x+=step){ pts.push([x,half,0]); pts.push([x,-half,0]); }
+  for(var z=-half+step; z<=half-step+0.001; z+=step){ pts.push([half,z,1]); pts.push([-half,z,1]); }
+  var inst = new THREE.InstancedMesh(BOX, m, pts.length);
+  pts.forEach(function(q){
+    d.position.set(q[0], y + h/2, q[1]);
+    d.rotation.set(0, q[2] ? Math.PI/2 : 0, 0);
+    d.scale.set(step*0.30, h, 0.85);
+    d.updateMatrix(); inst.setMatrixAt(n++, d.matrix);
+  });
+  inst.count = n; into.add(inst);
+}
+
+/* ═══════════════════ HARMANDIR SAHIB ═══════════════════
+   The first draft: a marble arcaded ground storey, gilt above the
+   chhajja, jaali screens on the second, the Sheesh Mahal, and a tall
+   ribbed inverted-lotus dome.                                       */
+function harmandir(){
+  var G = new THREE.Group();
+  var W = 12.4;                       // body width
+  var y = 0;
+
+  /* marble platform in the water */
+  G.add(box(21.8, 1.35, 21.8, mMarbleD, 0, 0.68, 0));
+  G.add(box(20.9, 0.16, 20.9, mInlay  , 0, 1.31, 0));
+  G.add(box(20.6, 0.30, 20.6, mMarble , 0, 1.50, 0));
+  G.add(parapet(19.4, 0.62, 0.78, mMarble, 1.65));
+  y = 1.65;
+
+  /* ── storey 1 ── dark core, then the arcaded marble screen around it */
+  G.add(box(W-2.2, 3.05, W-2.2, mWarm, 0, y+1.52, 0));
+  G.add(box(W-2.2, 2.05, W-2.2, mDark, 0, y+4.08, 0));
+  var s1 = arcadeRing(W, 5.10, 5, mMarble, 0.42); s1.position.y = y; G.add(s1);
+  G.add(box(W+0.30, 0.24, W+0.30, mInlay, 0, y+2.55, 0));
+  /* the chhajja — the overhanging eave, where the gilt begins */
+  G.add(box(W+2.30, 0.26, W+2.30, mGold , 0, y+5.24, 0));
+  G.add(box(W+1.70, 0.34, W+1.70, mGoldD, 0, y+5.53, 0));
+  y += 5.70;
+
+  /* parapet and kiosks around the first roof */
+  G.add(parapet(W+1.20, 0.52, 0.68, mGold, y));
+  [[-1,-1],[1,-1],[-1,1],[1,1]].forEach(function(p){
+    var c = chhatri(1.30, mGold, mGold);
+    c.position.set(p[0]*(W/2+0.35), y+0.2, p[1]*(W/2+0.35)); G.add(c);
+  });
+  [[0,-1],[0,1],[-1,0],[1,0]].forEach(function(p){
+    var c = chhatri(0.80, mGold, mGold);
+    c.position.set(p[0]*(W/2+0.35), y+0.2, p[1]*(W/2+0.35)); G.add(c);
+  });
+
+  /* ── storey 2 ── gilt, jaali screens ── */
+  var W2 = W - 1.60;
+  G.add(box(W2-1.4, 1.95, W2-1.4, mWarm, 0, y+0.98, 0));
+  G.add(box(W2-1.4, 1.35, W2-1.4, mDark, 0, y+2.63, 0));
+  var s2 = arcadeRing(W2, 3.30, 4, mGold, 0.34); s2.position.y = y; G.add(s2);
+  (function(){
+    var d = new THREE.Object3D(), cells = [], half = W2/2 + 0.01;
+    for(var side=0; side<4; side++)
+      for(var u=-W2/2+0.5; u<=W2/2-0.5; u+=0.42)
+        for(var v=0.55; v<=2.75; v+=0.42)
+          cells.push([side,u,v]);
+    var inst = new THREE.InstancedMesh(BOX, mGoldD, cells.length), n = 0;
+    cells.forEach(function(c){
+      var side = c[0], u = c[1], v = c[2];
+      if(side===0)      d.position.set(u, y+v,  half);
+      else if(side===1) d.position.set(u, y+v, -half);
+      else if(side===2) d.position.set( half, y+v, u);
+      else              d.position.set(-half, y+v, u);
+      d.rotation.set(0, side<2 ? 0 : Math.PI/2, 0);
+      d.scale.set(0.30, 0.30, 0.06);
+      d.updateMatrix(); inst.setMatrixAt(n++, d.matrix);
+    });
+    inst.count = n; G.add(inst);
+  })();
+  G.add(box(W2+1.90, 0.24, W2+1.90, mGold , 0, y+3.42, 0));
+  G.add(box(W2+1.40, 0.30, W2+1.40, mGoldD, 0, y+3.68, 0));
+  y += 3.84;
+
+  G.add(parapet(W2+0.90, 0.44, 0.60, mGold, y));
+  [[-1,-1],[1,-1],[-1,1],[1,1]].forEach(function(p){
+    var c = chhatri(1.00, mGold, mGold);
+    c.position.set(p[0]*(W2/2+0.25), y+0.14, p[1]*(W2/2+0.25)); G.add(c);
+  });
+
+  /* ── storey 3 — the Sheesh Mahal ── */
+  var W3 = 6.6;
+  G.add(box(W3-1.1, 1.55, W3-1.1, mWarm, 0, y+0.78, 0));
+  G.add(box(W3-1.1, 1.05, W3-1.1, mDark, 0, y+2.08, 0));
+  var s3 = arcadeRing(W3, 2.60, 3, mGold, 0.30); s3.position.y = y; G.add(s3);
+  G.add(box(W3+1.40, 0.22, W3+1.40, mGold , 0, y+2.70, 0));
+  G.add(box(W3+1.00, 0.26, W3+1.00, mGoldD, 0, y+2.93, 0));
+  y += 3.08;
+  G.add(parapet(W3+0.70, 0.36, 0.54, mGold, y));
+
+  /* ── the dome ── inverted lotus, ribbed, on a low drum ── */
+  G.add(cyl(2.55, 0.50, mGoldD, 0, y+0.25, 0));
+  (function(){
+    var petals = new THREE.InstancedMesh(new THREE.ConeGeometry(0.34, 1.05, 6), mGold, 26),
+        d = new THREE.Object3D();
+    for(var i=0;i<26;i++){
+      var t = i/26 * Math.PI*2;
+      d.position.set(Math.cos(t)*2.42, y+0.72, Math.sin(t)*2.42);
+      d.rotation.set(0, -t, 0);
+      d.updateMatrix(); petals.setMatrixAt(i, d.matrix);
+    }
+    G.add(petals);
+  })();
+
+  var D = dome(2.62, 3.20, mGold, true); D.position.y = y + 0.66; G.add(D);
+  (function(){
+    var ribs = new THREE.InstancedMesh(BOX, mGoldD, 24*7), d = new THREE.Object3D(), n = 0;
+    for(var i=0;i<24;i++){
+      var t = i/24 * Math.PI*2;
+      for(var k=1;k<=7;k++){
+        var f = k/8,
+            rr = 2.62 * Math.cos(f*Math.PI/2),
+            hh = 3.20 * Math.sin(f*Math.PI/2);
+        d.position.set(Math.cos(t)*rr*1.01, y+0.66+hh, Math.sin(t)*rr*1.01);
+        d.rotation.set(0, -t, 0);
+        d.scale.set(0.085, 0.50, 0.085);
+        d.updateMatrix(); ribs.setMatrixAt(n++, d.matrix);
+      }
+    }
+    ribs.count = n; G.add(ribs);
+  })();
+
+  /* neck, umbrella and kalash */
+  G.add(cyl(0.62, 0.42, mGoldD, 0, y+3.95, 0));
+  var umb = dome(1.05, 0.42, mGold, false); umb.position.y = y+4.16; G.add(umb);
+  var f = finial(1.55, mGold); f.position.y = y + 4.42; G.add(f);
+
+  G.userData.top = y + 6.6;
+  return G;
+}
+
+/* ═══════════════════ causeway + Darshani Deori ═══════════════════ */
+function causeway(len,x0){
+  var g = new THREE.Group();
+  g.add(box(len, 1.55, 6.6, mMarbleD, x0+len/2, 0.78, 0));
+  g.add(box(len, 0.26, 6.0, mMarble , x0+len/2, 1.66, 0));
+  /* balustrade + lamp standards down both sides */
+  var d = new THREE.Object3D(), posts = [];
+  for(var x=x0+1.2; x<x0+len; x+=1.35){ posts.push([x,3.05]); posts.push([x,-3.05]); }
+  var inst = new THREE.InstancedMesh(BOX, mMarble, posts.length), n=0;
+  posts.forEach(function(p){ d.position.set(p[0],2.05,p[1]); d.scale.set(0.24,0.60,0.24);
+    d.updateMatrix(); inst.setMatrixAt(n++,d.matrix); });
+  inst.count=n; g.add(inst);
+  g.add(box(len, 0.16, 0.34, mMarble, x0+len/2, 2.42,  3.05));
+  g.add(box(len, 0.16, 0.34, mMarble, x0+len/2, 2.42, -3.05));
+
+  var lamps = [];
+  for(var lx=x0+5; lx<x0+len-3; lx+=8.4){ lamps.push([lx,3.55]); lamps.push([lx,-3.55]); }
+  lamps.forEach(function(p){
+    g.add(cyl(0.14, 3.1, mGoldD, p[0], 1.95+1.55, p[1], 8));
+    var b = new THREE.Mesh(new THREE.SphereGeometry(0.26,10,8), mBulb);
+    b.position.set(p[0], 5.25, p[1]); g.add(b);
+    b.userData.lamp = true;
+  });
+  return g;
+}
+
+function deori(x){
+  var g = new THREE.Group();
+  /* the body: a white two-storey gate range with one great arch through it */
+  g.add(box(19.0, 2.0, 13.0, mMarbleD, x, 1.0, 0));
+  g.add(box(17.6, 7.2, 11.6, mDark, x, 5.6, 0));
+  var front = arcadeWall(17.6, 7.2, 3, mMarble, 0.7);
+  front.position.set(x, 2.0, 5.8); g.add(front);
+  var back = arcadeWall(17.6, 7.2, 3, mMarble, 0.7);
+  back.position.set(x, 2.0, -5.8); back.rotation.y = Math.PI; g.add(back);
+  [-1,1].forEach(function(sx){
+    var e = arcadeWall(11.6, 7.2, 2, mMarble, 0.7);
+    e.position.set(x + sx*8.8, 2.0, 0); e.rotation.y = Math.PI/2; g.add(e);
+  });
+  /* the gilded surround to the central opening */
+  [5.86,-5.86].forEach(function(z){
+    g.add(box(0.5, 6.4, 0.34, mGold, x-3.3, 5.4, z));
+    g.add(box(0.5, 6.4, 0.34, mGold, x+3.3, 5.4, z));
+    g.add(box(7.1, 0.5, 0.34, mGold, x, 8.6, z));
+  });
+  g.add(box(20.4, 0.32, 14.4, mMarble, x, 9.36, 0));
+  g.add(box(19.4, 0.40, 13.4, mMarbleD, x, 9.72, 0));
+
+  /* an upper storey, set back, then the roofline */
+  g.add(box(12.6, 3.4, 9.4, mDark, x, 11.6, 0));
+  var up = arcadeRing(13.6, 3.4, 4, mMarble, 0.5); up.position.set(x, 9.92, 0); g.add(up);
+  g.add(box(15.4, 0.28, 11.2, mMarble, x, 13.46, 0));
+  g.add(pinnacles(13.0, 0.55, 0.72, mMarble, 13.6));
+
+  /* three domes — the big one gold, the flanking pair white */
+  var d = dome(2.5, 2.8, mGold, true); d.position.set(x, 13.7, 0); g.add(d);
+  var f = finial(1.05, mGold); f.position.set(x, 16.7, 0); g.add(f);
+  [-1,1].forEach(function(sz){
+    var c = chhatri(1.35, mMarble, mMarble, 1.0);
+    c.position.set(x, 13.6, sz*4.2); g.add(c);
+  });
+  [[-1,-1],[1,-1],[-1,1],[1,1]].forEach(function(q){
+    var c = chhatri(1.15, mMarble, mGold, 1.15);
+    c.position.set(x + q[0]*8.2, 9.7, q[1]*5.6); g.add(c);
+  });
+  return g;
+}
+
+/* ═══════════════════ AKAL TAKHT ═══════════════════
+   White below, gold domes above; it stands on the entrance bank
+   facing the Harmandir across the water.                        */
+function akalTakht(){
+  var g = new THREE.Group();
+  var W = 25, D = 16, y = 2.1;
+  g.add(box(W+2.6, 2.1, D+2.6, mMarbleD, 0, 1.05, 0));
+  var w = W, d = D;
+  [5.6, 4.5, 3.7].forEach(function(h, i){
+    g.add(box(w-1.5, h, d-1.5, mDark, 0, y+h/2, 0));
+    if(i < 2) g.add(box(w-1.7, h*0.55, d-1.7, mWarm, 0, y+h*0.30, 0));
+    var bays = Math.max(3, Math.round(w/3.1)), bd = Math.max(2, Math.round(d/3.1));
+    var fr = arcadeWall(w, h, bays, mMarble, 0.55); fr.position.set(0, y,  d/2); g.add(fr);
+    var bk = arcadeWall(w, h, bays, mMarble, 0.55); bk.position.set(0, y, -d/2); bk.rotation.y = Math.PI; g.add(bk);
+    var lf = arcadeWall(d, h, bd, mMarble, 0.55); lf.position.set( w/2, y, 0); lf.rotation.y =  Math.PI/2; g.add(lf);
+    var rt = arcadeWall(d, h, bd, mMarble, 0.55); rt.position.set(-w/2, y, 0); rt.rotation.y = -Math.PI/2; g.add(rt);
+    g.add(box(w+1.3, 0.30, d+1.3, mMarble, 0, y+h+0.15, 0));
+    y += h + 0.30; w -= 1.7; d -= 1.7;
+  });
+  g.add(pinnacles(Math.min(w,d)*0.90, 0.52, 0.70, mMarble, y));
+  var big = dome(3.9, 4.3, mGold, true); big.position.y = y + 0.30; g.add(big);
+  var f = finial(1.45, mGold); f.position.y = y + 5.05; g.add(f);
+  [[-1,-1],[1,-1],[-1,1],[1,1]].forEach(function(q){
+    var c = chhatri(1.55, mMarble, mGold, 1.05);
+    c.position.set(q[0]*(w/2-0.9), y, q[1]*(d/2-0.9)); g.add(c);
+  });
+  return g;
+}
+
+/* Trees. Beato's 1858 plate shows heavy dark masses of them along every
+   bank, between and behind the bungas — without them the scene reads modern. */
+function tree(h, spread, seed){
+  var g = new THREE.Group();
+  g.add(cyl(0.11 + h*0.006, h*0.46, mStoneD, 0, h*0.23, 0, 8));
+  var lobes = 26 + (seed % 9);
+  for(var i=0;i<lobes;i++){
+    var t = i * 2.39996 + seed * 0.7,                 /* golden-angle scatter */
+        ring = Math.sqrt((i + 0.5) / lobes),
+        rad = spread * (0.235 + ((seed*7 + i*13) % 10) / 130),
+        lift = h * (0.52 + (1 - ring) * 0.42 + ((seed*3 + i*5) % 10) / 150);
+    var m = new THREE.Mesh(new THREE.SphereGeometry(rad, 7, 5), mTree);
+    m.position.set(Math.cos(t) * spread * ring * 0.70, lift,
+                   Math.sin(t) * spread * ring * 0.70);
+    m.scale.set(1, 0.72, 1);
+    g.add(m);
+  }
+  return g;
+}
+
+/* ═══════════════════ a bunga ═══════════════════
+   Three storeys of arcade, a flat roof, chhatris, sometimes a dome.
+   Faces the water. Every one is a school.                       */
+function bunga(opt){
+  var g = new THREE.Group();
+  var w = opt.w, d = opt.d, storeys = opt.storeys, h = opt.storeyH || 4.0;
+  var m = opt.dark ? mStoneD : (opt.light ? mStoneL : mStone);
+  g.add(box(w+1.4, 1.0, d+1.4, mStoneD, 0, 0.5, 0));
+  var y = 1.0;
+  for(var s=0; s<storeys; s++){
+    if(opt.lit){
+      g.add(box(w-1.2, h*0.58, d-1.2, mWarm, 0, y+h*0.29, 0));
+      g.add(box(w-1.2, h*0.42, d-1.2, mDark, 0, y+h*0.79, 0));
+    } else {
+      g.add(box(w-1.2, h, d-1.2, mDark, 0, y+h/2, 0));
+    }
+    var bays = Math.max(3, Math.round(w/2.5));
+    var front = arcadeWall(w, h, bays, m, 0.5); front.position.set(0, y, d/2); g.add(front);
+    var back  = arcadeWall(w, h, bays, m, 0.5); back.position.set(0, y, -d/2); back.rotation.y = Math.PI; g.add(back);
+    var bd = Math.max(2, Math.round(d/2.5));
+    var lf = arcadeWall(d, h, bd, m, 0.5); lf.position.set(w/2, y, 0); lf.rotation.y = Math.PI/2; g.add(lf);
+    var rt = arcadeWall(d, h, bd, m, 0.5); rt.position.set(-w/2, y, 0); rt.rotation.y = -Math.PI/2; g.add(rt);
+    g.add(box(w+0.9, 0.26, d+0.9, m, 0, y+h+0.13, 0));
+    y += h + 0.26;
+    w -= 0.9; d -= 0.9;
+  }
+  g.add(parapet(Math.min(w,d)*0.9, 0.55, 0.72, m, y));
+  if(opt.chhatris){
+    [[-1,-1],[1,-1],[-1,1],[1,1]].forEach(function(p){
+      var c = chhatri(opt.chhatris, m, opt.gold? mGold : mStoneL);
+      c.position.set(p[0]*(w/2-0.5), y, p[1]*(d/2-0.5)); g.add(c);
+    });
+  }
+  if(opt.dome){
+    var dm = dome(opt.dome, opt.dome*1.18, opt.gold? mGold : mStoneL, true);
+    dm.position.y = y + 0.2; g.add(dm);
+    var f = finial(opt.dome*0.42, opt.gold? mGold : mStoneL); f.position.y = y + opt.dome*1.38; g.add(f);
+  }
+  g.userData.top = y;
+  return g;
+}
+
+/* Shaheedan da Bunga, from the one surviving photograph: a single low
+   lime-plastered room at the water's edge, a row of cusped openings, a
+   decorated frieze, a flat roof, one small pillared pavilion above it,
+   and the Nishan Sahib standing beside it. */
+function lowBunga(){
+  var g = new THREE.Group();
+  var W = 19, D = 11, H = 5.0;
+  g.add(box(W+2.0, 1.5, D+2.0, mStoneD, 0, 0.75, 0));          // terrace
+  g.add(box(W-1.3, H*0.60, D-1.3, mWarm, 0, 1.5 + H*0.30, 0)); // lamplit within
+  g.add(box(W-1.3, H*0.40, D-1.3, mDark, 0, 1.5 + H*0.80, 0));
+  var f = arcadeWall(W, H, 6, mStoneL, 0.55); f.position.set(0, 1.5,  D/2); f.rotation.y = Math.PI; g.add(f);
+  var b = arcadeWall(W, H, 6, mStoneL, 0.55); b.position.set(0, 1.5, -D/2); g.add(b);
+  [-1,1].forEach(function(sx){
+    var e = arcadeWall(D, H, 3, mStoneL, 0.55);
+    e.position.set(sx*W/2, 1.5, 0); e.rotation.y = Math.PI/2; g.add(e);
+  });
+  g.add(box(W+1.5, 0.34, D+1.5, mStoneL, 0, 1.5+H+0.17, 0));   // frieze / cornice
+  g.add(box(W+0.9, 0.42, D+0.9, mStoneD, 0, 1.5+H+0.55, 0));
+  g.add(pinnacles(Math.min(W,D)*0.92, 0.42, 0.60, mStoneL, 1.5+H+0.76));
+  /* the small pavilion that rises above one end */
+  var k = chhatri(1.35, mStoneL, mStoneL, 1.35);
+  k.position.set(-W*0.30, 1.5+H+0.76, 0); g.add(k);
+  /* Nishan Sahib */
+  g.add(cyl(0.12, 16, mPole, W*0.46, 8.0, -D*0.30, 8));
+  (function(){
+    var sh = new THREE.Shape();
+    sh.moveTo(0, 0); sh.lineTo(3.1, -0.90); sh.lineTo(0, -1.80); sh.closePath();
+    var fl = new THREE.Mesh(
+      new THREE.ExtrudeGeometry(sh, { depth:0.07, bevelEnabled:false }), mFlag);
+    fl.position.set(W*0.46, 15.5, -D*0.30);
+    g.add(fl);
+  })();
+  g.userData.top = 1.5 + H + 0.76;
+  return g;
+}
+
+/* the Ramgarhia Bunga — two octagonal minars, still standing today */
+function minar(hgt){
+  var g = new THREE.Group(), y = 0, r = 1.28;
+  for(var i=0;i<7;i++){
+    var seg = hgt/7;
+    g.add(cyl(r, seg, i%2 ? mStoneD : mStoneL, 0, y+seg/2, 0, 8));
+    g.add(cyl(r*1.20, 0.22, mStoneL, 0, y+seg, 0, 8));
+    y += seg + 0.22; r *= 0.945;
+  }
+  /* the balcony ring near the top */
+  g.add(cyl(r*2.05, 0.30, mStoneL, 0, y+0.15, 0, 8));
+  g.add(pinnacles(r*3.1, 0.42, 0.60, mStoneL, y+0.30));
+  y += 0.30;
+  var c = chhatri(0.95, mStoneL, mStoneL, 1.5); c.position.y = y; g.add(c);
+  return g;
+}
+
+/* ═══════════════════ assemble the world ═══════════════════ */
+var world = new THREE.Group();          // everything that reflects
+scene.add(world);
+
+var PARI_LAMPS = [];
+var SAROVAR = 78;                        // water half-width
+var BANK    = 93;                        // outer edge of the parikrama
+
+/* the parikrama — marble walk all the way round */
+(function(){
+  var wdt = BANK - SAROVAR, mid = (BANK + SAROVAR)/2;
+  [[0, mid],[0,-mid]].forEach(function(p){
+    world.add(box(BANK*2, 1.70, wdt, mPaveD, p[0], 0.85, p[1]));
+    world.add(box(BANK*2, 0.22, wdt-0.6, mPave, p[0], 1.79, p[1]));
+  });
+  [[mid,0],[-mid,0]].forEach(function(p){
+    world.add(box(wdt, 1.70, SAROVAR*2, mPaveD, p[0], 0.85, p[1]));
+    world.add(box(wdt-0.6, 0.22, SAROVAR*2, mPave, p[0], 1.79, p[1]));
+  });
+  /* a low balustrade at the water's edge, all four sides */
+  var d = new THREE.Object3D(), pts = [];
+  for(var t=-SAROVAR; t<=SAROVAR; t+=2.65){
+    pts.push([t, SAROVAR+0.4]); pts.push([t,-SAROVAR-0.4]);
+    pts.push([SAROVAR+0.4, t]); pts.push([-SAROVAR-0.4, t]);
+  }
+  var inst = new THREE.InstancedMesh(BOX, mPave, pts.length), n=0;
+  pts.forEach(function(p){ d.position.set(p[0],2.16,p[1]); d.rotation.set(0,0,0);
+    d.scale.set(0.24,0.54,0.24); d.updateMatrix(); inst.setMatrixAt(n++,d.matrix); });
+  inst.count=n; world.add(inst);
+})();
+
+/* an open verandah on the parikrama — the opening frame stands under it,
+   looking out between its piers at the water */
+(function(){
+  var g = new THREE.Group(), W = 34, D = 5.4, H = 5.4, F = 1.92;
+  var front = arcadeWall(W, H, 4, mStoneL, 0.62);
+  front.position.set(0, F, -D/2); front.rotation.y = Math.PI; g.add(front);
+  var back  = arcadeWall(W, H, 4, mStoneD, 0.62);
+  back.position.set(0, F,  D/2); g.add(back);
+  [-W/2, W/2].forEach(function(x){
+    var e = arcadeWall(D, H, 1, mStoneD, 0.62);
+    e.position.set(x, F, 0); e.rotation.y = Math.PI/2; g.add(e);
+  });
+  g.add(box(W+1.8, 0.34, D+1.8, mStoneL, 0, F+H+0.17, 0));
+  g.add(box(W+1.2, 0.46, D+1.2, mStoneD, 0, F+H+0.57, 0));
+  [-1,1].forEach(function(sx){
+    var c = chhatri(1.15, mStoneL, mStoneL);
+    c.position.set(sx*(W/2-1.6), F+H+0.8, 0); g.add(c);
+  });
+  g.position.set(51.2, 0, 97);
+  world.add(g);
+})();
+
+/* lamp standards the whole way round the parikrama */
+(function(){
+  var E = SAROVAR + 3.4;
+  for(var t=-SAROVAR+7; t<=SAROVAR-7; t+=13){
+    if(!(t > 38 && t < 72)) PARI_LAMPS.push([t, E]);   // clear of the opening sightline
+    PARI_LAMPS.push([t, -E]);
+    PARI_LAMPS.push([E, t]); PARI_LAMPS.push([-E, t]);
+  }
+  var d = new THREE.Object3D(), n = 0;
+  var post = new THREE.InstancedMesh(CYL8, mGoldD, PARI_LAMPS.length);
+  var bulb = new THREE.InstancedMesh(new THREE.SphereGeometry(0.21, 9, 7),
+              mBulb, PARI_LAMPS.length);
+  PARI_LAMPS.forEach(function(q){
+    d.rotation.set(0,0,0);
+    d.position.set(q[0], 3.86, q[1]); d.scale.set(0.21, 3.92, 0.21);
+    d.updateMatrix(); post.setMatrixAt(n, d.matrix);
+    d.position.set(q[0], 5.95, q[1]); d.scale.set(1,1,1);
+    d.updateMatrix(); bulb.setMatrixAt(n, d.matrix);
+    n++;
+  });
+  post.count = bulb.count = n; world.add(post); world.add(bulb);
+})();
+
+/* the Harmandir, its causeway, and the gateway */
+var HM = harmandir(); world.add(HM);
+world.add(causeway(SAROVAR - 11.2, 11.2));
+world.add(deori(SAROVAR + 8.5));
+(function(){
+  var at = akalTakht();
+  at.position.set(SAROVAR + 21, 0, 27); at.rotation.y = -Math.PI/2;
+  world.add(at);
+})();
+
+/* the ring of bungas, outside the parikrama */
+var SHAHEEDAN = null;
+(function(){
+  /* Beato's plate shows the bank as a jumble of one-, two- and three-storey
+     buildings of different widths, not a uniform terrace. */
+  var specs = [
+    [ 62, 108, Math.PI, {w:17,d:12,storeys:3,storeyH:3.6,chhatris:1.2,dome:2.4}],
+    [ 40, 106, Math.PI, {w:14,d:11,storeys:2,storeyH:4.2,chhatris:1.0,light:1}],
+    [ 20, 110, Math.PI, {w:20,d:13,storeys:3,storeyH:3.4,dome:3.0,chhatris:1.3,gold:1}],
+    [ -4, 105, Math.PI, {w:13,d:10,storeys:1,storeyH:4.6,dark:1,chhatris:1.0}],
+    [-26, 108, Math.PI, {w:18,d:12,storeys:2,storeyH:4.4,chhatris:1.2}],
+    [-52, 116, Math.PI, {w:16,d:12,storeys:3,storeyH:3.6,chhatris:1.25,dome:2.6,gold:1,lit:1}],
+    [-76, 110, Math.PI, {w:15,d:11,storeys:3,storeyH:3.3,light:1,chhatris:1.0}],
+    [-108, 74, Math.PI/2, {w:19,d:12,storeys:2,storeyH:4.5,dome:2.8,chhatris:1.2}],
+    [-106, 42, Math.PI/2, {w:14,d:11,storeys:1,storeyH:4.4,dark:1}],
+    [-108,  8, Math.PI/2, {w:17,d:12,storeys:3,storeyH:3.5,chhatris:1.1,light:1}],
+    [-106,-30, Math.PI/2, {w:15,d:11,storeys:2,storeyH:4.2,dome:2.3}],
+    [ -70,-108, 0, {w:18,d:12,storeys:3,storeyH:3.6,chhatris:1.2,gold:1,dome:2.6}],
+    [ -34,-106, 0, {w:14,d:11,storeys:1,storeyH:4.8,light:1}],
+    [   2,-109, 0, {w:20,d:13,storeys:3,storeyH:3.4,dome:3.0,chhatris:1.3}],
+    [  38,-106, 0, {w:15,d:11,storeys:2,storeyH:4.3,dark:1,chhatris:1.0}],
+    [ 106,-56,-Math.PI/2, {w:17,d:12,storeys:2,storeyH:4.4,chhatris:1.15}],
+    [ 108,-16,-Math.PI/2, {w:14,d:11,storeys:1,storeyH:4.5,light:1}],
+    [ 106, 46,-Math.PI/2, {w:19,d:12,storeys:3,storeyH:3.5,dome:2.7,chhatris:1.2}]
+  ];
+  specs.forEach(function(sp){
+    var b = bunga(sp[3]); b.position.set(sp[0], 0, sp[1]); b.rotation.y = sp[2];
+    world.add(b);
+    if(sp[3].lit) SHAHEEDAN = b;
+  });
+
+  /* the Nishan Sahib standing beside Shaheedan da Bunga */
+  (function(){
+    var g = new THREE.Group();
+    g.add(cyl(0.13, 17, mPole, 0, 8.5, 0, 8));
+    var sh = new THREE.Shape();
+    sh.moveTo(0, 0); sh.lineTo(3.2, -0.95); sh.lineTo(0, -1.90); sh.closePath();
+    var fl = new THREE.Mesh(
+      new THREE.ExtrudeGeometry(sh, { depth:0.07, bevelEnabled:false }), mFlag);
+    fl.position.set(0, 16.4, 0); g.add(fl);
+    g.position.set(-64.5, 0, 111);
+    world.add(g);
+  })();
+
+  /* the Ramgarhia Bunga and its two watchtowers */
+  var t1 = minar(48); t1.position.set(83, 0, 101); world.add(t1);
+  var t2 = minar(48); t2.position.set(95, 0, 101); world.add(t2);
+  world.add(box(22, 12, 13, mBrick, 89, 6.0, 101));
+
+  /* trees removed at the user's request — the tree() builder is kept above */
+})();
+
+/* ═══════════════════ ground, water, sky ═══════════════════ */
+/* opaque land filling everything outside the tank, so the mirrored
+   world is only ever visible through the water itself */
+(function(){
+  var F = 520, landG = new THREE.Group(); scene.add(landG);
+  landG.add(box(F*2, 0.6, F-SAROVAR, mLand, 0, -0.2,  (F+SAROVAR)/2));
+  landG.add(box(F*2, 0.6, F-SAROVAR, mLand, 0, -0.2, -(F+SAROVAR)/2));
+  landG.add(box(F-SAROVAR, 0.6, SAROVAR*2, mLand,  (F+SAROVAR)/2, -0.2, 0));
+  landG.add(box(F-SAROVAR, 0.6, SAROVAR*2, mLand, -(F+SAROVAR)/2, -0.2, 0));
+})();
+
+if(SHADOWS) world.traverse(function(o){
+  if(o.isMesh && o.material !== mWarm && o.material !== mBulb){
+    o.castShadow = true; o.receiveShadow = true;
+  }
+});
+
+/* the reflection: the whole world, mirrored in the plane of the water */
+var mirror = world.clone(true);
+/* Water absorbs light: a reflected lamp is far dimmer than the lamp itself.
+   Without this the mirrored bulbs and lit interiors sit above 1.0 in HDR and
+   blow out into white discs under the bloom. */
+(function(){
+  function dim(src, e, v){
+    var m = src.clone();
+    if(m.emissiveIntensity !== undefined) m.emissiveIntensity = src.emissiveIntensity * e;
+    if(m.envMapIntensity !== undefined) m.envMapIntensity = (src.envMapIntensity || 1) * 0.35;
+    if(v) m.color.multiplyScalar(v);
+    return m;
+  }
+  var swap = [
+    [mBulb,  dim(mBulb,  1,    0.22)],
+    [mWarm,  dim(mWarm,  0.34, 0)   ],
+    [mGold,  dim(mGold,  0.20, 0.55)],
+    [mGoldD, dim(mGoldD, 0.20, 0.55)]
+  ];
+  mirror.traverse(function(o){
+    if(!o.isMesh) return;
+    o.castShadow = false; o.receiveShadow = false;
+    for(var i=0;i<swap.length;i++){
+      if(o.material === swap[i][0]){ o.material = swap[i][1]; break; }
+    }
+  });
+})();
+mirror.scale.y = -1;
+mirror.traverse(function(o){ if(o.isMesh) o.renderOrder = -1; });
+scene.add(mirror);
+
+/* the water itself, laid over the reflection */
+var WATER_N = null;
+var water = new THREE.Mesh(
+  new THREE.PlaneGeometry(SAROVAR*2, SAROVAR*2, 1, 1),
+  (function(){
+    var wn = TEX_WAVE.clone(); wn.repeat.set(26, 26); wn.needsUpdate = true;
+    WATER_N = wn;
+    return new THREE.MeshStandardMaterial({
+      color:0x03050C, roughness:0.17, metalness:0.50,
+      normalMap:wn, normalScale:new THREE.Vector2(0.38, 0.38),
+      envMapIntensity:0.42,
+      transparent:true, opacity:0.78, side:THREE.DoubleSide });
+  })());
+water.rotation.x = -Math.PI/2; water.position.y = 0.02;
+water.renderOrder = 2;
+scene.add(water);
+
+var RIPPLE = [];
+(function(){
+  function bands(freqA, freqB, alpha, tint){
+    var c = document.createElement("canvas"); c.width = 4; c.height = 256;
+    var x = c.getContext("2d");
+    for(var i=0;i<256;i++){
+      var t = i / 256 * Math.PI * 2;
+      var v = 0.5 + 0.5 * Math.sin(t*freqA) * Math.sin(t*freqB + 1.1);
+      x.fillStyle = "rgba(" + tint + "," + (alpha * Math.pow(v, 1.7)).toFixed(3) + ")";
+      x.fillRect(0, i, 4, 1);
+    }
+    var tex = new THREE.CanvasTexture(c);
+    tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+    tex.colorSpace = THREE.SRGBColorSpace;
+    return tex;
+  }
+  [[9, 3, 0.24, "5,8,16", 30, 0.0000075],
+   [5, 2, 0.14, "8,12,22", 17, -0.0000042]].forEach(function(cfg){
+    var tex = bands(cfg[0], cfg[1], cfg[2], cfg[3]);
+    tex.repeat.set(1, cfg[4]);
+    var m = new THREE.Mesh(
+      new THREE.PlaneGeometry(SAROVAR*2, SAROVAR*2),
+      new THREE.MeshBasicMaterial({ map:tex, transparent:true, depthWrite:false, fog:false }));
+    m.rotation.x = -Math.PI/2;
+    m.position.y = 0.04 + RIPPLE.length * 0.01;
+    m.renderOrder = 3 + RIPPLE.length;
+    scene.add(m);
+    RIPPLE.push({ tex:tex, speed:cfg[5] });
+  });
+})();
+
+/* sky: a gradient from near-black overhead to a warming band in the east */
+(function(){
+  var c = document.createElement("canvas"); c.width = 8; c.height = 512;
+  var x = c.getContext("2d"), g = x.createLinearGradient(0,0,0,512);
+  g.addColorStop(0.00, "#05060F");
+  g.addColorStop(0.42, "#0A0E1F");
+  g.addColorStop(0.66, "#1A1A31");
+  g.addColorStop(0.83, "#2C2740");
+  g.addColorStop(0.93, "#4A3346");
+  g.addColorStop(1.00, "#6E4529");
+  x.fillStyle = g; x.fillRect(0,0,8,512);
+  var t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace;
+  var sky = new THREE.Mesh(new THREE.SphereGeometry(620, 24, 20),
+    new THREE.MeshBasicMaterial({ map:t, side:THREE.BackSide, fog:false }));
+  scene.add(sky);
+})();
+
+/* stars, thinning toward the horizon */
+(function(){
+  var n = 620, pos = new Float32Array(n*3);
+  for(var i=0;i<n;i++){
+    var a = Math.random()*Math.PI*2, e = Math.pow(Math.random(),0.55)*Math.PI/2;
+    pos[i*3]   = Math.cos(a)*Math.cos(e)*560;
+    pos[i*3+1] = Math.sin(e)*560 + 30;
+    pos[i*3+2] = Math.sin(a)*Math.cos(e)*560;
+  }
+  var g = new THREE.BufferGeometry();
+  g.setAttribute("position", new THREE.BufferAttribute(pos,3));
+  scene.add(new THREE.Points(g, new THREE.PointsMaterial({
+    color:0xAEBBDD, size:1.5, sizeAttenuation:false,
+    transparent:true, opacity:0.72, fog:false })));
+})();
+
+/* ═══════════════════ light ═══════════════════
+   Amrit vela. The sky is still night; the gold is the only lit thing. */
+scene.add(new THREE.HemisphereLight(0x3B3E63, 0x100C08, 0.74));
+
+var moon = new THREE.DirectionalLight(0x9CA0C4, 0.46);
+moon.position.set(-186, 168, -112); scene.add(moon);
+moon.castShadow = SHADOWS && !LOWSPEC;
+moon.shadow.mapSize.set(LOWSPEC ? 1024 : 1792, LOWSPEC ? 1024 : 1792);
+moon.shadow.camera.near = 60; moon.shadow.camera.far = 620;
+moon.shadow.camera.left = -145; moon.shadow.camera.right = 145;
+moon.shadow.camera.top  =  145; moon.shadow.camera.bottom = -145;
+moon.shadow.bias = -0.0018; moon.shadow.normalBias = 1.4;
+
+var dawn = new THREE.DirectionalLight(0xFFA057, 0.34);
+dawn.position.set(340, 26, -110); scene.add(dawn);
+
+var fill = new THREE.DirectionalLight(0x8A7E9E, 0.22);
+fill.position.set(260, 96, 300); scene.add(fill);
+
+var glowA = new THREE.PointLight(0xFFC77A, 900, 110, 2); glowA.position.set(0, 12, 0); scene.add(glowA);
+var glowB = new THREE.PointLight(0xFFB262, 340, 70, 2);  glowB.position.set(0, 3.4, 0); scene.add(glowB);
+var glowC = new THREE.PointLight(0xFFB262, 620, 66, 2);  glowC.position.set(-52, 14, 101); scene.add(glowC);
+var glowD = new THREE.PointLight(0xFFC07A, 300, 70, 2);  glowD.position.set(SAROVAR+8.5, 8, 0); scene.add(glowD);
+/* two low lamps picking the far bank out of the haze */
+var bankA = new THREE.PointLight(0xFFB877, 380, 110, 2); bankA.position.set(  8, 10, -96); scene.add(bankA);
+var bankB = new THREE.PointLight(0xFFB877, 300, 100, 2); bankB.position.set(-96, 10,  20); scene.add(bankB);
+
+/* soft bloom, faked with camera-facing sprites */
+(function(){
+  var c = document.createElement("canvas"); c.width = c.height = 128;
+  var x = c.getContext("2d"), g = x.createRadialGradient(64,64,0,64,64,64);
+  g.addColorStop(0.00,"rgba(255,216,148,0.95)");
+  g.addColorStop(0.22,"rgba(255,182,92,0.42)");
+  g.addColorStop(0.55,"rgba(255,150,60,0.12)");
+  g.addColorStop(1.00,"rgba(255,140,50,0)");
+  x.fillStyle = g; x.fillRect(0,0,128,128);
+  var tex = new THREE.CanvasTexture(c);
+  function halo(px,py,pz,s,o){
+    var sp = new THREE.Sprite(new THREE.SpriteMaterial({
+      map:tex, blending:THREE.AdditiveBlending, depthWrite:false,
+      transparent:true, opacity:o, fog:false }));
+    sp.position.set(px,py,pz); sp.scale.set(s,s,1); scene.add(sp); return sp;
+  }
+  halo(0, 15, 0, 30, 0.12);            // the Harmandir itself
+             // and its reflection
+  halo(0, 19.5, 0, 18, 0.08);            // the dome
+  
+  halo(SAROVAR+8.5, 12, 0, 30, 0.12);  // the gateway
+  halo(-52, 12, 107, 18, 0.10);         // Shaheedan da Bunga
+  PARI_LAMPS.forEach(function(q){
+    halo(q[0],  5.95, q[1], 6.0, 0.10);
+
+  });
+  for(var lx = 18; lx < SAROVAR-6; lx += 8.4){
+    halo(lx,  5.3,  3.55, 6, 0.11); halo(lx,  5.3, -3.55, 6, 0.11);
+
+  }
+})();
+
+/* ═══════════════════ bloom ═══════════════════ */
+var BLOOM = (function(){
+  var VS = "varying vec2 vUv; void main(){ vUv = uv; gl_Position = vec4(position.xy,0.0,1.0); }";
+  function target(w, h, depth){
+    return new THREE.WebGLRenderTarget(Math.max(2,w|0), Math.max(2,h|0), {
+      minFilter:THREE.LinearFilter, magFilter:THREE.LinearFilter,
+      type:THREE.HalfFloatType, depthBuffer:!!depth, stencilBuffer:false });
+  }
+  var full = null, halfA = null, halfB = null;
+
+  var mBright = new THREE.ShaderMaterial({
+    uniforms:{ tDiffuse:{value:null}, threshold:{value:1.45}, knee:{value:0.70} },
+    vertexShader:VS,
+    fragmentShader:
+      "uniform sampler2D tDiffuse; uniform float threshold; uniform float knee;" +
+      "varying vec2 vUv;" +
+      "void main(){ vec3 c = texture2D(tDiffuse, vUv).rgb;" +
+      " float l = dot(c, vec3(0.2126,0.7152,0.0722));" +
+      " gl_FragColor = vec4(c * smoothstep(threshold, threshold+knee, l), 1.0); }"
+  });
+  var mBlur = new THREE.ShaderMaterial({
+    uniforms:{ tDiffuse:{value:null}, dir:{value:new THREE.Vector2(1,0)},
+               texel:{value:new THREE.Vector2(0.001,0.001)}, spread:{value:1.6} },
+    vertexShader:VS,
+    fragmentShader:
+      "uniform sampler2D tDiffuse; uniform vec2 dir; uniform vec2 texel; uniform float spread;" +
+      "varying vec2 vUv;" +
+      "void main(){" +
+      " float w[5]; w[0]=0.2270; w[1]=0.1946; w[2]=0.1216; w[3]=0.0540; w[4]=0.0162;" +
+      " vec3 s = texture2D(tDiffuse, vUv).rgb * w[0];" +
+      " for(int i=1;i<5;i++){ vec2 o = dir * texel * float(i) * spread;" +
+      "   s += texture2D(tDiffuse, vUv + o).rgb * w[i];" +
+      "   s += texture2D(tDiffuse, vUv - o).rgb * w[i]; }" +
+      " gl_FragColor = vec4(s, 1.0); }"
+  });
+  /* tone mapping and sRGB encoding happen here, after the bloom is added */
+  var mComp = new THREE.ShaderMaterial({
+    uniforms:{ tScene:{value:null}, tBloom:{value:null}, strength:{value:0.42},
+               exposure:{value:1.06}, vignette:{value:0.30} },
+    vertexShader:VS,
+    fragmentShader: [
+      "uniform sampler2D tScene; uniform sampler2D tBloom;",
+      "uniform float strength; uniform float exposure; uniform float vignette;",
+      "varying vec2 vUv;",
+      "const mat3 ACESIn = mat3(0.59719,0.07600,0.02840,",
+      "                         0.35458,0.90834,0.13383,",
+      "                         0.04823,0.01566,0.83777);",
+      "const mat3 ACESOut = mat3( 1.60475,-0.10208,-0.00327,",
+      "                          -0.53108, 1.10813,-0.07276,",
+      "                          -0.07367,-0.00605, 1.07602);",
+      "vec3 rrt(vec3 v){ return (v*(v+0.0245786)-0.000090537)",
+      "                       / (v*(0.983729*v+0.4329510)+0.238081); }",
+      "vec3 aces(vec3 c){ c *= exposure/0.6; c = ACESIn*c; c = rrt(c); c = ACESOut*c;",
+      "                   return clamp(c,0.0,1.0); }",
+      "vec3 srgb(vec3 c){ return mix(pow(c,vec3(0.4166667))*1.055-0.055, c*12.92,",
+      "                              vec3(lessThanEqual(c, vec3(0.0031308)))); }",
+      "void main(){",
+      "  vec3 c = texture2D(tScene, vUv).rgb + texture2D(tBloom, vUv).rgb * strength;",
+      "  c = aces(c);",
+      "  vec2 d = vUv - 0.5;",
+      "  c *= 1.0 - vignette * dot(d,d) * 1.9;",
+      "  c = srgb(c);",
+      /* a whisper of grain so the flat sky does not band */
+      "  float n = fract(sin(dot(vUv, vec2(12.9898,78.233))) * 43758.5453);",
+      "  c += (n - 0.5) * 0.010;",
+      "  gl_FragColor = vec4(c, 1.0);",
+      "}"
+    ].join("\n")
+  });
+
+  var cam = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+  var sc = new THREE.Scene();
+  var quad = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), mBright);
+  sc.add(quad);
+
+  function resize(){
+    var dpr = renderer.getPixelRatio(),
+        w = Math.floor(innerWidth * dpr), h = Math.floor(innerHeight * dpr);
+    if(full){ full.dispose(); halfA.dispose(); halfB.dispose(); }
+    var d = LOWSPEC ? 3 : 2;
+    full  = target(w, h, true);   // the scene pass needs depth testing
+    halfA = target(w / d, h / d);
+    halfB = target(w / d, h / d);
+    mBlur.uniforms.texel.value.set(d / w, d / h);
+  }
+  resize();
+
+  function pass(material, to){
+    quad.material = material;
+    renderer.setRenderTarget(to);
+    renderer.render(sc, cam);
+  }
+
+  return {
+    resize: resize,
+    render: function(){
+      renderer.setRenderTarget(full);
+      renderer.render(scene, camera);
+
+      mBright.uniforms.tDiffuse.value = full.texture;
+      pass(mBright, halfA);
+
+      for(var i = 0; i < (LOWSPEC ? 1 : 2); i++){
+        mBlur.uniforms.spread.value = 1.4 + i * 2.6;
+        mBlur.uniforms.tDiffuse.value = halfA.texture;
+        mBlur.uniforms.dir.value.set(1, 0);
+        pass(mBlur, halfB);
+        mBlur.uniforms.tDiffuse.value = halfB.texture;
+        mBlur.uniforms.dir.value.set(0, 1);
+        pass(mBlur, halfA);
+      }
+
+      mComp.uniforms.tScene.value = full.texture;
+      mComp.uniforms.tBloom.value = halfA.texture;
+      renderer.setRenderTarget(null);
+      pass(mComp, null);
+    }
+  };
+})();
+
+/* ═══════════════════ the camera's path ═══════════════════ */
+var EYE = [
+  [ 49.5, 3.8, 99.4], // 0  under a bunga verandah, sighting between the piers
+  [ 49,  3.7,  87],   // 1  stepped out to the water's edge
+  [ 24,  3.9,  85],   // 2  walking the parikrama
+  [ -8,  3.9,  85],   // 3  full darshan, the causeway to the right
+  [-34,  4.0,  86],   // 4  west along the parikrama
+  [-52,  5.6,  79],   // 5  at the water's edge, turned round to face the bunga
+  [-52, 38.0, 160]    // 6  risen behind it — the bunga and the water together
+];
+var AIM = [
+  [  0, 11,   0],
+  [  4, 10,   0],
+  [  2, 10,   0],
+  [  6, 10,   0],
+  [-90,  8,  92],
+  [-53,  9, 116],
+  [-46,  5,  62]
+];
+var FOV = [48, 41, 39, 39, 42, 48, 44];
+
+/* turn each waypoint's look-at into a heading, then interpolate the heading.
+   Interpolating the point itself sends the camera skyward whenever the point
+   passes close to the eye. */
+var YAW = [], PIT = [];
+(function(){
+  for(var i=0;i<EYE.length;i++){
+    var dx = AIM[i][0]-EYE[i][0], dy = AIM[i][1]-EYE[i][1], dz = AIM[i][2]-EYE[i][2];
+    var h = Math.sqrt(dx*dx + dz*dz), y = Math.atan2(dx, dz);
+    if(i>0){
+      while(y - YAW[i-1] >  Math.PI) y -= Math.PI*2;
+      while(y - YAW[i-1] < -Math.PI) y += Math.PI*2;
+    }
+    YAW.push(y); PIT.push(Math.atan2(dy, h));
+  }
+})();
+var vEye = new THREE.Vector3(), vAim = new THREE.Vector3();
+function sample1(arr, p){
+  var n = arr.length - 1, f = Math.max(0, Math.min(0.9999, p)) * n;
+  var i = Math.floor(f), t = f - i, e = t*t*(3-2*t); e = t*0.22 + e*0.78;
+  return arr[i] + (arr[i+1]-arr[i]) * e;
+}
+function sample(arr, out, p){
+  var n = arr.length - 1, f = Math.max(0, Math.min(0.9999, p)) * n;
+  var i = Math.floor(f), t = f - i;
+  var e = t*t*(3-2*t); e = t*0.22 + e*0.78;
+  var a = arr[i], b = arr[i+1];
+  out.set(a[0]+(b[0]-a[0])*e, a[1]+(b[1]-a[1])*e, a[2]+(b[2]-a[2])*e);
+  return out;
+}
+
+/* ═══════════════════ chapters ═══════════════════ */
+var CH = [
+  { a:-0.02, b:0.004, c:0.085, d:0.125, side:0 },
+  { a:0.150, b:0.190, c:0.265, d:0.305, side:0 },
+  { a:0.340, b:0.380, c:0.450, d:0.492, side:1 },
+  { a:0.545, b:0.585, c:0.665, d:0.705, side:0 },
+  { a:0.750, b:0.790, c:0.870, d:0.905, side:1 },
+  { a:0.925, b:0.960, c:1.100, d:1.200, side:0 }
+];
+var chEls = [].slice.call(document.querySelectorAll(".ch"));
+var scrimA = document.getElementById("scrimA"),
+    scrimB = document.getElementById("scrimB"),
+    cue    = document.getElementById("cue"),
+    rail   = document.getElementById("rail");
+CH.forEach(function(){ rail.appendChild(document.createElement("i")); });
+var railEls = [].slice.call(rail.children);
+
+function band(p, k){
+  if(p <= k.a || p >= k.d) return 0;
+  if(p < k.b) return (p-k.a)/(k.b-k.a);
+  if(p > k.c) return 1 - (p-k.c)/(k.d-k.c);
+  return 1;
+}
+
+/* ═══════════════════ drive ═══════════════════ */
+var FORCE = (function(){ var m=/[?&]p=([\d.]+)/.exec(location.search); return m?parseFloat(m[1]):null; })();
+var scrollP = 0, shownP = 0, active = -1;
+function readScroll(){
+  if(FORCE!==null){ scrollP = FORCE; shownP = FORCE; return; }
+  var max = document.documentElement.scrollHeight - innerHeight;
+  scrollP = max > 0 ? Math.max(0, Math.min(1, scrollY / max)) : 0;
+}
+readScroll();
+addEventListener("scroll", readScroll, { passive:true });
+
+var pointer = { x:0, y:0 }, ease = { x:0, y:0 };
+addEventListener("pointermove", function(e){
+  pointer.x = (e.clientX / innerWidth  - 0.5) * 2;
+  pointer.y = (e.clientY / innerHeight - 0.5) * 2;
+}, { passive:true });
+
+addEventListener("resize", function(){
+  camera.aspect = innerWidth/innerHeight; camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight);
+  renderer.setPixelRatio(Math.min(devicePixelRatio, innerWidth < 760 ? 1.4 : 1.85));
+  BLOOM.resize();
+  readScroll();
+});
+renderer.setPixelRatio(Math.min(devicePixelRatio, innerWidth < 760 ? 1.4 : 1.85));
+
+var upv = new THREE.Vector3(0,1,0);
+function tick(now){
+  shownP += (scrollP - shownP) * (reduce ? 1 : 0.085);
+  var p = shownP;
+
+  sample(EYE, vEye, p);
+
+  var fv = sample1(FOV, p);
+  if(Math.abs(camera.fov - fv) > 0.01){ camera.fov = fv; camera.updateProjectionMatrix(); }
+
+  var dx = ease.x, dy = ease.y;
+  ease.x += (pointer.x - ease.x) * 0.05;
+  ease.y += (pointer.y - ease.y) * 0.05;
+
+  camera.position.set(vEye.x + dx * 1.4, vEye.y - dy * 1.0, vEye.z + dx * 0.7);
+  var yaw = sample1(YAW, p) + dx * 0.05,
+      pit = sample1(PIT, p) - dy * 0.038,
+      cp  = Math.cos(pit);
+  vAim.set(camera.position.x + Math.sin(yaw)*cp*90,
+           camera.position.y + Math.sin(pit)*90,
+           camera.position.z + Math.cos(yaw)*cp*90);
+  camera.up.copy(upv);
+  camera.lookAt(vAim);
+
+  /* chapters */
+  var best = -1, bestV = 0;
+  for(var i=0;i<CH.length;i++){
+    var v = band(p, CH[i]);
+    var el = chEls[i];
+    el.style.opacity = v.toFixed(3);
+    el.style.transform = "translateY(" + ((1-v)*18).toFixed(2) + "px)";
+    el.style.visibility = v > 0.004 ? "visible" : "hidden";
+    if(v > bestV){ bestV = v; best = i; }
+  }
+  var wantA = 0, wantB = 0;
+  if(best >= 0){ if(CH[best].side === 0) wantA = bestV*0.95; else wantB = bestV*0.95; }
+  scrimA.style.opacity = wantA.toFixed(3);
+  scrimB.style.opacity = wantB.toFixed(3);
+  if(best !== active){
+    active = best;
+    railEls.forEach(function(el,k){ el.classList.toggle("on", k === active); });
+  }
+  cue.style.opacity = p > 0.02 ? 0 : 1;
+
+  /* the gold breathes */
+  if(!reduce){
+    var pulse = 0.88 + Math.sin(now * 0.0011) * 0.12;
+    glowA.intensity = 900 * pulse;
+    glowC.intensity = 620 * (1.76 - pulse);
+    mirror.scale.y = -1 + Math.sin(now * 0.0007) * 0.012;
+    for(var r=0;r<RIPPLE.length;r++) RIPPLE[r].tex.offset.y = now * RIPPLE[r].speed;
+    if(WATER_N){ WATER_N.offset.y = now * 0.0000090; WATER_N.offset.x = now * 0.0000032; }
+  }
+
+  BLOOM.render();
+  requestAnimationFrame(tick);
+}
+requestAnimationFrame(tick);
+
+/* ── the menu ── */
+(function(){
+  var btn = document.getElementById("menuBtn"), panel = document.getElementById("menu");
+  if(!btn || !panel) return;
+  function set(open){
+    panel.hidden = !open;
+    btn.setAttribute("aria-expanded", open ? "true" : "false");
+    btn.querySelector("em").textContent = open ? "Close" : "Menu";
+    document.body.style.overflow = open ? "hidden" : "";
+  }
+  btn.addEventListener("click", function(){ set(panel.hidden); });
+  panel.addEventListener("click", function(e){ if(e.target.closest("a")) set(false); });
+  addEventListener("keydown", function(e){ if(e.key === "Escape" && !panel.hidden) set(false); });
+})();
+})();
+</script>

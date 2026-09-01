@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Noto+Serif+Gurmukhi:wght@700&display=swap">
+  <style>
+    body { margin: 0; }
+    a { color: #C9A24A; } a:hover { color: #E3C377; }
+    .tile { position: relative; overflow: hidden; display: flex; align-items: flex-end; padding: 10px; }
+    .tile span { position: relative; font-size: 10px; font-weight: 600; letter-spacing: 0.13em; text-transform: uppercase; color: rgba(255,255,255,0.9); }
+  </style>
+</helmet>
+
+<div style="width: 1120px; height: 860px; background: #0A0B0F; color: #F1EEE6; font-family: Archivo, system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden;">
+
+  <div style="display: flex; justify-content: space-between; align-items: center; padding: 14px 34px; border-bottom: 1px solid rgba(201,162,74,0.2); flex: 0 0 auto;">
+    <span style="font-size: 11px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: #C9A24A;">Direction F &middot; Evidence</span>
+    <span style="font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(241,238,230,0.44);">Nine years of it, all at once</span>
+  </div>
+
+  <div style="flex: 1 1 auto; padding: 26px 34px 0; display: flex; flex-direction: column; gap: 18px; min-height: 0;">
+
+    <div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 30px;">
+      <div>
+        <p style="margin: 0; font-family: 'Noto Serif Gurmukhi', serif; font-weight: 700; font-size: 26px; color: #F6F3EA;">ਸ਼ਹੀਦੀ ਬੁੰਗਾ</p>
+        <p style="margin: 8px 0 0; font-size: 46px; font-weight: 800; letter-spacing: -0.03em; line-height: 1;">We just kept teaching.</p>
+      </div>
+      <div style="display: flex; gap: 26px; padding-bottom: 6px;">
+        <div><p style="margin: 0; font-size: 30px; font-weight: 700; color: #C9A24A; line-height: 1;">441</p><p style="margin: 4px 0 0; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(241,238,230,0.5);">recordings</p></div>
+        <div><p style="margin: 0; font-size: 30px; font-weight: 700; color: #C9A24A; line-height: 1;">25</p><p style="margin: 4px 0 0; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(241,238,230,0.5);">camps</p></div>
+        <div><p style="margin: 0; font-size: 30px; font-weight: 700; color: #C9A24A; line-height: 1;">7</p><p style="margin: 4px 0 0; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(241,238,230,0.5);">subjects</p></div>
+        <div><p style="margin: 0; font-size: 30px; font-weight: 700; color: #C9A24A; line-height: 1;">2017</p><p style="margin: 4px 0 0; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(241,238,230,0.5);">since</p></div>
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); grid-auto-rows: 112px; gap: 8px;">
+      <div class="tile" style="grid-column: span 2; grid-row: span 2; background: linear-gradient(150deg, #2E3A46, #14181E);"><span>Sikhi Camp</span></div>
+      <div class="tile" style="grid-column: span 2; background: linear-gradient(150deg, #4A3B22, #1C1710);"><span>Gurpurab Samagam</span></div>
+      <div class="tile" style="background: linear-gradient(150deg, #33404A, #171B21);"><span>Jori</span></div>
+      <div class="tile" style="background: linear-gradient(150deg, #3E2E2A, #1A1413);"><span>Gatka</span></div>
+      <div class="tile" style="grid-column: span 2; background: linear-gradient(150deg, #26333F, #12161B);"><span>Monday Night Talk</span></div>
+      <div class="tile" style="background: linear-gradient(150deg, #46372A, #1B1611);"><span>Santhiya</span></div>
+      <div class="tile" style="background: linear-gradient(150deg, #2B3A34, #131916);"><span>Katha</span></div>
+      <div class="tile" style="grid-column: span 2; background: linear-gradient(150deg, #3A2F44, #16131A);"><span>Itihaas Jamat</span></div>
+      <div class="tile" style="grid-column: span 2; background: linear-gradient(150deg, #42352A, #1A1510);"><span>Tanti Saaj Kirtan</span></div>
+      <div class="tile" style="background: linear-gradient(150deg, #2F3B48, #14181D);"><span>Saptah Path</span></div>
+      <div class="tile" style="background: linear-gradient(150deg, #3D3327, #191510);"><span>Dilruba</span></div>
+    </div>
+
+    <div style="display: flex; gap: 10px; align-items: center;">
+      <span style="font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: #0A0A10; background: #C9A24A; padding: 12px 22px;">Find a class</span>
+      <span style="font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(241,238,230,0.5);">Filter by subject, place, year</span>
+    </div>
+
+    <p style="margin: 0; font-size: 11px; letter-spacing: 0.1em; color: rgba(201,162,74,0.7);">[ tiles are placeholders &mdash; each becomes a real photograph from that camp, class or samagam ]</p>
+  </div>
+
+  <div style="flex: 0 0 auto; border-top: 1px solid rgba(201,162,74,0.2); padding: 18px 34px 22px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 34px;">
+    <div>
+      <p style="margin: 0 0 6px; font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: #C9A24A;">Why</p>
+      <p style="margin: 0; font-size: 15px; line-height: 1.48; color: rgba(241,238,230,0.8);">You have nine years of work and almost none of it is on the website. Volume is the argument: nobody doubts a charity that can show four hundred recordings and twenty-five camps. It is also the format your Instagram audience already reads fluently.</p>
+    </div>
+    <div>
+      <p style="margin: 0 0 6px; font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: #B4653F;">The trade-off</p>
+      <p style="margin: 0; font-size: 15px; line-height: 1.48; color: rgba(241,238,230,0.8);">It lives or dies on photography, and every photograph of a child needs consent on file. Without real images it is a grid of grey boxes.</p>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+</body>
+</html>

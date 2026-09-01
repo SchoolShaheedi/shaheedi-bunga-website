@@ -1,0 +1,1025 @@
+<title>Shaheedi Bunga Architecture</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Spectral:ital,wght@0,300;0,400;0,600;1,400&family=Jost:wght@400;500;600&family=Noto+Serif+Gurmukhi:wght@400;600&display=swap">
+
+<style>
+:root{
+  --ground:#F5F0E6;
+  --panel:#FFFDF7;
+  --panel-2:#EFE8D8;
+  --ink:#171B31;
+  --ink-2:#3D4360;
+  --muted:#6F748C;
+  --rule:#DCD3BE;
+  --rule-strong:#C3B79A;
+  --navy:#20284F;
+  --gold:#C6A24A;
+  --gold-deep:#9A7A2C;
+  --royal:#2C4A9A;
+  --live:#2F6B4F;
+  --semi:#8A6B2A;
+  --dormant:#9E5B3A;
+  --never:#8B8FA3;
+  --partner:#2C4A9A;
+  --chip-ink:#FFFFFF;
+  --shadow:0 1px 2px rgba(23,27,49,.05), 0 8px 24px -12px rgba(23,27,49,.16);
+  --maxw:1180px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#12162B;
+    --panel:#1A1F3A;
+    --panel-2:#222848;
+    --ink:#EDE6D4;
+    --ink-2:#C4BFAF;
+    --muted:#8E93AC;
+    --rule:#2E3557;
+    --rule-strong:#414970;
+    --navy:#9FB0E8;
+    --gold:#D9B65E;
+    --gold-deep:#E3C87F;
+    --royal:#7B9AE0;
+    --live:#5FA981;
+    --semi:#C9A44F;
+    --dormant:#D08A63;
+    --never:#7C819A;
+    --partner:#7B9AE0;
+    --chip-ink:#101426;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.55);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#12162B;
+  --panel:#1A1F3A;
+  --panel-2:#222848;
+  --ink:#EDE6D4;
+  --ink-2:#C4BFAF;
+  --muted:#8E93AC;
+  --rule:#2E3557;
+  --rule-strong:#414970;
+  --navy:#9FB0E8;
+  --gold:#D9B65E;
+  --gold-deep:#E3C87F;
+  --royal:#7B9AE0;
+  --live:#5FA981;
+  --semi:#C9A44F;
+  --dormant:#D08A63;
+  --never:#7C819A;
+  --partner:#7B9AE0;
+  --chip-ink:#101426;
+  --shadow:0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.55);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--ground);
+  color:var(--ink);
+  font-family:"Spectral","Noto Serif Gurmukhi",Georgia,serif;
+  font-weight:400;
+  font-size:16px;
+  line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+}
+:lang(pa),.gur{font-family:"Noto Serif Gurmukhi","Spectral",serif}
+.card h3.gur,.reg-row strong.gur,h1.gur,h2.gur,h3.gur{font-family:"Noto Serif Gurmukhi","Cormorant Garamond",serif;line-height:1.45}
+
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px}
+
+/* ---------- masthead ---------- */
+.mast{border-bottom:1px solid var(--rule);padding:56px 0 0}
+.mast .wrap{display:flex;flex-direction:column;gap:20px}
+.eyebrow{
+  font-family:"Jost",system-ui,sans-serif;
+  font-size:11.5px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--gold-deep);
+}
+h1{
+  font-family:"Cormorant Garamond",Georgia,serif;
+  font-weight:600;font-size:clamp(2.6rem,6vw,4.1rem);line-height:1.02;
+  margin:0;letter-spacing:-.015em;text-wrap:balance;color:var(--ink);
+}
+.standfirst{
+  font-size:1.14rem;line-height:1.6;color:var(--ink-2);max-width:62ch;margin:0;
+  font-weight:300;
+}
+.mast-meta{
+  display:flex;flex-wrap:wrap;gap:10px 28px;padding:4px 0 30px;
+  font-family:"Jost",system-ui,sans-serif;font-size:12.5px;color:var(--muted);
+  letter-spacing:.02em;
+}
+.mast-meta b{color:var(--ink-2);font-weight:500}
+
+/* ---------- the ring ---------- */
+.ring{padding:38px 0 34px;border-bottom:1px solid var(--rule)}
+.ring-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:14px;margin-bottom:8px}
+.ring-title{font-family:"Cormorant Garamond",serif;font-size:1.5rem;font-weight:600;margin:0}
+.ring-note{font-size:.9rem;color:var(--muted);max-width:52ch;margin:0 0 20px}
+.ring-scroll{overflow-x:auto;padding-bottom:10px}
+.ring-svg{display:block;min-width:920px;width:100%;height:auto}
+.arch-live{fill:var(--live)}
+.arch-semi{fill:var(--semi)}
+.arch-dormant{fill:var(--dormant)}
+.arch-never{fill:var(--never)}
+.ring-base{stroke:var(--rule-strong);stroke-width:1}
+.ring-label{
+  font-family:"Jost",system-ui,sans-serif;font-size:8.5px;font-weight:500;
+  letter-spacing:.1em;text-transform:uppercase;fill:var(--muted);
+}
+
+.legend{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:16px;
+  font-family:"Jost",system-ui,sans-serif;font-size:12px;color:var(--ink-2)}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.dot{width:9px;height:9px;border-radius:50%;display:inline-block;flex:none}
+.dot.live{background:var(--live)} .dot.semi{background:var(--semi)}
+.dot.dormant{background:var(--dormant)} .dot.never{background:var(--never)}
+
+/* ---------- tally ---------- */
+.tally{display:grid;grid-template-columns:repeat(auto-fit,minmax(132px,1fr));gap:1px;
+  background:var(--rule);border:1px solid var(--rule);margin:34px 0 0}
+.tally div{background:var(--ground);padding:16px 18px}
+.tally .n{font-family:"Jost",system-ui,sans-serif;font-size:2rem;font-weight:400;
+  line-height:1;font-variant-numeric:tabular-nums;color:var(--ink)}
+.tally .k{font-family:"Jost",system-ui,sans-serif;font-size:11px;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--muted);margin-top:8px}
+
+/* ---------- layout ---------- */
+.body-grid{display:grid;grid-template-columns:186px 1fr;gap:56px;padding:52px 0 0;align-items:start}
+.rail{position:sticky;top:26px;font-family:"Jost",system-ui,sans-serif;font-size:12.5px}
+.rail ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+.rail a{
+  display:flex;justify-content:space-between;gap:10px;
+  color:var(--muted);text-decoration:none;padding:5px 0;
+  border-bottom:1px solid transparent;transition:color .15s,border-color .15s;
+}
+.rail a:hover,.rail a:focus-visible{color:var(--ink);border-bottom-color:var(--gold)}
+.rail a em{font-style:normal;font-variant-numeric:tabular-nums;color:var(--rule-strong)}
+.rail-h{font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--gold-deep);
+  margin:0 0 12px;padding-bottom:8px;border-bottom:1px solid var(--rule)}
+
+/* ---------- divisions ---------- */
+.division{padding:0 0 58px;scroll-margin-top:22px}
+.div-head{display:flex;gap:14px;align-items:flex-start;padding-bottom:14px;
+  border-bottom:2px solid var(--navy);margin-bottom:22px}
+.div-mark{flex:none;margin-top:5px}
+.div-mark svg{display:block;fill:var(--gold)}
+.div-head h2{
+  font-family:"Cormorant Garamond",serif;font-weight:600;
+  font-size:clamp(1.7rem,3.4vw,2.2rem);line-height:1.1;margin:0;
+  letter-spacing:-.01em;flex:1;
+}
+.div-head .count{
+  font-family:"Jost",system-ui,sans-serif;font-size:11px;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--muted);white-space:nowrap;margin-top:11px;
+  font-variant-numeric:tabular-nums;
+}
+.div-intro{color:var(--ink-2);max-width:66ch;margin:0 0 26px;font-size:1.02rem}
+.div-intro em{color:var(--ink);font-style:italic}
+
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:16px}
+.card{
+  background:var(--panel);border:1px solid var(--rule);
+  padding:18px 20px 17px;display:flex;flex-direction:column;gap:9px;
+  box-shadow:var(--shadow);
+}
+.card-top{display:flex;align-items:flex-start;gap:10px;justify-content:space-between}
+.card h3{
+  font-family:"Cormorant Garamond",serif;font-size:1.28rem;font-weight:600;
+  line-height:1.2;margin:0;letter-spacing:-.005em;
+}
+.chip{
+  font-family:"Jost",system-ui,sans-serif;font-size:9.5px;font-weight:600;
+  letter-spacing:.13em;text-transform:uppercase;white-space:nowrap;
+  padding:3px 8px;border-radius:2px;flex:none;margin-top:3px;color:var(--chip-ink);
+}
+.chip.live{background:var(--live)} .chip.semi{background:var(--semi)}
+.chip.dormant{background:var(--dormant)} .chip.never{background:var(--never)}
+.chip.partner{background:var(--partner)}
+.alt{font-family:"Jost",system-ui,sans-serif;font-size:11.5px;color:var(--muted);
+  letter-spacing:.02em;margin:-4px 0 0}
+.card p{margin:0;font-size:.94rem;line-height:1.56;color:var(--ink-2)}
+.ev{
+  margin:2px 0 0;padding-top:10px;border-top:1px solid var(--rule);
+  font-family:"Jost",system-ui,sans-serif;font-size:11.5px;line-height:1.5;
+  color:var(--muted);font-variant-numeric:tabular-nums;
+}
+.ev b{color:var(--ink-2);font-weight:500}
+.slug{
+  font-family:"Jost",system-ui,sans-serif;font-size:11.5px;color:var(--royal);
+  letter-spacing:.01em;
+}
+
+/* ---------- flat registers ---------- */
+.reg{border:1px solid var(--rule);background:var(--panel);box-shadow:var(--shadow)}
+.reg-row{display:grid;grid-template-columns:1fr auto;gap:14px 20px;
+  padding:14px 20px;border-bottom:1px solid var(--rule);align-items:start}
+.reg-row:last-child{border-bottom:0}
+.reg-row strong{font-family:"Cormorant Garamond",serif;font-size:1.1rem;font-weight:600;
+  display:block;margin-bottom:3px}
+.reg-row p{margin:0;font-size:.9rem;color:var(--ink-2);line-height:1.5}
+
+/* ---------- prose blocks ---------- */
+.prose{max-width:70ch}
+.prose h3{
+  font-family:"Cormorant Garamond",serif;font-size:1.42rem;font-weight:600;
+  margin:36px 0 10px;letter-spacing:-.005em;
+}
+.prose h3:first-child{margin-top:0}
+.prose p{margin:0 0 14px;color:var(--ink-2)}
+.prose ul,.prose ol{margin:0 0 16px;padding-left:20px;color:var(--ink-2)}
+.prose li{margin-bottom:7px}
+.prose strong{color:var(--ink);font-weight:600}
+.prose code{
+  font-family:"Jost",ui-monospace,monospace;font-size:.9em;
+  background:var(--panel-2);padding:2px 6px;color:var(--ink);letter-spacing:.01em;
+}
+.rule-box{
+  border-left:3px solid var(--gold);background:var(--panel);
+  padding:16px 20px;margin:0 0 20px;
+}
+.rule-box p{margin:0;color:var(--ink-2)}
+.rule-box p+p{margin-top:10px}
+
+.flag{
+  border:1px solid var(--rule);border-left:3px solid var(--dormant);
+  background:var(--panel);padding:16px 20px;margin-bottom:14px;
+}
+.flag h4{font-family:"Jost",system-ui,sans-serif;font-size:12px;letter-spacing:.11em;
+  text-transform:uppercase;margin:0 0 8px;color:var(--dormant)}
+.flag p{margin:0;font-size:.95rem;color:var(--ink-2)}
+.flag p+p{margin-top:9px}
+
+.seq{list-style:none;padding:0;margin:0;counter-reset:s}
+.seq li{
+  counter-increment:s;position:relative;padding-left:44px;margin-bottom:20px;
+  color:var(--ink-2);
+}
+.seq li::before{
+  content:counter(s);position:absolute;left:0;top:0;
+  width:28px;height:28px;display:grid;place-items:center;
+  font-family:"Jost",system-ui,sans-serif;font-size:12px;font-weight:500;
+  color:var(--gold-deep);border:1px solid var(--rule-strong);border-radius:50%;
+  font-variant-numeric:tabular-nums;
+}
+.seq li strong{display:block;font-family:"Cormorant Garamond",serif;
+  font-size:1.15rem;font-weight:600;color:var(--ink);margin-bottom:3px}
+
+footer{border-top:1px solid var(--rule);margin-top:20px;padding:30px 0 60px;
+  font-family:"Jost",system-ui,sans-serif;font-size:12px;color:var(--muted)}
+footer p{margin:0 0 6px;max-width:70ch}
+
+a{color:var(--royal)}
+a:focus-visible,.rail a:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+
+@media (max-width:900px){
+  .body-grid{grid-template-columns:1fr;gap:0}
+  .rail{display:none}
+  .wrap{padding:0 20px}
+  .mast{padding-top:38px}
+}
+@media (prefers-reduced-motion: reduce){
+  *{transition:none !important;animation:none !important}
+}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="arch" viewBox="0 0 20 30">
+    <path d="M2,30 L2,13 C2,9.4 3.9,7.2 6,8.2 C7,4.4 8.4,2 10,2 C11.6,2 13,4.4 14,8.2 C16.1,7.2 18,9.4 18,13 L18,30 Z"/>
+  </symbol>
+</svg>
+
+<header class="mast">
+  <div class="wrap">
+    <p class="eyebrow">Brand architecture · drawn from eight years of evidence</p>
+    <h1>Shaheedi Bunga Architecture</h1>
+    <p class="standfirst">Every division and sub-division the charity actually runs — nine houses, fifty-three units — traced from 4,053 Instagram posts, the workspace, and the class timetable. Each one is marked live, fading, dormant or never launched.</p>
+    <div class="mast-meta">
+      <span>Compiled <b>26 August 2026</b></span>
+      <span>Sources: <b>Instagram archive 2018–2026</b>, workspace, Charity Commission</span>
+      <span>Charity <b>1185103</b></span>
+    </div>
+  </div>
+</header>
+
+<section class="ring">
+  <div class="wrap">
+    <div class="ring-head">
+      <h2 class="ring-title">The ring, unrolled</h2>
+    </div>
+    <p class="ring-note">Seventy bungas once stood around the sarovar at Amritsar. Every unit below is one of them — a separate opening on the same ring. Colour is status, not importance.</p>
+    <div class="ring-scroll">
+      <svg class="ring-svg" viewBox="0 0 1160 92" role="img" aria-label="Forty-nine arches representing every sub-division, coloured by whether it is live, fading, dormant or never launched.">
+        <g id="arches"></g>
+        <line class="ring-base" x1="0" y1="76.5" x2="1160" y2="76.5"></line>
+        <g id="ringlabels"></g>
+      </svg>
+    </div>
+    <div class="legend">
+      <span><i class="dot live"></i> Live — running now</span>
+      <span><i class="dot semi"></i> Fading — nothing posted in 12+ months</span>
+      <span><i class="dot dormant"></i> Dormant — ran, then stopped</span>
+      <span><i class="dot never"></i> Never launched</span>
+    </div>
+    <div class="tally">
+      <div><div class="n">9</div><div class="k">Houses</div></div>
+      <div><div class="n">53</div><div class="k">Units</div></div>
+      <div><div class="n">40</div><div class="k">Live</div></div>
+      <div><div class="n">7</div><div class="k">Fading</div></div>
+      <div><div class="n">3</div><div class="k">Dormant</div></div>
+      <div><div class="n">3</div><div class="k">Never launched</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap body-grid">
+  <nav class="rail" aria-label="Divisions">
+    <p class="rail-h">Houses</p>
+    <ol>
+      <li><a href="#vidyala">Vidyala <em>7</em></a></li>
+      <li><a href="#akhara">Akhara <em>6</em></a></li>
+      <li><a href="#samagam">Samagam <em>4</em></a></li>
+      <li><a href="#events">Events <em>6</em></a></li>
+      <li><a href="#camps">Camps <em>4</em></a></li>
+      <li><a href="#broadcast">Broadcast <em>5</em></a></li>
+      <li><a href="#prakashan">Prakashan <em>5</em></a></li>
+      <li><a href="#digital">Digital <em>10</em></a></li>
+      <li><a href="#seva">Seva <em>2</em></a></li>
+      <li><a href="#dormant">Dormant register</a></li>
+      <li><a href="#partners">Partners</a></li>
+      <li><a href="#publishing">Publishing model</a></li>
+      <li><a href="#governance">Governance flags</a></li>
+    </ol>
+  </nav>
+
+  <main>
+
+  <!-- ============ VIDYALA ============ -->
+  <section class="division" id="vidyala">
+    <div class="div-head">
+      <span class="div-mark"><svg width="20" height="30"><use href="#arch"></use></svg></span>
+      <h2>Vidyala</h2>
+      <span class="count">7 units · the sitting half</span>
+    </div>
+    <p class="div-intro">Everything taught seated, from a pothi or an instrument. This is the charity's centre of gravity — <em>Itihaas alone accounts for 240 posts</em>, more than any other activity in eight years.</p>
+    <div class="cards">
+
+      <article class="card">
+        <div class="card-top"><h3>Santhiya Vidyala</h3><span class="chip live">Live</span></div>
+        <p class="alt">Also posted as: Santiya · Santhia · Larivaar Santhiya</p>
+        <p>Correct pronunciation and reading of Gurbani. Runs across all three Leicester gurdwaras, more hours than anything else the charity does.</p>
+        <p class="ev"><b>92 posts, Jul 2019 → May 2026.</b> Daily 7–9am and evenings at Guru Tegh Bahadur; evenings Mon–Fri at Dashmesh Darbar; Sundays 12–2pm at Holy Bones. One cohort completed Laarivaar Santhiya after five years (Jan 2022).</p>
+        <p class="slug">/vidyala/santhiya</p>
+      </article>
+
+      <article class="card">
+        <div class="card-top"><h3>Kirtan Vidyala</h3><span class="chip live">Live</span></div>
+        <p class="alt">Tanti Saaj · the string tradition</p>
+        <p>Harmonium, dilruba, sarangi, taus, rabab and saranda. Students perform weekly Kirtan Hazari, which is how the teaching gets tested in public.</p>
+        <p class="ev"><b>146 posts, Feb 2018 → May 2026</b> — the oldest activity in the archive. Ustad Harjinder Singh Ji, Saturdays 12–2pm. Kirtan Hazari Fridays 7pm at Dashmesh Darbar.</p>
+        <p class="slug">/vidyala/kirtan</p>
+      </article>
+
+      <article class="card">
+        <div class="card-top"><h3>Jori &amp; Tabla Vidyala</h3><span class="chip live">Live</span></div>
+        <p>Percussion, taught from beginner upward. The only discipline with its own scanned granth in the workspace reference library.</p>
+        <p class="ev"><b>35 posts, Mar 2020 → Mar 2026.</b> Beginners Sundays 1–2pm at Holy Bones; classes at Dashmesh Darbar. Ustad Sukhdev Singh Ji Kavasari. Ustad Surjeet Singh Ji Cheema interviewed Dec 2024.</p>
+        <p class="slug">/vidyala/jori-tabla</p>
+      </article>
+
+      <article class="card">
+        <div class="card-top"><h3>Katha Vidyala</h3><span class="chip live">Live</span></div>
+        <p>Exposition of Gurbani and the Granths. Currently working through Sri Gur Partap Sooraj Granth.</p>
+        <p class="ev"><b>37 posts, Jan 2019 → Jun 2025.</b> Sri Gur Partap Katha class Fridays 8–10pm. Giani Baljinder Singh Ji. Also delivered at Smethwick and West Bromwich.</p>
+        <p class="slug">/vidyala/katha</p>
+      </article>
+
+      <article class="card">
+        <div class="card-top"><h3>Itihaas Vidyala</h3><span class="chip live">Live</span></div>
+        <p class="alt">ਇਤਿਹਾਸ ਜਮਾਤ · Sikh History Class</p>
+        <p>Sikh history from Sri Nanak Parkash. Children present homework projects — map models, built artefacts — which is unusual enough to be worth showing on the site.</p>
+        <p class="ev"><b>240 posts, Feb 2019 → May 2026 — the largest category in the archive.</b> Wednesdays at Dashmesh Darbar. 22 slide decks already built in the workspace covering all ten Gurus, the Bhagats, 1984 and the Anandpur siege.</p>
+        <p class="slug">/vidyala/itihaas</p>
+      </article>
+
+      <article class="card">
+        <div class="card-top"><h3 class="gur">ਗੁਰਬਾਣੀ ਕੰਠ</h3><span class="chip live">Live</span></div>
+        <p class="alt">Gurbani Kanth — memorisation, children</p>
+        <p>Children learn Gurbani by heart, starting with Kirtan Sohila. Homework is set. The newest thing on this list and the only one aimed squarely at under-tens.</p>
+        <p class="ev"><b>Started Nov 2024.</b> Wednesdays.</p>
+        <p class="slug">/vidyala/gurbani-kanth</p>
+      </article>
+
+      <article class="card">
+        <div class="card-top"><h3>Vidyala Jalandhar</h3><span class="chip live">Live</span></div>
+        <p class="alt">Pind Khera, near Jalandhar, Panjab</p>
+        <p>A residential gurmat school in Panjab. Under-16s live on site; school fees, clothing and food are provided by sangat. Around ten students learning tabla, kirtan and santhiya.</p>
+        <p class="ev"><b>Running since Jul 2020.</b> Gaini Jaswant Singh Ji teaches and runs it. Roll of ten confirmed Nov 2025. <b>See governance flag 1 — this needs a Charity Commission answer before it is published.</b></p>
+        <p class="slug">/vidyala/jalandhar</p>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ============ AKHARA ============ -->
+  <section class="division" id="akhara">
+    <div class="div-head">
+      <span class="div-mark"><svg width="20" height="30"><use href="#arch"></use></svg></span>
+      <h2>Akhara</h2>
+      <span class="count">6 units · the standing half</span>
+    </div>
+    <p class="div-intro">The training ground. Historically a bunga held both halves, which is why these belong under the same roof as the Vidyala rather than beside it as a rival brand.</p>
+    <div class="cards">
+
+      <article class="card">
+        <div class="card-top"><h3>Gatka Akhara</h3><span class="chip live">Live</span></div>
+        <p>Weekly beginner and advanced classes, plus the demo work that puts the charity in front of non-Sikh audiences at Nagar Kirtan and city-centre events.</p>
+        <p class="ev"><b>85 posts, Mar 2019 → Feb 2026.</b> Saturdays 6–7:30pm at Guru Tegh Bahadur, running continuously since 2022. Gatka class highlights reached 9,761 accounts in Jun 2025 — the fourth-biggest post in the archive.</p>
+        <p class="slug">/akhara/gatka</p>
+      </article>
+
+      <article class="card">
+        <div class="card-top"><h3>Shastar Vidya Akhara</h3><span class="chip live">Live</span></div>
+        <p class="alt">Shaster Vidiya · the weapons tradition proper</p>
+        <p>Distinct from Gatka as sport — the traditional science of arms. Taught as workshops rather than a weekly slot, including for other organisations.</p>
+        <p class="ev"><b>Chakari posted Jun 2019.</b> Hola Mohalla Shastar Vidya workshop at Sikhi School Birmingham (Somerset Gurdwara) Mar 2024. Shastar workshops run inside Sikhi Camps.</p>
+        <p class="slug">/akhara/shastar-vidya</p>
+      </article>
+
+      <article class="card">
+        <div class="card-top"><h3>Archery Academy</h3><span class="chip live">Live</span></div>
+        <p>Traditional and tag archery. Has its own national tournament with published age classes and distances, which makes it the most formally structured discipline in the Akhara.</p>
+        <p class="ev"><b>32 posts, Mar 2019 → Apr 2026.</b> Sundays 6pm at Guru Tegh Bahadur since Apr 2022. National tournament Feb 2025: ages 10–15 at 10 metres, 16+ at 15 metres. Registration by WhatsApp on 07481 846839.</p>
+        <p class="slug">/akhara/archery</p>
+      </article>
+
+      <article class="card">
+        <div class="card-top"><h3>Sikh Equestrianism</h3><span class="chip semi">Fading</span></div>
+        <p class="alt">Horse riding</p>
+        <p>Riding taught within a Gurbani frame — posts pair the practice with tuks on the horse as the body. The most distinctive content the charity has ever made, and it has gone quiet.</p>
+        <p class="ev"><b>19 posts, Mar 2019 → Nov 2025</b>, but concentrated in 2023. Classes organised by Dilbag Singh Ji, May 2023. Featured at Hola Mohalla 2025.</p>
+        <p class="slug">/akhara/equestrian</p>
+      </article>
+
+      <article class="card">
+        <div class="card-top"><h3>Kesh Sambal Self-Defence</h3><span class="chip semi">Fading</span></div>
+        <p>Self-defence seminars framed around protecting kesh. Ran as one-off Saturday seminars with a partner vidyala rather than a standing class.</p>
+        <p class="ev"><b>Seminars May 2024</b>, Saturdays 6–8pm at Guru Tegh Bahadur, with @bbjgurmatvidyala. Self-defence also runs inside the weekly Gatka class and the kids camps.</p>
+        <p class="slug">/akhara/kesh-sambal</p>
+      </article>
+
+      <article class="card">
+        <div class="card-top"><h3>Throwing &amp; Marksmanship</h3><span class="chip live">Live</span></div>
+        <p>Axe throwing, knife throwing, chakar and air rifle. Not taught as a weekly class — these appear as tournament disciplines at Hola Mohalla and in joint sessions with partner akhare.</p>
+        <p class="ev"><b>12 posts, Mar 2019 → Apr 2025.</b> All six disciplines listed in the Hola Mohalla 2025 programme. Air rifle shooting at Mahakaal Akhara, Sep 2023.</p>
+        <p class="slug">/akhara/shastar-sports</p>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ============ SAMAGAM ============ -->
+  <section class="division" id="samagam">
+    <div class="div-head">
+      <span class="div-mark"><svg width="20" height="30"><use href="#arch"></use></svg></span>
+      <h2>Samagam</h2>
+      <span class="count">4 units · gatherings</span>
+    </div>
+    <p class="div-intro">Worship gatherings the charity convenes rather than classes it teaches. These are the events that draw sangat from outside Leicester, and the ones with the longest-standing partner relationships.</p>
+    <div class="cards">
+
+      <article class="card">
+        <div class="card-top"><h3>25 Singh Laarivaar Akhand Paath Samagam</h3><span class="chip live">Live</span></div>
+        <p>Twenty-five Singhs reading in relay. Held for the Shaheedi Purab of Sri Guru Tegh Bahadur Ji and the barsi of Sant Giani Mohan Singh Ji Khalsa Bhindranwale. Includes Amrit Sanchar.</p>
+        <p class="ev"><b>Aug 2021 (Smethwick), Dec 2021, Dec 2022 (Gur Panth Parkash), Dec 2025.</b> Three-day form: Arambh Friday 10am, Amrit Sanchar Saturday 10am, Dasam Granth Sehaj Paath Bhog Saturday 6pm followed by Raag Darbar, Bhog Sunday 9am. Full 2025 video on YouTube, filmed by @majormedia.uk.</p>
+        <p class="slug">/samagam/25-singh</p>
+      </article>
+
+      <article class="card">
+        <div class="card-top"><h3>Path Bodh Samagam</h3><span class="chip live">Live</span></div>
+        <p>Sri Dasam Guru Granth Sahib Ji read with explanation, broadcast live daily. Sits between a samagam and a broadcast series.</p>
+        <p class="ev"><b>Sep 2024, streamed live every day.</b> Earlier Path Bodh Samagam of Sri Guru Granth Sahib Ji ran alongside Gurbani Vidhya Camp, Aug 2022.</p>
+        <p class="slug">/samagam/path-bodh</p>
+      </article>
+
+      <article class="card">
+        <div class="card-top"><h3>Raag Darbar</h3><span class="chip dormant">Dormant</span></div>
+        <p class="alt">Monthly Raag Keertan · Shaheedi Bunga Jatha</p>
+        <p>The charity's own kirtan jatha performing puratan bandishen in raag. Ran monthly at Smethwick with named kirtanis and three streaming partners.</p>
+        <p class="ev"><b>2021 only.</b> Guru Nanak Gurdwara Smethwick, monthly, 1–2pm. Streamed on KTV, DGN Sounds and GNG Smethwick. Raag Dhanasri, Taal Vilambit Chaptaal recorded Sep 2021. Nothing since — but Raag Darbar still runs <em>inside</em> the 25 Singh samagam.</p>
+        <p class="slug">/samagam/raag-darbar</p>
+      </article>
+
+      <article class="card">
+        <div class="card-top"><h3>Gurpurab Samagams</h3><span class="chip live">Live</span></div>
+        <p>Gurta Gaddi and Joti Jot observances, typically 4–8:30pm across two evenings, with Sukhmani Sahib paath, katha and kirtan.</p>
+        <p class="ev"><b>83 posts across samagam and akhand paath, Jun 2019 → May 2026.</b> Example: Gurta Gaddi Sri Guru Ram Das Ji and Joti Jot Sri Guru Amar Das Ji, Sep 2024, 49 Gypsy Lane.</p>
+        <p class="slug">/samagam/gurpurab</p>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ============ EVENTS ============ -->
+  <section class="division" id="events">
+    <div class="div-head">
+      <span class="div-mark"><svg width="20" height="30"><use href="#arch"></use></svg></span>
+      <h2>Events &amp; Competition</h2>
+      <span class="count">6 units · national reach</span>
+    </div>
+    <p class="div-intro">The outward-facing half of the charity. <em>Hola Mohalla is the strongest brand the organisation owns</em> — it is national, it has its own email and registration form, and rival akhare enter it.</p>
+    <div class="cards">
+
+      <article class="card">
+        <div class="card-top"><h3>Patshahi Dasvi National Hola Mohalla UK</h3><span class="chip live">Live</span></div>
+        <p class="alt">War Games · the flagship</p>
+        <p>A full-day national tournament: Gatka, tag archery, horse riding, axe throwing, rifle shooting, knife and chakar throwing, opened with Sri Akal Ustat Path and Dasam Granth Bhog.</p>
+        <p class="ev"><b>Four editions: 2023, 2024, 2025, 2026.</b> Own address Holla_Mohalla_Leicester@hotmail.com and its own Zoho registration form. 2026: Sat 7 March at Dashmesh Darbar — Path 9am, Bhog 10am, tournaments 12pm. Teams 3–5 players, age 16+.</p>
+        <p class="slug">holamohalla.uk — the one case for a separate domain</p>
+      </article>
+
+      <article class="card">
+        <div class="card-top"><h3>Gatka Fight Night</h3><span class="chip live">Live</span></div>
+        <p>Competitive bouts between akhare, with an exhibition match between ustads. The charity's only ticket-style spectator event.</p>
+        <p class="ev"><b>Jan 2024</b> (Baba Deep Singh Ji Avtar Purb, 7pm) and <b>May 2024</b> — the first UK inter-akhara fight night, held with Shaheed Bhai Mani Singh Ji Gatka Akhara for the 20th barsi of Ustad Bhai Charnjit Singh Ji. Three student bouts plus the ustad exhibition.</p>
+        <p class="slug">/events/fight-night</p>
+      </article>
+
+      <article class="card">
+        <div class="card-top"><h3>National Sikh Archery Tournament</h3><span class="chip live">Live</span></div>
+        <p>Standalone archery competition with published distances and age brackets — the most formally run competition on the list.</p>
+        <p class="ev"><b>15 Feb 2025</b>, 11:30am, Guru Tegh Bahadur. Registration via bit.ly/sikharchery. Announcement reached 4,913 accounts.</p>
+        <p class="slug">/events/archery-tournament</p>
+      </article>
+
+      <article class="card">
+        <div class="card-top"><h3>National Dodgeball Tournament</h3><span class="chip semi">Fading</span></div>
+        <p>Run with partner organisations, with Gatka and tag archery demonstrations staged alongside the main competition.</p>
+        <p class="ev"><b>Oct 2023 and Oct 2024.</b> Won by @singhscampuk in 2023. Nothing in 2025 or 2026.</p>
+        <p class="slug">/events/dodgeball</p>
+      </article>
+
+      <article class="card">
+        <div class="card-top"><h3>Football</h3><span class="chip live">Live</span></div>
+        <p><strong>Entered, not organised.</strong> The charity fields a team in other people's tournaments. Worth listing honestly — the site should not imply it runs a football programme.</p>
+        <p class="ev"><b>Jun 2024:</b> Shaheedi Bunga UK won the Men's Parcharak section of the National Sikh 5-a-side Football tournament organised by Sikh Youth UK. Kabaddi and general sport also run inside the kids camps.</p>
+        <p class="slug">/events/sport</p>
+      </article>
+
+      <article class="card">
+        <div class="card-top"><h3>Demos &amp; Schools</h3><span class="chip live">Live</span></div>
+        <p>Gatka demonstrations at public events, and the first evidence of work inside a mainstream school. This is the charity's public-benefit story and it has never been told anywhere.</p>
+        <p class="ev"><b>Leicester Nagar Kirtan</b> Gatka (2023, Apr 2024, Nov 2024) · <b>Vaisakhi at John Lewis Leicester</b> (2024, 2025) · <b>Fosse Park</b> Vaisakhi demo Apr 2024 · <b>Falcon Primary School</b> Gatka tournament, Jun 2025.</p>
+        <p class="slug">/events/demos</p>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ============ CAMPS ============ -->
+  <section class="division" id="camps">
+    <div class="div-head">
+      <span class="div-mark"><svg width="20" height="30"><use href="#arch"></use></svg></span>
+      <h2>Camps</h2>
+      <span class="count">4 units · the intensives</span>
+    </div>
+    <p class="div-intro">112 posts mention a camp — the second-largest category after Itihaas. These are where the charity's biggest single numbers come from: <em>190 children at one camp in April 2025</em>.</p>
+    <div class="cards">
+
+      <article class="card">
+        <div class="card-top"><h3>Sikhi Camp</h3><span class="chip live">Live</span></div>
+        <p>Ages 5–18. Gatka, kirtan, arts and crafts, sports, dastaar tying, shastar workshop, wrestling, kabaddi, talks and a bouncy castle. Runs in school holidays.</p>
+        <p class="ev"><b>Seven editions found, 2023 → 2025.</b> Feb 2025 (Dashmesh) · Apr 2025 (GTB, 3 days, <b>190 kids</b>) · Jul 2024 (@gurdwarasahib_rbl) · Oct 2024 and Oct 2025 (Holy Bones / GTB) · registration via bit.ly/sikhicampuk.</p>
+        <p class="slug">/camps/sikhi-camp</p>
+      </article>
+
+      <article class="card">
+        <div class="card-top"><h3>Gurbani Vidhya Camp</h3><span class="chip live">Live</span></div>
+        <p>A two-week August intensive working through a complete text with vishraams and uchaaran explained, students following in their own pothis. The most academically serious thing the charity runs.</p>
+        <p class="ev"><b>Three editions.</b> 2022: complete Paath Bodh of Sri Guru Granth Sahib Ji. 2023: 7–20 Aug, Vaaran Bhai Gurdas Ji. 2024: 5–18 Aug, Kabit/Svaiye of Bhai Gurdas Ji. All at Guru Tegh Bahadur.</p>
+        <p class="slug">/camps/gurbani-vidhya</p>
+      </article>
+
+      <article class="card">
+        <div class="card-top"><h3>Gurbani Santhiya Camp</h3><span class="chip live">Live</span></div>
+        <p>Short, focused santhiya intensives — pronunciation, clarity and connection. Now the most frequently repeated camp format.</p>
+        <p class="ev"><b>Three in 2026 alone.</b> 16–19 Feb · 30 Mar–3 Apr, 9am–12pm daily · 25–29 May, 3–7pm. All at Dashmesh Darbar. The April 2025 edition's thank-you post reached 4,267 accounts.</p>
+        <p class="slug">/camps/santhiya-camp</p>
+      </article>
+
+      <article class="card">
+        <div class="card-top"><h3>International Camps</h3><span class="chip semi">Fading</span></div>
+        <p>The only overseas activity the archive actually evidences. A road trip from the UK to a kids camp in the Netherlands, and a teaching tour of Scotland.</p>
+        <p class="ev"><b>Apr–May 2025:</b> UK sangat to The Hague for a kids camp. <b>Sep 2023:</b> Scotland tour — katha, kirtan, tag archery and shastar vidya workshop. <b>Nothing supports the wider worldwide list</b> — see governance flag 3.</p>
+        <p class="slug">/camps/international</p>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ============ BROADCAST ============ -->
+  <section class="division" id="broadcast">
+    <div class="div-head">
+      <span class="div-mark"><svg width="20" height="30"><use href="#arch"></use></svg></span>
+      <h2>Talks &amp; Broadcast</h2>
+      <span class="count">5 units · the media arm</span>
+    </div>
+    <p class="div-intro">An entire production operation that the old website never mentioned once. Two YouTube channels, a podcast series, an interview series and a SoundCloud archive going back to 2019.</p>
+    <div class="cards">
+
+      <article class="card">
+        <div class="card-top"><h3>Monday Night Talks</h3><span class="chip live">Live</span></div>
+        <p>Weekly speaker series with pizza langar. Guests come from across the UK Sikh organisational landscape — this is the charity's convening power, and its highest-reaching content.</p>
+        <p class="ev"><b>40 posts, Aug 2021 → Mar 2026.</b> Mondays 6:30–7:30pm at Guru Tegh Bahadur. The series announcement reached 11,796 accounts; the SYUK talk on grooming and exploitation of Sikh children reached 11,300 on top of a 26,731-reach post the same day — <b>the biggest day in the account's history</b>.</p>
+        <p class="slug">/talks/monday-night</p>
+      </article>
+
+      <article class="card">
+        <div class="card-top"><h3>YouTube — Shaheedi Bunga UK</h3><span class="chip live">Live</span></div>
+        <p>Full samagams, diwans, katha and long-form series. Filmed by volunteer media sevadars.</p>
+        <p class="ev"><b>Two channels: @shaheedibungauk and @ShaheediBungaKids.</b> Live streams since at least Mar 2024. Full 25 Singh Akhand Path video posted Dec 2025.</p>
+        <p class="slug">/watch</p>
+      </article>
+
+      <article class="card">
+        <div class="card-top"><h3>Gurpurab Podcast Series</h3><span class="chip semi">Fading</span></div>
+        <p>An episode per Guru — jeevani and gurta gaddi, released around each Gurpurab. A proper numbered series, which nothing else in the media output is.</p>
+        <p class="ev"><b>2024.</b> Episode 2 (Guru Amar Das Ji, Apr), Episode 3 (Guru Tegh Bahadur Ji, Apr), Guru Har Gobind Sahib Ji Part 1 (Jun), Guru Amar Das Ji jeevani (Sep), Guru Har Krishan Ji (Jul). Nothing since 2024.</p>
+        <p class="slug">/watch/gurpurab-series</p>
+      </article>
+
+      <article class="card">
+        <div class="card-top"><h3>Gurmat Vichar Interviews</h3><span class="chip live">Live</span></div>
+        <p>Long-form conversations with senior figures. These are genuine archive material — several of the subjects are elderly ustads and sants.</p>
+        <p class="ev"><b>Nov 2024:</b> Sant Gaini Inderjeet Singh Ji Raqbe Wale, three-part series. <b>Dec 2024:</b> Ustad Surjeet Singh Ji Cheema Sahib Wale on kirtan and tabla. <b>Nov 2024:</b> Sant Baba Surjit Singh Ji Mehron Wale. Linked from the profile.</p>
+        <p class="slug">/watch/gurmat-vichar</p>
+      </article>
+
+      <article class="card">
+        <div class="card-top"><h3>SoundCloud Archive</h3><span class="chip semi">Fading</span></div>
+        <p>Audio going back to 2019 under the original <code>shaheedibungaleicester</code> handle — katha, raag kirtan by bhujangi singhs, sakhis and Vaisakhi katha.</p>
+        <p class="ev"><b>Nine sets and tracks linked from posts, 2019 → 2025.</b> Includes Sant Jagjit Singh Ji Harkhowal Wale Vaisakhi katha and a Raag Kirtan Bhujangi Singhs set. The workspace also holds raw and mixed audio locally.</p>
+        <p class="slug">/listen</p>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ============ PRAKASHAN ============ -->
+  <section class="division" id="prakashan">
+    <div class="div-head">
+      <span class="div-mark"><svg width="20" height="30"><use href="#arch"></use></svg></span>
+      <h2>Prakashan</h2>
+      <span class="count">5 units · publishing</span>
+    </div>
+    <p class="div-intro">A publishing arm that is further along than anything else on this page and has never been announced properly. <em>Three children's books already shipped in March 2026</em>, and two major bilingual editions are in production.</p>
+    <div class="cards">
+
+      <article class="card">
+        <div class="card-top"><h3>Baal Updesh</h3><span class="chip live">Live</span></div>
+        <p class="alt">Three books · children</p>
+        <p>A three-book collection for children — "three layers of wisdom" — launched as a set. The charity's first actual product release.</p>
+        <p class="ev"><b>Launched 24 Mar 2026.</b> Announced as a big reveal with #BaalUpdesh #newrelease. <b>No purchase route has ever been posted</b> — no shop, no price, no link.</p>
+        <p class="slug">/prakashan/baal-updesh</p>
+      </article>
+
+      <article class="card">
+        <div class="card-top"><h3>Vichar Sagar Edition</h3><span class="chip live">In production</span></div>
+        <p>Bilingual Gurmukhi and English edition of Sadhu Sri Nischal Das Ji's Vichar Sagar, set 6×9 from two scanned sources.</p>
+        <p class="ev"><b>619 pages, 491 sections.</b> Tarangs 1–4 complete, Tarang 5 under way. Build files and 41 snapshots in the workspace.</p>
+        <p class="slug">/prakashan/vichar-sagar</p>
+      </article>
+
+      <article class="card">
+        <div class="card-top"><h3>Bachan Sain Edition</h3><span class="chip live">In production</span></div>
+        <p>Bilingual A5 edition carrying four layers: original Punjabi, clear Punjabi, plain English and notes.</p>
+        <p class="ev"><b>736 pages combined.</b> Part I complete (1–214). Part II, ਬਚਨ ਗੁਰਮੁਖਾਂ ਕੇ, under way.</p>
+        <p class="slug">/prakashan/bachan-sain</p>
+      </article>
+
+      <article class="card">
+        <div class="card-top"><h3>Rehatname Transcriptions</h3><span class="chip live">In production</span></div>
+        <p>Editable Punjabi transcriptions of the rehatname, from the Piara Singh Padam source text. Reference material rather than a book.</p>
+        <p class="ev">Bhai Nand Lal (pp. 54–55) and Bhai Chaupa Singh (pp. 80–133) transcribed so far.</p>
+        <p class="slug">/prakashan/rehatname</p>
+      </article>
+
+      <article class="card">
+        <div class="card-top"><h3>The Source Library</h3><span class="chip live">Live</span></div>
+        <p>Scanned granths and reference works the teaching is built from — the four Google Drive links that were the entire "Resources" page on the old site.</p>
+        <p class="ev">Taksali Gutka Sahib Bhindran, Puratan Vichar Sagar, Sri Vichar Sagar, a Hindi Tabla Granth, and Gurbani Sangeet Prachin Reet Ratnavali. <b>Whether these can be published publicly is still unresolved.</b></p>
+        <p class="slug">/library</p>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ============ DIGITAL ============ -->
+  <section class="division" id="digital">
+    <div class="div-head">
+      <span class="div-mark"><svg width="20" height="30"><use href="#arch"></use></svg></span>
+      <h2>Digital</h2>
+      <span class="count">10 units · tools, not brands</span>
+    </div>
+    <p class="div-intro">Nine working apps sitting in the workspace with no public home, plus a calendar app of uncertain ownership. <em>These are the only thing the charity has for the 47% of its audience who will never reach Leicester.</em></p>
+    <div class="cards">
+
+      <article class="card">
+        <div class="card-top"><h3>Raag Explorer</h3><span class="chip live">Built</span></div>
+        <p>Browse raags with their swar sets, times and characteristics, built from a scanned Gurmukhi reference.</p>
+        <p class="slug">/tools/raag-explorer</p>
+      </article>
+
+      <article class="card">
+        <div class="card-top"><h3>Kirtan Reet Explorer</h3><span class="chip live">Built</span></div>
+        <p>Bilingual, printable kirtan reets from Gurbani Sangeet Prachin Reet Ratnavali.</p>
+        <p class="slug">/tools/kirtan-reet</p>
+      </article>
+
+      <article class="card">
+        <div class="card-top"><h3>Bandish Maker</h3><span class="chip live">Built</span></div>
+        <p class="alt">Raag Composition Studio</p>
+        <p>Compose a bandish in a chosen raag and taal, offline. Has an iOS build config.</p>
+        <p class="slug">/tools/bandish-maker</p>
+      </article>
+
+      <article class="card">
+        <div class="card-top"><h3>Taan &amp; Alaap Maker</h3><span class="chip live">Built</span></div>
+        <p>Rule-based generation of taans, alaaps and tihais. Shares a core with Bandish Maker.</p>
+        <p class="slug">/tools/taan-maker</p>
+      </article>
+
+      <article class="card">
+        <div class="card-top"><h3 class="gur">ਤਿਹਾਈ ਮੇਕਰ</h3><span class="chip live">Built</span></div>
+        <p class="alt">Tihai Maker</p>
+        <p>Builds tihais against a chosen taal.</p>
+        <p class="slug">/tools/tihai-maker</p>
+      </article>
+
+      <article class="card">
+        <div class="card-top"><h3 class="gur">ਤਬਲਾ ਪਾਠ ਮੇਕਰ</h3><span class="chip live">Built</span></div>
+        <p class="alt">Tabla Lesson Maker</p>
+        <p>Generates tabla lesson sheets. Phase 1 built with eight thekas, from the Hindi Tabla Granth.</p>
+        <p class="slug">/tools/tabla-lessons</p>
+      </article>
+
+      <article class="card">
+        <div class="card-top"><h3 class="gur">ਸੰਥਿਆ ਖੇਡ</h3><span class="chip live">Built</span></div>
+        <p class="alt">Santhiya Game</p>
+        <p>A learning game for santhiya. The natural companion to the Santhiya Vidyala and the one app aimed at children.</p>
+        <p class="slug">/tools/santhiya-game</p>
+      </article>
+
+      <article class="card">
+        <div class="card-top"><h3>Sur Milao</h3><span class="chip live">Built</span></div>
+        <p class="alt">Instrument Tuner &amp; Tanpura</p>
+        <p>Tuner and tanpura drone with sampled audio — the most immediately useful app for any student at home.</p>
+        <p class="slug">/tools/sur-milao</p>
+      </article>
+
+      <article class="card">
+        <div class="card-top"><h3>Raag Taal App</h3><span class="chip semi">Incomplete</span></div>
+        <p>Combined raag and taal reference. Flagged in the workspace as having missing samples.</p>
+        <p class="slug">/tools/raag-taal</p>
+      </article>
+
+      <article class="card">
+        <div class="card-top"><h3>Sikhi Calendar App</h3><span class="chip never">Ownership unclear</span></div>
+        <p>Pushed from the charity's Linktree. But a March 2025 post announces feature updates in the first person — colour changes, an audio player for events, a revamped library — which reads like ownership, not promotion.</p>
+        <p class="ev"><b>Resolve before publishing.</b> If the charity builds or co-owns it, it belongs in this house. If not, it should not sit on the site at all.</p>
+        <p class="slug">— pending</p>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ============ SEVA ============ -->
+  <section class="division" id="seva">
+    <div class="div-head">
+      <span class="div-mark"><svg width="20" height="30"><use href="#arch"></use></svg></span>
+      <h2>Seva</h2>
+      <span class="count">2 units · the through-line</span>
+    </div>
+    <p class="div-intro">Not a programme so much as the thing every other programme runs on. Worth a page because it is the answer to "what does my child actually get out of this".</p>
+    <div class="cards">
+      <article class="card">
+        <div class="card-top"><h3>Langar</h3><span class="chip live">Live</span></div>
+        <p>Served at every samagam, camp and Monday Night Talk. The pizza langar after the Monday talks is a small, specific detail that does more work than any mission statement.</p>
+        <p class="ev"><b>52 posts across langar and seva, Mar 2019 → Apr 2026.</b></p>
+        <p class="slug">/about/langar</p>
+      </article>
+      <article class="card">
+        <div class="card-top"><h3>Vand Chakna — teaching seva</h3><span class="chip live">Live</span></div>
+        <p>Seva taught explicitly to children as part of the Sikhi class — rolling ladoos to share, framed as feeding the spirit rather than as a craft activity.</p>
+        <p class="ev">Reel, Apr 2026: "they're learning the art of Seva… when we share with others, we're sharing with the Divine."</p>
+        <p class="slug">/about/seva</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============ DORMANT ============ -->
+  <section class="division" id="dormant">
+    <div class="div-head">
+      <span class="div-mark"><svg width="20" height="30"><use href="#arch"></use></svg></span>
+      <h2>The dormant register</h2>
+      <span class="count">4 launched, then stopped</span>
+    </div>
+    <p class="div-intro">Keep this list visible. It is the evidence for how many brands the charity can actually sustain, and every one of these was announced with the same confidence as the live ones.</p>
+    <div class="reg">
+      <div class="reg-row">
+        <div><strong>Shaheedi Bunga Archery League</strong><p>A weekly league with published scores and rankings at Guru Nanak Gurdwara. Ran Week 1 in Dec 2021, reached Season 2 Week 1 in Feb 2022, then stopped. The only thing the charity ever ran as an ongoing competitive ladder.</p></div>
+        <span class="chip dormant">Dormant</span>
+      </div>
+      <div class="reg-row">
+        <div><strong>Shaheedi Bunga Online Academy</strong><p>Announced Aug 2022 in a single post. Nothing followed. Note that the current Instagram bio still advertises online Santya, Tanti Saaj Kirtan, Jori and Katha — so the <em>promise</em> is live even though the academy never was.</p></div>
+        <span class="chip never">Never launched</span>
+      </div>
+      <div class="reg-row">
+        <div><strong>Shaheedi Bunga Jatha — Monthly Raag Keertan</strong><p>A named kirtan jatha with monthly slots at Smethwick and three streaming partners, through 2021. Folded back into the samagams.</p></div>
+        <span class="chip dormant">Dormant</span>
+      </div>
+      <div class="reg-row">
+        <div><strong>Gur Panth Parkash classes</strong><p>Listed as "Coming soon — stay tuned for updates" in the April 2025 timetable post. Sixteen months on, no class has been announced there. The gurdwara is still used for samagams and Hola Mohalla.</p></div>
+        <span class="chip never">Never launched</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PARTNERS ============ -->
+  <section class="division" id="partners">
+    <div class="div-head">
+      <span class="div-mark"><svg width="20" height="30"><use href="#arch"></use></svg></span>
+      <h2>Partners — not ours</h2>
+      <span class="count">do not absorb</span>
+    </div>
+    <p class="div-intro">These appear constantly in the archive and are easy to mistake for sub-brands. They are independent organisations. Naming them as divisions would be both wrong and a relationship problem.</p>
+    <div class="reg">
+      <div class="reg-row">
+        <div><strong>Mahakaal Akhara</strong><p>Independent akhara. Joint sessions and air rifle shooting, 2023.</p></div><span class="chip partner">Partner</span>
+      </div>
+      <div class="reg-row">
+        <div><strong>Shaheed Bhai Mani Singh Ji Gatka Akhara</strong><p>Co-host of the first inter-akhara Gatka Fight Night, May 2024.</p></div><span class="chip partner">Partner</span>
+      </div>
+      <div class="reg-row">
+        <div><strong>Basics of Sikhi · Sikh2Inspire · Sikh Youth UK · Jyoti Saroop Foundation</strong><p>Monday Night Talks speakers. SYUK also organises the football tournament the charity enters.</p></div><span class="chip partner">Partner</span>
+      </div>
+      <div class="reg-row">
+        <div><strong>@singhscampuk · @nihungsanthia · @gurmatvidyalaa · @buddhadaluk</strong><p>The four most-tagged accounts in the archive after the gurdwaras — 40, 37, 8 and 2 mentions. Long-standing collaborators.</p></div><span class="chip partner">Partner</span>
+      </div>
+      <div class="reg-row">
+        <div><strong>Guru Tegh Bahadur · Dashmesh Darbar · Holy Bones · Gur Panth Parkash · GNG Smethwick</strong><p>Host gurdwaras. The charity teaches in their buildings; it does not run them.</p></div><span class="chip partner">Venue</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PUBLISHING ============ -->
+  <section class="division" id="publishing">
+    <div class="div-head">
+      <span class="div-mark"><svg width="20" height="30"><use href="#arch"></use></svg></span>
+      <h2>How it publishes</h2>
+      <span class="count">the model</span>
+    </div>
+    <div class="prose">
+
+      <h3>One naming rule, applied everywhere</h3>
+      <div class="rule-box">
+        <p><strong>Shaheedi Bunga [House] [Discipline]</strong> — always in that order, always with the charity name attached.</p>
+        <p>Shaheedi Bunga Kirtan Vidyala. Shaheedi Bunga Gatka Akhara. Shaheedi Bunga Archery Academy. The archive has been doing this inconsistently for eight years — Vidayala, Vidiyala, Vidhyala, Vidyalai all appear — and fixing the spelling is a one-line decision that makes everything else searchable.</p>
+      </div>
+      <p>The single exception is <strong>Patshahi Dasvi National Hola Mohalla UK</strong>, which already stands alone and should keep doing so.</p>
+
+      <h3>URL architecture</h3>
+      <p>House, then discipline. It mirrors the structure above, keeps every slug short, and means a new discipline never needs a new top-level decision:</p>
+      <ul>
+        <li><code>/vidyala/santhiya</code>, <code>/vidyala/kirtan</code>, <code>/vidyala/jalandhar</code></li>
+        <li><code>/akhara/gatka</code>, <code>/akhara/archery</code>, <code>/akhara/shastar-vidya</code></li>
+        <li><code>/camps/</code>, <code>/samagam/</code>, <code>/events/</code>, <code>/talks/</code>, <code>/prakashan/</code>, <code>/tools/</code></li>
+        <li><code>/timetable</code> — one page, filterable by house, venue and age. Not a page per venue.</li>
+      </ul>
+      <p><strong>Fix the nav first.</strong> The current draft has both "Classes" and "Akharas &amp; Vidyalas", which are the same thing. Six items, no overlap:</p>
+      <p><code>Vidyala · Akhara · Library · Events · About · Donate</code></p>
+
+      <h3>One visual system, one 3D scene</h3>
+      <p>Do not build a WebGL scene per division. The parikrama scene is already around 700 meshes with a full mirrored copy and six post-processing passes, and its performance on real phones is still unverified. Nine of those is nine things to build and nine to break.</p>
+      <div class="rule-box">
+        <p><strong>Instead: every division is a different bunga on the same ring.</strong> Give each house a fixed camera position in the one scene that already exists and render a still frame for its page header.</p>
+        <p>The Kirtan Vidyala is the bunga with lamplight in the arches. The Gatka Akhara is the open ground at the water's edge. The Jalandhar Vidyala is the bunga seen from across the sarovar. One model, one performance budget — and the pages are coherent because they are literally in the same place. That argument for the structure is stronger than any set of logos would be.</p>
+      </div>
+      <p>Live WebGL stays on the homepage only. The thirteen models already built — harmandir, akal takht, three bunga variants, ramgarhia bunga, darshani deori, causeway, sarovar, parikrama, nishan sahib, lamp standard — are enough to frame every one of them.</p>
+
+      <h3>Sub-brand marks: don't</h3>
+      <p>Nine houses do not need nine logos. One wordmark, one engraved gold band from the existing roundel, and a house name set in the same face. A discipline earns a mark when it outgrows the charity — which, on this evidence, has happened exactly once, to Hola Mohalla.</p>
+
+      <h3>Instagram stays one account</h3>
+      <p>91.4% of engaged accounts are non-followers, so reach comes from reels travelling, not from the follower list. A second account starts from zero and halves the cadence on the first. <strong>@shaheedi_bunga_kids already proves it</strong> — it exists, and it is mentioned three times in eight years.</p>
+      <p>The story highlights are already the taxonomy. Keep one account and let the website do the separating.</p>
+
+      <h3>What earns its own page</h3>
+      <p>Score each candidate out of five. Four or more, it gets a page; under that, it is a section on its parent.</p>
+      <ol>
+        <li>Its own ustad, not shared with another discipline</li>
+        <li>A regular slot that has run for twelve months or more</li>
+        <li>An audience who would not come to the other things</li>
+        <li>A named person to run its communications</li>
+        <li>Something new to say at least monthly</li>
+      </ol>
+      <p>Gatka and Archery clear it comfortably. The Archery League scored two, and that is why it is in the dormant register.</p>
+
+      <h3>Launch sequence</h3>
+      <ol class="seq">
+        <li><strong>Timetable and contact</strong>Every house listed, one filterable timetable, <code>gurmat@shaheedibunga.com</code> on a contact page that finally has contact details. This alone fixes the old site's worst failure — every class button dead-ended on an empty page.</li>
+        <li><strong>Credibility pack</strong>Charity number, trustees, safeguarding, Gift Aid, donate. No post in eight years has ever asked for money; there is no existing donation route to point at, so this is net-new.</li>
+        <li><strong>Prakashan and the library</strong>Baal Updesh has shipped with nowhere to buy it. That is the fastest win on this page.</li>
+        <li><strong>Tools</strong>Nine built apps, one route each. This is what serves the 47% of the audience outside the UK and the 92.5% outside Leicester.</li>
+        <li><strong>Broadcast archive</strong>YouTube, the Gurpurab series, the Gurmat Vichar interviews, SoundCloud. Mostly linking, not building.</li>
+        <li><strong>Hola Mohalla</strong>Its own site when the 2027 cycle starts, not before.</li>
+      </ol>
+
+    </div>
+  </section>
+
+  <!-- ============ GOVERNANCE ============ -->
+  <section class="division" id="governance">
+    <div class="div-head">
+      <span class="div-mark"><svg width="20" height="30"><use href="#arch"></use></svg></span>
+      <h2>Governance flags</h2>
+      <span class="count">answer before publishing</span>
+    </div>
+    <div class="prose">
+      <p>Four things on this page cannot go live as they stand. None of them is a design problem — they are decisions for the trustees.</p>
+
+      <div class="flag">
+        <h4>1 · The Jalandhar vidyala</h4>
+        <p>A July 2021 post describes it plainly: <strong>residential for under-16s, with school fees, clothes and food provided by sangat.</strong> That is a UK charity funding a residential children's facility overseas.</p>
+        <p>It carries Charity Commission duties on overseas expenditure, partner due diligence and safeguarding, and it cannot be described as "former students teaching independently". Check it against the registered objects and the trustees' position before a single word about it is published.</p>
+      </div>
+
+      <div class="flag">
+        <h4>2 · Photographs of children</h4>
+        <p>The archive is 5,429 media files, and a large share is children's classes and camps. There is no photo-consent or safeguarding policy on record. <strong>Nothing from the archive goes on the site until there is a written position</strong> — and phase 1 includes a safeguarding page anyway.</p>
+      </div>
+
+      <div class="flag">
+        <h4>3 · The worldwide teaching claim</h4>
+        <p>Eight years of posts evidence a Netherlands camp and a Scotland tour. Kenya, Germany, Kuwait and Australia appear nowhere. Those came from conversation, not from the record — they need sourcing, and the wording must stay "students teaching independently", never anything implying the charity operates overseas.</p>
+      </div>
+
+      <div class="flag">
+        <h4>4 · Two loose ends</h4>
+        <p><strong>Sikhi Calendar App</strong> — the March 2025 update post reads as ownership, the Linktree treats it as third-party. Resolve which.</p>
+        <p><strong>The source library</strong> — whether the scanned granths can be published publicly is still open, and it gates the entire Library section.</p>
+      </div>
+    </div>
+  </section>
+
+  </main>
+</div>
+
+<footer>
+  <div class="wrap">
+    <p>Compiled 26 August 2026 from the full Instagram data export (4,053 items, Feb 2018 – Aug 2026), the Shaheedi Bunga workspace, and Charity Commission records checked 22 August 2026.</p>
+    <p>Status marks reflect posting activity, not internal knowledge — a unit marked fading may still be running quietly. Confirm before acting on any single mark.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  // 49 units, in the order they appear on the page
+  var units = [
+    ['Vidyala',['live','live','live','live','live','live','live']],
+    ['Akhara',['live','live','live','semi','semi','live']],
+    ['Samagam',['live','live','dormant','live']],
+    ['Events',['live','live','live','semi','live','live']],
+    ['Camps',['live','live','live','semi']],
+    ['Broadcast',['live','live','semi','live','semi']],
+    ['Prakashan',['live','live','live','live','live']],
+    ['Digital',['live','live','live','live','live','live','live','live','semi','never']],
+    ['Seva',['live','live']],
+    ['Dormant',['dormant','never','dormant','never']]
+  ];
+  var g = document.getElementById('arches');
+  var gl = document.getElementById('ringlabels');
+  var x = 4, gap = 3.2, w = 15.5, groupGap = 22;
+  units.forEach(function(grp){
+    var start = x;
+    grp[1].forEach(function(status){
+      var u = document.createElementNS('http://www.w3.org/2000/svg','use');
+      u.setAttribute('href','#arch');
+      u.setAttribute('x', x.toFixed(1));
+      u.setAttribute('y', 30);
+      u.setAttribute('width', w);
+      u.setAttribute('height', w*1.5);
+      u.setAttribute('class','arch-'+status);
+      g.appendChild(u);
+      x += w + gap;
+    });
+    var t = document.createElementNS('http://www.w3.org/2000/svg','text');
+    t.setAttribute('x', start.toFixed(1));
+    t.setAttribute('y', 89);
+    t.setAttribute('class','ring-label');
+    t.textContent = grp[0];
+    gl.appendChild(t);
+    x += groupGap;
+  });
+})();
+</script>

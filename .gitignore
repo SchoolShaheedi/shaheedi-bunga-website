@@ -1,0 +1,44 @@
+# ── OS noise ────────────────────────────────────────────────────────────
+.DS_Store
+**/.DS_Store
+node_modules/
+
+# ── its own repository ──────────────────────────────────────────────────
+ds/
+
+# ── raw camera originals ────────────────────────────────────────────────
+# HEIC/JPG straight off a phone, 1–5 MB each. The processed versions the site
+# actually uses are committed; these are the source and stay local.
+Assets/Santhiya/drift/_originals/
+
+# ── working scratch, not part of the site ───────────────────────────────
+Mockup/canva/
+Mockup/a/
+Mockup/a3/
+Mockup/photos/
+Mockup/refs/
+Mockup/sheet.png
+Mockup/sheet2.png
+Mockup/urls.txt
+Mockup/journey.built.html
+Mockup/journey.deck-backup.html
+Mockup/bunga-draft.built.html
+Mockup/santhiya-vidyala.built.html
+Mockup/*.built.html.bak
+
+# ── generated builds inside archived snapshots ──────────────────────────
+# The archives keep their source and README; the 10 MB inlined build of each
+# is regenerable and would triple the repo for nothing.
+Mockup/_Archive/**/*.built.html
+Mockup/_Draft_1/*.built.html
+Mockup/_Draft_2/*.built.html
+Mockup/_Draft_2/models.packed.json
+
+# ── source GLBs ─────────────────────────────────────────────────────────
+# 18 MB of model sources. Models/models.packed.json is what the build consumes
+# and is committed; keep the GLBs out unless someone needs to re-pack.
+Models/glb/
+Models/_Unused/
+
+# stray screenshot, not part of the site
+Screenshot*.png

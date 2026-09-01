@@ -1,0 +1,15 @@
+{
+  "artboards": [
+    { "file": "Main.dc.html",        "x": 0,    "y": 0,    "w": 1120, "h": 860, "title": "A · Ink & Line" },
+    { "file": "Timetable.dc.html",   "x": 1240, "y": 0,    "w": 1120, "h": 860, "title": "B · Tonight" },
+    { "file": "Chain.dc.html",       "x": 2480, "y": 0,    "w": 1120, "h": 860, "title": "C · The Chain" },
+    { "file": "Pothi.dc.html",       "x": 0,    "y": 1020, "w": 1120, "h": 860, "title": "D · The Pothi" },
+    { "file": "Instruments.dc.html", "x": 1240, "y": 1020, "w": 1120, "h": 860, "title": "E · One Thing At A Time" },
+    { "file": "Evidence.dc.html",    "x": 2480, "y": 1020, "w": 1120, "h": 860, "title": "F · Evidence" }
+  ],
+  "annotations": [
+    { "id": "reframe", "x": 0, "y": -230, "w": 700, "text": "The reframe behind all six.\n\nEvery direction so far has led with a building — and the building keeps being the problem. But the charity's own thesis is \"a bunga is not a place, it is what happens inside it.\" The site has been arguing against itself.\n\nA and D keep Amritsar but stop rendering it. B, C, E and F lead with the teaching instead." },
+    { "id": "pick", "x": 2480, "y": -230, "w": 620, "text": "Pick one, or pick two to combine — B's timetable slots under any of the others as the second screen.\n\nMy lean: A for the homepage, B immediately below it. A keeps the story and kills the 3D problem; B does the actual job of getting someone into a class." }
+  ],
+  "launch": { "view": "canvas" }
+}

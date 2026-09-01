@@ -1,0 +1,663 @@
+<title>Santhiya Vidyala</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Spectral:ital,wght@0,300;0,400;0,600;1,300&family=Jost:wght@400;500&family=Noto+Serif+Gurmukhi:wght@400;600&display=swap">
+
+<style>
+/* ===========================================================================
+   Santhiya Vidyala — Shaheedi Bunga
+   prowebsite proportional scale, adapted to the charity's own faces.
+   NOTE ON TRACKING: the method calls for -0.08em on display type. That number
+   is derived for a geometric sans; on Cormorant Garamond at 100px+ it collides
+   the serifs. Held at -0.02em here — the size/label contrast still carries it.
+   =========================================================================== */
+
+:root{
+  /* palette — amrit vela */
+  --c-ink:#12162B; --c-ink-deep:#080B18; --c-paper:#F5F0E6;
+  --c-warm:#20284F; --c-muted:#8E93AC; --c-gold:#C6A24A; --c-gold-lit:#E3C87F;
+  --c-a15:#F5F0E626; --c-a25:#F5F0E640; --c-a40:#F5F0E666;
+
+  --surface:var(--c-ink); --ink:var(--c-paper);
+  --ink-dim:var(--c-muted); --hairline:var(--c-a15);
+
+  --font-display:"Cormorant Garamond",Georgia,serif;
+  --font-body:"Spectral",Georgia,serif;
+  --font-util:"Jost",system-ui,sans-serif;
+  --font-gur:"Noto Serif Gurmukhi","Spectral",serif;
+
+  --ease-out:cubic-bezier(0.05,0.70,0.10,1.00);
+  --ease-io:cubic-bezier(0.20,0.00,0.00,1.00);
+
+  --p:0;            /* global scroll progress, written by the follower */
+  --scene:0;        /* scene-local progress */
+}
+
+[data-tone="light"]{
+  --surface:var(--c-paper); --ink:var(--c-warm);
+  --ink-dim:#6F748C; --hairline:#3127261A;
+}
+
+/* -------------------------------------------------- scale — desktop 1440 */
+:root{
+  font-size:min(1vw,19.2px);
+  --s-8:.556em; --s-12:.833em; --s-16:1.111em; --s-24:1.667em;
+  --s-32:2.222em; --s-48:3.333em; --s-64:4.444em; --s-80:5.556em;
+  --s-96:6.667em; --s-120:8.333em; --s-160:11.111em;
+  --t-h1:7.222em; --t-h2:5em; --t-h3:3.333em; --t-h4:2.222em;
+  --t-p1:1.389em; --t-p2:1.111em; --t-label:.694em;
+  --hairline-w:.069em; --gutter:var(--s-48); --measure:34em;
+}
+@media (max-width:991px){
+  :root{
+    font-size:min(1vw,8.6px);
+    --s-8:1.042em; --s-12:1.563em; --s-16:2.083em; --s-24:3.125em;
+    --s-32:4.167em; --s-48:6.25em; --s-64:8.333em; --s-80:10.417em;
+    --s-96:12.5em; --s-120:15.625em; --s-160:20.833em;
+    --t-h1:9.375em; --t-h2:7.292em; --t-h3:5.208em; --t-h4:3.646em;
+    --t-p1:2.344em; --t-p2:1.953em; --t-label:1.302em;
+    --hairline-w:.13em; --gutter:var(--s-32); --measure:30em;
+  }
+}
+@media (max-width:767px){
+  :root{
+    font-size:min(1vw,4.5px);
+    --s-8:2.151em; --s-12:3.226em; --s-16:4.301em; --s-24:6.452em;
+    --s-32:8.602em; --s-48:12.903em; --s-64:17.204em; --s-80:21.505em;
+    --s-96:25.806em; --s-120:32.258em; --s-160:43.011em;
+    --t-h1:15.05em; --t-h2:10.753em; --t-h3:7.527em; --t-h4:5.376em;
+    --t-p1:4.301em; --t-p2:3.763em; --t-label:2.688em;
+    --hairline-w:.269em; --gutter:var(--s-24); --measure:24em;
+  }
+}
+
+*{box-sizing:border-box}
+html{overflow-x:clip}          /* clip, not hidden — hidden creates a scroll container */
+body{
+  margin:0; background:var(--c-ink); color:var(--c-paper);
+  font-family:var(--font-body); font-size:var(--t-p2);
+  line-height:1.62; -webkit-font-smoothing:antialiased;
+  overflow-x:clip;
+}
+.gur{font-family:var(--font-gur)}
+
+section{background:var(--surface); color:var(--ink); position:relative}
+.wrap{max-width:88em; margin:0 auto; padding-inline:var(--gutter)}
+
+h1,h2,h3{
+  font-family:var(--font-display); font-weight:600;
+  letter-spacing:-.02em; margin:0; text-wrap:balance; color:var(--ink);
+}
+h1{font-size:var(--t-h1); line-height:.88}
+h2{font-size:var(--t-h2); line-height:.92}
+h3{font-size:var(--t-h4); line-height:1.05}
+p{margin:0; text-wrap:pretty}
+
+.label{
+  font-family:var(--font-util); font-size:var(--t-label); font-weight:500;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--c-gold);
+  margin:0;
+}
+.lead{
+  font-size:var(--t-p1); line-height:1.5; font-weight:300;
+  color:var(--ink); max-width:var(--measure);
+}
+.body{color:var(--ink-dim); max-width:var(--measure)}
+.body + .body{margin-top:var(--s-16)}
+.body strong{color:var(--ink); font-weight:600}
+
+/* ------------------------------------------------------------ the scene */
+#stage{height:300vh; position:relative; background:var(--c-ink-deep)}
+#sticky{
+  position:sticky; top:0; height:100vh; overflow:clip;
+  display:grid; place-items:center;
+}
+#gl{position:absolute; inset:0; width:100%; height:100%; display:block}
+#veil{
+  position:absolute; inset:0; pointer-events:none;
+  background:radial-gradient(120% 80% at 50% 62%, #12162B00 0%, #12162B55 55%, #080B18 100%);
+}
+.hero{
+  position:relative; text-align:center; padding-inline:var(--gutter);
+  /* the type recedes as the camera travels inward */
+  transform:translate3d(0,calc(var(--scene) * -6em),0) scale(calc(1 - var(--scene) * .08));
+  opacity:calc(1 - var(--scene) * 1.35);
+  will-change:transform,opacity;
+}
+.hero .label{margin-bottom:var(--s-24)}
+.hero h1{
+  font-size:var(--t-h1); line-height:.84;
+  text-shadow:0 .02em .12em #080B1866;
+}
+.hero h1 em{
+  display:block; font-style:normal; font-weight:300;
+  color:var(--c-gold-lit); font-size:.46em; letter-spacing:.01em;
+  margin-top:.35em;
+}
+.hero .tuk{
+  font-family:var(--font-gur); font-size:var(--t-p1); font-weight:400;
+  color:var(--c-a40); margin-top:var(--s-32); line-height:1.7;
+}
+
+/* the line that arrives as the camera reaches the lamplight */
+.arrive{
+  position:absolute; left:50%; bottom:14vh; transform:translateX(-50%);
+  text-align:center; width:min(30em,86vw);
+  opacity:calc((var(--scene) - .62) * 3.2);
+  pointer-events:none;
+}
+.arrive p{
+  font-family:var(--font-display); font-size:var(--t-h4);
+  font-weight:300; font-style:italic; line-height:1.25; color:var(--c-gold-lit);
+}
+
+/* ------------------------------------------------------------- reveals */
+[data-reveal]{
+  filter:blur(30px); opacity:0;
+  transition:filter 1.05s var(--ease-out), opacity 1.05s var(--ease-out);
+  will-change:filter,opacity;
+}
+[data-reveal].in{filter:blur(0); opacity:1}
+.js-off [data-reveal]{filter:none; opacity:1}
+
+/* --------------------------------------------------------- composition */
+.band{padding-block:var(--s-160)}
+.band--tight{padding-block:var(--s-120)}
+.split{
+  display:grid; grid-template-columns:1fr 1.25fr;
+  gap:var(--s-96) var(--s-80); align-items:start;
+}
+@media (max-width:991px){ .split{grid-template-columns:1fr; gap:var(--s-48)} }
+
+.rule{height:var(--hairline-w); background:var(--hairline); border:0; margin:0}
+
+/* --------------------------------------------------------- the numbers */
+.figs{
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(11em,1fr));
+  gap:var(--s-48) var(--s-32); margin-top:var(--s-64);
+}
+.fig .n{
+  font-family:var(--font-display); font-size:var(--t-h3); font-weight:300;
+  line-height:1; color:var(--c-gold); font-variant-numeric:tabular-nums;
+}
+.fig .k{
+  font-family:var(--font-util); font-size:var(--t-label);
+  letter-spacing:.14em; text-transform:uppercase; color:var(--ink-dim);
+  margin-top:var(--s-12); display:block;
+}
+
+/* ---------------------------------------------------------- timetable */
+.tt{margin-top:var(--s-64); border-top:var(--hairline-w) solid var(--hairline)}
+.row{
+  display:grid; grid-template-columns:7em 1fr auto;
+  gap:var(--s-12) var(--s-32); align-items:baseline;
+  padding-block:var(--s-24);
+  border-bottom:var(--hairline-w) solid var(--hairline);
+}
+.row--key{background:linear-gradient(90deg,#C6A24A14,transparent 60%)}
+.row .day{
+  font-family:var(--font-util); font-size:var(--t-p2); font-weight:500;
+  letter-spacing:.02em; color:var(--ink);
+}
+.row .sess{display:flex; flex-direction:column; gap:var(--s-8)}
+.row .s{display:flex; gap:var(--s-16); align-items:baseline; flex-wrap:wrap}
+.row .t{
+  font-family:var(--font-util); font-size:var(--t-p2);
+  font-variant-numeric:tabular-nums; color:var(--c-gold);
+  min-width:8.5em; letter-spacing:.01em;
+}
+.row .w{color:var(--ink-dim); font-size:var(--t-p2)}
+.row .w b{color:var(--ink); font-weight:600}
+.row .note{
+  font-family:var(--font-util); font-size:var(--t-label);
+  letter-spacing:.12em; text-transform:uppercase; color:var(--ink-dim);
+  white-space:nowrap;
+}
+@media (max-width:767px){
+  .row{grid-template-columns:1fr}
+  .row .t{min-width:0}
+}
+
+/* -------------------------------------------------------------- camps */
+.camps{display:grid; grid-template-columns:1fr 1fr; gap:var(--s-32); margin-top:var(--s-64)}
+@media (max-width:767px){ .camps{grid-template-columns:1fr} }
+.camp{position:relative; overflow:clip; background:var(--c-warm)}
+.camp img{display:block; width:100%; height:auto}
+.camp figcaption{
+  padding:var(--s-24);
+  font-family:var(--font-util); font-size:var(--t-label);
+  letter-spacing:.12em; text-transform:uppercase; color:var(--c-a40);
+}
+.camp figcaption b{display:block; color:var(--c-paper); letter-spacing:.06em; margin-bottom:.5em}
+
+/* ---------------------------------------------------------- start box */
+.start{
+  border:var(--hairline-w) solid var(--hairline);
+  padding:var(--s-64); margin-top:var(--s-64);
+  display:grid; grid-template-columns:1fr auto; gap:var(--s-48); align-items:center;
+}
+@media (max-width:767px){ .start{grid-template-columns:1fr; padding:var(--s-32)} }
+.btn{
+  display:inline-flex; align-items:center; gap:var(--s-12);
+  font-family:var(--font-util); font-size:var(--t-p2); font-weight:500;
+  letter-spacing:.06em; text-transform:uppercase; text-decoration:none;
+  padding:var(--s-16) var(--s-32); border:var(--hairline-w) solid var(--c-gold);
+  color:var(--c-gold); background:transparent; white-space:nowrap;
+  transition:background-color .18s var(--ease-out), color .18s var(--ease-out);
+}
+.btn:hover,.btn:focus-visible{background:var(--c-gold); color:var(--c-ink)}
+a{color:var(--c-gold)}
+:focus-visible{outline:2px solid var(--c-gold); outline-offset:3px}
+
+footer{padding-block:var(--s-64); border-top:var(--hairline-w) solid var(--hairline)}
+.fine{
+  font-family:var(--font-util); font-size:var(--t-label);
+  letter-spacing:.06em; color:var(--ink-dim); line-height:1.7; max-width:44em;
+}
+
+/* ------------------------------------------------------ reduced motion */
+@media (prefers-reduced-motion:reduce){
+  [data-reveal]{filter:none !important; opacity:1 !important; transition:none !important}
+  .hero{transform:none !important; opacity:1 !important}
+  #stage{height:100vh}
+  .arrive{opacity:1 !important; position:static; transform:none; margin:var(--s-32) auto 0; width:auto}
+  .btn{transition:none}
+}
+</style>
+
+<!-- ======================================================= THE SCENE -->
+<div id="stage">
+  <div id="sticky">
+    <canvas id="gl" aria-hidden="true"></canvas>
+    <div id="veil" aria-hidden="true"></div>
+
+    <div class="hero">
+      <p class="label">Shaheedi Bunga · Vidyala</p>
+      <h1>Santhiya<em>ਸੰਥਿਆ</em></h1>
+      <p class="tuk gur">ਗੁਰਪਰਸਾਦੀ ਵਿਦਿਆ ਵੀਚਾਰੈ ਪੜਿ ਪੜਿ ਪਾਵੈ ਮਾਨੁ ॥</p>
+    </div>
+
+    <div class="arrive"><p>Seven in the morning, six days a week,<br>for as long as it takes.</p></div>
+  </div>
+</div>
+
+<!-- ======================================================= WHAT IT IS -->
+<section data-tone="light" class="band">
+  <div class="wrap split">
+    <div>
+      <p class="label" data-reveal>What santhiya is</p>
+    </div>
+    <div>
+      <p class="lead" data-reveal>Santhiya is learning to read Gurbani correctly — every
+        letter, every vishraam, every sound placed where it belongs.</p>
+      <p class="body" data-reveal style="margin-top:var(--s-32)">It is the slowest thing
+        we teach. A student sits with a pothi and an ustad and goes one line at a time,
+        out loud, until the pronunciation is right. Not fluent — <strong>right</strong>.
+        There is no shortcut and no syllabus to rush.</p>
+      <p class="body" data-reveal>One group here finished their laarivaar santhiya after
+        <strong>five years</strong>. That is the ordinary pace of it, and the reason the
+        class runs every single morning rather than once a week.</p>
+
+      <div class="figs">
+        <div class="fig" data-reveal><span class="n">7am</span><span class="k">Six mornings a week</span></div>
+        <div class="fig" data-reveal><span class="n">12</span><span class="k">Sessions weekly</span></div>
+        <div class="fig" data-reveal><span class="n">5 yrs</span><span class="k">To finish laarivaar</span></div>
+        <div class="fig" data-reveal><span class="n">2018</span><span class="k">Teaching since</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================================================= TIMETABLE -->
+<section class="band">
+  <div class="wrap">
+    <div class="split">
+      <div>
+        <p class="label" data-reveal>The week</p>
+        <h2 data-reveal style="margin-top:var(--s-24)">Every day,<br>morning and evening.</h2>
+      </div>
+      <div>
+        <p class="body" data-reveal>Santhiya sessions are marked in gold. Everything else
+          on the timetable is listed so you can see where santhiya sits in the week — most
+          students come to more than one class.</p>
+        <p class="body" data-reveal>All at <strong>Guru Tegh Bahadur Gurdwara, 106 East Park
+          Road, Leicester LE5 4QB</strong>.</p>
+      </div>
+    </div>
+
+    <div class="tt" data-reveal>
+      <div class="row row--key">
+        <span class="day">Monday</span>
+        <span class="sess">
+          <span class="s"><span class="t">7–9am</span><span class="w"><b>Santhiya</b></span></span>
+          <span class="s"><span class="t">5–8pm</span><span class="w"><b>Santhiya</b> · Kirtan / Tanti Saaj · Tabla · Violin</span></span>
+          <span class="s"><span class="t">6:30–7:30pm</span><span class="w">Monday Night Talks</span></span>
+        </span>
+        <span class="note">Pizza langar</span>
+      </div>
+      <div class="row row--key">
+        <span class="day">Tuesday</span>
+        <span class="sess">
+          <span class="s"><span class="t">7–9am</span><span class="w"><b>Santhiya</b></span></span>
+          <span class="s"><span class="t">5–6pm</span><span class="w"><b>Santhiya</b> · Nitnem Kanth</span></span>
+        </span><span></span>
+      </div>
+      <div class="row row--key">
+        <span class="day">Wednesday</span>
+        <span class="sess">
+          <span class="s"><span class="t">7–9am</span><span class="w"><b>Santhiya</b></span></span>
+          <span class="s"><span class="t">5–6pm</span><span class="w">Itihaas (Sri Nanak Parkash) · Kirtan</span></span>
+        </span><span></span>
+      </div>
+      <div class="row row--key">
+        <span class="day">Thursday</span>
+        <span class="sess">
+          <span class="s"><span class="t">7–9am</span><span class="w"><b>Santhiya</b></span></span>
+          <span class="s"><span class="t">5–6pm</span><span class="w"><b>Santhiya</b> · Kirtan</span></span>
+        </span><span></span>
+      </div>
+      <div class="row row--key">
+        <span class="day">Friday</span>
+        <span class="sess">
+          <span class="s"><span class="t">7–9am</span><span class="w"><b>Santhiya</b></span></span>
+          <span class="s"><span class="t">5–6pm</span><span class="w"><b>Santhiya</b> · Kirtan</span></span>
+        </span><span></span>
+      </div>
+      <div class="row row--key">
+        <span class="day">Saturday</span>
+        <span class="sess">
+          <span class="s"><span class="t">9–11:30am</span><span class="w"><b>Santhiya</b></span></span>
+          <span class="s"><span class="t">2–6pm</span><span class="w">Air rifling</span></span>
+          <span class="s"><span class="t">4–6pm</span><span class="w"><b>Santhiya</b></span></span>
+          <span class="s"><span class="t">6–8pm</span><span class="w">Gatka · Kirtan / Tanti Saaj</span></span>
+        </span><span></span>
+      </div>
+      <div class="row row--key">
+        <span class="day">Sunday</span>
+        <span class="sess">
+          <span class="s"><span class="t">9–11:30am</span><span class="w"><b>Santhiya</b></span></span>
+          <span class="s"><span class="t">12:30–3pm</span><span class="w">Advanced Gatka · Kirtan / Tanti Saaj · Katha</span></span>
+          <span class="s"><span class="t">2:30–4pm</span><span class="w">Archery</span></span>
+          <span class="s"><span class="t">4–6pm</span><span class="w"><b>Santhiya</b></span></span>
+        </span><span></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================================================= CAMPS -->
+<section data-tone="light" class="band band--tight">
+  <div class="wrap">
+    <div class="split">
+      <div>
+        <p class="label" data-reveal>Camps</p>
+        <h2 data-reveal style="margin-top:var(--s-24)">Or start<br>in one week.</h2>
+      </div>
+      <div>
+        <p class="body" data-reveal>Three or four times a year the vidyala runs a short
+          intensive — four or five consecutive days on nothing but santhiya. It is the
+          easiest way in if a 7am class every morning is more than you can commit to yet.</p>
+        <p class="body" data-reveal>Camps run at <strong>Gurdwara Dashmesh Darbar, Gypsy
+          Lane</strong>. Places are limited and they fill.</p>
+      </div>
+    </div>
+
+    <div class="camps">
+      <figure class="camp" data-reveal>
+        <img src="../../Assets/Instagram/santhiya-camp-feb2026.jpg" alt="Gurbani Santhiya Camp poster — 16 to 19 February 2026, 9am to 12pm, Gurdwara Dashmesh Darbar, Leicester.">
+        <figcaption><b>16–19 February 2026</b>9am – 12pm · Dashmesh Darbar</figcaption>
+      </figure>
+      <figure class="camp" data-reveal>
+        <img src="../../Assets/Instagram/santhiya-camp-may2026.jpg" alt="Gurbani Santhiya Camp poster — 25 to 29 May 2026, 3pm to 7pm, Gurdwara Dashmesh Darbar, Leicester.">
+        <figcaption><b>25–29 May 2026</b>3pm – 7pm · Dashmesh Darbar</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ======================================================= START -->
+<section class="band band--tight">
+  <div class="wrap">
+    <p class="label" data-reveal>Starting</p>
+    <h2 data-reveal style="margin-top:var(--s-24);max-width:16em">No audition, no fee,
+      no starting point you need to have reached.</h2>
+    <p class="body" data-reveal style="margin-top:var(--s-32)">Come to any morning session
+      and sit at the back. Bring nothing — pothis are there. If you have never read
+      Gurmukhi at all, say so when you arrive and you will be started at the letters.</p>
+
+    <div class="start" data-reveal>
+      <div>
+        <p class="label" style="color:var(--ink-dim)">Ask about a place</p>
+        <p style="font-family:var(--font-display);font-size:var(--t-h4);font-weight:300;margin-top:var(--s-12)">
+          <a href="mailto:gurmat@shaheedibunga.com">gurmat@shaheedibunga.com</a>
+        </p>
+      </div>
+      <a class="btn" href="mailto:gurmat@shaheedibunga.com?subject=Santhiya%20class">Email the vidyala</a>
+    </div>
+  </div>
+
+  <div class="wrap"><hr class="rule" style="margin-top:var(--s-96)"></div>
+
+  <footer class="wrap">
+    <p class="fine">Shaheedi Bunga is a registered charity in England and Wales,
+      no. 1185103. Timetable as published by the vidyala — confirm current times before
+      travelling. Camp posters are the charity's own.</p>
+  </footer>
+</section>
+
+<script>__THREE__</script>
+<script>
+(function(){
+  "use strict";
+  var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---------------------------------------------------------- reveals
+     IntersectionObserver, not scroll maths — cheaper and simpler for
+     one-shot entrances. Blur reveal per the method: 30px -> 0, once. */
+  var els = document.querySelectorAll("[data-reveal]");
+  if (!("IntersectionObserver" in window) || reduce) {
+    els.forEach(function(e){ e.classList.add("in"); });
+  } else {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if (!en.isIntersecting) return;
+        var sibs = Array.prototype.slice.call(
+          en.target.parentNode.querySelectorAll("[data-reveal]"));
+        var i = Math.max(0, sibs.indexOf(en.target));
+        en.target.style.transitionDelay = Math.min(i * 0.07, 0.35) + "s";
+        en.target.classList.add("in");
+        io.unobserve(en.target);
+      });
+    }, { rootMargin: "0px 0px -12% 0px", threshold: 0.15 });
+    els.forEach(function(e){ io.observe(e); });
+  }
+
+  /* ------------------------------------------------- the scroll follower
+     One driving number, eased toward its target each frame. This is what
+     separates "scroll effect" from "premium scroll effect" — reading
+     scrollY directly transmits every trackpad jitter. */
+  var stage = document.getElementById("stage");
+  var root = document.documentElement;
+  var target = 0, shown = 0;
+
+  /* ?p=0.62 pins the scene at one frame. Renderable frames are what make
+     this verifiable in headless Chrome, where you cannot scroll. */
+  var pinned = null;
+  var m = /[?&]p=([0-9.]+)/.exec(location.search);
+  if (m) pinned = Math.min(1, Math.max(0, parseFloat(m[1])));
+
+  function read(){
+    if (pinned !== null) { target = pinned; return; }
+    var r = stage.getBoundingClientRect();
+    var span = r.height - innerHeight;
+    target = span > 0 ? Math.min(1, Math.max(0, -r.top / span)) : 0;
+  }
+  read();
+  if (pinned !== null) shown = pinned;
+  addEventListener("scroll", read, { passive: true });
+  addEventListener("resize", read);
+
+  /* ------------------------------------------------------------- scene */
+  var canvas = document.getElementById("gl");
+  var scene, camera, renderer, ready = false;
+  var BAYS = 11, GAP = 4.2, BAYS_SPAN = BAYS * GAP;
+
+  function build(){
+    if (typeof THREE === "undefined") return false;
+
+    renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: false });
+    renderer.setClearColor(0x080B18, 1);
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.12;
+
+    scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(0x0D1226, 0.030);
+
+    camera = new THREE.PerspectiveCamera(46, 1, 0.1, 200);
+
+    /* --- one cusped-arch wall geometry, reused across every bay --------
+       Shape + Path hole through ExtrudeGeometry gives a REAL opening.
+       Cheaper and far better-looking than a box with a texture. */
+    function archWall(w, h, ah, aw){
+      var s = new THREE.Shape();
+      s.moveTo(-w/2, 0); s.lineTo(-w/2, h); s.lineTo(w/2, h); s.lineTo(w/2, 0); s.closePath();
+      var p = new THREE.Path();
+      var x = aw/2, spring = ah * 0.52;
+      p.moveTo(-x, 0);
+      p.lineTo(-x, spring);
+      p.bezierCurveTo(-x, spring + ah*0.16, -x*0.62, spring + ah*0.10, -x*0.50, spring + ah*0.20);
+      p.bezierCurveTo(-x*0.34, spring + ah*0.40, -x*0.16, spring + ah*0.46, 0, ah);
+      p.bezierCurveTo( x*0.16, spring + ah*0.46,  x*0.34, spring + ah*0.40,  x*0.50, spring + ah*0.20);
+      p.bezierCurveTo( x*0.62, spring + ah*0.10,  x, spring + ah*0.16,  x, spring);
+      p.lineTo(x, 0);
+      p.closePath();
+      s.holes.push(p);
+      var g = new THREE.ExtrudeGeometry(s, { depth: 0.42, bevelEnabled: false });
+      g.translate(0, 0, -0.21);
+      return g;
+    }
+
+    var stoneG = archWall(6.2, 6.4, 4.5, 3.0);
+    var stone = new THREE.MeshStandardMaterial({
+      color: 0x8A806B, roughness: 0.92, metalness: 0.0
+    });
+
+    var world = new THREE.Group();
+    scene.add(world);
+
+    /* 11 bays receding — the arcade of a bunga */
+    for (var i = 0; i < BAYS; i++){
+      var z = -i * GAP;
+      var L = new THREE.Mesh(stoneG, stone); L.position.set(-3.1, 0, z); world.add(L);
+      var R = new THREE.Mesh(stoneG, stone); R.position.set( 3.1, 0, z); world.add(R);
+    }
+
+    /* floor + ceiling */
+    var floorG = new THREE.PlaneGeometry(14, BAYS * GAP + 20);
+    var floor = new THREE.Mesh(floorG, new THREE.MeshStandardMaterial({
+      color: 0x3A3226, roughness: 1.0
+    }));
+    floor.rotation.x = -Math.PI / 2;
+    floor.position.set(0, 0, -BAYS * GAP / 2 + 4);
+    world.add(floor);
+
+    var ceil = new THREE.Mesh(floorG, new THREE.MeshStandardMaterial({
+      color: 0x1A1712, roughness: 1.0
+    }));
+    ceil.rotation.x = Math.PI / 2;
+    ceil.position.set(0, 6.4, -BAYS * GAP / 2 + 4);
+    world.add(ceil);
+
+    /* --- lamplight ---------------------------------------------------
+       A vertical gradient CanvasTexture used as emissiveMap is what makes
+       lamplight read as light falling, rather than a glowing panel. */
+    var c = document.createElement("canvas");
+    c.width = 4; c.height = 128;
+    var cx = c.getContext("2d");
+    var grd = cx.createLinearGradient(0, 128, 0, 0);
+    grd.addColorStop(0.00, "#ffffff");
+    grd.addColorStop(0.35, "#b98c3f");
+    grd.addColorStop(1.00, "#000000");
+    cx.fillStyle = grd; cx.fillRect(0, 0, 4, 128);
+    var glowTex = new THREE.CanvasTexture(c);
+
+    var lit = new THREE.MeshStandardMaterial({
+      color: 0x140F08, roughness: 1,
+      emissive: 0xE8A94C, emissiveMap: glowTex, emissiveIntensity: 0.55
+    });
+    for (var j = 1; j < BAYS; j += 2){
+      var panel = new THREE.Mesh(new THREE.PlaneGeometry(2.9, 4.2), lit);
+      panel.position.set(0, 2.1, -j * GAP - GAP / 2);
+      world.add(panel);
+    }
+
+    /* the far lamp — the thing the camera is travelling toward */
+    var far = new THREE.Mesh(
+      new THREE.PlaneGeometry(4.2, 4.0),
+      new THREE.MeshBasicMaterial({ color: 0xD8A557, toneMapped: false,
+        transparent: true, opacity: 0.62 })
+    );
+    far.position.set(0, 2.4, -BAYS * GAP - 1.6);
+    world.add(far);
+
+    var bulb = new THREE.PointLight(0xFFC978, 6.5, 26, 2.0);
+    bulb.position.set(0, 2.6, -BAYS * GAP + 1);
+    world.add(bulb);
+    var near = new THREE.PointLight(0xFFBE6E, 3.2, 18, 2.0);
+    near.position.set(0, 3.0, -6);
+    world.add(near);
+
+    scene.add(new THREE.HemisphereLight(0x4A5890, 0x14161F, 1.15));
+    var key = new THREE.DirectionalLight(0x8FA0D8, 0.55);
+    key.position.set(3, 8, 6);
+    scene.add(key);
+
+    ready = true;
+    resize();
+    return true;
+  }
+
+  function resize(){
+    if (!ready) return;
+    var w = canvas.clientWidth || innerWidth;
+    var h = canvas.clientHeight || innerHeight;
+    renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
+    renderer.setSize(w, h, false);
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+  }
+  addEventListener("resize", resize);
+
+  /* ------------------------------------------------------------- frame */
+  function frame(){
+    // The follower. 0.085 gives weight without feeling laggy.
+    shown += (target - shown) * (reduce ? 1 : 0.085);
+    root.style.setProperty("--p", shown.toFixed(4));
+    root.style.setProperty("--scene", shown.toFixed(4));
+
+    if (ready){
+      /* Camera travels straight down the arcade and settles.
+         Position only — no look-at interpolation, so there is nothing
+         that can swing the camera at the ceiling mid-move. */
+      var p = shown;
+      camera.position.set(
+        0,
+        2.35 - p * 0.28,
+        9.5 - p * (BAYS_SPAN - 3.2)
+      );
+      camera.rotation.set(-0.02 + p * 0.035, 0, 0);
+      renderer.render(scene, camera);
+    }
+    requestAnimationFrame(frame);
+  }
+
+  try { build(); } catch (e) { ready = false; }
+
+  /* If WebGL failed the page must still read — the canvas just stays dark
+     and every [data-reveal] is forced visible. */
+  if (!ready) document.documentElement.classList.add("js-off");
+
+  requestAnimationFrame(frame);
+})();
+</script>

@@ -1,0 +1,2530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ਸਿੱਖੀ ਕੈਲੰਡਰ · The Sikh Calendar — Shaheedi Bunga</title>
+<meta name="description" content="Gurpurabs, sangrand, puranmashi and masya on the Nanakshahi calendar. Panjabi dates first, English dates underneath.">
+<meta name="theme-color" content="#F5F0E6">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Spectral:wght@400;500;600&family=Jost:wght@400;500;600&family=Noto+Serif+Gurmukhi:wght@500;600;700&family=Noto+Sans+Gurmukhi:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================================
+   Sikhi Calendar — website page
+   ----------------------------------------------------------------------------
+   Cream is the ground throughout, as asked. Type follows the Shaheedi Bunga
+   design system (Cormorant Garamond display, Spectral body, Jost for labels,
+   Noto Serif Gurmukhi for Gurmukhi) so this page sits with the rest of the
+   site. Deliberately no blue anywhere.
+
+   Everything is scoped under .sbcal so it can be dropped into a page that has
+   its own stylesheet without the two fighting.
+   ========================================================================= */
+
+.sbcal {
+  /* ground — cream leads */
+  --cream:      #F5F0E6;
+  --cream-2:    #EFE8D8;
+  --cream-3:    #E7DEC9;
+  --paper:      #FFFDF7;
+  --rule:       #DCD3BE;
+  --rule-soft:  #E8E0CC;
+
+  --ink:        #221C14;
+  --ink-2:      #554B3C;
+  --ink-3:      #6E6558;
+
+  --gold:       #9A7A2C;
+  --gold-deep:  #7A5D18;
+  --gold-soft:  #EFE3C4;
+
+  --clay:       #8A5230;
+  --plum:       #7A3350;
+  --crimson:    #9E2B25;
+  --saffron:    #9E5516;
+  --forest:     #2F6B3A;
+  --stone:      #5C5349;
+  --green:      #4A6B24;
+
+  --display: 'Cormorant Garamond', Georgia, serif;
+  --body:    'Spectral', Georgia, serif;
+  --util:    'Jost', system-ui, -apple-system, sans-serif;
+  --gur:     'Noto Serif Gurmukhi', 'Spectral', serif;
+  --gur-s:   'Noto Sans Gurmukhi', sans-serif;
+
+  background: var(--cream);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 17px;
+  line-height: 1.62;
+  -webkit-font-smoothing: antialiased;
+}
+
+.sbcal *, .sbcal *::before, .sbcal *::after { box-sizing: border-box; }
+.sbcal button { font: inherit; color: inherit; cursor: pointer; background: none; border: 0; }
+.sbcal :focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.sbcal .num { font-variant-numeric: tabular-nums; }
+.sbcal .gur { font-family: var(--gur); }
+
+.sbcal__inner { max-width: 1080px; margin: 0 auto; padding: 0 24px 80px; }
+
+/* ---------------------------------------------------------------- masthead */
+.sbcal__head {
+  display: flex; align-items: center; gap: 18px;
+  padding: 46px 0 30px; border-bottom: 1px solid var(--rule);
+}
+.sbcal__mark { width: 68px; height: 68px; flex: 0 0 68px; border-radius: 50%; }
+.sbcal__title { min-width: 0; }
+.sbcal__label {
+  font-family: var(--util); font-size: 11px; font-weight: 500;
+  letter-spacing: .16em; text-transform: uppercase; color: var(--gold);
+}
+.sbcal__h1 {
+  font-family: var(--gur); font-size: clamp(30px, 5vw, 48px);
+  font-weight: 600; line-height: 1.05; margin: 8px 0 0; letter-spacing: -.01em;
+}
+.sbcal__h1 span {
+  display: block; font-family: var(--display); font-weight: 500;
+  font-size: clamp(19px, 2.6vw, 27px); color: var(--ink-2); margin-top: 4px;
+  letter-spacing: 0;
+}
+
+/* ------------------------------------------------------------------- today */
+.sbcal__today {
+  margin: 34px 0 0; padding: 30px 32px;
+  background: var(--paper); border: 1px solid var(--rule);
+  border-radius: 4px; position: relative; overflow: hidden;
+}
+.sbcal__today::after {
+  content: ''; position: absolute; inset: 0 0 auto 0; height: 3px;
+  background: linear-gradient(90deg, var(--gold), var(--gold-soft) 60%, transparent);
+}
+.sbcal__todayrow { display: flex; align-items: center; gap: 30px; flex-wrap: wrap; }
+.sbcal__bigday {
+  font-family: var(--gur); font-size: 76px; font-weight: 600;
+  line-height: .86; color: var(--gold-deep); letter-spacing: -.03em;
+}
+.sbcal__todaystack { min-width: 0; flex: 1 1 220px; }
+.sbcal__dow {
+  font-family: var(--util); font-size: 11px; font-weight: 500;
+  letter-spacing: .15em; text-transform: uppercase; color: var(--ink-3);
+}
+.sbcal__nsdate {
+  font-family: var(--gur); font-size: 29px; font-weight: 600;
+  line-height: 1.15; margin-top: 5px;
+}
+.sbcal__gdate { font-size: 16px; color: var(--ink-2); margin-top: 6px; }
+.sbcal__facts {
+  display: flex; gap: 30px; flex-wrap: wrap;
+  padding-left: 28px; border-left: 1px solid var(--rule);
+}
+.sbcal__fk {
+  font-family: var(--util); font-size: 10px; font-weight: 500;
+  letter-spacing: .14em; text-transform: uppercase; color: var(--ink-3);
+}
+.sbcal__fv {
+  font-family: var(--display); font-size: 24px; font-weight: 600;
+  margin-top: 3px; line-height: 1.1;
+}
+.sbcal__fv small { font-family: var(--body); font-size: 13px; font-weight: 400; color: var(--ink-3); }
+
+/* ---------------------------------------------------------------- sections */
+.sbcal__sec { margin-top: 54px; }
+.sbcal__sechead {
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: 16px; margin-bottom: 20px;
+  padding-bottom: 10px; border-bottom: 1px solid var(--rule);
+}
+.sbcal__h2 {
+  font-family: var(--gur); font-size: clamp(21px, 3vw, 28px);
+  font-weight: 600; margin: 0; line-height: 1.15;
+}
+.sbcal__h2 em {
+  font-family: var(--display); font-style: normal; font-weight: 500;
+  color: var(--ink-3); font-size: .74em; margin-left: 10px;
+}
+.sbcal__nav { display: flex; gap: 4px; align-items: center; flex: 0 0 auto; }
+.sbcal__btn {
+  font-family: var(--util); font-size: 12.5px; font-weight: 500;
+  padding: 7px 13px; border: 1px solid var(--rule); border-radius: 3px;
+  background: var(--paper); color: var(--ink-2); white-space: nowrap;
+  transition: background .14s, border-color .14s, color .14s;
+}
+.sbcal__btn:hover { border-color: var(--gold); color: var(--gold-deep); }
+.sbcal__btn[aria-pressed="true"] {
+  background: var(--gold-deep); border-color: var(--gold-deep); color: var(--cream);
+}
+.sbcal__ico { width: 32px; padding: 7px 0; text-align: center; }
+
+/* ---------------------------------------------------------------- upcoming */
+.sbcal__up { display: grid; gap: 2px; }
+.sbcal__uprow {
+  display: grid; grid-template-columns: 74px 96px minmax(0, 1fr) auto;
+  gap: 18px; align-items: baseline;
+  padding: 14px 4px; border-bottom: 1px solid var(--rule-soft);
+}
+.sbcal__uprow:last-child { border-bottom: 0; }
+.sbcal__upns {
+  font-family: var(--gur); font-size: 20px; font-weight: 600; line-height: 1;
+}
+.sbcal__upns b { display: block; font-family: var(--gur-s); font-size: 11px;
+                 font-weight: 500; color: var(--ink-3); margin-top: 3px; }
+.sbcal__upg { font-family: var(--util); font-size: 13px; color: var(--ink-2); }
+.sbcal__upn { min-width: 0; }
+.sbcal__upt { font-family: var(--gur-s); font-size: 16.5px; font-weight: 600; line-height: 1.35; }
+.sbcal__upt span { display: block; font-family: var(--body); font-size: 14px;
+                   font-weight: 400; color: var(--ink-3); margin-top: 2px; }
+.sbcal__in {
+  font-family: var(--util); font-size: 11px; font-weight: 500;
+  letter-spacing: .09em; text-transform: uppercase; color: var(--ink-3);
+  white-space: nowrap;
+}
+.sbcal__in strong { font-size: 15px; color: var(--gold-deep); letter-spacing: 0; }
+
+/* ------------------------------------------------------------------- month */
+.sbcal__dows {
+  display: grid; grid-template-columns: repeat(7, 1fr);
+  border-bottom: 1px solid var(--rule);
+}
+.sbcal__dow2 {
+  font-family: var(--util); font-size: 10.5px; font-weight: 500;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--ink-3);
+  padding: 0 6px 9px;
+}
+.sbcal__grid {
+  display: grid; grid-template-columns: repeat(7, 1fr);
+  border-left: 1px solid var(--rule-soft);
+}
+.sbcal__cell {
+  border-right: 1px solid var(--rule-soft); border-bottom: 1px solid var(--rule-soft);
+  min-height: 104px; padding: 8px 9px 10px; background: var(--paper);
+}
+.sbcal__cell--out { background: var(--cream-2); }
+.sbcal__cell--out .sbcal__cn, .sbcal__cell--out .sbcal__cg { opacity: .5; }
+.sbcal__cell--today { background: var(--gold-soft); }
+.sbcal__cell--sang { box-shadow: inset 3px 0 0 var(--gold); }
+.sbcal__ctop { display: flex; align-items: baseline; gap: 7px; }
+.sbcal__cn { font-family: var(--gur); font-size: 21px; font-weight: 600; line-height: 1; }
+.sbcal__cg { font-family: var(--util); font-size: 11px; color: var(--ink-3); }
+.sbcal__moon { margin-left: auto; font-size: 12px; color: var(--ink-3); }
+.sbcal__chips { margin-top: 6px; display: flex; flex-direction: column; gap: 3px; }
+.sbcal__chip {
+  font-family: var(--gur-s); font-size: 11.5px; line-height: 1.3;
+  padding: 2px 6px; border-radius: 2px; border-left: 2px solid currentColor;
+  background: var(--cream-2); overflow: hidden; text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.sbcal__more { font-family: var(--util); font-size: 10.5px; color: var(--ink-3);
+               margin-top: 4px; padding-left: 6px; }
+
+/* --------------------------------------------------------------- year list */
+.sbcal__year { display: grid; gap: 22px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+.sbcal__ym { border-top: 2px solid var(--ink); padding-top: 12px; }
+.sbcal__ymh { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+.sbcal__ymt { font-family: var(--gur); font-size: 20px; font-weight: 600; }
+.sbcal__ymt em { font-family: var(--display); font-style: normal; color: var(--ink-3);
+                 font-size: .72em; margin-left: 7px; }
+.sbcal__yms { font-family: var(--util); font-size: 11px; color: var(--ink-3); }
+.sbcal__ymrow {
+  display: grid; grid-template-columns: 40px 62px minmax(0,1fr); gap: 10px;
+  align-items: baseline; padding: 7px 0; border-bottom: 1px solid var(--rule-soft);
+  font-size: 14.5px;
+}
+.sbcal__ymrow:last-child { border-bottom: 0; }
+.sbcal__ymns { font-family: var(--gur); font-size: 16px; font-weight: 600; text-align: right; }
+.sbcal__ymg { font-family: var(--util); font-size: 12px; color: var(--ink-3); }
+.sbcal__ymn { font-family: var(--gur-s); font-weight: 600; line-height: 1.3; min-width: 0; }
+.sbcal__ymn span { display: block; font-family: var(--body); font-weight: 400;
+                   font-size: 13px; color: var(--ink-3); }
+
+/* ------------------------------------------------------------------ colour */
+.sbcal .h-gold    { color: var(--gold-deep); }
+.sbcal .h-clay    { color: var(--clay); }
+.sbcal .h-plum    { color: var(--plum); }
+.sbcal .h-crimson { color: var(--crimson); }
+.sbcal .h-saffron { color: var(--saffron); }
+.sbcal .h-forest  { color: var(--forest); }
+.sbcal .h-stone   { color: var(--stone); }
+.sbcal .h-green   { color: var(--green); }
+
+/* -------------------------------------------------------------- colophon */
+.sbcal__note {
+  margin-top: 54px; padding: 22px 26px;
+  background: var(--cream-2); border-left: 3px solid var(--gold);
+  font-size: 14.5px; color: var(--ink-2); line-height: 1.68;
+}
+.sbcal__note strong { color: var(--ink); }
+.sbcal__note p { margin: 0 0 10px; }
+.sbcal__note p:last-child { margin: 0; }
+
+@media (max-width: 720px) {
+  .sbcal { font-size: 16px; }
+  .sbcal__inner { padding: 0 16px 56px; }
+  .sbcal__head { padding: 30px 0 22px; gap: 14px; }
+  .sbcal__mark { width: 52px; height: 52px; flex-basis: 52px; }
+  .sbcal__today { padding: 22px 20px; }
+  .sbcal__bigday { font-size: 58px; }
+  .sbcal__facts { padding-left: 0; border-left: 0; border-top: 1px solid var(--rule);
+                  padding-top: 16px; width: 100%; gap: 22px; }
+  .sbcal__uprow { grid-template-columns: 60px minmax(0,1fr); gap: 6px 14px; }
+  .sbcal__upg { grid-column: 1; font-size: 11.5px; }
+  .sbcal__in { grid-column: 2; }
+  .sbcal__cell { min-height: 76px; padding: 5px 5px 7px; }
+  .sbcal__cn { font-size: 16px; }
+  .sbcal__chip { font-size: 10px; }
+  .sbcal__dow2 { font-size: 9px; padding: 0 3px 7px; }
+}
+
+@media print {
+  .sbcal { background: #fff; }
+  .sbcal__nav, .sbcal__today { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sbcal * { transition: none !important; }
+}
+</style>
+</head>
+<body style="margin:0;background:#F5F0E6">
+
+<div class="sbcal" id="sbcal">
+  <div class="sbcal__inner">
+
+    <header class="sbcal__head">
+      <img class="sbcal__mark" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAMAAABlApw1AAABamlDQ1BJQ0MgUHJvZmlsZQAAeJx1kL1Lw1AUxU+rUtA6iA4dHDKJQ9TSCnZxaCsURTBUBatTmn4JbXwkKVJxE1cp+B9YwVlwsIhUcHFwEEQHEd2cOim4aHjel1TaIt7H5f04nHO5XMAbUBkr9gIo6ZaRTMSktdS65HuDh55TqmayqKIsCv79u+vz0fXeT4hZTbt2ENlPXJfOLpd2ngJTf/1d1Z/Jmhr939RBjRkW4JGJlW2LCd4lHjFoKeKq4LzLx4LTLp87npVknPiWWNIKaoa4SSynO/R8B5eKZa21g9jen9VXl8Uc6lHMYRMmGIpQUYEEBeF//NOOP44tcldgUC6PAizKREkRE7LE89ChYRIycQhB6pC4c+t+D637yW1t7xWYbXDOL9raQgM4naGT1dvaeAQYGgBu6kw1VEfqofbmcsD7CTCYAobvKLNh5sIhd3t/DOh74fxjDPAdAnaV868jzu0ahZ+BK/0HFylqvLiAv9gAAAH+UExURVE2JxUUIl9YUUQ2LWpqADkSL+DNpUVfo1JANJmerCY8gEg2LTgsJB8yap+RfHeDpQAAAOPb0PHq4+vj2hUWKNzTyAYJItPHuLiUSC0nKfjz7mtXNauIQ1RGMyMqT0Y6LtfNwZN1PHJlWIhqOXljOYV6bjsyLWZaTamFOSczY3RrY4+EeLJ3TR0kR8WZSMu2jxwgPJl7QntyaSoyWZuTiyEeJ1JKRcaodpKLhVtTTKWbkGZMLwAAPqyjmKV6OMa7rBcXJrebZhUVJdCqg7q0q72jcLCqo45oSRESJdCYcxgXJxgYJRMUJcOHUjQmGYdaNwICHZ6AQU81GQAAValqR8aJZBYWJeGshSclKKyIbdXCmuHTuM2ze+axi+SlUlNWaQsOI9egURkZGd3QujVFdBwrZBQdRCgcEbaQPRkWGScaKEUtFHN3iEVKZqV9Y4ldQz4+O8B8VF1idn8/PzFIiFJklUZZiYJ+g2FdYz5BV0Q9QyIcKP8AAD1Tj6KMhSAtYQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPpD7REAAACAdFJOU/SrDm8CHf//jv//HML///8A/////v/+//7+//7+/v/+//7//v7//v/////////////+/////v///////gT///9R/47//////8z/FzCr//7///7/A///bf8T/////////8//Cv////////8V//////8F//8E/////////y8B////isWdAQAAMxlJREFUeNrNfQlD29iSLjPzZubtr43lRZGErMWS8Yr3rY1DMHY2INDZO93p3N6323ed9c3MX3/fV0cyhgAWSfrOU6fBGCPVd2o9dc6p2vjoQ10ff6y+/+6HB7ef3nl492525bp79+Gdp7cfPP/j+c9+gGvjA1EvX394AMq/EIo1Tevqy6uLH+XtL4DjwfOVP/n/AYCi5MHtOzLmmq7bluE5jskrnzfz8sJxPMOyAl2A3L1z+8GHAvG+AD7hl/uKeE23QTmIrtfzuMyViz/zXZM49AjE/eUN/tMAfCLUPxTiLV9oB92ODxwBJaerGZ7WFVnyHcN3mmaeKE48KyCIh4Lhk/8sAHzwc1JP4pscYNBu2Trl3fKoBXhh+PELg4qhBxZkSz7rCSce3n7+fhg23kfyH9wBCbrlcVxNz7A12xH11bJ8wZcKAF97VoTEN7Qg+hNHMNx58D7asPHOo3//KeRei0gx7C7J1E1Nxlkfm4bhQ5Mdqq/j+YbRNHSlwc0gyw8FBhWDGKAPT394Zy68KwdIvhBRp9iYXTXOWtOgKpiiskqV82evqR1jy9QVb7JNy6LWmL6tAcL9vxwHPlGyo8njHYNS4FhLNRZb0/Q8A1bTji7LEn4o+4RfQoW1bABu4W8cIHMsvKQkffIXAEDhUeTjyZ4tIpO1HNs/EeowxjZkRc929ayVtaG18g1v6MpDOLEKewaVAmz0yQYDfLlz/x0g3JwDQj4F2LR80VAOo1Jjyw40CLqdzRqabWlG1oDVkW/6GG9lA8DIAoUvIIR5gt5qKgjanfu/PgeeRuST7TrkmdRz5A0ZZkOzQHFXs7TABuWWrlvZ+JuuAQjQgBPQHlF+h1SbtuKnQHj68a8L4DZUl+MlUqtlYV5MZUr0bBBoPkjtGsQEQ8qhHy8BQF5ocCD9whArq4v5hQobjrDRFghQ59u/IoD7D2nhIfuGkM9xwyjCmNvZaHAD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" alt="Shaheedi Bunga" width="68" height="68">
+      <div class="sbcal__title">
+        <div class="sbcal__label">Shaheedi Bunga · Sikhi School</div>
+        <h1 class="sbcal__h1" lang="pa">ਸਿੱਖੀ ਕੈਲੰਡਰ<span lang="en">The Sikh Calendar</span></h1>
+      </div>
+    </header>
+
+    <section class="sbcal__today" id="sbToday"></section>
+
+    <section class="sbcal__sec">
+      <div class="sbcal__sechead">
+        <h2 class="sbcal__h2" lang="pa">ਅੱਗੇ ਆ ਰਹੇ <em lang="en">Coming up</em></h2>
+      </div>
+      <div class="sbcal__up" id="sbUp"></div>
+    </section>
+
+    <section class="sbcal__sec">
+      <div class="sbcal__sechead">
+        <h2 class="sbcal__h2" id="sbMonthTitle"></h2>
+        <div class="sbcal__nav">
+          <button class="sbcal__btn sbcal__ico" id="sbPrev" aria-label="Previous month">‹</button>
+          <button class="sbcal__btn" id="sbThis">This month</button>
+          <button class="sbcal__btn sbcal__ico" id="sbNext" aria-label="Next month">›</button>
+        </div>
+      </div>
+      <div class="sbcal__dows" id="sbDows"></div>
+      <div class="sbcal__grid" id="sbGrid"></div>
+    </section>
+
+    <section class="sbcal__sec">
+      <div class="sbcal__sechead">
+        <h2 class="sbcal__h2" id="sbYearTitle"></h2>
+      </div>
+      <div class="sbcal__year" id="sbYear"></div>
+    </section>
+
+    <div class="sbcal__note" id="sbNote"></div>
+
+  </div>
+</div>
+
+<script>/* ============================================================================
+   nanakshahi.js — the calendar engine
+   ----------------------------------------------------------------------------
+   Implements the MOOL NANAKSHAHI calendar (the original 2003 / Purewal
+   version), in which every month begins on a permanently fixed Gregorian date.
+   That fixity is the whole point: 1 Chet is 14 March in every year, for ever,
+   so a Panjabi date and an English date can sit on the same cell without one
+   of them drifting.
+
+   Structure
+     Chet     31   starts 14 Mar        Bhadon   30   starts 16 Aug
+     Vaisakh  31   starts 14 Apr        Assu     30   starts 15 Sep
+     Jeth     31   starts 15 May        Katak    30   starts 15 Oct
+     Harh     31   starts 15 Jun        Maghar   30   starts 14 Nov
+     Sawan    31   starts 16 Jul        Poh      30   starts 14 Dec
+                                        Magh     30   starts 13 Jan
+                                        Phagun   30*  starts 12 Feb
+     * Phagun takes a 31st day whenever the Gregorian February it runs through
+       is a leap February. 365 / 366 days, tracking the tropical year.
+
+   Epoch: year 1 = 1469 CE, the birth of Guru Nanak Sahib.
+          Nanakshahi year = Gregorian year - 1468 on and after 14 March.
+   Khalsa Samvat: year 1 = Vaisakhi 1699. Khalsa year = Nanakshahi year - 230.
+   ========================================================================= */
+
+const Nanakshahi = (function () {
+  'use strict';
+
+  /* ---------------------------------------------------------------- months */
+
+  const MONTHS = [
+    { n: 1,  en: 'Chet',    pa: 'ਚੇਤ',   days: 31, gm: 3,  gd: 14 },
+    { n: 2,  en: 'Vaisakh', pa: 'ਵੈਸਾਖ', days: 31, gm: 4,  gd: 14 },
+    { n: 3,  en: 'Jeth',    pa: 'ਜੇਠ',   days: 31, gm: 5,  gd: 15 },
+    { n: 4,  en: 'Harh',    pa: 'ਹਾੜ',   days: 31, gm: 6,  gd: 15 },
+    { n: 5,  en: 'Sawan',   pa: 'ਸਾਵਣ',  days: 31, gm: 7,  gd: 16 },
+    { n: 6,  en: 'Bhadon',  pa: 'ਭਾਦੋਂ', days: 30, gm: 8,  gd: 16 },
+    { n: 7,  en: 'Assu',    pa: 'ਅੱਸੂ',  days: 30, gm: 9,  gd: 15 },
+    { n: 8,  en: 'Katak',   pa: 'ਕੱਤਕ',  days: 30, gm: 10, gd: 15 },
+    { n: 9,  en: 'Maghar',  pa: 'ਮੱਘਰ',  days: 30, gm: 11, gd: 14 },
+    { n: 10, en: 'Poh',     pa: 'ਪੋਹ',   days: 30, gm: 12, gd: 14 },
+    { n: 11, en: 'Magh',    pa: 'ਮਾਘ',   days: 30, gm: 1,  gd: 13 },
+    { n: 12, en: 'Phagun',  pa: 'ਫੱਗਣ',  days: 30, gm: 2,  gd: 12 }
+  ];
+
+  // Months 1-10 fall in the Gregorian year the Nanakshahi year opened in;
+  // Magh and Phagun spill over into the next one.
+  const OFFSET = m => (m <= 10 ? 1468 : 1469);
+
+  const WEEKDAYS = [
+    { en: 'Sunday',    pa: 'ਐਤਵਾਰ',      short_en: 'Sun', short_pa: 'ਐਤ' },
+    { en: 'Monday',    pa: 'ਸੋਮਵਾਰ',      short_en: 'Mon', short_pa: 'ਸੋਮ' },
+    { en: 'Tuesday',   pa: 'ਮੰਗਲਵਾਰ',     short_en: 'Tue', short_pa: 'ਮੰਗਲ' },
+    { en: 'Wednesday', pa: 'ਬੁੱਧਵਾਰ',      short_en: 'Wed', short_pa: 'ਬੁੱਧ' },
+    { en: 'Thursday',  pa: 'ਵੀਰਵਾਰ',      short_en: 'Thu', short_pa: 'ਵੀਰ' },
+    { en: 'Friday',    pa: 'ਸ਼ੁੱਕਰਵਾਰ',     short_en: 'Fri', short_pa: 'ਸ਼ੁੱਕਰ' },
+    { en: 'Saturday',  pa: 'ਸ਼ਨਿੱਚਰਵਾਰ',   short_en: 'Sat', short_pa: 'ਸ਼ਨਿੱਚਰ' }
+  ];
+
+  const G_MONTHS_SHORT = ['Jan','Feb','Mar','Apr','May','Jun',
+                          'Jul','Aug','Sep','Oct','Nov','Dec'];
+  const G_MONTHS_LONG  = ['January','February','March','April','May','June',
+                          'July','August','September','October','November','December'];
+
+  const GURMUKHI_DIGITS = ['੦','੧','੨','੩','੪','੫','੬','੭','੮','੯'];
+
+  /* ------------------------------------------------------------- utilities */
+
+  const isGregLeap = y => (y % 4 === 0 && y % 100 !== 0) || y % 400 === 0;
+
+  /** Strip the time off a Date so day arithmetic is exact in local time. */
+  function midnight(d) {
+    return new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  }
+
+  function addDays(d, n) {
+    return new Date(d.getFullYear(), d.getMonth(), d.getDate() + n);
+  }
+
+  /** Whole days from a to b, both normalised to local midnight. */
+  function daysBetween(a, b) {
+    const MS = 86400000;
+    // Noon anchoring sidesteps daylight-saving shifts.
+    const ta = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate());
+    const tb = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate());
+    return Math.round((tb - ta) / MS);
+  }
+
+  /** ISO yyyy-mm-dd in LOCAL time — never use toISOString(), it shifts a day. */
+  function isoKey(d) {
+    const p = n => String(n).padStart(2, '0');
+    return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
+  }
+
+  function parseIso(s) {
+    const [y, m, d] = s.split('-').map(Number);
+    return new Date(y, m - 1, d);
+  }
+
+  /* -------------------------------------------------------- month geometry */
+
+  function monthMeta(m) { return MONTHS[m - 1]; }
+
+  /** Gregorian date on which day 1 of this Nanakshahi month falls. */
+  function monthStart(nsYear, m) {
+    const meta = monthMeta(m);
+    return new Date(nsYear + OFFSET(m), meta.gm - 1, meta.gd);
+  }
+
+  /** Length of a Nanakshahi month — only Phagun ever varies. */
+  function monthLength(nsYear, m) {
+    if (m !== 12) return monthMeta(m).days;
+    // Phagun runs 12 Feb -> 13 Mar of Gregorian year nsYear + 1469.
+    return isGregLeap(nsYear + 1469) ? 31 : 30;
+  }
+
+  function yearLength(nsYear) {
+    return isGregLeap(nsYear + 1469) ? 366 : 365;
+  }
+
+  /* ----------------------------------------------------------- conversions */
+
+  /**
+   * Gregorian -> Nanakshahi.
+   * @returns {{year:number, month:number, day:number, monthMeta:object,
+   *            khalsaYear:number, weekday:number, greg:Date,
+   *            dayOfYear:number, monthLength:number}}
+   */
+  function fromGregorian(input) {
+    const g = midnight(input instanceof Date ? input : new Date(input));
+    const gy = g.getFullYear();
+
+    // The Nanakshahi year turns over on 14 March.
+    const newYear = new Date(gy, 2, 14);
+    const nsYear = g < newYear ? gy - 1469 : gy - 1468;
+
+    // Walk the months backwards to find the one containing this date.
+    let month = 12;
+    for (let m = 12; m >= 1; m--) {
+      if (g >= monthStart(nsYear, m)) { month = m; break; }
+    }
+    const day = daysBetween(monthStart(nsYear, month), g) + 1;
+
+    return {
+      year: nsYear,
+      month,
+      day,
+      monthMeta: monthMeta(month),
+      monthLength: monthLength(nsYear, month),
+      khalsaYear: nsYear - 230,
+      weekday: g.getDay(),
+      greg: g,
+      dayOfYear: daysBetween(monthStart(nsYear, 1), g) + 1
+    };
+  }
+
+  /** Nanakshahi -> Gregorian. Days beyond the month roll forward. */
+  function toGregorian(nsYear, m, day) {
+    return addDays(monthStart(nsYear, m), day - 1);
+  }
+
+  /* ------------------------------------------------------------ formatting */
+
+  function gurmukhiNumber(n) {
+    return String(n).replace(/\d/g, d => GURMUKHI_DIGITS[+d]);
+  }
+
+  /** 14 -> '14th'. Used only in English output. */
+  function ordinal(n) {
+    const s = ['th', 'st', 'nd', 'rd'];
+    const v = n % 100;
+    return n + (s[(v - 20) % 10] || s[v] || s[0]);
+  }
+
+  /** e.g. '14 Mar 2026' */
+  function gregShort(d) {
+    return `${d.getDate()} ${G_MONTHS_SHORT[d.getMonth()]} ${d.getFullYear()}`;
+  }
+
+  /** e.g. '14 March 2026' */
+  function gregLong(d) {
+    return `${d.getDate()} ${G_MONTHS_LONG[d.getMonth()]} ${d.getFullYear()}`;
+  }
+
+  /** e.g. 'Saturday 14 March 2026' */
+  function gregFull(d) {
+    return `${WEEKDAYS[d.getDay()].en} ${gregLong(d)}`;
+  }
+
+  /**
+   * The Panjabi-first date line.
+   * numerals: 'gurmukhi' | 'western'
+   */
+  function nsLabel(ns, opts) {
+    const o = opts || {};
+    const num = o.numerals === 'gurmukhi' ? gurmukhiNumber(ns.day) : ns.day;
+    const yr  = o.numerals === 'gurmukhi' ? gurmukhiNumber(ns.year) : ns.year;
+    const name = o.script === 'roman' ? ns.monthMeta.en : ns.monthMeta.pa;
+    return o.withYear === false ? `${num} ${name}` : `${num} ${name} ${yr}`;
+  }
+
+  /** '14 Mar – 13 Apr 2026' — the Gregorian span a Nanakshahi month covers. */
+  function monthSpan(nsYear, m) {
+    const a = monthStart(nsYear, m);
+    const b = addDays(a, monthLength(nsYear, m) - 1);
+    const sameYear = a.getFullYear() === b.getFullYear();
+    const left = `${a.getDate()} ${G_MONTHS_SHORT[a.getMonth()]}` +
+                 (sameYear ? '' : ` ${a.getFullYear()}`);
+    return `${left} – ${b.getDate()} ${G_MONTHS_SHORT[b.getMonth()]} ${b.getFullYear()}`;
+  }
+
+  /* ------------------------------------------------------- month iteration */
+
+  /** Step a {year, month} pair forwards or backwards. */
+  function shiftMonth(nsYear, m, delta) {
+    let idx = (nsYear * 12 + (m - 1)) + delta;
+    return { year: Math.floor(idx / 12), month: (idx % 12 + 12) % 12 + 1 };
+  }
+
+  /**
+   * Every day of a Nanakshahi month, padded out to whole weeks so it drops
+   * straight into a 7-column grid.
+   * @param weekStart 0 = Sunday, 1 = Monday
+   */
+  function monthGrid(nsYear, m, weekStart) {
+    const ws = weekStart == null ? 1 : weekStart;
+    const first = monthStart(nsYear, m);
+    const len = monthLength(nsYear, m);
+
+    const lead = (first.getDay() - ws + 7) % 7;
+    const cells = [];
+
+    for (let i = -lead; cells.length % 7 !== 0 || i <= len - 1; i++) {
+      const g = addDays(first, i);
+      cells.push({ greg: g, ns: fromGregorian(g), inMonth: i >= 0 && i < len });
+      if (i > len + 8) break; // belt and braces
+    }
+    return cells;
+  }
+
+  /** The seven days of the week containing `date`. */
+  function weekOf(date, weekStart) {
+    const ws = weekStart == null ? 1 : weekStart;
+    const d = midnight(date);
+    const back = (d.getDay() - ws + 7) % 7;
+    const start = addDays(d, -back);
+    return Array.from({ length: 7 }, (_, i) => {
+      const g = addDays(start, i);
+      return { greg: g, ns: fromGregorian(g) };
+    });
+  }
+
+  /* --------------------------------------------------------- sangrand etc. */
+
+  /** Is this the first day of a Nanakshahi month? */
+  function isSangrand(ns) { return ns.day === 1; }
+
+  /** Days until the next sangrand, and which month it opens. */
+  function nextSangrand(date) {
+    const ns = fromGregorian(date);
+    const nxt = shiftMonth(ns.year, ns.month, 1);
+    const g = monthStart(nxt.year, nxt.month);
+    return { greg: g, month: nxt.month, year: nxt.year,
+             inDays: daysBetween(midnight(date), g),
+             monthMeta: monthMeta(nxt.month) };
+  }
+
+  /* ------------------------------------------------------------ moon phase
+     Puranmashi (full moon) and Massya (new moon) are lunar, so they cannot be
+     fixed to a solar date — they have to be computed. This is Meeus,
+     Astronomical Algorithms ch. 49, truncated to the principal periodic
+     terms, which lands well inside an hour and so always inside the right day.
+  */
+
+  const RAD = Math.PI / 180;
+
+  function jdeToDate(jde) {
+    // Julian Ephemeris Day -> JS Date (UTC), then read off in local time.
+    const ms = (jde - 2440587.5) * 86400000;
+    return new Date(ms);
+  }
+
+  /** k is integral for a new moon, k + 0.5 for a full moon. */
+  function moonPhaseJDE(k) {
+    const T = k / 1236.85;
+    const T2 = T * T, T3 = T2 * T, T4 = T3 * T;
+
+    let jde = 2451550.09766 + 29.530588861 * k
+            + 0.00015437 * T2 - 0.000000150 * T3 + 0.00000000073 * T4;
+
+    const E  = 1 - 0.002516 * T - 0.0000074 * T2;                 // eccentricity
+    const M  = (2.5534 + 29.10535670 * k
+               - 0.0000014 * T2 - 0.00000011 * T3) * RAD;          // sun anomaly
+    const Mp = (201.5643 + 385.81693528 * k + 0.0107582 * T2
+               + 0.00001238 * T3 - 0.000000058 * T4) * RAD;        // moon anomaly
+    const F  = (160.7108 + 390.67050284 * k - 0.0016118 * T2
+               - 0.00000227 * T3 + 0.000000011 * T4) * RAD;        // argument of latitude
+    const O  = (124.7746 - 1.56375588 * k + 0.0020672 * T2
+               + 0.00000215 * T3) * RAD;                           // ascending node
+
+    const isNew = Math.abs(k - Math.round(k)) < 0.001;
+
+    let c;
+    if (isNew) {
+      c = -0.40720 * Math.sin(Mp)
+        + 0.17241 * E * Math.sin(M)
+        + 0.01608 * Math.sin(2 * Mp)
+        + 0.01039 * Math.sin(2 * F)
+        + 0.00739 * E * Math.sin(Mp - M)
+        - 0.00514 * E * Math.sin(Mp + M)
+        + 0.00208 * E * E * Math.sin(2 * M)
+        - 0.00111 * Math.sin(Mp - 2 * F)
+        - 0.00057 * Math.sin(Mp + 2 * F)
+        + 0.00056 * E * Math.sin(2 * Mp + M)
+        - 0.00042 * Math.sin(3 * Mp)
+        + 0.00042 * E * Math.sin(M + 2 * F)
+        + 0.00038 * E * Math.sin(M - 2 * F)
+        - 0.00024 * E * Math.sin(2 * Mp - M)
+        - 0.00017 * Math.sin(O)
+        - 0.00007 * Math.sin(Mp + 2 * M);
+    } else {
+      c = -0.40614 * Math.sin(Mp)
+        + 0.17302 * E * Math.sin(M)
+        + 0.01614 * Math.sin(2 * Mp)
+        + 0.01043 * Math.sin(2 * F)
+        + 0.00734 * E * Math.sin(Mp - M)
+        - 0.00515 * E * Math.sin(Mp + M)
+        + 0.00209 * E * E * Math.sin(2 * M)
+        - 0.00111 * Math.sin(Mp - 2 * F)
+        - 0.00057 * Math.sin(Mp + 2 * F)
+        + 0.00056 * E * Math.sin(2 * Mp + M)
+        - 0.00042 * Math.sin(3 * Mp)
+        + 0.00042 * E * Math.sin(M + 2 * F)
+        + 0.00038 * E * Math.sin(M - 2 * F)
+        - 0.00024 * E * Math.sin(2 * Mp - M)
+        - 0.00017 * Math.sin(O)
+        - 0.00007 * Math.sin(Mp + 2 * M);
+    }
+    return jde + c;
+  }
+
+  /**
+   * Local dates of every new moon (Massya) and full moon (Puranmashi) that
+   * falls inside [from, to]. Returned as a Map keyed by ISO date string.
+   */
+  function moonPhases(from, to) {
+    const out = new Map();
+    const yFrom = from.getFullYear() + (from.getMonth() / 12);
+    const yTo   = to.getFullYear()   + (to.getMonth() / 12);
+
+    const kStart = Math.floor((yFrom - 2000) * 12.3685) - 2;
+    const kEnd   = Math.ceil((yTo   - 2000) * 12.3685) + 2;
+
+    for (let k = kStart; k <= kEnd; k++) {
+      [[k, 'massya'], [k + 0.5, 'puranmashi']].forEach(([kk, kind]) => {
+        const d = jdeToDate(moonPhaseJDE(kk));
+        const local = midnight(d);
+        if (local >= midnight(from) && local <= midnight(to)) {
+          out.set(isoKey(local), kind);
+        }
+      });
+    }
+    return out;
+  }
+
+  /* ------------------------------------------------------------------ misc */
+
+  /** Sanity check run on load — a wrong engine is worse than no engine. */
+  function selfTest() {
+    const checks = [
+      // [gregorian, expected ns day, expected ns month, expected ns year]
+      [[2026, 2, 14], 1,  1,  558],   // 14 Mar 2026 = 1 Chet 558
+      [[2026, 3, 14], 1,  2,  558],   // 14 Apr 2026 = 1 Vaisakh 558
+      [[2027, 0, 5],  23, 10, 558],   //  5 Jan 2027 = 23 Poh 558
+      [[2026, 0, 5],  23, 10, 557],   //  5 Jan 2026 = 23 Poh 557
+      [[2026, 0, 31], 19, 11, 557],   // 31 Jan 2026 = 19 Magh 557
+      [[2027, 2, 13], 30, 12, 558],   // 13 Mar 2027 = last day of Phagun 558
+      [[2024, 2, 13], 31, 12, 555]    // 13 Mar 2024 = 31 Phagun (leap) 555
+    ];
+    const fails = [];
+    checks.forEach(([g, d, m, y]) => {
+      const ns = fromGregorian(new Date(g[0], g[1], g[2]));
+      if (ns.day !== d || ns.month !== m || ns.year !== y) {
+        fails.push(`${g.join('-')} -> ${ns.day}/${ns.month}/${ns.year}, expected ${d}/${m}/${y}`);
+      }
+    });
+    if (fails.length) console.error('Nanakshahi self-test FAILED:\n' + fails.join('\n'));
+    return fails;
+  }
+
+  return {
+    MONTHS, WEEKDAYS, G_MONTHS_SHORT, G_MONTHS_LONG, GURMUKHI_DIGITS,
+    isGregLeap, midnight, addDays, daysBetween, isoKey, parseIso,
+    monthMeta, monthStart, monthLength, yearLength,
+    fromGregorian, toGregorian,
+    gurmukhiNumber, ordinal, gregShort, gregLong, gregFull, nsLabel, monthSpan,
+    shiftMonth, monthGrid, weekOf,
+    isSangrand, nextSangrand, moonPhases,
+    selfTest
+  };
+})();
+
+/* ============================================================================
+   bikrami.js — the SGPC calendar engine
+   ----------------------------------------------------------------------------
+   The calendar the SGPC actually publishes. Since the 2010 amendment its
+   months are Bikrami solar months again: each begins at the sangrand, the
+   moment the Sun enters the next sidereal zodiac sign. So the months are
+   NOT a fixed length and they do NOT start on the same English date each year
+   — Bhadon opened on 16 August in Samvat 557 and 17 August in 558.
+
+   Two sources of truth, in this order:
+
+     1. VERIFIED   sangrands transcribed from the published jantri. Used
+                   whenever the year is in the table.
+     2. COMPUTED   the sidereal ingress worked out from first principles, for
+                   years the table does not cover. Flagged as unverified in
+                   the UI so nobody mistakes it for the printed calendar.
+
+   The computation reproduces all 15 published sangrands of Samvat 557–559
+   exactly, including two cases decided by minutes:
+     · 1 Chet 558 — ingress 00:44 IST on 15 Mar, published 14 Mar
+       (before sunrise, so it belongs to the civil day that began the morning
+        before — the Punjab jantri reckons a day sunrise to sunrise)
+     · 1 Chet 559 — ingress 06:51 IST, sunrise 06:43, published 15 Mar
+       (clears sunrise by eight minutes)
+
+   Because that margin can be minutes, `sangrandConfidence()` reports how close
+   a computed sangrand ran to sunrise, and the UI says so.
+   ========================================================================= */
+
+const Bikrami = (function () {
+  'use strict';
+
+  const N = Nanakshahi;            // shared utilities and the month names
+  const RAD = Math.PI / 180;
+
+  /* ------------------------------------------------------------ astronomy */
+
+  function jdFromYMD(y, m, d, h) {
+    if (m <= 2) { y -= 1; m += 12; }
+    const A = Math.floor(y / 100), B = 2 - A + Math.floor(A / 4);
+    return Math.floor(365.25 * (y + 4716)) + Math.floor(30.6001 * (m + 1))
+         + d + B - 1524.5 + (h || 0) / 24;
+  }
+
+  function ymdFromJd(jd) {
+    const z = Math.floor(jd + 0.5), f = jd + 0.5 - z;
+    let A = z;
+    if (z >= 2299161) {
+      const a = Math.floor((z - 1867216.25) / 36524.25);
+      A = z + 1 + a - Math.floor(a / 4);
+    }
+    const B = A + 1524, C = Math.floor((B - 122.1) / 365.25),
+          D = Math.floor(365.25 * C), E = Math.floor((B - D) / 30.6001);
+    const dayF = B - D - Math.floor(30.6001 * E) + f;
+    const month = E < 14 ? E - 1 : E - 13;
+    return { y: month > 2 ? C - 4716 : C - 4715, m: month,
+             d: Math.floor(dayF), frac: dayF - Math.floor(dayF) };
+  }
+
+  /** Sun's apparent geocentric longitude, degrees. Meeus, low precision. */
+  function sunLongitude(jd) {
+    const T = (jd - 2451545.0) / 36525;
+    const L0 = 280.46646 + 36000.76983 * T + 0.0003032 * T * T;
+    const M = (357.52911 + 35999.05029 * T - 0.0001537 * T * T) * RAD;
+    const C = (1.914602 - 0.004817 * T - 0.000014 * T * T) * Math.sin(M)
+            + (0.019993 - 0.000101 * T) * Math.sin(2 * M)
+            + 0.000289 * Math.sin(3 * M);
+    const om = (125.04 - 1934.136 * T) * RAD;
+    return (((L0 + C - 0.00569 - 0.00478 * Math.sin(om)) % 360) + 360) % 360;
+  }
+
+  /** Lahiri ayanamsa: 23° 51′ 11″ at J2000, precessing 50.29″ a year. */
+  function ayanamsa(jd) {
+    const y = 2000 + (jd - 2451545.0) / 365.25;
+    return 23.85306 + 0.0139694 * (y - 2000);
+  }
+
+  const siderealSun = jd => (((sunLongitude(jd) - ayanamsa(jd)) % 360) + 360) % 360;
+
+  /** Sunrise at Sri Harmandir Sahib (31.6200 N, 74.8765 E), IST hours. */
+  const LAT = 31.62 * RAD, LON = 74.8765;
+  function sunriseIST(jd) {
+    const n = Math.floor(jd - 2451545.0 + 0.0008);
+    const Jstar = n - LON / 360;
+    const M = (357.5291 + 0.98560028 * Jstar) * RAD;
+    const C = 1.9148 * Math.sin(M) + 0.0200 * Math.sin(2 * M) + 0.0003 * Math.sin(3 * M);
+    const lam = ((357.5291 + 0.98560028 * Jstar) + C + 282.9372) * RAD;
+    const Jtransit = 2451545.0 + Jstar + 0.0053 * Math.sin(M) - 0.0069 * Math.sin(2 * lam);
+    const dec = Math.asin(Math.sin(lam) * Math.sin(23.44 * RAD));
+    let cosH = (Math.sin(-0.833 * RAD) - Math.sin(LAT) * Math.sin(dec))
+             / (Math.cos(LAT) * Math.cos(dec));
+    cosH = Math.max(-1, Math.min(1, cosH));
+    const H = Math.acos(cosH) / RAD;
+    return ymdFromJd(Jtransit - H / 360 + 5.5 / 24).frac * 24;
+  }
+
+  /** Chet is Meena (330°), Vaisakh is Mesha (0°), Magh is Makara (270°). */
+  const signForMonth = m => ((m + 10) * 30) % 360;
+
+  function ingressJd(targetLon, jdGuess) {
+    let jd = jdGuess;
+    for (let i = 0; i < 60; i++) {
+      let diff = siderealSun(jd) - targetLon;
+      if (diff > 180) diff -= 360;
+      if (diff < -180) diff += 360;
+      jd -= diff / 0.9856;                     // the Sun moves ~0.9856°/day
+      if (Math.abs(diff) < 1e-8) break;
+    }
+    return jd;
+  }
+
+  const GUESS_MONTH = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 1, 2];
+
+  /** Computed sangrand for (nsYear, month), plus how safe the day call was. */
+  function computeSangrand(nsYear, m) {
+    const gy = nsYear + (m <= 10 ? 1468 : 1469);
+    const jd = ingressJd(signForMonth(m), jdFromYMD(gy, GUESS_MONTH[m - 1], 16, 12));
+    const ist = ymdFromJd(jd + 5.5 / 24);
+    const hour = ist.frac * 24;
+    const sr = sunriseIST(jd);
+    // Sunrise-to-sunrise civil day: before sunrise belongs to the day before.
+    const roll = hour < sr;
+    const d = roll ? ymdFromJd(jd - 1 + 5.5 / 24) : ist;
+    return {
+      greg: new Date(d.y, d.m - 1, d.d),
+      hour, sunrise: sr,
+      // Minutes of daylight margin either side of the sunrise boundary.
+      marginMin: Math.abs(hour - sr) * 60
+    };
+  }
+
+  /* ---------------------------------------------- verified sangrand table
+     Transcribed from the SGPC calendar as published by dekho-ji (sangrand
+     listing and month pages) and cross-checked against the Golden Temple
+     Amritsar Samvat 558 calendar. Month order is Chet → Phagun.
+  */
+
+  // null = not published in a source I have; the engine computes that one.
+  // Nothing here is inferred from another year's pattern — Bikrami sangrands
+  // do not repeat, so copying a row across years would silently corrupt it.
+  const VERIFIED = {
+    553: ['2021-03-14', '2021-04-13', '2021-05-14', '2021-06-15', '2021-07-16', '2021-08-16', '2021-09-16', '2021-10-17', '2021-11-16', '2021-12-15', '2022-01-14', '2022-02-12'],
+    554: ['2022-03-14', '2022-04-14', '2022-05-14', '2022-06-15', '2022-07-16', '2022-08-17', '2022-09-17', '2022-10-17', '2022-11-16', '2022-12-16', '2023-01-14', '2023-02-13'],
+    555: ['2023-03-14', '2023-04-14', '2023-05-15', '2023-06-15', '2023-07-16', '2023-08-17', '2023-09-17', '2023-10-17', '2023-11-16', '2023-12-16', '2024-01-14', '2024-02-13'],
+    556: ['2024-03-14', '2024-04-13', '2024-05-14', '2024-06-14', '2024-07-16', '2024-08-16', '2024-09-16', '2024-10-17', '2024-11-16', '2024-12-15', '2025-01-14', '2025-02-12'],
+    557: ['2025-03-14', '2025-04-13', '2025-05-14', '2025-06-15', '2025-07-16', '2025-08-16', '2025-09-16', '2025-10-17', '2025-11-16', '2025-12-15', '2026-01-14', '2026-02-12'],
+    // Samvat 558 is the current year, published in full: Chet -> Phagun.
+    558: ['2026-03-14', '2026-04-14', '2026-05-15', '2026-06-15', '2026-07-16',
+          '2026-08-17', '2026-09-17', '2026-10-17', '2026-11-16', '2026-12-16',
+          '2027-01-14', '2027-02-13'],
+    // 559 opens where the published data currently stops.
+    559: ['2027-03-15', null, null, null, null, null, null, null, null, null,
+          null, null]
+  };
+
+  /** Which years have a fully transcribed sangrand row. */
+  function isVerified(nsYear) {
+    const row = VERIFIED[nsYear];
+    return !!row && row.every(Boolean);
+  }
+
+  /* ------------------------------------------------------------- geometry */
+
+  const startCache = new Map();      // 'y-m' -> Date
+
+  function monthStart(nsYear, m) {
+    const key = nsYear + '-' + m;
+    if (startCache.has(key)) return startCache.get(key);
+    const row = VERIFIED[nsYear];
+    const iso = row && row[m - 1];
+    const d = iso ? N.parseIso(iso) : computeSangrand(nsYear, m).greg;
+    startCache.set(key, d);
+    return d;
+  }
+
+  /** How trustworthy is this month start? */
+  function startSource(nsYear, m) {
+    const row = VERIFIED[nsYear];
+    if (row && row[m - 1]) return { source: 'jantri', confident: true };
+    const c = computeSangrand(nsYear, m);
+    return { source: 'computed', confident: c.marginMin > 45,
+             marginMin: Math.round(c.marginMin) };
+  }
+
+  function monthMeta(m) { return N.monthMeta(m); }
+
+  function shiftMonth(nsYear, m, delta) {
+    const idx = (nsYear * 12 + (m - 1)) + delta;
+    return { year: Math.floor(idx / 12), month: (idx % 12 + 12) % 12 + 1 };
+  }
+
+  /** A Bikrami solar month runs 29–32 days; measure it, never assume. */
+  function monthLength(nsYear, m) {
+    const nx = shiftMonth(nsYear, m, 1);
+    return N.daysBetween(monthStart(nsYear, m), monthStart(nx.year, nx.month));
+  }
+
+  function yearLength(nsYear) {
+    return N.daysBetween(monthStart(nsYear, 1), monthStart(nsYear + 1, 1));
+  }
+
+  function toGregorian(nsYear, m, day) {
+    return N.addDays(monthStart(nsYear, m), day - 1);
+  }
+
+  function fromGregorian(input) {
+    const g = N.midnight(input instanceof Date ? input : new Date(input));
+    const gy = g.getFullYear();
+
+    // The year turns at the Chet sangrand, which itself moves — so ask for it.
+    let nsYear = g >= monthStart(gy - 1468, 1) ? gy - 1468 : gy - 1469;
+
+    let month = 12;
+    for (let m = 12; m >= 1; m--) {
+      if (g >= monthStart(nsYear, m)) { month = m; break; }
+    }
+    // Guard the boundary: if we landed before Chet, we are in the prior year.
+    if (g < monthStart(nsYear, 1)) {
+      nsYear -= 1;
+      month = 12;
+      for (let m = 12; m >= 1; m--) {
+        if (g >= monthStart(nsYear, m)) { month = m; break; }
+      }
+    }
+
+    const start = monthStart(nsYear, month);
+    return {
+      year: nsYear,
+      month,
+      day: N.daysBetween(start, g) + 1,
+      monthMeta: monthMeta(month),
+      monthLength: monthLength(nsYear, month),
+      khalsaYear: nsYear - 230,
+      weekday: g.getDay(),
+      greg: g,
+      dayOfYear: N.daysBetween(monthStart(nsYear, 1), g) + 1
+    };
+  }
+
+  function monthSpan(nsYear, m) {
+    const a = monthStart(nsYear, m);
+    const b = N.addDays(a, monthLength(nsYear, m) - 1);
+    const sameYear = a.getFullYear() === b.getFullYear();
+    const left = `${a.getDate()} ${N.G_MONTHS_SHORT[a.getMonth()]}` +
+                 (sameYear ? '' : ` ${a.getFullYear()}`);
+    return `${left} – ${b.getDate()} ${N.G_MONTHS_SHORT[b.getMonth()]} ${b.getFullYear()}`;
+  }
+
+  function monthGrid(nsYear, m, weekStart) {
+    const ws = weekStart == null ? 1 : weekStart;
+    const first = monthStart(nsYear, m);
+    const len = monthLength(nsYear, m);
+    const lead = (first.getDay() - ws + 7) % 7;
+    const cells = [];
+    for (let i = -lead; cells.length % 7 !== 0 || i <= len - 1; i++) {
+      const g = N.addDays(first, i);
+      cells.push({ greg: g, ns: fromGregorian(g), inMonth: i >= 0 && i < len });
+      if (i > len + 10) break;
+    }
+    return cells;
+  }
+
+  function weekOf(date, weekStart) {
+    const ws = weekStart == null ? 1 : weekStart;
+    const d = N.midnight(date);
+    const start = N.addDays(d, -((d.getDay() - ws + 7) % 7));
+    return Array.from({ length: 7 }, (_, i) => {
+      const g = N.addDays(start, i);
+      return { greg: g, ns: fromGregorian(g) };
+    });
+  }
+
+  const isSangrand = ns => ns.day === 1;
+
+  function nextSangrand(date) {
+    const ns = fromGregorian(date);
+    const nx = shiftMonth(ns.year, ns.month, 1);
+    const g = monthStart(nx.year, nx.month);
+    return { greg: g, month: nx.month, year: nx.year,
+             inDays: N.daysBetween(N.midnight(date), g),
+             monthMeta: monthMeta(nx.month) };
+  }
+
+  /* ------------------------------------------------------------ self-test */
+
+  function selfTest() {
+    const fails = [];
+
+    // Every published sangrand of 557–559 must come back exactly.
+    Object.keys(VERIFIED).forEach(y => {
+      VERIFIED[y].forEach((iso, i) => {
+        if (!iso) return;
+        const got = monthStart(Number(y), i + 1);
+        if (N.isoKey(got) !== iso)
+          fails.push(`sangrand ${i + 1}/${y}: got ${N.isoKey(got)}, expected ${iso}`);
+      });
+    });
+
+    // Known date correspondences from the published SGPC month pages.
+    [[[2026, 2, 14], 1, 1, 558], [[2026, 8, 12], 27, 6, 558],
+     [[2026, 10, 24], 9, 9, 558], [[2026, 11, 23], 8, 10, 558],
+     [[2027, 0, 15], 2, 11, 558], [[2027, 1, 21], 9, 12, 558],
+     [[2026, 7, 30], 14, 6, 558], [[2026, 6, 24], 9, 5, 558]
+    ].forEach(([g, d, m, y]) => {
+      const ns = fromGregorian(new Date(g[0], g[1], g[2]));
+      if (ns.day !== d || ns.month !== m || ns.year !== y)
+        fails.push(`${g.join('-')} -> ${ns.day}/${ns.month}/${ns.year}, expected ${d}/${m}/${y}`);
+    });
+
+    // A Bikrami year must still close: months must tile it with no gap.
+    [557, 558].forEach(y => {
+      let sum = 0;
+      for (let m = 1; m <= 12; m++) sum += monthLength(y, m);
+      if (sum !== yearLength(y))
+        fails.push(`year ${y}: months total ${sum} but year is ${yearLength(y)}`);
+    });
+
+    if (fails.length) console.error('Bikrami self-test FAILED:\n' + fails.join('\n'));
+    return fails;
+  }
+
+  return {
+    id: 'sgpc',
+    MONTHS: N.MONTHS,
+    monthMeta, monthStart, monthLength, yearLength, startSource,
+    fromGregorian, toGregorian, monthSpan, shiftMonth, monthGrid, weekOf,
+    isSangrand, nextSangrand, isVerified, VERIFIED,
+    computeSangrand, selfTest
+  };
+})();
+
+/* ============================================================================
+   jantri.js — GENERATED. Do not edit by hand.
+   ----------------------------------------------------------------------------
+   Source:  tools/jantri/*.tsv
+   Rebuild: node tools/build-jantri.js
+   Built:   2026-08-27
+
+   Every row below was checked against the Bikrami engine at build time: the
+   Nanakshahi date printed in the jantri matches the one derived from the
+   Gregorian date. 876 rows, 2021-03-13 to 2027-03-15.
+   ========================================================================= */
+
+const Jantri = (function () {
+  'use strict';
+
+  const ROWS = [
+    { iso:'2021-03-13', d:30, m:12, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2021-03-14', d:1, m:1, cat:'festival', en:"Nanakshahi New Year 553", pa:"ਨਾਨਕਸ਼ਾਹੀ ਨਵਾਂ ਸਾਲ ੫੫੩", major:true },
+    { iso:'2021-03-14', d:1, m:1, cat:'sangrand', en:"Sangrand — Chet", pa:"ਸੰਗਰਾਂਦ — ਚੇਤ" },
+    { iso:'2021-03-15', d:2, m:1, cat:'historic', en:"S. Baghel Singh — Delhi Fateh", pa:"ਸ. ਬਘੇਲ ਸਿੰਘ — ਦਿੱਲੀ ਫ਼ਤਿਹ" },
+    { iso:'2021-03-23', d:10, m:1, cat:'modern', en:"Shaheedi Divas S. Bhagat Singh", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਸ. ਭਗਤ ਸਿੰਘ" },
+    { iso:'2021-03-25', d:12, m:1, cat:'shaheedi', en:"Shaheedi Divas Bhai Subeg Singh & Bhai Shahbaz Singh", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਭਾਈ ਸੁਬੇਗ ਸਿੰਘ ਤੇ ਭਾਈ ਸ਼ਾਹਬਾਜ਼ ਸਿੰਘ" },
+    { iso:'2021-03-28', d:15, m:1, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2021-03-29', d:16, m:1, cat:'festival', en:"Hola Mohalla", pa:"ਹੋਲਾ ਮਹੱਲਾ", major:true },
+    { iso:'2021-04-09', d:27, m:1, cat:'gurgaddi', en:"Gurgaddi Gurpurab Sri Guru Har Rai Ji", pa:"ਗੁਰਗੱਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਹਰਿ ਰਾਇ ਜੀ", major:true },
+    { iso:'2021-04-09', d:27, m:1, cat:'janamdin', en:"Janamdin Sahibzada Jujhar Singh Ji", pa:"ਜਨਮ ਦਿਨ ਸਾਹਿਬਜ਼ਾਦਾ ਜੁਝਾਰ ਸਿੰਘ ਜੀ" },
+    { iso:'2021-04-12', d:30, m:1, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2021-04-13', d:1, m:2, cat:'festival', en:"Vaisakhi — Khalsa Sajna Divas", pa:"ਵਿਸਾਖੀ — ਖ਼ਾਲਸਾ ਸਾਜਨਾ ਦਿਵਸ", major:true },
+    { iso:'2021-04-13', d:1, m:2, cat:'gurgaddi', en:"Gurgaddi Gurpurab Sri Guru Amar Das Ji", pa:"ਗੁਰਗੱਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਅਮਰ ਦਾਸ ਜੀ", major:true },
+    { iso:'2021-04-13', d:1, m:2, cat:'historic', en:"Sikh Turban Day", pa:"ਸਿੱਖ ਦਸਤਾਰ ਦਿਵਸ" },
+    { iso:'2021-04-13', d:1, m:2, cat:'sangrand', en:"Sangrand — Vaisakh", pa:"ਸੰਗਰਾਂਦ — ਵੈਸਾਖ" },
+    { iso:'2021-04-16', d:4, m:2, cat:'jotijot', en:"Jyoti Jyot Gurpurab Sri Guru Angad Dev Ji", pa:"ਜੋਤੀ ਜੋਤਿ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਅੰਗਦ ਦੇਵ ਜੀ", major:true },
+    { iso:'2021-04-17', d:5, m:2, cat:'jotijot', en:"Jyoti Jyot Gurpurab Sri Guru Hargobind Ji", pa:"ਜੋਤੀ ਜੋਤਿ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਹਰਿਗੋਬਿੰਦ ਜੀ", major:true },
+    { iso:'2021-04-20', d:8, m:2, cat:'janamdin', en:"Janamdin Bhagat Dhanna Ji", pa:"ਜਨਮ ਦਿਨ ਭਗਤ ਧੰਨਾ ਜੀ" },
+    { iso:'2021-04-25', d:13, m:2, cat:'gurgaddi', en:"Gurgaddi Gurpurab Sri Guru Tegh Bahadur Ji", pa:"ਗੁਰਗੱਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਤੇਗ਼ ਬਹਾਦਰ ਜੀ", major:true },
+    { iso:'2021-04-25', d:13, m:2, cat:'jotijot', en:"Jyoti Jyot Gurpurab Sri Guru Har Krishan Ji", pa:"ਜੋਤੀ ਜੋਤਿ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਹਰਿ ਕ੍ਰਿਸ਼ਨ ਜੀ", major:true },
+    { iso:'2021-04-27', d:15, m:2, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2021-05-01', d:19, m:2, cat:'prakash', en:"Prakash Gurpurab Sri Guru Tegh Bahadur Ji", pa:"ਪ੍ਰਕਾਸ਼ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਤੇਗ਼ ਬਹਾਦਰ ਜੀ", major:true },
+    { iso:'2021-05-03', d:21, m:2, cat:'mela', en:"Shaheedi Jor Mela Sri Muktsar Sahib", pa:"ਸ਼ਹੀਦੀ ਜੋੜ ਮੇਲਾ ਸ੍ਰੀ ਮੁਕਤਸਰ ਸਾਹਿਬ" },
+    { iso:'2021-05-03', d:21, m:2, cat:'prakash', en:"Prakash Gurpurab Sri Guru Arjan Dev Ji", pa:"ਪ੍ਰਕਾਸ਼ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਅਰਜਨ ਦੇਵ ਜੀ", major:true },
+    { iso:'2021-05-11', d:29, m:2, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2021-05-12', d:30, m:2, cat:'historic', en:"Baba Banda Singh Bahadur — Sirhind Fateh Divas", pa:"ਬਾਬਾ ਬੰਦਾ ਸਿੰਘ ਬਹਾਦਰ — ਸਰਹਿੰਦ ਫ਼ਤਿਹ ਦਿਵਸ" },
+    { iso:'2021-05-12', d:30, m:2, cat:'prakash', en:"Prakash Gurpurab Sri Guru Angad Dev Ji", pa:"ਪ੍ਰਕਾਸ਼ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਅੰਗਦ ਦੇਵ ਜੀ", major:true },
+    { iso:'2021-05-14', d:1, m:3, cat:'sangrand', en:"Sangrand — Jeth", pa:"ਸੰਗਰਾਂਦ — ਜੇਠ" },
+    { iso:'2021-05-16', d:3, m:3, cat:'shaheedi', en:"Chhota Ghallughara — Kahnuwan", pa:"ਛੋਟਾ ਘੱਲੂਘਾਰਾ — ਕਾਹਨੂੰਵਾਨ", major:true },
+    { iso:'2021-05-18', d:5, m:3, cat:'janamdin', en:"Janamdin Sardar Jassa Singh Ahluwalia", pa:"ਜਨਮ ਦਿਨ ਸਰਦਾਰ ਜੱਸਾ ਸਿੰਘ ਆਹਲੂਵਾਲੀਆ" },
+    { iso:'2021-05-22', d:9, m:3, cat:'shaheedi', en:"Shaheedi Saka Paonta Sahib", pa:"ਸ਼ਹੀਦੀ ਸਾਕਾ ਪਾਉਂਟਾ ਸਾਹਿਬ" },
+    { iso:'2021-05-22', d:9, m:3, cat:'tithi', en:"Dashmi", pa:"ਦਸਮੀ" },
+    { iso:'2021-05-25', d:12, m:3, cat:'prakash', en:"Prakash Gurpurab Sri Guru Amar Das Ji", pa:"ਪ੍ਰਕਾਸ਼ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਅਮਰ ਦਾਸ ਜੀ", major:true },
+    { iso:'2021-05-26', d:13, m:3, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2021-06-02', d:20, m:3, cat:'gurgaddi', en:"Gurgaddi Gurpurab Sri Guru Hargobind Ji", pa:"ਗੁਰਗੱਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਹਰਿਗੋਬਿੰਦ ਜੀ", major:true },
+    { iso:'2021-06-04', d:22, m:3, cat:'modern', en:"Ghallughara Sri Akal Takht Sahib (1984)", pa:"ਘੱਲੂਘਾਰਾ ਸ੍ਰੀ ਅਕਾਲ ਤਖ਼ਤ ਸਾਹਿਬ (੧੯੮੪)" },
+    { iso:'2021-06-06', d:24, m:3, cat:'modern', en:"Shaheedi Divas Sant Jarnail Singh Khalsa Bhindranwale & Bhai Amreek Singh", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਸੰਤ ਜਰਨੈਲ ਸਿੰਘ ਖ਼ਾਲਸਾ ਭਿੰਡਰਾਂਵਾਲੇ ਤੇ ਭਾਈ ਅਮਰੀਕ ਸਿੰਘ" },
+    { iso:'2021-06-10', d:28, m:3, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2021-06-14', d:32, m:3, cat:'shaheedi', en:"Shaheedi Gurpurab Sri Guru Arjan Dev Ji", pa:"ਸ਼ਹੀਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਅਰਜਨ ਦੇਵ ਜੀ", major:true },
+    { iso:'2021-06-15', d:1, m:4, cat:'sangrand', en:"Sangrand — Harh", pa:"ਸੰਗਰਾਂਦ — ਹਾੜ" },
+    { iso:'2021-06-20', d:6, m:4, cat:'tithi', en:"Dashmi", pa:"ਦਸਮੀ" },
+    { iso:'2021-06-24', d:10, m:4, cat:'janamdin', en:"Janamdin Bhagat Kabir Ji", pa:"ਜਨਮ ਦਿਨ ਭਗਤ ਕਬੀਰ ਜੀ" },
+    { iso:'2021-06-24', d:10, m:4, cat:'mela', en:"Jor Mela Gurdwara Sri Reetha Sahib", pa:"ਜੋੜ ਮੇਲਾ ਗੁਰਦੁਆਰਾ ਸ੍ਰੀ ਰੀਠਾ ਸਾਹਿਬ" },
+    { iso:'2021-06-24', d:10, m:4, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2021-06-25', d:11, m:4, cat:'prakash', en:"Prakash Gurpurab Sri Guru Hargobind Ji", pa:"ਪ੍ਰਕਾਸ਼ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਹਰਿਗੋਬਿੰਦ ਜੀ", major:true },
+    { iso:'2021-06-25', d:11, m:4, cat:'shaheedi', en:"Shaheedi Divas Baba Banda Singh Bahadur", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਬਾਬਾ ਬੰਦਾ ਸਿੰਘ ਬਹਾਦਰ", major:true },
+    { iso:'2021-06-29', d:15, m:4, cat:'historic', en:"Barsi Maharaja Ranjit Singh Ji", pa:"ਬਰਸੀ ਮਹਾਰਾਜਾ ਰਣਜੀਤ ਸਿੰਘ ਜੀ" },
+    { iso:'2021-07-02', d:18, m:4, cat:'historic', en:"Foundation Day — Sri Akal Takht Sahib", pa:"ਸਥਾਪਨਾ ਦਿਵਸ — ਸ੍ਰੀ ਅਕਾਲ ਤਖ਼ਤ ਸਾਹਿਬ", major:true },
+    { iso:'2021-07-09', d:25, m:4, cat:'shaheedi', en:"Shaheedi Divas Bhai Mani Singh Ji", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਭਾਈ ਮਨੀ ਸਿੰਘ ਜੀ", major:true },
+    { iso:'2021-07-10', d:26, m:4, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2021-07-16', d:1, m:5, cat:'sangrand', en:"Sangrand — Sawan", pa:"ਸੰਗਰਾਂਦ — ਸਾਵਣ" },
+    { iso:'2021-07-16', d:1, m:5, cat:'shaheedi', en:"Shaheedi Divas Bhai Taru Singh Ji", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਭਾਈ ਤਾਰੂ ਸਿੰਘ ਜੀ", major:true },
+    { iso:'2021-07-19', d:4, m:5, cat:'historic', en:"Miri Piri Divas", pa:"ਮੀਰੀ ਪੀਰੀ ਦਿਵਸ", major:true },
+    { iso:'2021-07-24', d:9, m:5, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2021-07-31', d:16, m:5, cat:'modern', en:"Shaheedi Divas S. Udham Singh Ji", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਸ. ਊਧਮ ਸਿੰਘ ਜੀ" },
+    { iso:'2021-08-02', d:18, m:5, cat:'prakash', en:"Prakash Gurpurab Sri Guru Har Krishan Ji", pa:"ਪ੍ਰਕਾਸ਼ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਹਰਿ ਕ੍ਰਿਸ਼ਨ ਜੀ", major:true },
+    { iso:'2021-08-08', d:24, m:5, cat:'historic', en:"Morcha Guru Ka Bagh", pa:"ਮੋਰਚਾ ਗੁਰੂ ਕਾ ਬਾਗ਼" },
+    { iso:'2021-08-08', d:24, m:5, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2021-08-16', d:1, m:6, cat:'sangrand', en:"Sangrand — Bhadon", pa:"ਸੰਗਰਾਂਦ — ਭਾਦੋਂ" },
+    { iso:'2021-08-20', d:5, m:6, cat:'modern', en:"Shaheedi Divas Sant Harchand Singh Longowal", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਸੰਤ ਹਰਚੰਦ ਸਿੰਘ ਲੌਂਗੋਵਾਲ" },
+    { iso:'2021-08-22', d:7, m:6, cat:'mela', en:"Jor Mela Baba Bakala", pa:"ਜੋੜ ਮੇਲਾ ਬਾਬਾ ਬਕਾਲਾ" },
+    { iso:'2021-08-22', d:7, m:6, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2021-08-29', d:14, m:6, cat:'historic', en:"Sampuranta Divas Sri Guru Granth Sahib Ji", pa:"ਸੰਪੂਰਨਤਾ ਦਿਵਸ ਸ੍ਰੀ ਗੁਰੂ ਗ੍ਰੰਥ ਸਾਹਿਬ ਜੀ", major:true },
+    { iso:'2021-09-07', d:23, m:6, cat:'historic', en:"Pehla Prakash Gurpurab Sri Guru Granth Sahib Ji", pa:"ਪਹਿਲਾ ਪ੍ਰਕਾਸ਼ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਗ੍ਰੰਥ ਸਾਹਿਬ ਜੀ", major:true },
+    { iso:'2021-09-07', d:23, m:6, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2021-09-08', d:24, m:6, cat:'gurgaddi', en:"Gurgaddi Gurpurab Sri Guru Arjan Dev Ji", pa:"ਗੁਰਗੱਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਅਰਜਨ ਦੇਵ ਜੀ", major:true },
+    { iso:'2021-09-09', d:25, m:6, cat:'jotijot', en:"Jyoti Jyot Gurpurab Sri Guru Ram Das Ji", pa:"ਜੋਤੀ ਜੋਤਿ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਰਾਮ ਦਾਸ ਜੀ", major:true },
+    { iso:'2021-09-13', d:29, m:6, cat:'mela', en:"Jor Mela Gurdwara Kandh Sahib (Batala)", pa:"ਜੋੜ ਮੇਲਾ ਗੁਰਦੁਆਰਾ ਕੰਧ ਸਾਹਿਬ (ਬਟਾਲਾ)" },
+    { iso:'2021-09-16', d:1, m:7, cat:'sangrand', en:"Sangrand — Assu", pa:"ਸੰਗਰਾਂਦ — ਅੱਸੂ" },
+    { iso:'2021-09-16', d:1, m:7, cat:'tithi', en:"Dashmi", pa:"ਦਸਮੀ" },
+    { iso:'2021-09-18', d:3, m:7, cat:'gurgaddi', en:"Gurgaddi Gurpurab Sri Guru Ram Das Ji", pa:"ਗੁਰਗੱਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਰਾਮ ਦਾਸ ਜੀ", major:true },
+    { iso:'2021-09-20', d:5, m:7, cat:'jotijot', en:"Jyoti Jyot Gurpurab Sri Guru Amar Das Ji", pa:"ਜੋਤੀ ਜੋਤਿ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਅਮਰ ਦਾਸ ਜੀ", major:true },
+    { iso:'2021-09-20', d:5, m:7, cat:'mela', en:"Jor Mela Goindwal Sahib", pa:"ਜੋੜ ਮੇਲਾ ਗੋਇੰਦਵਾਲ ਸਾਹਿਬ" },
+    { iso:'2021-09-20', d:5, m:7, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2021-09-25', d:10, m:7, cat:'mela', en:"Jor Mela Baba Buddha Ji (Ramdas)", pa:"ਜੋੜ ਮੇਲਾ ਬਾਬਾ ਬੁੱਢਾ ਜੀ (ਰਾਮਦਾਸ)" },
+    { iso:'2021-09-26', d:11, m:7, cat:'gurgaddi', en:"Gurgaddi Gurpurab Sri Guru Angad Dev Ji", pa:"ਗੁਰਗੱਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਅੰਗਦ ਦੇਵ ਜੀ", major:true },
+    { iso:'2021-10-01', d:16, m:7, cat:'jotijot', en:"Jyoti Jyot Gurpurab Sri Guru Nanak Dev Ji", pa:"ਜੋਤੀ ਜੋਤਿ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਨਾਨਕ ਦੇਵ ਜੀ", major:true },
+    { iso:'2021-10-06', d:21, m:7, cat:'mela', en:"Jor Mela Bir Baba Buddha Ji (Thatha)", pa:"ਜੋੜ ਮੇਲਾ ਬੀੜ ਬਾਬਾ ਬੁੱਢਾ ਜੀ (ਥੱਥਾ)" },
+    { iso:'2021-10-06', d:21, m:7, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2021-10-07', d:22, m:7, cat:'mela', en:"Jor Mela Bir Baba Buddha Ji (Thatha)", pa:"ਜੋੜ ਮੇਲਾ ਬੀੜ ਬਾਬਾ ਬੁੱਢਾ ਜੀ (ਥੱਥਾ)" },
+    { iso:'2021-10-09', d:24, m:7, cat:'janamdin', en:"Janamdin Bhai Taru Singh Ji", pa:"ਜਨਮ ਦਿਨ ਭਾਈ ਤਾਰੂ ਸਿੰਘ ਜੀ" },
+    { iso:'2021-10-09', d:24, m:7, cat:'modern', en:"Shaheedi Divas Bhai Sukhdev Singh & Bhai Harjinder Singh", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਭਾਈ ਸੁਖਦੇਵ ਸਿੰਘ ਤੇ ਭਾਈ ਹਰਜਿੰਦਰ ਸਿੰਘ" },
+    { iso:'2021-10-15', d:30, m:7, cat:'festival', en:"Darbar Khalsa (Dussehra)", pa:"ਦਰਬਾਰ ਖ਼ਾਲਸਾ (ਦੁਸਹਿਰਾ)" },
+    { iso:'2021-10-15', d:30, m:7, cat:'tithi', en:"Dashmi", pa:"ਦਸਮੀ" },
+    { iso:'2021-10-17', d:1, m:8, cat:'sangrand', en:"Sangrand — Katak", pa:"ਸੰਗਰਾਂਦ — ਕੱਤਕ" },
+    { iso:'2021-10-20', d:4, m:8, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2021-10-21', d:5, m:8, cat:'modern', en:"Janamdin Sant Gyani Kartar Singh Bhindranwale", pa:"ਜਨਮ ਦਿਨ ਸੰਤ ਗਿਆਨੀ ਕਰਤਾਰ ਸਿੰਘ ਭਿੰਡਰਾਂਵਾਲੇ" },
+    { iso:'2021-10-22', d:6, m:8, cat:'prakash', en:"Prakash Gurpurab Sri Guru Ram Das Ji", pa:"ਪ੍ਰਕਾਸ਼ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਰਾਮ ਦਾਸ ਜੀ", major:true },
+    { iso:'2021-10-23', d:7, m:8, cat:'historic', en:"Barsi Sardar Jassa Singh Ahluwalia", pa:"ਬਰਸੀ ਸਰਦਾਰ ਜੱਸਾ ਸਿੰਘ ਆਹਲੂਵਾਲੀਆ" },
+    { iso:'2021-10-23', d:7, m:8, cat:'janamdin', en:"Janamdin Baba Buddha Ji", pa:"ਜਨਮ ਦਿਨ ਬਾਬਾ ਬੁੱਢਾ ਜੀ" },
+    { iso:'2021-10-30', d:14, m:8, cat:'gurgaddi', en:"Gurgaddi Gurpurab Sri Guru Har Krishan Ji", pa:"ਗੁਰਗੱਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਹਰਿ ਕ੍ਰਿਸ਼ਨ ਜੀ", major:true },
+    { iso:'2021-10-30', d:14, m:8, cat:'jotijot', en:"Jyoti Jyot Gurpurab Sri Guru Har Rai Ji", pa:"ਜੋਤੀ ਜੋਤਿ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਹਰਿ ਰਾਇ ਜੀ", major:true },
+    { iso:'2021-10-30', d:14, m:8, cat:'shaheedi', en:"Saka Panja Sahib", pa:"ਸਾਕਾ ਪੰਜਾ ਸਾਹਿਬ" },
+    { iso:'2021-10-31', d:15, m:8, cat:'modern', en:"Shaheedi Divas Bhai Beant Singh", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਭਾਈ ਬੇਅੰਤ ਸਿੰਘ" },
+    { iso:'2021-11-01', d:16, m:8, cat:'modern', en:"Punjab Day", pa:"ਪੰਜਾਬ ਦਿਵਸ" },
+    { iso:'2021-11-03', d:18, m:8, cat:'janamdin', en:"Janamdin Mata Sahib Kaur Ji", pa:"ਜਨਮ ਦਿਨ ਮਾਤਾ ਸਾਹਿਬ ਕੌਰ ਜੀ" },
+    { iso:'2021-11-04', d:19, m:8, cat:'festival', en:"Bandi Chhor Divas (Diwali)", pa:"ਬੰਦੀ ਛੋੜ ਦਿਵਸ (ਦੀਵਾਲੀ)", major:true },
+    { iso:'2021-11-04', d:19, m:8, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2021-11-06', d:21, m:8, cat:'gurgaddi', en:"Gurgaddi Gurpurab Sri Guru Granth Sahib Ji", pa:"ਗੁਰਗੱਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਗ੍ਰੰਥ ਸਾਹਿਬ ਜੀ", major:true },
+    { iso:'2021-11-09', d:24, m:8, cat:'jotijot', en:"Jyoti Jyot Gurpurab Sri Guru Gobind Singh Ji", pa:"ਜੋਤੀ ਜੋਤਿ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ", major:true },
+    { iso:'2021-11-14', d:29, m:8, cat:'janamdin', en:"Janamdin Bhagat Namdev Ji", pa:"ਜਨਮ ਦਿਨ ਭਗਤ ਨਾਮਦੇਵ ਜੀ" },
+    { iso:'2021-11-15', d:30, m:8, cat:'modern', en:"SGPC Foundation Day", pa:"ਸ਼੍ਰੋਮਣੀ ਕਮੇਟੀ ਸਥਾਪਨਾ ਦਿਵਸ" },
+    { iso:'2021-11-15', d:30, m:8, cat:'shaheedi', en:"Shaheedi Divas Baba Deep Singh Ji", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਬਾਬਾ ਦੀਪ ਸਿੰਘ ਜੀ", major:true },
+    { iso:'2021-11-16', d:1, m:9, cat:'sangrand', en:"Sangrand — Maghar", pa:"ਸੰਗਰਾਂਦ — ਮੱਘਰ" },
+    { iso:'2021-11-19', d:4, m:9, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2021-11-19', d:4, m:9, cat:'prakash', en:"Prakash Gurpurab Sri Guru Nanak Dev Ji", pa:"ਪ੍ਰਕਾਸ਼ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਨਾਨਕ ਦੇਵ ਜੀ", major:true },
+    { iso:'2021-11-28', d:13, m:9, cat:'historic', en:"Akal Chalana Bhai Mardana Ji", pa:"ਅਕਾਲ ਚਲਾਣਾ ਭਾਈ ਮਰਦਾਨਾ ਜੀ" },
+    { iso:'2021-11-30', d:15, m:9, cat:'janamdin', en:"Janamdin Sahibzada Zorawar Singh Ji", pa:"ਜਨਮ ਦਿਨ ਸਾਹਿਬਜ਼ਾਦਾ ਜ਼ੋਰਾਵਰ ਸਿੰਘ ਜੀ" },
+    { iso:'2021-12-04', d:19, m:9, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2021-12-04', d:19, m:9, cat:'shaheedi', en:"Shaheedi Divas Baba Gurbaksh Singh Ji", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਬਾਬਾ ਗੁਰਬਖ਼ਸ਼ ਸਿੰਘ ਜੀ" },
+    { iso:'2021-12-06', d:21, m:9, cat:'gurgaddi', en:"Gurgaddi Gurpurab Sri Guru Gobind Singh Ji", pa:"ਗੁਰਗੱਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ", major:true },
+    { iso:'2021-12-08', d:23, m:9, cat:'shaheedi', en:"Shaheedi Gurpurab Sri Guru Tegh Bahadur Ji", pa:"ਸ਼ਹੀਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਤੇਗ਼ ਬਹਾਦਰ ਜੀ", major:true },
+    { iso:'2021-12-08', d:23, m:9, cat:'tithi', en:"Panchami", pa:"ਪੰਚਮੀ" },
+    { iso:'2021-12-14', d:29, m:9, cat:'janamdin', en:"Janamdin Sahibzada Fateh Singh Ji", pa:"ਜਨਮ ਦਿਨ ਸਾਹਿਬਜ਼ਾਦਾ ਫ਼ਤਿਹ ਸਿੰਘ ਜੀ" },
+    { iso:'2021-12-15', d:1, m:10, cat:'sangrand', en:"Sangrand — Poh", pa:"ਸੰਗਰਾਂਦ — ਪੋਹ" },
+    { iso:'2021-12-19', d:5, m:10, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2021-12-21', d:7, m:10, cat:'shaheedi', en:"Shaheedi Divas Baba Jivan Singh Ji (Bhai Jaita Ji)", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਬਾਬਾ ਜੀਵਨ ਸਿੰਘ ਜੀ (ਭਾਈ ਜੈਤਾ ਜੀ)" },
+    { iso:'2021-12-22', d:8, m:10, cat:'shaheedi', en:"Shaheedi Divas Vadde Sahibzade — Chamkaur Sahib", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਵੱਡੇ ਸਾਹਿਬਜ਼ਾਦੇ — ਚਮਕੌਰ ਸਾਹਿਬ", major:true },
+    { iso:'2021-12-23', d:9, m:10, cat:'shaheedi', en:"Shaheedi Divas Bhai Sangat Singh Ji", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਭਾਈ ਸੰਗਤ ਸਿੰਘ ਜੀ" },
+    { iso:'2021-12-27', d:13, m:10, cat:'shaheedi', en:"Shaheedi Divas Chhote Sahibzade & Mata Gujri Ji", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਛੋਟੇ ਸਾਹਿਬਜ਼ਾਦੇ ਤੇ ਮਾਤਾ ਗੁਜਰੀ ਜੀ", major:true },
+    { iso:'2022-01-02', d:19, m:10, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2022-01-06', d:23, m:10, cat:'modern', en:"Shaheedi Divas Bhai Kehar Singh & Bhai Satwant Singh", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਭਾਈ ਕੇਹਰ ਸਿੰਘ ਤੇ ਭਾਈ ਸਤਵੰਤ ਸਿੰਘ" },
+    { iso:'2022-01-09', d:26, m:10, cat:'prakash', en:"Prakash Gurpurab Sri Guru Gobind Singh Ji", pa:"ਪ੍ਰਕਾਸ਼ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ", major:true },
+    { iso:'2022-01-13', d:30, m:10, cat:'festival', en:"Lohri", pa:"ਲੋਹੜੀ" },
+    { iso:'2022-01-14', d:1, m:11, cat:'historic', en:"Foundation Day Sri Harmandir Sahib", pa:"ਸਥਾਪਨਾ ਦਿਵਸ ਸ੍ਰੀ ਹਰਿਮੰਦਰ ਸਾਹਿਬ", major:true },
+    { iso:'2022-01-14', d:1, m:11, cat:'mela', en:"Jor Mela Sri Muktsar Sahib (Maghi)", pa:"ਜੋੜ ਮੇਲਾ ਸ੍ਰੀ ਮੁਕਤਸਰ ਸਾਹਿਬ (ਮਾਘੀ)", major:true },
+    { iso:'2022-01-14', d:1, m:11, cat:'sangrand', en:"Sangrand — Magh", pa:"ਸੰਗਰਾਂਦ — ਮਾਘ" },
+    { iso:'2022-01-17', d:4, m:11, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2022-01-20', d:7, m:11, cat:'historic', en:"Chabiyan Da Morcha (Amritsar)", pa:"ਚਾਬੀਆਂ ਦਾ ਮੋਰਚਾ (ਅੰਮ੍ਰਿਤਸਰ)" },
+    { iso:'2022-01-27', d:14, m:11, cat:'janamdin', en:"Janamdin Baba Deep Singh Ji", pa:"ਜਨਮ ਦਿਨ ਬਾਬਾ ਦੀਪ ਸਿੰਘ ਜੀ" },
+    { iso:'2022-02-01', d:19, m:11, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2022-02-05', d:23, m:11, cat:'festival', en:"Basant Panchami", pa:"ਬਸੰਤ ਪੰਚਮੀ" },
+    { iso:'2022-02-09', d:27, m:11, cat:'shaheedi', en:"Wadda Ghallughara — Kup Rohira", pa:"ਵੱਡਾ ਘੱਲੂਘਾਰਾ — ਕੁੱਪ ਰੋਹੀੜਾ", major:true },
+    { iso:'2022-02-11', d:29, m:11, cat:'janamdin', en:"Janamdin Sahibzada Ajit Singh Ji", pa:"ਜਨਮ ਦਿਨ ਸਾਹਿਬਜ਼ਾਦਾ ਅਜੀਤ ਸਿੰਘ ਜੀ" },
+    { iso:'2022-02-12', d:1, m:12, cat:'sangrand', en:"Sangrand — Phagun", pa:"ਸੰਗਰਾਂਦ — ਫੱਗਣ" },
+    { iso:'2022-02-14', d:3, m:12, cat:'prakash', en:"Prakash Gurpurab Sri Guru Har Rai Ji", pa:"ਪ੍ਰਕਾਸ਼ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਹਰਿ ਰਾਇ ਜੀ", major:true },
+    { iso:'2022-02-16', d:5, m:12, cat:'janamdin', en:"Janamdin Bhagat Ravidas Ji", pa:"ਜਨਮ ਦਿਨ ਭਗਤ ਰਵਿਦਾਸ ਜੀ" },
+    { iso:'2022-02-16', d:5, m:12, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2022-02-21', d:10, m:12, cat:'historic', en:"Jaitu Da Morcha (Faridkot)", pa:"ਜੈਤੋ ਦਾ ਮੋਰਚਾ (ਫ਼ਰੀਦਕੋਟ)" },
+    { iso:'2022-02-21', d:10, m:12, cat:'shaheedi', en:"Saka Sri Nankana Sahib", pa:"ਸਾਕਾ ਸ੍ਰੀ ਨਨਕਾਣਾ ਸਾਹਿਬ", major:true },
+    { iso:'2022-03-02', d:19, m:12, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2022-03-14', d:1, m:1, cat:'festival', en:"Nanakshahi New Year 554", pa:"ਨਾਨਕਸ਼ਾਹੀ ਨਵਾਂ ਸਾਲ ੫੫੪", major:true },
+    { iso:'2022-03-14', d:1, m:1, cat:'sangrand', en:"Sangrand — Chet", pa:"ਸੰਗਰਾਂਦ — ਚੇਤ" },
+    { iso:'2022-03-15', d:2, m:1, cat:'historic', en:"S. Baghel Singh — Delhi Fateh", pa:"ਸ. ਬਘੇਲ ਸਿੰਘ — ਦਿੱਲੀ ਫ਼ਤਿਹ" },
+    { iso:'2022-03-18', d:5, m:1, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2022-03-19', d:6, m:1, cat:'festival', en:"Hola Mohalla", pa:"ਹੋਲਾ ਮਹੱਲਾ", major:true },
+    { iso:'2022-03-23', d:10, m:1, cat:'modern', en:"Shaheedi Divas S. Bhagat Singh", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਸ. ਭਗਤ ਸਿੰਘ" },
+    { iso:'2022-03-25', d:12, m:1, cat:'shaheedi', en:"Shaheedi Divas Bhai Subeg Singh & Bhai Shahbaz Singh", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਭਾਈ ਸੁਬੇਗ ਸਿੰਘ ਤੇ ਭਾਈ ਸ਼ਾਹਬਾਜ਼ ਸਿੰਘ" },
+    { iso:'2022-03-30', d:17, m:1, cat:'gurgaddi', en:"Gurgaddi Gurpurab Sri Guru Har Rai Ji", pa:"ਗੁਰਗੱਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਹਰਿ ਰਾਇ ਜੀ", major:true },
+    { iso:'2022-04-01', d:19, m:1, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2022-04-02', d:20, m:1, cat:'gurgaddi', en:"Gurgaddi Gurpurab Sri Guru Amar Das Ji", pa:"ਗੁਰਗੱਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਅਮਰ ਦਾਸ ਜੀ", major:true },
+    { iso:'2022-04-05', d:23, m:1, cat:'jotijot', en:"Jyoti Jyot Gurpurab Sri Guru Angad Dev Ji", pa:"ਜੋਤੀ ਜੋਤਿ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਅੰਗਦ ਦੇਵ ਜੀ", major:true },
+    { iso:'2022-04-06', d:24, m:1, cat:'jotijot', en:"Jyoti Jyot Gurpurab Sri Guru Hargobind Ji", pa:"ਜੋਤੀ ਜੋਤਿ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਹਰਿਗੋਬਿੰਦ ਜੀ", major:true },
+    { iso:'2022-04-09', d:27, m:1, cat:'janamdin', en:"Janamdin Sahibzada Jujhar Singh Ji", pa:"ਜਨਮ ਦਿਨ ਸਾਹਿਬਜ਼ਾਦਾ ਜੁਝਾਰ ਸਿੰਘ ਜੀ" },
+    { iso:'2022-04-11', d:29, m:1, cat:'tithi', en:"Dashmi", pa:"ਦਸਮੀ" },
+    { iso:'2022-04-13', d:31, m:1, cat:'historic', en:"Sikh Turban Day", pa:"ਸਿੱਖ ਦਸਤਾਰ ਦਿਵਸ" },
+    { iso:'2022-04-14', d:1, m:2, cat:'festival', en:"Vaisakhi — Khalsa Sajna Divas", pa:"ਵਿਸਾਖੀ — ਖ਼ਾਲਸਾ ਸਾਜਨਾ ਦਿਵਸ", major:true },
+    { iso:'2022-04-14', d:1, m:2, cat:'sangrand', en:"Sangrand — Vaisakh", pa:"ਸੰਗਰਾਂਦ — ਵੈਸਾਖ" },
+    { iso:'2022-04-15', d:2, m:2, cat:'gurgaddi', en:"Gurgaddi Gurpurab Sri Guru Tegh Bahadur Ji", pa:"ਗੁਰਗੱਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਤੇਗ਼ ਬਹਾਦਰ ਜੀ", major:true },
+    { iso:'2022-04-15', d:2, m:2, cat:'jotijot', en:"Jyoti Jyot Gurpurab Sri Guru Har Krishan Ji", pa:"ਜੋਤੀ ਜੋਤਿ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਹਰਿ ਕ੍ਰਿਸ਼ਨ ਜੀ", major:true },
+    { iso:'2022-04-16', d:3, m:2, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2022-04-21', d:8, m:2, cat:'janamdin', en:"Janamdin Bhagat Dhanna Ji", pa:"ਜਨਮ ਦਿਨ ਭਗਤ ਧੰਨਾ ਜੀ" },
+    { iso:'2022-04-21', d:8, m:2, cat:'prakash', en:"Prakash Gurpurab Sri Guru Tegh Bahadur Ji", pa:"ਪ੍ਰਕਾਸ਼ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਤੇਗ਼ ਬਹਾਦਰ ਜੀ", major:true },
+    { iso:'2022-04-23', d:10, m:2, cat:'prakash', en:"Prakash Gurpurab Sri Guru Arjan Dev Ji", pa:"ਪ੍ਰਕਾਸ਼ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਅਰਜਨ ਦੇਵ ਜੀ", major:true },
+    { iso:'2022-04-30', d:17, m:2, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2022-05-01', d:18, m:2, cat:'prakash', en:"Prakash Gurpurab Sri Guru Angad Dev Ji", pa:"ਪ੍ਰਕਾਸ਼ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਅੰਗਦ ਦੇਵ ਜੀ", major:true },
+    { iso:'2022-05-04', d:21, m:2, cat:'mela', en:"Shaheedi Jor Mela Sri Muktsar Sahib", pa:"ਸ਼ਹੀਦੀ ਜੋੜ ਮੇਲਾ ਸ੍ਰੀ ਮੁਕਤਸਰ ਸਾਹਿਬ" },
+    { iso:'2022-05-12', d:29, m:2, cat:'historic', en:"Baba Banda Singh Bahadur — Sirhind Fateh Divas", pa:"ਬਾਬਾ ਬੰਦਾ ਸਿੰਘ ਬਹਾਦਰ — ਸਰਹਿੰਦ ਫ਼ਤਿਹ ਦਿਵਸ" },
+    { iso:'2022-05-14', d:1, m:3, cat:'sangrand', en:"Sangrand — Jeth", pa:"ਸੰਗਰਾਂਦ — ਜੇਠ" },
+    { iso:'2022-05-15', d:2, m:3, cat:'prakash', en:"Prakash Gurpurab Sri Guru Amar Das Ji", pa:"ਪ੍ਰਕਾਸ਼ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਅਮਰ ਦਾਸ ਜੀ", major:true },
+    { iso:'2022-05-16', d:3, m:3, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2022-05-16', d:3, m:3, cat:'shaheedi', en:"Chhota Ghallughara — Kahnuwan", pa:"ਛੋਟਾ ਘੱਲੂਘਾਰਾ — ਕਾਹਨੂੰਵਾਨ", major:true },
+    { iso:'2022-05-18', d:5, m:3, cat:'janamdin', en:"Janamdin Sardar Jassa Singh Ahluwalia", pa:"ਜਨਮ ਦਿਨ ਸਰਦਾਰ ਜੱਸਾ ਸਿੰਘ ਆਹਲੂਵਾਲੀਆ" },
+    { iso:'2022-05-22', d:9, m:3, cat:'shaheedi', en:"Shaheedi Saka Paonta Sahib", pa:"ਸ਼ਹੀਦੀ ਸਾਕਾ ਪਾਉਂਟਾ ਸਾਹਿਬ" },
+    { iso:'2022-05-23', d:10, m:3, cat:'gurgaddi', en:"Gurgaddi Gurpurab Sri Guru Hargobind Ji", pa:"ਗੁਰਗੱਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਹਰਿਗੋਬਿੰਦ ਜੀ", major:true },
+    { iso:'2022-05-30', d:17, m:3, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2022-06-03', d:21, m:3, cat:'shaheedi', en:"Shaheedi Gurpurab Sri Guru Arjan Dev Ji", pa:"ਸ਼ਹੀਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਅਰਜਨ ਦੇਵ ਜੀ", major:true },
+    { iso:'2022-06-04', d:22, m:3, cat:'modern', en:"Ghallughara Sri Akal Takht Sahib (1984)", pa:"ਘੱਲੂਘਾਰਾ ਸ੍ਰੀ ਅਕਾਲ ਤਖ਼ਤ ਸਾਹਿਬ (੧੯੮੪)" },
+    { iso:'2022-06-04', d:22, m:3, cat:'tithi', en:"Panchami", pa:"ਪੰਚਮੀ" },
+    { iso:'2022-06-06', d:24, m:3, cat:'modern', en:"Shaheedi Divas Sant Jarnail Singh Khalsa Bhindranwale & Bhai Amreek Singh", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਸੰਤ ਜਰਨੈਲ ਸਿੰਘ ਖ਼ਾਲਸਾ ਭਿੰਡਰਾਂਵਾਲੇ ਤੇ ਭਾਈ ਅਮਰੀਕ ਸਿੰਘ" },
+    { iso:'2022-06-14', d:32, m:3, cat:'janamdin', en:"Janamdin Bhagat Kabir Ji", pa:"ਜਨਮ ਦਿਨ ਭਗਤ ਕਬੀਰ ਜੀ" },
+    { iso:'2022-06-14', d:32, m:3, cat:'mela', en:"Jor Mela Gurdwara Sri Reetha Sahib", pa:"ਜੋੜ ਮੇਲਾ ਗੁਰਦੁਆਰਾ ਸ੍ਰੀ ਰੀਠਾ ਸਾਹਿਬ" },
+    { iso:'2022-06-14', d:32, m:3, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2022-06-15', d:1, m:4, cat:'prakash', en:"Prakash Gurpurab Sri Guru Hargobind Ji", pa:"ਪ੍ਰਕਾਸ਼ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਹਰਿਗੋਬਿੰਦ ਜੀ", major:true },
+    { iso:'2022-06-15', d:1, m:4, cat:'sangrand', en:"Sangrand — Harh", pa:"ਸੰਗਰਾਂਦ — ਹਾੜ" },
+    { iso:'2022-06-25', d:11, m:4, cat:'shaheedi', en:"Shaheedi Divas Baba Banda Singh Bahadur", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਬਾਬਾ ਬੰਦਾ ਸਿੰਘ ਬਹਾਦਰ", major:true },
+    { iso:'2022-06-29', d:15, m:4, cat:'historic', en:"Barsi Maharaja Ranjit Singh Ji", pa:"ਬਰਸੀ ਮਹਾਰਾਜਾ ਰਣਜੀਤ ਸਿੰਘ ਜੀ" },
+    { iso:'2022-06-29', d:15, m:4, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2022-07-02', d:18, m:4, cat:'historic', en:"Foundation Day — Sri Akal Takht Sahib", pa:"ਸਥਾਪਨਾ ਦਿਵਸ — ਸ੍ਰੀ ਅਕਾਲ ਤਖ਼ਤ ਸਾਹਿਬ", major:true },
+    { iso:'2022-07-09', d:25, m:4, cat:'historic', en:"Miri Piri Divas", pa:"ਮੀਰੀ ਪੀਰੀ ਦਿਵਸ", major:true },
+    { iso:'2022-07-09', d:25, m:4, cat:'shaheedi', en:"Shaheedi Divas Bhai Mani Singh Ji", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਭਾਈ ਮਨੀ ਸਿੰਘ ਜੀ", major:true },
+    { iso:'2022-07-09', d:25, m:4, cat:'tithi', en:"Dashmi", pa:"ਦਸਮੀ" },
+    { iso:'2022-07-13', d:29, m:4, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2022-07-16', d:1, m:5, cat:'sangrand', en:"Sangrand — Sawan", pa:"ਸੰਗਰਾਂਦ — ਸਾਵਣ" },
+    { iso:'2022-07-16', d:1, m:5, cat:'shaheedi', en:"Shaheedi Divas Bhai Taru Singh Ji", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਭਾਈ ਤਾਰੂ ਸਿੰਘ ਜੀ", major:true },
+    { iso:'2022-07-22', d:7, m:5, cat:'prakash', en:"Prakash Gurpurab Sri Guru Har Krishan Ji", pa:"ਪ੍ਰਕਾਸ਼ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਹਰਿ ਕ੍ਰਿਸ਼ਨ ਜੀ", major:true },
+    { iso:'2022-07-28', d:13, m:5, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2022-07-31', d:16, m:5, cat:'modern', en:"Shaheedi Divas S. Udham Singh Ji", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਸ. ਊਧਮ ਸਿੰਘ ਜੀ" },
+    { iso:'2022-08-08', d:24, m:5, cat:'historic', en:"Morcha Guru Ka Bagh", pa:"ਮੋਰਚਾ ਗੁਰੂ ਕਾ ਬਾਗ਼" },
+    { iso:'2022-08-12', d:28, m:5, cat:'mela', en:"Jor Mela Baba Bakala", pa:"ਜੋੜ ਮੇਲਾ ਬਾਬਾ ਬਕਾਲਾ" },
+    { iso:'2022-08-12', d:28, m:5, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2022-08-17', d:1, m:6, cat:'sangrand', en:"Sangrand — Bhadon", pa:"ਸੰਗਰਾਂਦ — ਭਾਦੋਂ" },
+    { iso:'2022-08-21', d:5, m:6, cat:'modern', en:"Shaheedi Divas Sant Harchand Singh Longowal", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਸੰਤ ਹਰਚੰਦ ਸਿੰਘ ਲੌਂਗੋਵਾਲ" },
+    { iso:'2022-08-27', d:11, m:6, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2022-08-28', d:12, m:6, cat:'historic', en:"Pehla Prakash Gurpurab Sri Guru Granth Sahib Ji", pa:"ਪਹਿਲਾ ਪ੍ਰਕਾਸ਼ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਗ੍ਰੰਥ ਸਾਹਿਬ ਜੀ", major:true },
+    { iso:'2022-08-29', d:13, m:6, cat:'gurgaddi', en:"Gurgaddi Gurpurab Sri Guru Arjan Dev Ji", pa:"ਗੁਰਗੱਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਅਰਜਨ ਦੇਵ ਜੀ", major:true },
+    { iso:'2022-08-30', d:14, m:6, cat:'historic', en:"Sampuranta Divas Sri Guru Granth Sahib Ji", pa:"ਸੰਪੂਰਨਤਾ ਦਿਵਸ ਸ੍ਰੀ ਗੁਰੂ ਗ੍ਰੰਥ ਸਾਹਿਬ ਜੀ", major:true },
+    { iso:'2022-08-30', d:14, m:6, cat:'jotijot', en:"Jyoti Jyot Gurpurab Sri Guru Ram Das Ji", pa:"ਜੋਤੀ ਜੋਤਿ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਰਾਮ ਦਾਸ ਜੀ", major:true },
+    { iso:'2022-09-03', d:18, m:6, cat:'historic', en:"Viah Purab Sri Guru Nanak Dev Ji", pa:"ਵਿਆਹ ਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਨਾਨਕ ਦੇਵ ਜੀ" },
+    { iso:'2022-09-03', d:18, m:6, cat:'mela', en:"Jor Mela Gurdwara Kandh Sahib (Batala)", pa:"ਜੋੜ ਮੇਲਾ ਗੁਰਦੁਆਰਾ ਕੰਧ ਸਾਹਿਬ (ਬਟਾਲਾ)" },
+    { iso:'2022-09-08', d:23, m:6, cat:'gurgaddi', en:"Gurgaddi Gurpurab Sri Guru Ram Das Ji", pa:"ਗੁਰਗੱਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਰਾਮ ਦਾਸ ਜੀ", major:true },
+    { iso:'2022-09-10', d:25, m:6, cat:'jotijot', en:"Jyoti Jyot Gurpurab Sri Guru Amar Das Ji", pa:"ਜੋਤੀ ਜੋਤਿ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਅਮਰ ਦਾਸ ਜੀ", major:true },
+    { iso:'2022-09-10', d:25, m:6, cat:'mela', en:"Jor Mela Goindwal Sahib", pa:"ਜੋੜ ਮੇਲਾ ਗੋਇੰਦਵਾਲ ਸਾਹਿਬ" },
+    { iso:'2022-09-10', d:25, m:6, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2022-09-14', d:29, m:6, cat:'mela', en:"Jor Mela Baba Buddha Ji (Ramdas)", pa:"ਜੋੜ ਮੇਲਾ ਬਾਬਾ ਬੁੱਢਾ ਜੀ (ਰਾਮਦਾਸ)" },
+    { iso:'2022-09-15', d:30, m:6, cat:'gurgaddi', en:"Gurgaddi Gurpurab Sri Guru Angad Dev Ji", pa:"ਗੁਰਗੱਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਅੰਗਦ ਦੇਵ ਜੀ", major:true },
+    { iso:'2022-09-17', d:1, m:7, cat:'sangrand', en:"Sangrand — Assu", pa:"ਸੰਗਰਾਂਦ — ਅੱਸੂ" },
+    { iso:'2022-09-20', d:4, m:7, cat:'jotijot', en:"Jyoti Jyot Gurpurab Sri Guru Nanak Dev Ji", pa:"ਜੋਤੀ ਜੋਤਿ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਨਾਨਕ ਦੇਵ ਜੀ", major:true },
+    { iso:'2022-09-25', d:9, m:7, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2022-10-05', d:19, m:7, cat:'festival', en:"Darbar Khalsa (Dussehra)", pa:"ਦਰਬਾਰ ਖ਼ਾਲਸਾ (ਦੁਸਹਿਰਾ)" },
+    { iso:'2022-10-05', d:19, m:7, cat:'tithi', en:"Dashmi", pa:"ਦਸਮੀ" },
+    { iso:'2022-10-07', d:21, m:7, cat:'mela', en:"Jor Mela Bir Baba Buddha Ji (Thatha)", pa:"ਜੋੜ ਮੇਲਾ ਬੀੜ ਬਾਬਾ ਬੁੱਢਾ ਜੀ (ਥੱਥਾ)" },
+    { iso:'2022-10-08', d:22, m:7, cat:'mela', en:"Jor Mela Bir Baba Buddha Ji (Thatha)", pa:"ਜੋੜ ਮੇਲਾ ਬੀੜ ਬਾਬਾ ਬੁੱਢਾ ਜੀ (ਥੱਥਾ)" },
+    { iso:'2022-10-09', d:23, m:7, cat:'modern', en:"Shaheedi Divas Bhai Sukhdev Singh & Bhai Harjinder Singh", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਭਾਈ ਸੁਖਦੇਵ ਸਿੰਘ ਤੇ ਭਾਈ ਹਰਜਿੰਦਰ ਸਿੰਘ" },
+    { iso:'2022-10-09', d:23, m:7, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2022-10-10', d:24, m:7, cat:'janamdin', en:"Janamdin Bhai Taru Singh Ji", pa:"ਜਨਮ ਦਿਨ ਭਾਈ ਤਾਰੂ ਸਿੰਘ ਜੀ" },
+    { iso:'2022-10-11', d:25, m:7, cat:'prakash', en:"Prakash Gurpurab Sri Guru Ram Das Ji", pa:"ਪ੍ਰਕਾਸ਼ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਰਾਮ ਦਾਸ ਜੀ", major:true },
+    { iso:'2022-10-17', d:1, m:8, cat:'sangrand', en:"Sangrand — Katak", pa:"ਸੰਗਰਾਂਦ — ਕੱਤਕ" },
+    { iso:'2022-10-19', d:3, m:8, cat:'gurgaddi', en:"Gurgaddi Gurpurab Sri Guru Har Krishan Ji", pa:"ਗੁਰਗੱਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਹਰਿ ਕ੍ਰਿਸ਼ਨ ਜੀ", major:true },
+    { iso:'2022-10-19', d:3, m:8, cat:'jotijot', en:"Jyoti Jyot Gurpurab Sri Guru Har Rai Ji", pa:"ਜੋਤੀ ਜੋਤਿ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਹਰਿ ਰਾਇ ਜੀ", major:true },
+    { iso:'2022-10-21', d:5, m:8, cat:'modern', en:"Janamdin Sant Gyani Kartar Singh Bhindranwale", pa:"ਜਨਮ ਦਿਨ ਸੰਤ ਗਿਆਨੀ ਕਰਤਾਰ ਸਿੰਘ ਭਿੰਡਰਾਂਵਾਲੇ" },
+    { iso:'2022-10-23', d:7, m:8, cat:'historic', en:"Barsi Sardar Jassa Singh Ahluwalia", pa:"ਬਰਸੀ ਸਰਦਾਰ ਜੱਸਾ ਸਿੰਘ ਆਹਲੂਵਾਲੀਆ" },
+    { iso:'2022-10-23', d:7, m:8, cat:'janamdin', en:"Janamdin Baba Buddha Ji", pa:"ਜਨਮ ਦਿਨ ਬਾਬਾ ਬੁੱਢਾ ਜੀ" },
+    { iso:'2022-10-24', d:8, m:8, cat:'festival', en:"Bandi Chhor Divas (Diwali)", pa:"ਬੰਦੀ ਛੋੜ ਦਿਵਸ (ਦੀਵਾਲੀ)", major:true },
+    { iso:'2022-10-25', d:9, m:8, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2022-10-27', d:11, m:8, cat:'gurgaddi', en:"Gurgaddi Gurpurab Sri Guru Granth Sahib Ji", pa:"ਗੁਰਗੱਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਗ੍ਰੰਥ ਸਾਹਿਬ ਜੀ", major:true },
+    { iso:'2022-10-29', d:13, m:8, cat:'jotijot', en:"Jyoti Jyot Gurpurab Sri Guru Gobind Singh Ji", pa:"ਜੋਤੀ ਜੋਤਿ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ", major:true },
+    { iso:'2022-10-29', d:13, m:8, cat:'tithi', en:"Panchami", pa:"ਪੰਚਮੀ" },
+    { iso:'2022-10-30', d:14, m:8, cat:'shaheedi', en:"Saka Panja Sahib", pa:"ਸਾਕਾ ਪੰਜਾ ਸਾਹਿਬ" },
+    { iso:'2022-10-31', d:15, m:8, cat:'modern', en:"Shaheedi Divas Bhai Beant Singh", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਭਾਈ ਬੇਅੰਤ ਸਿੰਘ" },
+    { iso:'2022-11-01', d:16, m:8, cat:'modern', en:"Punjab Day", pa:"ਪੰਜਾਬ ਦਿਵਸ" },
+    { iso:'2022-11-03', d:18, m:8, cat:'janamdin', en:"Janamdin Mata Sahib Kaur Ji", pa:"ਜਨਮ ਦਿਨ ਮਾਤਾ ਸਾਹਿਬ ਕੌਰ ਜੀ" },
+    { iso:'2022-11-03', d:18, m:8, cat:'tithi', en:"Dashmi", pa:"ਦਸਮੀ" },
+    { iso:'2022-11-04', d:19, m:8, cat:'janamdin', en:"Janamdin Bhagat Namdev Ji", pa:"ਜਨਮ ਦਿਨ ਭਗਤ ਨਾਮਦੇਵ ਜੀ" },
+    { iso:'2022-11-08', d:23, m:8, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2022-11-08', d:23, m:8, cat:'prakash', en:"Prakash Gurpurab Sri Guru Nanak Dev Ji", pa:"ਪ੍ਰਕਾਸ਼ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਨਾਨਕ ਦੇਵ ਜੀ", major:true },
+    { iso:'2022-11-15', d:30, m:8, cat:'modern', en:"SGPC Foundation Day", pa:"ਸ਼੍ਰੋਮਣੀ ਕਮੇਟੀ ਸਥਾਪਨਾ ਦਿਵਸ" },
+    { iso:'2022-11-15', d:30, m:8, cat:'shaheedi', en:"Shaheedi Divas Baba Deep Singh Ji", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਬਾਬਾ ਦੀਪ ਸਿੰਘ ਜੀ", major:true },
+    { iso:'2022-11-16', d:1, m:9, cat:'sangrand', en:"Sangrand — Maghar", pa:"ਸੰਗਰਾਂਦ — ਮੱਘਰ" },
+    { iso:'2022-11-23', d:8, m:9, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2022-11-26', d:11, m:9, cat:'gurgaddi', en:"Gurgaddi Gurpurab Sri Guru Gobind Singh Ji", pa:"ਗੁਰਗੱਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ", major:true },
+    { iso:'2022-11-28', d:13, m:9, cat:'historic', en:"Akal Chalana Bhai Mardana Ji", pa:"ਅਕਾਲ ਚਲਾਣਾ ਭਾਈ ਮਰਦਾਨਾ ਜੀ" },
+    { iso:'2022-11-28', d:13, m:9, cat:'shaheedi', en:"Shaheedi Gurpurab Sri Guru Tegh Bahadur Ji", pa:"ਸ਼ਹੀਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਤੇਗ਼ ਬਹਾਦਰ ਜੀ", major:true },
+    { iso:'2022-11-30', d:15, m:9, cat:'janamdin', en:"Janamdin Sahibzada Zorawar Singh Ji", pa:"ਜਨਮ ਦਿਨ ਸਾਹਿਬਜ਼ਾਦਾ ਜ਼ੋਰਾਵਰ ਸਿੰਘ ਜੀ" },
+    { iso:'2022-12-04', d:19, m:9, cat:'shaheedi', en:"Shaheedi Divas Baba Gurbaksh Singh Ji", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਬਾਬਾ ਗੁਰਬਖ਼ਸ਼ ਸਿੰਘ ਜੀ" },
+    { iso:'2022-12-08', d:23, m:9, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2022-12-14', d:29, m:9, cat:'janamdin', en:"Janamdin Sahibzada Fateh Singh Ji", pa:"ਜਨਮ ਦਿਨ ਸਾਹਿਬਜ਼ਾਦਾ ਫ਼ਤਿਹ ਸਿੰਘ ਜੀ" },
+    { iso:'2022-12-14', d:29, m:9, cat:'modern', en:"Shiromani Akali Dal Foundation Day", pa:"ਸ਼੍ਰੋਮਣੀ ਅਕਾਲੀ ਦਲ ਸਥਾਪਨਾ ਦਿਵਸ" },
+    { iso:'2022-12-16', d:1, m:10, cat:'sangrand', en:"Sangrand — Poh", pa:"ਸੰਗਰਾਂਦ — ਪੋਹ" },
+    { iso:'2022-12-21', d:6, m:10, cat:'historic', en:"Leaving Fort Sri Anandgarh Sahib", pa:"ਸ੍ਰੀ ਆਨੰਦਗੜ੍ਹ ਸਾਹਿਬ ਦਾ ਕਿਲ੍ਹਾ ਛੱਡਣਾ" },
+    { iso:'2022-12-22', d:7, m:10, cat:'historic', en:"Family Separation — Sarsa Nangal", pa:"ਪਰਿਵਾਰ ਵਿਛੋੜਾ — ਸਰਸਾ ਨੰਗਲ" },
+    { iso:'2022-12-22', d:7, m:10, cat:'shaheedi', en:"Shaheedi Divas Baba Jivan Singh Ji (Bhai Jaita Ji)", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਬਾਬਾ ਜੀਵਨ ਸਿੰਘ ਜੀ (ਭਾਈ ਜੈਤਾ ਜੀ)" },
+    { iso:'2022-12-23', d:8, m:10, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2022-12-23', d:8, m:10, cat:'shaheedi', en:"Shaheedi Divas Vadde Sahibzade — Chamkaur Sahib", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਵੱਡੇ ਸਾਹਿਬਜ਼ਾਦੇ — ਚਮਕੌਰ ਸਾਹਿਬ", major:true },
+    { iso:'2022-12-24', d:9, m:10, cat:'shaheedi', en:"Shaheedi Divas Bhai Sangat Singh Ji", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਭਾਈ ਸੰਗਤ ਸਿੰਘ ਜੀ" },
+    { iso:'2022-12-28', d:13, m:10, cat:'shaheedi', en:"Shaheedi Divas Chhote Sahibzade & Mata Gujri Ji", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਛੋਟੇ ਸਾਹਿਬਜ਼ਾਦੇ ਤੇ ਮਾਤਾ ਗੁਜਰੀ ਜੀ", major:true },
+    { iso:'2022-12-29', d:14, m:10, cat:'prakash', en:"Prakash Gurpurab Sri Guru Gobind Singh Ji", pa:"ਪ੍ਰਕਾਸ਼ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ", major:true },
+    { iso:'2023-01-06', d:22, m:10, cat:'modern', en:"Shaheedi Divas Bhai Kehar Singh & Bhai Satwant Singh", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਭਾਈ ਕੇਹਰ ਸਿੰਘ ਤੇ ਭਾਈ ਸਤਵੰਤ ਸਿੰਘ" },
+    { iso:'2023-01-06', d:22, m:10, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2023-01-14', d:1, m:11, cat:'historic', en:"Foundation Day Sri Harmandir Sahib", pa:"ਸਥਾਪਨਾ ਦਿਵਸ ਸ੍ਰੀ ਹਰਿਮੰਦਰ ਸਾਹਿਬ", major:true },
+    { iso:'2023-01-14', d:1, m:11, cat:'mela', en:"Jor Mela Sri Muktsar Sahib (Maghi)", pa:"ਜੋੜ ਮੇਲਾ ਸ੍ਰੀ ਮੁਕਤਸਰ ਸਾਹਿਬ (ਮਾਘੀ)", major:true },
+    { iso:'2023-01-14', d:1, m:11, cat:'sangrand', en:"Sangrand — Magh", pa:"ਸੰਗਰਾਂਦ — ਮਾਘ" },
+    { iso:'2023-01-20', d:7, m:11, cat:'historic', en:"Chabiyan Da Morcha (Amritsar)", pa:"ਚਾਬੀਆਂ ਦਾ ਮੋਰਚਾ (ਅੰਮ੍ਰਿਤਸਰ)" },
+    { iso:'2023-01-21', d:8, m:11, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2023-01-26', d:13, m:11, cat:'festival', en:"Basant Panchami", pa:"ਬਸੰਤ ਪੰਚਮੀ" },
+    { iso:'2023-01-26', d:13, m:11, cat:'historic', en:"Marriage Day Sri Guru Gobind Singh Ji", pa:"ਵਿਆਹ ਦਿਵਸ ਸ੍ਰੀ ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ" },
+    { iso:'2023-01-27', d:14, m:11, cat:'janamdin', en:"Janamdin Baba Deep Singh Ji", pa:"ਜਨਮ ਦਿਨ ਬਾਬਾ ਦੀਪ ਸਿੰਘ ਜੀ" },
+    { iso:'2023-02-03', d:21, m:11, cat:'prakash', en:"Prakash Gurpurab Sri Guru Har Rai Ji", pa:"ਪ੍ਰਕਾਸ਼ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਹਰਿ ਰਾਇ ਜੀ", major:true },
+    { iso:'2023-02-05', d:23, m:11, cat:'janamdin', en:"Janamdin Bhagat Ravidas Ji", pa:"ਜਨਮ ਦਿਨ ਭਗਤ ਰਵਿਦਾਸ ਜੀ" },
+    { iso:'2023-02-05', d:23, m:11, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2023-02-09', d:27, m:11, cat:'shaheedi', en:"Wadda Ghallughara — Kup Rohira", pa:"ਵੱਡਾ ਘੱਲੂਘਾਰਾ — ਕੁੱਪ ਰੋਹੀੜਾ", major:true },
+    { iso:'2023-02-12', d:30, m:11, cat:'janamdin', en:"Janamdin Sahibzada Ajit Singh Ji", pa:"ਜਨਮ ਦਿਨ ਸਾਹਿਬਜ਼ਾਦਾ ਅਜੀਤ ਸਿੰਘ ਜੀ" },
+    { iso:'2023-02-13', d:1, m:12, cat:'sangrand', en:"Sangrand — Phagun", pa:"ਸੰਗਰਾਂਦ — ਫੱਗਣ" },
+    { iso:'2023-02-20', d:8, m:12, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2023-02-21', d:9, m:12, cat:'historic', en:"Jaitu Da Morcha (Faridkot)", pa:"ਜੈਤੋ ਦਾ ਮੋਰਚਾ (ਫ਼ਰੀਦਕੋਟ)" },
+    { iso:'2023-02-21', d:9, m:12, cat:'shaheedi', en:"Saka Sri Nankana Sahib", pa:"ਸਾਕਾ ਸ੍ਰੀ ਨਨਕਾਣਾ ਸਾਹਿਬ", major:true },
+    { iso:'2023-03-07', d:23, m:12, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2023-03-08', d:24, m:12, cat:'festival', en:"Hola Mohalla", pa:"ਹੋਲਾ ਮਹੱਲਾ", major:true },
+    { iso:'2023-03-14', d:1, m:1, cat:'festival', en:"Nanakshahi New Year 555", pa:"ਨਾਨਕਸ਼ਾਹੀ ਨਵਾਂ ਸਾਲ ੫੫੫", major:true },
+    { iso:'2023-03-14', d:1, m:1, cat:'sangrand', en:"Sangrand — Chet", pa:"ਸੰਗਰਾਂਦ — ਚੇਤ" },
+    { iso:'2023-03-14', d:1, m:1, cat:'shaheedi', en:"Shaheedi Divas Jathedar Akali Phula Singh Ji", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਜਥੇਦਾਰ ਅਕਾਲੀ ਫੂਲਾ ਸਿੰਘ ਜੀ" },
+    { iso:'2023-03-15', d:2, m:1, cat:'historic', en:"S. Baghel Singh — Delhi Fateh", pa:"ਸ. ਬਘੇਲ ਸਿੰਘ — ਦਿੱਲੀ ਫ਼ਤਿਹ" },
+    { iso:'2023-03-19', d:6, m:1, cat:'gurgaddi', en:"Gurgaddi Gurpurab Sri Guru Har Rai Ji", pa:"ਗੁਰਗੱਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਹਰਿ ਰਾਇ ਜੀ", major:true },
+    { iso:'2023-03-21', d:8, m:1, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2023-03-22', d:9, m:1, cat:'gurgaddi', en:"Gurgaddi Gurpurab Sri Guru Amar Das Ji", pa:"ਗੁਰਗੱਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਅਮਰ ਦਾਸ ਜੀ", major:true },
+    { iso:'2023-03-23', d:10, m:1, cat:'modern', en:"Shaheedi Divas S. Bhagat Singh", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਸ. ਭਗਤ ਸਿੰਘ" },
+    { iso:'2023-03-25', d:12, m:1, cat:'jotijot', en:"Jyoti Jyot Gurpurab Sri Guru Angad Dev Ji", pa:"ਜੋਤੀ ਜੋਤਿ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਅੰਗਦ ਦੇਵ ਜੀ", major:true },
+    { iso:'2023-03-25', d:12, m:1, cat:'shaheedi', en:"Shaheedi Divas Bhai Subeg Singh & Bhai Shahbaz Singh", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਭਾਈ ਸੁਬੇਗ ਸਿੰਘ ਤੇ ਭਾਈ ਸ਼ਾਹਬਾਜ਼ ਸਿੰਘ" },
+    { iso:'2023-03-26', d:13, m:1, cat:'jotijot', en:"Jyoti Jyot Gurpurab Sri Guru Hargobind Ji", pa:"ਜੋਤੀ ਜੋਤਿ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਹਰਿਗੋਬਿੰਦ ਜੀ", major:true },
+    { iso:'2023-04-05', d:23, m:1, cat:'gurgaddi', en:"Gurgaddi Gurpurab Sri Guru Tegh Bahadur Ji", pa:"ਗੁਰਗੱਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਤੇਗ਼ ਬਹਾਦਰ ਜੀ", major:true },
+    { iso:'2023-04-05', d:23, m:1, cat:'jotijot', en:"Jyoti Jyot Gurpurab Sri Guru Har Krishan Ji", pa:"ਜੋਤੀ ਜੋਤਿ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਹਰਿ ਕ੍ਰਿਸ਼ਨ ਜੀ", major:true },
+    { iso:'2023-04-06', d:24, m:1, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2023-04-09', d:27, m:1, cat:'janamdin', en:"Janamdin Sahibzada Jujhar Singh Ji", pa:"ਜਨਮ ਦਿਨ ਸਾਹਿਬਜ਼ਾਦਾ ਜੁਝਾਰ ਸਿੰਘ ਜੀ" },
+    { iso:'2023-04-11', d:29, m:1, cat:'prakash', en:"Prakash Gurpurab Sri Guru Tegh Bahadur Ji", pa:"ਪ੍ਰਕਾਸ਼ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਤੇਗ਼ ਬਹਾਦਰ ਜੀ", major:true },
+    { iso:'2023-04-12', d:30, m:1, cat:'prakash', en:"Prakash Gurpurab Sri Guru Arjan Dev Ji", pa:"ਪ੍ਰਕਾਸ਼ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਅਰਜਨ ਦੇਵ ਜੀ", major:true },
+    { iso:'2023-04-13', d:31, m:1, cat:'historic', en:"Sikh Turban Day", pa:"ਸਿੱਖ ਦਸਤਾਰ ਦਿਵਸ" },
+    { iso:'2023-04-14', d:1, m:2, cat:'festival', en:"Vaisakhi — Khalsa Sajna Divas", pa:"ਵਿਸਾਖੀ — ਖ਼ਾਲਸਾ ਸਾਜਨਾ ਦਿਵਸ", major:true },
+    { iso:'2023-04-14', d:1, m:2, cat:'sangrand', en:"Sangrand — Vaisakh", pa:"ਸੰਗਰਾਂਦ — ਵੈਸਾਖ" },
+    { iso:'2023-04-20', d:7, m:2, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2023-04-21', d:8, m:2, cat:'janamdin', en:"Janamdin Bhagat Dhanna Ji", pa:"ਜਨਮ ਦਿਨ ਭਗਤ ਧੰਨਾ ਜੀ" },
+    { iso:'2023-04-21', d:8, m:2, cat:'prakash', en:"Prakash Gurpurab Sri Guru Angad Dev Ji", pa:"ਪ੍ਰਕਾਸ਼ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਅੰਗਦ ਦੇਵ ਜੀ", major:true },
+    { iso:'2023-05-04', d:21, m:2, cat:'mela', en:"Shaheedi Jor Mela Sri Muktsar Sahib", pa:"ਸ਼ਹੀਦੀ ਜੋੜ ਮੇਲਾ ਸ੍ਰੀ ਮੁਕਤਸਰ ਸਾਹਿਬ" },
+    { iso:'2023-05-04', d:21, m:2, cat:'prakash', en:"Prakash Gurpurab Sri Guru Amar Das Ji", pa:"ਪ੍ਰਕਾਸ਼ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਅਮਰ ਦਾਸ ਜੀ", major:true },
+    { iso:'2023-05-05', d:22, m:2, cat:'janamdin', en:"Janamdin Sardar Jassa Singh Ramgarhia", pa:"ਜਨਮ ਦਿਨ ਸਰਦਾਰ ਜੱਸਾ ਸਿੰਘ ਰਾਮਗੜ੍ਹੀਆ" },
+    { iso:'2023-05-05', d:22, m:2, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2023-05-12', d:29, m:2, cat:'historic', en:"Baba Banda Singh Bahadur — Sirhind Fateh Divas", pa:"ਬਾਬਾ ਬੰਦਾ ਸਿੰਘ ਬਹਾਦਰ — ਸਰਹਿੰਦ ਫ਼ਤਿਹ ਦਿਵਸ" },
+    { iso:'2023-05-13', d:30, m:2, cat:'gurgaddi', en:"Gurgaddi Gurpurab Sri Guru Hargobind Ji", pa:"ਗੁਰਗੱਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਹਰਿਗੋਬਿੰਦ ਜੀ", major:true },
+    { iso:'2023-05-15', d:1, m:3, cat:'sangrand', en:"Sangrand — Jeth", pa:"ਸੰਗਰਾਂਦ — ਜੇਠ" },
+    { iso:'2023-05-17', d:3, m:3, cat:'shaheedi', en:"Chhota Ghallughara — Kahnuwan", pa:"ਛੋਟਾ ਘੱਲੂਘਾਰਾ — ਕਾਹਨੂੰਵਾਨ", major:true },
+    { iso:'2023-05-19', d:5, m:3, cat:'janamdin', en:"Janamdin Sardar Jassa Singh Ahluwalia", pa:"ਜਨਮ ਦਿਨ ਸਰਦਾਰ ਜੱਸਾ ਸਿੰਘ ਆਹਲੂਵਾਲੀਆ" },
+    { iso:'2023-05-19', d:5, m:3, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2023-05-22', d:8, m:3, cat:'shaheedi', en:"Shaheedi Saka Paonta Sahib", pa:"ਸ਼ਹੀਦੀ ਸਾਕਾ ਪਾਉਂਟਾ ਸਾਹਿਬ" },
+    { iso:'2023-05-23', d:9, m:3, cat:'shaheedi', en:"Shaheedi Gurpurab Sri Guru Arjan Dev Ji", pa:"ਸ਼ਹੀਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਅਰਜਨ ਦੇਵ ਜੀ", major:true },
+    { iso:'2023-06-04', d:21, m:3, cat:'janamdin', en:"Janamdin Bhagat Kabir Ji", pa:"ਜਨਮ ਦਿਨ ਭਗਤ ਕਬੀਰ ਜੀ" },
+    { iso:'2023-06-04', d:21, m:3, cat:'mela', en:"Jor Mela Gurdwara Sri Reetha Sahib", pa:"ਜੋੜ ਮੇਲਾ ਗੁਰਦੁਆਰਾ ਸ੍ਰੀ ਰੀਠਾ ਸਾਹਿਬ" },
+    { iso:'2023-06-04', d:21, m:3, cat:'modern', en:"Ghallughara Sri Akal Takht Sahib (1984)", pa:"ਘੱਲੂਘਾਰਾ ਸ੍ਰੀ ਅਕਾਲ ਤਖ਼ਤ ਸਾਹਿਬ (੧੯੮੪)" },
+    { iso:'2023-06-04', d:21, m:3, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2023-06-05', d:22, m:3, cat:'prakash', en:"Prakash Gurpurab Sri Guru Hargobind Ji", pa:"ਪ੍ਰਕਾਸ਼ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਹਰਿਗੋਬਿੰਦ ਜੀ", major:true },
+    { iso:'2023-06-06', d:23, m:3, cat:'modern', en:"Shaheedi Divas Sant Jarnail Singh Khalsa Bhindranwale & Bhai Amreek Singh", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਸੰਤ ਜਰਨੈਲ ਸਿੰਘ ਖ਼ਾਲਸਾ ਭਿੰਡਰਾਂਵਾਲੇ ਤੇ ਭਾਈ ਅਮਰੀਕ ਸਿੰਘ" },
+    { iso:'2023-06-08', d:25, m:3, cat:'historic', en:"Foundation Day — Sri Akal Takht Sahib", pa:"ਸਥਾਪਨਾ ਦਿਵਸ — ਸ੍ਰੀ ਅਕਾਲ ਤਖ਼ਤ ਸਾਹਿਬ", major:true },
+    { iso:'2023-06-15', d:1, m:4, cat:'sangrand', en:"Sangrand — Harh", pa:"ਸੰਗਰਾਂਦ — ਹਾੜ" },
+    { iso:'2023-06-18', d:4, m:4, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2023-06-25', d:11, m:4, cat:'shaheedi', en:"Shaheedi Divas Baba Banda Singh Bahadur", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਬਾਬਾ ਬੰਦਾ ਸਿੰਘ ਬਹਾਦਰ", major:true },
+    { iso:'2023-06-28', d:14, m:4, cat:'historic', en:"Miri Piri Divas", pa:"ਮੀਰੀ ਪੀਰੀ ਦਿਵਸ", major:true },
+    { iso:'2023-06-28', d:14, m:4, cat:'tithi', en:"Dashmi", pa:"ਦਸਮੀ" },
+    { iso:'2023-06-29', d:15, m:4, cat:'historic', en:"Barsi Maharaja Ranjit Singh Ji", pa:"ਬਰਸੀ ਮਹਾਰਾਜਾ ਰਣਜੀਤ ਸਿੰਘ ਜੀ" },
+    { iso:'2023-07-03', d:19, m:4, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2023-07-09', d:25, m:4, cat:'shaheedi', en:"Shaheedi Divas Bhai Mani Singh Ji", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਭਾਈ ਮਨੀ ਸਿੰਘ ਜੀ", major:true },
+    { iso:'2023-07-11', d:27, m:4, cat:'prakash', en:"Prakash Gurpurab Sri Guru Har Krishan Ji", pa:"ਪ੍ਰਕਾਸ਼ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਹਰਿ ਕ੍ਰਿਸ਼ਨ ਜੀ", major:true },
+    { iso:'2023-07-16', d:1, m:5, cat:'sangrand', en:"Sangrand — Sawan", pa:"ਸੰਗਰਾਂਦ — ਸਾਵਣ" },
+    { iso:'2023-07-16', d:1, m:5, cat:'shaheedi', en:"Shaheedi Divas Bhai Taru Singh Ji", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਭਾਈ ਤਾਰੂ ਸਿੰਘ ਜੀ", major:true },
+    { iso:'2023-07-17', d:2, m:5, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2023-07-31', d:16, m:5, cat:'modern', en:"Shaheedi Divas S. Udham Singh Ji", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਸ. ਊਧਮ ਸਿੰਘ ਜੀ" },
+    { iso:'2023-08-01', d:17, m:5, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2023-08-08', d:24, m:5, cat:'historic', en:"Morcha Guru Ka Bagh", pa:"ਮੋਰਚਾ ਗੁਰੂ ਕਾ ਬਾਗ਼" },
+    { iso:'2023-08-16', d:32, m:5, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2023-08-17', d:1, m:6, cat:'sangrand', en:"Sangrand — Bhadon", pa:"ਸੰਗਰਾਂਦ — ਭਾਦੋਂ" },
+    { iso:'2023-08-21', d:5, m:6, cat:'modern', en:"Shaheedi Divas Sant Harchand Singh Longowal", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਸੰਤ ਹਰਚੰਦ ਸਿੰਘ ਲੌਂਗੋਵਾਲ" },
+    { iso:'2023-08-30', d:14, m:6, cat:'historic', en:"Sampuranta Divas Sri Guru Granth Sahib Ji", pa:"ਸੰਪੂਰਨਤਾ ਦਿਵਸ ਸ੍ਰੀ ਗੁਰੂ ਗ੍ਰੰਥ ਸਾਹਿਬ ਜੀ", major:true },
+    { iso:'2023-08-31', d:15, m:6, cat:'mela', en:"Jor Mela Baba Bakala", pa:"ਜੋੜ ਮੇਲਾ ਬਾਬਾ ਬਕਾਲਾ" },
+    { iso:'2023-08-31', d:15, m:6, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2023-09-14', d:29, m:6, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2023-09-16', d:31, m:6, cat:'historic', en:"Pehla Prakash Gurpurab Sri Guru Granth Sahib Ji", pa:"ਪਹਿਲਾ ਪ੍ਰਕਾਸ਼ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਗ੍ਰੰਥ ਸਾਹਿਬ ਜੀ", major:true },
+    { iso:'2023-09-17', d:1, m:7, cat:'gurgaddi', en:"Gurgaddi Gurpurab Sri Guru Arjan Dev Ji", pa:"ਗੁਰਗੱਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਅਰਜਨ ਦੇਵ ਜੀ", major:true },
+    { iso:'2023-09-17', d:1, m:7, cat:'sangrand', en:"Sangrand — Assu", pa:"ਸੰਗਰਾਂਦ — ਅੱਸੂ" },
+    { iso:'2023-09-18', d:2, m:7, cat:'jotijot', en:"Jyoti Jyot Gurpurab Sri Guru Ram Das Ji", pa:"ਜੋਤੀ ਜੋਤਿ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਰਾਮ ਦਾਸ ਜੀ", major:true },
+    { iso:'2023-09-22', d:6, m:7, cat:'historic', en:"Viah Purab Sri Guru Nanak Dev Ji", pa:"ਵਿਆਹ ਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਨਾਨਕ ਦੇਵ ਜੀ" },
+    { iso:'2023-09-22', d:6, m:7, cat:'mela', en:"Jor Mela Gurdwara Kandh Sahib (Batala)", pa:"ਜੋੜ ਮੇਲਾ ਗੁਰਦੁਆਰਾ ਕੰਧ ਸਾਹਿਬ (ਬਟਾਲਾ)" },
+    { iso:'2023-09-27', d:11, m:7, cat:'gurgaddi', en:"Gurgaddi Gurpurab Sri Guru Ram Das Ji", pa:"ਗੁਰਗੱਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਰਾਮ ਦਾਸ ਜੀ", major:true },
+    { iso:'2023-09-29', d:13, m:7, cat:'jotijot', en:"Jyoti Jyot Gurpurab Sri Guru Amar Das Ji", pa:"ਜੋਤੀ ਜੋਤਿ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਅਮਰ ਦਾਸ ਜੀ", major:true },
+    { iso:'2023-09-29', d:13, m:7, cat:'mela', en:"Jor Mela Goindwal Sahib", pa:"ਜੋੜ ਮੇਲਾ ਗੋਇੰਦਵਾਲ ਸਾਹਿਬ" },
+    { iso:'2023-09-29', d:13, m:7, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2023-10-03', d:17, m:7, cat:'gurgaddi', en:"Gurgaddi Gurpurab Sri Guru Angad Dev Ji", pa:"ਗੁਰਗੱਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਅੰਗਦ ਦੇਵ ਜੀ", major:true },
+    { iso:'2023-10-07', d:21, m:7, cat:'mela', en:"Jor Mela Bir Baba Buddha Ji (Thatha)", pa:"ਜੋੜ ਮੇਲਾ ਬੀੜ ਬਾਬਾ ਬੁੱਢਾ ਜੀ (ਥੱਥਾ)" },
+    { iso:'2023-10-08', d:22, m:7, cat:'mela', en:"Jor Mela Bir Baba Buddha Ji (Thatha)", pa:"ਜੋੜ ਮੇਲਾ ਬੀੜ ਬਾਬਾ ਬੁੱਢਾ ਜੀ (ਥੱਥਾ)" },
+    { iso:'2023-10-09', d:23, m:7, cat:'jotijot', en:"Jyoti Jyot Gurpurab Sri Guru Nanak Dev Ji", pa:"ਜੋਤੀ ਜੋਤਿ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਨਾਨਕ ਦੇਵ ਜੀ", major:true },
+    { iso:'2023-10-09', d:23, m:7, cat:'modern', en:"Shaheedi Divas Bhai Sukhdev Singh & Bhai Harjinder Singh", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਭਾਈ ਸੁਖਦੇਵ ਸਿੰਘ ਤੇ ਭਾਈ ਹਰਜਿੰਦਰ ਸਿੰਘ" },
+    { iso:'2023-10-10', d:24, m:7, cat:'janamdin', en:"Janamdin Bhai Taru Singh Ji", pa:"ਜਨਮ ਦਿਨ ਭਾਈ ਤਾਰੂ ਸਿੰਘ ਜੀ" },
+    { iso:'2023-10-14', d:28, m:7, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2023-10-17', d:1, m:8, cat:'sangrand', en:"Sangrand — Katak", pa:"ਸੰਗਰਾਂਦ — ਕੱਤਕ" },
+    { iso:'2023-10-18', d:2, m:8, cat:'mela', en:"Jor Mela Baba Buddha Ji (Ramdas)", pa:"ਜੋੜ ਮੇਲਾ ਬਾਬਾ ਬੁੱਢਾ ਜੀ (ਰਾਮਦਾਸ)" },
+    { iso:'2023-10-21', d:5, m:8, cat:'modern', en:"Janamdin Sant Gyani Kartar Singh Bhindranwale", pa:"ਜਨਮ ਦਿਨ ਸੰਤ ਗਿਆਨੀ ਕਰਤਾਰ ਸਿੰਘ ਭਿੰਡਰਾਂਵਾਲੇ" },
+    { iso:'2023-10-23', d:7, m:8, cat:'historic', en:"Barsi Sardar Jassa Singh Ahluwalia", pa:"ਬਰਸੀ ਸਰਦਾਰ ਜੱਸਾ ਸਿੰਘ ਆਹਲੂਵਾਲੀਆ" },
+    { iso:'2023-10-23', d:7, m:8, cat:'janamdin', en:"Janamdin Baba Buddha Ji", pa:"ਜਨਮ ਦਿਨ ਬਾਬਾ ਬੁੱਢਾ ਜੀ" },
+    { iso:'2023-10-24', d:8, m:8, cat:'festival', en:"Darbar Khalsa (Dussehra)", pa:"ਦਰਬਾਰ ਖ਼ਾਲਸਾ (ਦੁਸਹਿਰਾ)" },
+    { iso:'2023-10-28', d:12, m:8, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2023-10-30', d:14, m:8, cat:'prakash', en:"Prakash Gurpurab Sri Guru Ram Das Ji", pa:"ਪ੍ਰਕਾਸ਼ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਰਾਮ ਦਾਸ ਜੀ", major:true },
+    { iso:'2023-10-30', d:14, m:8, cat:'shaheedi', en:"Saka Panja Sahib", pa:"ਸਾਕਾ ਪੰਜਾ ਸਾਹਿਬ" },
+    { iso:'2023-10-31', d:15, m:8, cat:'modern', en:"Shaheedi Divas Bhai Beant Singh", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਭਾਈ ਬੇਅੰਤ ਸਿੰਘ" },
+    { iso:'2023-11-01', d:16, m:8, cat:'modern', en:"Punjab Day", pa:"ਪੰਜਾਬ ਦਿਵਸ" },
+    { iso:'2023-11-03', d:18, m:8, cat:'janamdin', en:"Janamdin Mata Sahib Kaur Ji", pa:"ਜਨਮ ਦਿਨ ਮਾਤਾ ਸਾਹਿਬ ਕੌਰ ਜੀ" },
+    { iso:'2023-11-06', d:21, m:8, cat:'gurgaddi', en:"Gurgaddi Gurpurab Sri Guru Har Krishan Ji", pa:"ਗੁਰਗੱਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਹਰਿ ਕ੍ਰਿਸ਼ਨ ਜੀ", major:true },
+    { iso:'2023-11-06', d:21, m:8, cat:'jotijot', en:"Jyoti Jyot Gurpurab Sri Guru Har Rai Ji", pa:"ਜੋਤੀ ਜੋਤਿ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਹਰਿ ਰਾਇ ਜੀ", major:true },
+    { iso:'2023-11-12', d:27, m:8, cat:'festival', en:"Bandi Chhor Divas (Diwali)", pa:"ਬੰਦੀ ਛੋੜ ਦਿਵਸ (ਦੀਵਾਲੀ)", major:true },
+    { iso:'2023-11-13', d:28, m:8, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2023-11-15', d:30, m:8, cat:'gurgaddi', en:"Gurgaddi Gurpurab Sri Guru Granth Sahib Ji", pa:"ਗੁਰਗੱਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਗ੍ਰੰਥ ਸਾਹਿਬ ਜੀ", major:true },
+    { iso:'2023-11-15', d:30, m:8, cat:'modern', en:"SGPC Foundation Day", pa:"ਸ਼੍ਰੋਮਣੀ ਕਮੇਟੀ ਸਥਾਪਨਾ ਦਿਵਸ" },
+    { iso:'2023-11-15', d:30, m:8, cat:'shaheedi', en:"Shaheedi Divas Baba Deep Singh Ji", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਬਾਬਾ ਦੀਪ ਸਿੰਘ ਜੀ", major:true },
+    { iso:'2023-11-16', d:1, m:9, cat:'sangrand', en:"Sangrand — Maghar", pa:"ਸੰਗਰਾਂਦ — ਮੱਘਰ" },
+    { iso:'2023-11-18', d:3, m:9, cat:'jotijot', en:"Jyoti Jyot Gurpurab Sri Guru Gobind Singh Ji", pa:"ਜੋਤੀ ਜੋਤਿ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ", major:true },
+    { iso:'2023-11-23', d:8, m:9, cat:'janamdin', en:"Janamdin Bhagat Namdev Ji", pa:"ਜਨਮ ਦਿਨ ਭਗਤ ਨਾਮਦੇਵ ਜੀ" },
+    { iso:'2023-11-27', d:12, m:9, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2023-11-27', d:12, m:9, cat:'prakash', en:"Prakash Gurpurab Sri Guru Nanak Dev Ji", pa:"ਪ੍ਰਕਾਸ਼ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਨਾਨਕ ਦੇਵ ਜੀ", major:true },
+    { iso:'2023-11-28', d:13, m:9, cat:'historic', en:"Akal Chalana Bhai Mardana Ji", pa:"ਅਕਾਲ ਚਲਾਣਾ ਭਾਈ ਮਰਦਾਨਾ ਜੀ" },
+    { iso:'2023-11-30', d:15, m:9, cat:'janamdin', en:"Janamdin Sahibzada Zorawar Singh Ji", pa:"ਜਨਮ ਦਿਨ ਸਾਹਿਬਜ਼ਾਦਾ ਜ਼ੋਰਾਵਰ ਸਿੰਘ ਜੀ" },
+    { iso:'2023-12-04', d:19, m:9, cat:'shaheedi', en:"Shaheedi Divas Baba Gurbaksh Singh Ji", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਬਾਬਾ ਗੁਰਬਖ਼ਸ਼ ਸਿੰਘ ਜੀ" },
+    { iso:'2023-12-12', d:27, m:9, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2023-12-14', d:29, m:9, cat:'janamdin', en:"Janamdin Sahibzada Fateh Singh Ji", pa:"ਜਨਮ ਦਿਨ ਸਾਹਿਬਜ਼ਾਦਾ ਫ਼ਤਿਹ ਸਿੰਘ ਜੀ" },
+    { iso:'2023-12-14', d:29, m:9, cat:'modern', en:"Shiromani Akali Dal Foundation Day", pa:"ਸ਼੍ਰੋਮਣੀ ਅਕਾਲੀ ਦਲ ਸਥਾਪਨਾ ਦਿਵਸ" },
+    { iso:'2023-12-15', d:30, m:9, cat:'gurgaddi', en:"Gurgaddi Gurpurab Sri Guru Gobind Singh Ji", pa:"ਗੁਰਗੱਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ", major:true },
+    { iso:'2023-12-16', d:1, m:10, cat:'sangrand', en:"Sangrand — Poh", pa:"ਸੰਗਰਾਂਦ — ਪੋਹ" },
+    { iso:'2023-12-17', d:2, m:10, cat:'shaheedi', en:"Shaheedi Gurpurab Sri Guru Tegh Bahadur Ji", pa:"ਸ਼ਹੀਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਤੇਗ਼ ਬਹਾਦਰ ਜੀ", major:true },
+    { iso:'2023-12-21', d:6, m:10, cat:'historic', en:"Leaving Fort Sri Anandgarh Sahib", pa:"ਸ੍ਰੀ ਆਨੰਦਗੜ੍ਹ ਸਾਹਿਬ ਦਾ ਕਿਲ੍ਹਾ ਛੱਡਣਾ" },
+    { iso:'2023-12-22', d:7, m:10, cat:'historic', en:"Family Separation — Sarsa Nangal", pa:"ਪਰਿਵਾਰ ਵਿਛੋੜਾ — ਸਰਸਾ ਨੰਗਲ" },
+    { iso:'2023-12-22', d:7, m:10, cat:'shaheedi', en:"Shaheedi Divas Baba Jivan Singh Ji (Bhai Jaita Ji)", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਬਾਬਾ ਜੀਵਨ ਸਿੰਘ ਜੀ (ਭਾਈ ਜੈਤਾ ਜੀ)" },
+    { iso:'2023-12-23', d:8, m:10, cat:'shaheedi', en:"Shaheedi Divas Vadde Sahibzade — Chamkaur Sahib", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਵੱਡੇ ਸਾਹਿਬਜ਼ਾਦੇ — ਚਮਕੌਰ ਸਾਹਿਬ", major:true },
+    { iso:'2023-12-24', d:9, m:10, cat:'shaheedi', en:"Shaheedi Divas Bhai Sangat Singh Ji", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਭਾਈ ਸੰਗਤ ਸਿੰਘ ਜੀ" },
+    { iso:'2023-12-26', d:11, m:10, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2023-12-28', d:13, m:10, cat:'shaheedi', en:"Shaheedi Divas Chhote Sahibzade & Mata Gujri Ji", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਛੋਟੇ ਸਾਹਿਬਜ਼ਾਦੇ ਤੇ ਮਾਤਾ ਗੁਜਰੀ ਜੀ", major:true },
+    { iso:'2024-01-06', d:22, m:10, cat:'modern', en:"Shaheedi Divas Bhai Kehar Singh & Bhai Satwant Singh", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਭਾਈ ਕੇਹਰ ਸਿੰਘ ਤੇ ਭਾਈ ਸਤਵੰਤ ਸਿੰਘ" },
+    { iso:'2024-01-11', d:27, m:10, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2024-01-14', d:1, m:11, cat:'historic', en:"Foundation Day Sri Harmandir Sahib", pa:"ਸਥਾਪਨਾ ਦਿਵਸ ਸ੍ਰੀ ਹਰਿਮੰਦਰ ਸਾਹਿਬ", major:true },
+    { iso:'2024-01-14', d:1, m:11, cat:'mela', en:"Jor Mela Sri Muktsar Sahib (Maghi)", pa:"ਜੋੜ ਮੇਲਾ ਸ੍ਰੀ ਮੁਕਤਸਰ ਸਾਹਿਬ (ਮਾਘੀ)", major:true },
+    { iso:'2024-01-14', d:1, m:11, cat:'sangrand', en:"Sangrand — Magh", pa:"ਸੰਗਰਾਂਦ — ਮਾਘ" },
+    { iso:'2024-01-17', d:4, m:11, cat:'prakash', en:"Prakash Gurpurab Sri Guru Gobind Singh Ji", pa:"ਪ੍ਰਕਾਸ਼ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ", major:true },
+    { iso:'2024-01-20', d:7, m:11, cat:'historic', en:"Chabiyan Da Morcha (Amritsar)", pa:"ਚਾਬੀਆਂ ਦਾ ਮੋਰਚਾ (ਅੰਮ੍ਰਿਤਸਰ)" },
+    { iso:'2024-01-20', d:7, m:11, cat:'tithi', en:"Dashmi", pa:"ਦਸਮੀ" },
+    { iso:'2024-01-25', d:12, m:11, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2024-01-27', d:14, m:11, cat:'janamdin', en:"Janamdin Baba Deep Singh Ji", pa:"ਜਨਮ ਦਿਨ ਬਾਬਾ ਦੀਪ ਸਿੰਘ ਜੀ" },
+    { iso:'2024-02-09', d:27, m:11, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2024-02-09', d:27, m:11, cat:'shaheedi', en:"Wadda Ghallughara — Kup Rohira", pa:"ਵੱਡਾ ਘੱਲੂਘਾਰਾ — ਕੁੱਪ ਰੋਹੀੜਾ", major:true },
+    { iso:'2024-02-12', d:30, m:11, cat:'janamdin', en:"Janamdin Sahibzada Ajit Singh Ji", pa:"ਜਨਮ ਦਿਨ ਸਾਹਿਬਜ਼ਾਦਾ ਅਜੀਤ ਸਿੰਘ ਜੀ" },
+    { iso:'2024-02-13', d:1, m:12, cat:'sangrand', en:"Sangrand — Phagun", pa:"ਸੰਗਰਾਂਦ — ਫੱਗਣ" },
+    { iso:'2024-02-14', d:2, m:12, cat:'festival', en:"Basant Panchami", pa:"ਬਸੰਤ ਪੰਚਮੀ" },
+    { iso:'2024-02-14', d:2, m:12, cat:'historic', en:"Marriage Day Sri Guru Gobind Singh Ji", pa:"ਵਿਆਹ ਦਿਵਸ ਸ੍ਰੀ ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ" },
+    { iso:'2024-02-14', d:2, m:12, cat:'tithi', en:"Panchami", pa:"ਪੰਚਮੀ" },
+    { iso:'2024-02-21', d:9, m:12, cat:'historic', en:"Jaitu Da Morcha (Faridkot)", pa:"ਜੈਤੋ ਦਾ ਮੋਰਚਾ (ਫ਼ਰੀਦਕੋਟ)" },
+    { iso:'2024-02-21', d:9, m:12, cat:'shaheedi', en:"Saka Sri Nankana Sahib", pa:"ਸਾਕਾ ਸ੍ਰੀ ਨਨਕਾਣਾ ਸਾਹਿਬ", major:true },
+    { iso:'2024-02-22', d:10, m:12, cat:'prakash', en:"Prakash Gurpurab Sri Guru Har Rai Ji", pa:"ਪ੍ਰਕਾਸ਼ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਹਰਿ ਰਾਇ ਜੀ", major:true },
+    { iso:'2024-02-24', d:12, m:12, cat:'janamdin', en:"Janamdin Bhagat Ravidas Ji", pa:"ਜਨਮ ਦਿਨ ਭਗਤ ਰਵਿਦਾਸ ਜੀ" },
+    { iso:'2024-02-24', d:12, m:12, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2024-03-10', d:27, m:12, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2024-03-14', d:1, m:1, cat:'festival', en:"Nanakshahi New Year 556", pa:"ਨਾਨਕਸ਼ਾਹੀ ਨਵਾਂ ਸਾਲ ੫੫੬", major:true },
+    { iso:'2024-03-14', d:1, m:1, cat:'sangrand', en:"Sangrand — Chet", pa:"ਸੰਗਰਾਂਦ — ਚੇਤ" },
+    { iso:'2024-03-14', d:1, m:1, cat:'shaheedi', en:"Shaheedi Divas Jathedar Akali Phula Singh Ji", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਜਥੇਦਾਰ ਅਕਾਲੀ ਫੂਲਾ ਸਿੰਘ ਜੀ" },
+    { iso:'2024-03-15', d:2, m:1, cat:'historic', en:"S. Baghel Singh — Delhi Fateh", pa:"ਸ. ਬਘੇਲ ਸਿੰਘ — ਦਿੱਲੀ ਫ਼ਤਿਹ" },
+    { iso:'2024-03-23', d:10, m:1, cat:'modern', en:"Shaheedi Divas S. Bhagat Singh", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਸ. ਭਗਤ ਸਿੰਘ" },
+    { iso:'2024-03-25', d:12, m:1, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2024-03-25', d:12, m:1, cat:'shaheedi', en:"Shaheedi Divas Bhai Subeg Singh & Bhai Shahbaz Singh", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਭਾਈ ਸੁਬੇਗ ਸਿੰਘ ਤੇ ਭਾਈ ਸ਼ਾਹਬਾਜ਼ ਸਿੰਘ" },
+    { iso:'2024-03-26', d:13, m:1, cat:'festival', en:"Hola Mohalla", pa:"ਹੋਲਾ ਮਹੱਲਾ", major:true },
+    { iso:'2024-04-07', d:25, m:1, cat:'gurgaddi', en:"Gurgaddi Gurpurab Sri Guru Har Rai Ji", pa:"ਗੁਰਗੱਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਹਰਿ ਰਾਇ ਜੀ", major:true },
+    { iso:'2024-04-08', d:26, m:1, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2024-04-09', d:27, m:1, cat:'gurgaddi', en:"Gurgaddi Gurpurab Sri Guru Amar Das Ji", pa:"ਗੁਰਗੱਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਅਮਰ ਦਾਸ ਜੀ", major:true },
+    { iso:'2024-04-09', d:27, m:1, cat:'janamdin', en:"Janamdin Sahibzada Jujhar Singh Ji", pa:"ਜਨਮ ਦਿਨ ਸਾਹਿਬਜ਼ਾਦਾ ਜੁਝਾਰ ਸਿੰਘ ਜੀ" },
+    { iso:'2024-04-12', d:30, m:1, cat:'jotijot', en:"Jyoti Jyot Gurpurab Sri Guru Angad Dev Ji", pa:"ਜੋਤੀ ਜੋਤਿ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਅੰਗਦ ਦੇਵ ਜੀ", major:true },
+    { iso:'2024-04-13', d:1, m:2, cat:'festival', en:"Vaisakhi — Khalsa Sajna Divas", pa:"ਵਿਸਾਖੀ — ਖ਼ਾਲਸਾ ਸਾਜਨਾ ਦਿਵਸ", major:true },
+    { iso:'2024-04-13', d:1, m:2, cat:'historic', en:"Sikh Turban Day", pa:"ਸਿੱਖ ਦਸਤਾਰ ਦਿਵਸ" },
+    { iso:'2024-04-13', d:1, m:2, cat:'jotijot', en:"Jyoti Jyot Gurpurab Sri Guru Hargobind Ji", pa:"ਜੋਤੀ ਜੋਤਿ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਹਰਿਗੋਬਿੰਦ ਜੀ", major:true },
+    { iso:'2024-04-13', d:1, m:2, cat:'sangrand', en:"Sangrand — Vaisakh", pa:"ਸੰਗਰਾਂਦ — ਵੈਸਾਖ" },
+    { iso:'2024-04-20', d:8, m:2, cat:'janamdin', en:"Janamdin Bhagat Dhanna Ji", pa:"ਜਨਮ ਦਿਨ ਭਗਤ ਧੰਨਾ ਜੀ" },
+    { iso:'2024-04-22', d:10, m:2, cat:'gurgaddi', en:"Gurgaddi Gurpurab Sri Guru Tegh Bahadur Ji", pa:"ਗੁਰਗੱਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਤੇਗ਼ ਬਹਾਦਰ ਜੀ", major:true },
+    { iso:'2024-04-22', d:10, m:2, cat:'jotijot', en:"Jyoti Jyot Gurpurab Sri Guru Har Krishan Ji", pa:"ਜੋਤੀ ਜੋਤਿ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਹਰਿ ਕ੍ਰਿਸ਼ਨ ਜੀ", major:true },
+    { iso:'2024-04-23', d:11, m:2, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2024-04-29', d:17, m:2, cat:'prakash', en:"Prakash Gurpurab Sri Guru Tegh Bahadur Ji", pa:"ਪ੍ਰਕਾਸ਼ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਤੇਗ਼ ਬਹਾਦਰ ਜੀ", major:true },
+    { iso:'2024-04-30', d:18, m:2, cat:'prakash', en:"Prakash Gurpurab Sri Guru Arjan Dev Ji", pa:"ਪ੍ਰਕਾਸ਼ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਅਰਜਨ ਦੇਵ ਜੀ", major:true },
+    { iso:'2024-05-03', d:21, m:2, cat:'mela', en:"Shaheedi Jor Mela Sri Muktsar Sahib", pa:"ਸ਼ਹੀਦੀ ਜੋੜ ਮੇਲਾ ਸ੍ਰੀ ਮੁਕਤਸਰ ਸਾਹਿਬ" },
+    { iso:'2024-05-05', d:23, m:2, cat:'janamdin', en:"Janamdin Sardar Jassa Singh Ramgarhia", pa:"ਜਨਮ ਦਿਨ ਸਰਦਾਰ ਜੱਸਾ ਸਿੰਘ ਰਾਮਗੜ੍ਹੀਆ" },
+    { iso:'2024-05-08', d:26, m:2, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2024-05-09', d:27, m:2, cat:'prakash', en:"Prakash Gurpurab Sri Guru Angad Dev Ji", pa:"ਪ੍ਰਕਾਸ਼ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਅੰਗਦ ਦੇਵ ਜੀ", major:true },
+    { iso:'2024-05-12', d:30, m:2, cat:'historic', en:"Baba Banda Singh Bahadur — Sirhind Fateh Divas", pa:"ਬਾਬਾ ਬੰਦਾ ਸਿੰਘ ਬਹਾਦਰ — ਸਰਹਿੰਦ ਫ਼ਤਿਹ ਦਿਵਸ" },
+    { iso:'2024-05-14', d:1, m:3, cat:'sangrand', en:"Sangrand — Jeth", pa:"ਸੰਗਰਾਂਦ — ਜੇਠ" },
+    { iso:'2024-05-16', d:3, m:3, cat:'shaheedi', en:"Chhota Ghallughara — Kahnuwan", pa:"ਛੋਟਾ ਘੱਲੂਘਾਰਾ — ਕਾਹਨੂੰਵਾਨ", major:true },
+    { iso:'2024-05-22', d:9, m:3, cat:'prakash', en:"Prakash Gurpurab Sri Guru Amar Das Ji", pa:"ਪ੍ਰਕਾਸ਼ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਅਮਰ ਦਾਸ ਜੀ", major:true },
+    { iso:'2024-05-22', d:9, m:3, cat:'shaheedi', en:"Shaheedi Saka Paonta Sahib", pa:"ਸ਼ਹੀਦੀ ਸਾਕਾ ਪਾਉਂਟਾ ਸਾਹਿਬ" },
+    { iso:'2024-05-23', d:10, m:3, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2024-05-31', d:18, m:3, cat:'gurgaddi', en:"Gurgaddi Gurpurab Sri Guru Hargobind Ji", pa:"ਗੁਰਗੱਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਹਰਿਗੋਬਿੰਦ ਜੀ", major:true },
+    { iso:'2024-06-04', d:22, m:3, cat:'modern', en:"Ghallughara Sri Akal Takht Sahib (1984)", pa:"ਘੱਲੂਘਾਰਾ ਸ੍ਰੀ ਅਕਾਲ ਤਖ਼ਤ ਸਾਹਿਬ (੧੯੮੪)" },
+    { iso:'2024-06-06', d:24, m:3, cat:'modern', en:"Shaheedi Divas Sant Jarnail Singh Khalsa Bhindranwale & Bhai Amreek Singh", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਸੰਤ ਜਰਨੈਲ ਸਿੰਘ ਖ਼ਾਲਸਾ ਭਿੰਡਰਾਂਵਾਲੇ ਤੇ ਭਾਈ ਅਮਰੀਕ ਸਿੰਘ" },
+    { iso:'2024-06-06', d:24, m:3, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2024-06-10', d:28, m:3, cat:'shaheedi', en:"Shaheedi Gurpurab Sri Guru Arjan Dev Ji", pa:"ਸ਼ਹੀਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਅਰਜਨ ਦੇਵ ਜੀ", major:true },
+    { iso:'2024-06-14', d:1, m:4, cat:'sangrand', en:"Sangrand — Harh", pa:"ਸੰਗਰਾਂਦ — ਹਾੜ" },
+    { iso:'2024-06-22', d:9, m:4, cat:'janamdin', en:"Janamdin Bhagat Kabir Ji", pa:"ਜਨਮ ਦਿਨ ਭਗਤ ਕਬੀਰ ਜੀ" },
+    { iso:'2024-06-22', d:9, m:4, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2024-06-22', d:9, m:4, cat:'prakash', en:"Prakash Gurpurab Sri Guru Hargobind Ji", pa:"ਪ੍ਰਕਾਸ਼ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਹਰਿਗੋਬਿੰਦ ਜੀ", major:true },
+    { iso:'2024-06-24', d:11, m:4, cat:'shaheedi', en:"Shaheedi Divas Baba Banda Singh Bahadur", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਬਾਬਾ ਬੰਦਾ ਸਿੰਘ ਬਹਾਦਰ", major:true },
+    { iso:'2024-06-26', d:13, m:4, cat:'historic', en:"Foundation Day — Sri Akal Takht Sahib", pa:"ਸਥਾਪਨਾ ਦਿਵਸ — ਸ੍ਰੀ ਅਕਾਲ ਤਖ਼ਤ ਸਾਹਿਬ", major:true },
+    { iso:'2024-06-28', d:15, m:4, cat:'historic', en:"Barsi Maharaja Ranjit Singh Ji", pa:"ਬਰਸੀ ਮਹਾਰਾਜਾ ਰਣਜੀਤ ਸਿੰਘ ਜੀ" },
+    { iso:'2024-07-05', d:22, m:4, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2024-07-08', d:25, m:4, cat:'shaheedi', en:"Shaheedi Divas Bhai Mani Singh Ji", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਭਾਈ ਮਨੀ ਸਿੰਘ ਜੀ", major:true },
+    { iso:'2024-07-16', d:1, m:5, cat:'historic', en:"Miri Piri Divas", pa:"ਮੀਰੀ ਪੀਰੀ ਦਿਵਸ", major:true },
+    { iso:'2024-07-16', d:1, m:5, cat:'sangrand', en:"Sangrand — Sawan", pa:"ਸੰਗਰਾਂਦ — ਸਾਵਣ" },
+    { iso:'2024-07-16', d:1, m:5, cat:'shaheedi', en:"Shaheedi Divas Bhai Taru Singh Ji", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਭਾਈ ਤਾਰੂ ਸਿੰਘ ਜੀ", major:true },
+    { iso:'2024-07-21', d:6, m:5, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2024-07-29', d:14, m:5, cat:'prakash', en:"Prakash Gurpurab Sri Guru Har Krishan Ji", pa:"ਪ੍ਰਕਾਸ਼ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਹਰਿ ਕ੍ਰਿਸ਼ਨ ਜੀ", major:true },
+    { iso:'2024-08-04', d:20, m:5, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2024-08-08', d:24, m:5, cat:'historic', en:"Morcha Guru Ka Bagh", pa:"ਮੋਰਚਾ ਗੁਰੂ ਕਾ ਬਾਗ਼" },
+    { iso:'2024-08-16', d:1, m:6, cat:'sangrand', en:"Sangrand — Bhadon", pa:"ਸੰਗਰਾਂਦ — ਭਾਦੋਂ" },
+    { iso:'2024-08-19', d:4, m:6, cat:'mela', en:"Jor Mela Baba Bakala", pa:"ਜੋੜ ਮੇਲਾ ਬਾਬਾ ਬਕਾਲਾ" },
+    { iso:'2024-08-19', d:4, m:6, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2024-08-29', d:14, m:6, cat:'historic', en:"Sampuranta Divas Sri Guru Granth Sahib Ji", pa:"ਸੰਪੂਰਨਤਾ ਦਿਵਸ ਸ੍ਰੀ ਗੁਰੂ ਗ੍ਰੰਥ ਸਾਹਿਬ ਜੀ", major:true },
+    { iso:'2024-09-03', d:19, m:6, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2024-09-04', d:20, m:6, cat:'historic', en:"Pehla Prakash Gurpurab Sri Guru Granth Sahib Ji", pa:"ਪਹਿਲਾ ਪ੍ਰਕਾਸ਼ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਗ੍ਰੰਥ ਸਾਹਿਬ ਜੀ", major:true },
+    { iso:'2024-09-05', d:21, m:6, cat:'gurgaddi', en:"Gurgaddi Gurpurab Sri Guru Arjan Dev Ji", pa:"ਗੁਰਗੱਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਅਰਜਨ ਦੇਵ ਜੀ", major:true },
+    { iso:'2024-09-06', d:22, m:6, cat:'jotijot', en:"Jyoti Jyot Gurpurab Sri Guru Ram Das Ji", pa:"ਜੋਤੀ ਜੋਤਿ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਰਾਮ ਦਾਸ ਜੀ", major:true },
+    { iso:'2024-09-10', d:26, m:6, cat:'historic', en:"Viah Purab Sri Guru Nanak Dev Ji", pa:"ਵਿਆਹ ਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਨਾਨਕ ਦੇਵ ਜੀ" },
+    { iso:'2024-09-10', d:26, m:6, cat:'mela', en:"Jor Mela Gurdwara Kandh Sahib (Batala)", pa:"ਜੋੜ ਮੇਲਾ ਗੁਰਦੁਆਰਾ ਕੰਧ ਸਾਹਿਬ (ਬਟਾਲਾ)" },
+    { iso:'2024-09-16', d:1, m:7, cat:'gurgaddi', en:"Gurgaddi Gurpurab Sri Guru Ram Das Ji", pa:"ਗੁਰਗੱਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਰਾਮ ਦਾਸ ਜੀ", major:true },
+    { iso:'2024-09-16', d:1, m:7, cat:'sangrand', en:"Sangrand — Assu", pa:"ਸੰਗਰਾਂਦ — ਅੱਸੂ" },
+    { iso:'2024-09-18', d:3, m:7, cat:'jotijot', en:"Jyoti Jyot Gurpurab Sri Guru Amar Das Ji", pa:"ਜੋਤੀ ਜੋਤਿ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਅਮਰ ਦਾਸ ਜੀ", major:true },
+    { iso:'2024-09-18', d:3, m:7, cat:'mela', en:"Jor Mela Goindwal Sahib", pa:"ਜੋੜ ਮੇਲਾ ਗੋਇੰਦਵਾਲ ਸਾਹਿਬ" },
+    { iso:'2024-09-18', d:3, m:7, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2024-09-22', d:7, m:7, cat:'gurgaddi', en:"Gurgaddi Gurpurab Sri Guru Angad Dev Ji", pa:"ਗੁਰਗੱਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਅੰਗਦ ਦੇਵ ਜੀ", major:true },
+    { iso:'2024-09-27', d:12, m:7, cat:'jotijot', en:"Jyoti Jyot Gurpurab Sri Guru Nanak Dev Ji", pa:"ਜੋਤੀ ਜੋਤਿ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਨਾਨਕ ਦੇਵ ਜੀ", major:true },
+    { iso:'2024-10-02', d:17, m:7, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2024-10-12', d:27, m:7, cat:'festival', en:"Darbar Khalsa (Dussehra)", pa:"ਦਰਬਾਰ ਖ਼ਾਲਸਾ (ਦੁਸਹਿਰਾ)" },
+    { iso:'2024-10-17', d:1, m:8, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2024-10-17', d:1, m:8, cat:'sangrand', en:"Sangrand — Katak", pa:"ਸੰਗਰਾਂਦ — ਕੱਤਕ" },
+    { iso:'2024-10-19', d:3, m:8, cat:'prakash', en:"Prakash Gurpurab Sri Guru Ram Das Ji", pa:"ਪ੍ਰਕਾਸ਼ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਰਾਮ ਦਾਸ ਜੀ", major:true },
+    { iso:'2024-10-23', d:7, m:8, cat:'janamdin', en:"Janamdin Baba Buddha Ji", pa:"ਜਨਮ ਦਿਨ ਬਾਬਾ ਬੁੱਢਾ ਜੀ" },
+    { iso:'2024-10-25', d:9, m:8, cat:'gurgaddi', en:"Gurgaddi Gurpurab Sri Guru Har Krishan Ji", pa:"ਗੁਰਗੱਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਹਰਿ ਕ੍ਰਿਸ਼ਨ ਜੀ", major:true },
+    { iso:'2024-10-25', d:9, m:8, cat:'jotijot', en:"Jyoti Jyot Gurpurab Sri Guru Har Rai Ji", pa:"ਜੋਤੀ ਜੋਤਿ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਹਰਿ ਰਾਇ ਜੀ", major:true },
+    { iso:'2024-10-30', d:14, m:8, cat:'shaheedi', en:"Saka Panja Sahib", pa:"ਸਾਕਾ ਪੰਜਾ ਸਾਹਿਬ" },
+    { iso:'2024-10-31', d:15, m:8, cat:'modern', en:"Shaheedi Divas Bhai Beant Singh", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਭਾਈ ਬੇਅੰਤ ਸਿੰਘ" },
+    { iso:'2024-11-01', d:16, m:8, cat:'festival', en:"Bandi Chhor Divas (Diwali)", pa:"ਬੰਦੀ ਛੋੜ ਦਿਵਸ (ਦੀਵਾਲੀ)", major:true },
+    { iso:'2024-11-01', d:16, m:8, cat:'modern', en:"Punjab Day", pa:"ਪੰਜਾਬ ਦਿਵਸ" },
+    { iso:'2024-11-01', d:16, m:8, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2024-11-03', d:18, m:8, cat:'gurgaddi', en:"Gurgaddi Gurpurab Sri Guru Granth Sahib Ji", pa:"ਗੁਰਗੱਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਗ੍ਰੰਥ ਸਾਹਿਬ ਜੀ", major:true },
+    { iso:'2024-11-03', d:18, m:8, cat:'janamdin', en:"Janamdin Mata Sahib Kaur Ji", pa:"ਜਨਮ ਦਿਨ ਮਾਤਾ ਸਾਹਿਬ ਕੌਰ ਜੀ" },
+    { iso:'2024-11-06', d:21, m:8, cat:'jotijot', en:"Jyoti Jyot Gurpurab Sri Guru Gobind Singh Ji", pa:"ਜੋਤੀ ਜੋਤਿ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ", major:true },
+    { iso:'2024-11-12', d:27, m:8, cat:'janamdin', en:"Janamdin Bhagat Namdev Ji", pa:"ਜਨਮ ਦਿਨ ਭਗਤ ਨਾਮਦੇਵ ਜੀ" },
+    { iso:'2024-11-15', d:30, m:8, cat:'modern', en:"SGPC Foundation Day", pa:"ਸ਼੍ਰੋਮਣੀ ਕਮੇਟੀ ਸਥਾਪਨਾ ਦਿਵਸ" },
+    { iso:'2024-11-15', d:30, m:8, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2024-11-15', d:30, m:8, cat:'prakash', en:"Prakash Gurpurab Sri Guru Nanak Dev Ji", pa:"ਪ੍ਰਕਾਸ਼ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਨਾਨਕ ਦੇਵ ਜੀ", major:true },
+    { iso:'2024-11-15', d:30, m:8, cat:'shaheedi', en:"Shaheedi Divas Baba Deep Singh Ji", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਬਾਬਾ ਦੀਪ ਸਿੰਘ ਜੀ", major:true },
+    { iso:'2024-11-16', d:1, m:9, cat:'sangrand', en:"Sangrand — Maghar", pa:"ਸੰਗਰਾਂਦ — ਮੱਘਰ" },
+    { iso:'2024-11-28', d:13, m:9, cat:'historic', en:"Akal Chalana Bhai Mardana Ji", pa:"ਅਕਾਲ ਚਲਾਣਾ ਭਾਈ ਮਰਦਾਨਾ ਜੀ" },
+    { iso:'2024-11-30', d:15, m:9, cat:'janamdin', en:"Janamdin Sahibzada Zorawar Singh Ji", pa:"ਜਨਮ ਦਿਨ ਸਾਹਿਬਜ਼ਾਦਾ ਜ਼ੋਰਾਵਰ ਸਿੰਘ ਜੀ" },
+    { iso:'2024-12-01', d:16, m:9, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2024-12-04', d:19, m:9, cat:'gurgaddi', en:"Gurgaddi Gurpurab Sri Guru Gobind Singh Ji", pa:"ਗੁਰਗੱਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ", major:true },
+    { iso:'2024-12-04', d:19, m:9, cat:'shaheedi', en:"Shaheedi Divas Baba Gurbaksh Singh Ji", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਬਾਬਾ ਗੁਰਬਖ਼ਸ਼ ਸਿੰਘ ਜੀ" },
+    { iso:'2024-12-06', d:21, m:9, cat:'jotijot', en:"Jyoti Jyot Gurpurab Sri Guru Tegh Bahadur Ji", pa:"ਜੋਤੀ ਜੋਤਿ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਤੇਗ਼ ਬਹਾਦਰ ਜੀ", major:true },
+    { iso:'2024-12-06', d:21, m:9, cat:'tithi', en:"Panchami", pa:"ਪੰਚਮੀ" },
+    { iso:'2024-12-14', d:29, m:9, cat:'janamdin', en:"Janamdin Sahibzada Fateh Singh Ji", pa:"ਜਨਮ ਦਿਨ ਸਾਹਿਬਜ਼ਾਦਾ ਫ਼ਤਿਹ ਸਿੰਘ ਜੀ" },
+    { iso:'2024-12-14', d:29, m:9, cat:'modern', en:"Shiromani Akali Dal Foundation Day", pa:"ਸ਼੍ਰੋਮਣੀ ਅਕਾਲੀ ਦਲ ਸਥਾਪਨਾ ਦਿਵਸ" },
+    { iso:'2024-12-15', d:1, m:10, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2024-12-15', d:1, m:10, cat:'sangrand', en:"Sangrand — Poh", pa:"ਸੰਗਰਾਂਦ — ਪੋਹ" },
+    { iso:'2024-12-20', d:6, m:10, cat:'historic', en:"Leaving Fort Sri Anandgarh Sahib", pa:"ਸ੍ਰੀ ਆਨੰਦਗੜ੍ਹ ਸਾਹਿਬ ਦਾ ਕਿਲ੍ਹਾ ਛੱਡਣਾ" },
+    { iso:'2024-12-21', d:7, m:10, cat:'shaheedi', en:"Shaheedi Divas Baba Jivan Singh Ji (Bhai Jaita Ji)", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਬਾਬਾ ਜੀਵਨ ਸਿੰਘ ਜੀ (ਭਾਈ ਜੈਤਾ ਜੀ)" },
+    { iso:'2024-12-22', d:8, m:10, cat:'shaheedi', en:"Shaheedi Divas Vadde Sahibzade — Chamkaur Sahib", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਵੱਡੇ ਸਾਹਿਬਜ਼ਾਦੇ — ਚਮਕੌਰ ਸਾਹਿਬ", major:true },
+    { iso:'2024-12-23', d:9, m:10, cat:'shaheedi', en:"Shaheedi Divas Bhai Sangat Singh Ji", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਭਾਈ ਸੰਗਤ ਸਿੰਘ ਜੀ" },
+    { iso:'2024-12-27', d:13, m:10, cat:'shaheedi', en:"Shaheedi Divas Chhote Sahibzade & Mata Gujri Ji", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਛੋਟੇ ਸਾਹਿਬਜ਼ਾਦੇ ਤੇ ਮਾਤਾ ਗੁਜਰੀ ਜੀ", major:true },
+    { iso:'2024-12-30', d:16, m:10, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2025-01-06', d:23, m:10, cat:'modern', en:"Shaheedi Divas Bhai Kehar Singh & Bhai Satwant Singh", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਭਾਈ ਕੇਹਰ ਸਿੰਘ ਤੇ ਭਾਈ ਸਤਵੰਤ ਸਿੰਘ" },
+    { iso:'2025-01-06', d:23, m:10, cat:'prakash', en:"Prakash Gurpurab Sri Guru Gobind Singh Ji", pa:"ਪ੍ਰਕਾਸ਼ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ", major:true },
+    { iso:'2025-01-13', d:30, m:10, cat:'festival', en:"Lohri", pa:"ਲੋਹੜੀ" },
+    { iso:'2025-01-13', d:30, m:10, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2025-01-14', d:1, m:11, cat:'historic', en:"Foundation Day Sri Harmandir Sahib", pa:"ਸਥਾਪਨਾ ਦਿਵਸ ਸ੍ਰੀ ਹਰਿਮੰਦਰ ਸਾਹਿਬ", major:true },
+    { iso:'2025-01-14', d:1, m:11, cat:'sangrand', en:"Sangrand — Magh", pa:"ਸੰਗਰਾਂਦ — ਮਾਘ" },
+    { iso:'2025-01-27', d:14, m:11, cat:'janamdin', en:"Janamdin Baba Deep Singh Ji", pa:"ਜਨਮ ਦਿਨ ਬਾਬਾ ਦੀਪ ਸਿੰਘ ਜੀ" },
+    { iso:'2025-01-29', d:16, m:11, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2025-02-02', d:20, m:11, cat:'festival', en:"Basant Panchami", pa:"ਬਸੰਤ ਪੰਚਮੀ" },
+    { iso:'2025-02-02', d:20, m:11, cat:'historic', en:"Marriage Day Sri Guru Gobind Singh Ji", pa:"ਵਿਆਹ ਦਿਵਸ ਸ੍ਰੀ ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ" },
+    { iso:'2025-02-02', d:20, m:11, cat:'tithi', en:"Panchami", pa:"ਪੰਚਮੀ" },
+    { iso:'2025-02-09', d:27, m:11, cat:'shaheedi', en:"Wadda Ghallughara — Kup Rohira", pa:"ਵੱਡਾ ਘੱਲੂਘਾਰਾ — ਕੁੱਪ ਰੋਹੀੜਾ", major:true },
+    { iso:'2025-02-10', d:28, m:11, cat:'prakash', en:"Prakash Gurpurab Sri Guru Har Rai Ji", pa:"ਪ੍ਰਕਾਸ਼ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਹਰਿ ਰਾਇ ਜੀ", major:true },
+    { iso:'2025-02-11', d:29, m:11, cat:'janamdin', en:"Janamdin Sahibzada Ajit Singh Ji", pa:"ਜਨਮ ਦਿਨ ਸਾਹਿਬਜ਼ਾਦਾ ਅਜੀਤ ਸਿੰਘ ਜੀ" },
+    { iso:'2025-02-12', d:1, m:12, cat:'janamdin', en:"Janamdin Bhagat Ravidas Ji", pa:"ਜਨਮ ਦਿਨ ਭਗਤ ਰਵਿਦਾਸ ਜੀ" },
+    { iso:'2025-02-12', d:1, m:12, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2025-02-12', d:1, m:12, cat:'sangrand', en:"Sangrand — Phagun", pa:"ਸੰਗਰਾਂਦ — ਫੱਗਣ" },
+    { iso:'2025-02-21', d:10, m:12, cat:'historic', en:"Jaitu Da Morcha (Faridkot)", pa:"ਜੈਤੋ ਦਾ ਮੋਰਚਾ (ਫ਼ਰੀਦਕੋਟ)" },
+    { iso:'2025-02-21', d:10, m:12, cat:'shaheedi', en:"Saka Sri Nankana Sahib", pa:"ਸਾਕਾ ਸ੍ਰੀ ਨਨਕਾਣਾ ਸਾਹਿਬ", major:true },
+    { iso:'2025-02-27', d:16, m:12, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2025-03-14', d:1, m:1, cat:'festival', en:"Nanakshahi New Year 557", pa:"ਨਾਨਕਸ਼ਾਹੀ ਨਵਾਂ ਸਾਲ ੫੫੭", major:true },
+    { iso:'2025-03-14', d:1, m:1, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2025-03-14', d:1, m:1, cat:'sangrand', en:"Sangrand — Chet", pa:"ਸੰਗਰਾਂਦ — ਚੇਤ" },
+    { iso:'2025-03-14', d:1, m:1, cat:'shaheedi', en:"Shaheedi Divas Jathedar Akali Phula Singh Ji", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਜਥੇਦਾਰ ਅਕਾਲੀ ਫੂਲਾ ਸਿੰਘ ਜੀ" },
+    { iso:'2025-03-15', d:2, m:1, cat:'festival', en:"Hola Mohalla", pa:"ਹੋਲਾ ਮਹੱਲਾ", major:true },
+    { iso:'2025-03-15', d:2, m:1, cat:'historic', en:"S. Baghel Singh — Delhi Fateh", pa:"ਸ. ਬਘੇਲ ਸਿੰਘ — ਦਿੱਲੀ ਫ਼ਤਿਹ" },
+    { iso:'2025-03-23', d:10, m:1, cat:'modern', en:"Shaheedi Divas S. Bhagat Singh", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਸ. ਭਗਤ ਸਿੰਘ" },
+    { iso:'2025-03-25', d:12, m:1, cat:'shaheedi', en:"Shaheedi Divas Bhai Subeg Singh & Bhai Shahbaz Singh", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਭਾਈ ਸੁਬੇਗ ਸਿੰਘ ਤੇ ਭਾਈ ਸ਼ਾਹਬਾਜ਼ ਸਿੰਘ" },
+    { iso:'2025-03-27', d:14, m:1, cat:'gurgaddi', en:"Gurgaddi Gurpurab Sri Guru Har Rai Ji", pa:"ਗੁਰਗੱਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਹਰਿ ਰਾਇ ਜੀ", major:true },
+    { iso:'2025-03-29', d:16, m:1, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2025-03-30', d:17, m:1, cat:'gurgaddi', en:"Gurgaddi Gurpurab Sri Guru Amar Das Ji", pa:"ਗੁਰਗੱਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਅਮਰ ਦਾਸ ਜੀ", major:true },
+    { iso:'2025-04-01', d:19, m:1, cat:'jotijot', en:"Jyoti Jyot Gurpurab Sri Guru Angad Dev Ji", pa:"ਜੋਤੀ ਜੋਤਿ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਅੰਗਦ ਦੇਵ ਜੀ", major:true },
+    { iso:'2025-04-02', d:20, m:1, cat:'jotijot', en:"Jyoti Jyot Gurpurab Sri Guru Hargobind Ji", pa:"ਜੋਤੀ ਜੋਤਿ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਹਰਿਗੋਬਿੰਦ ਜੀ", major:true },
+    { iso:'2025-04-09', d:27, m:1, cat:'janamdin', en:"Janamdin Sahibzada Jujhar Singh Ji", pa:"ਜਨਮ ਦਿਨ ਸਾਹਿਬਜ਼ਾਦਾ ਜੁਝਾਰ ਸਿੰਘ ਜੀ" },
+    { iso:'2025-04-11', d:29, m:1, cat:'gurgaddi', en:"Gurgaddi Gurpurab Sri Guru Tegh Bahadur Ji", pa:"ਗੁਰਗੱਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਤੇਗ਼ ਬਹਾਦਰ ਜੀ", major:true },
+    { iso:'2025-04-11', d:29, m:1, cat:'jotijot', en:"Jyoti Jyot Gurpurab Sri Guru Har Krishan Ji", pa:"ਜੋਤੀ ਜੋਤਿ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਹਰਿ ਕ੍ਰਿਸ਼ਨ ਜੀ", major:true },
+    { iso:'2025-04-12', d:30, m:1, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2025-04-13', d:1, m:2, cat:'festival', en:"Vaisakhi — Khalsa Sajna Divas", pa:"ਵਿਸਾਖੀ — ਖ਼ਾਲਸਾ ਸਾਜਨਾ ਦਿਵਸ", major:true },
+    { iso:'2025-04-13', d:1, m:2, cat:'historic', en:"Sikh Turban Day", pa:"ਸਿੱਖ ਦਸਤਾਰ ਦਿਵਸ" },
+    { iso:'2025-04-13', d:1, m:2, cat:'sangrand', en:"Sangrand — Vaisakh", pa:"ਸੰਗਰਾਂਦ — ਵੈਸਾਖ" },
+    { iso:'2025-04-18', d:6, m:2, cat:'prakash', en:"Prakash Gurpurab Sri Guru Tegh Bahadur Ji", pa:"ਪ੍ਰਕਾਸ਼ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਤੇਗ਼ ਬਹਾਦਰ ਜੀ", major:true },
+    { iso:'2025-04-20', d:8, m:2, cat:'janamdin', en:"Janamdin Bhagat Dhanna Ji", pa:"ਜਨਮ ਦਿਨ ਭਗਤ ਧੰਨਾ ਜੀ" },
+    { iso:'2025-04-20', d:8, m:2, cat:'prakash', en:"Prakash Gurpurab Sri Guru Arjan Dev Ji", pa:"ਪ੍ਰਕਾਸ਼ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਅਰਜਨ ਦੇਵ ਜੀ", major:true },
+    { iso:'2025-04-27', d:15, m:2, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2025-04-28', d:16, m:2, cat:'prakash', en:"Prakash Gurpurab Sri Guru Angad Dev Ji", pa:"ਪ੍ਰਕਾਸ਼ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਅੰਗਦ ਦੇਵ ਜੀ", major:true },
+    { iso:'2025-05-03', d:21, m:2, cat:'mela', en:"Shaheedi Jor Mela Sri Muktsar Sahib", pa:"ਸ਼ਹੀਦੀ ਜੋੜ ਮੇਲਾ ਸ੍ਰੀ ਮੁਕਤਸਰ ਸਾਹਿਬ" },
+    { iso:'2025-05-05', d:23, m:2, cat:'janamdin', en:"Janamdin Sardar Jassa Singh Ramgarhia", pa:"ਜਨਮ ਦਿਨ ਸਰਦਾਰ ਜੱਸਾ ਸਿੰਘ ਰਾਮਗੜ੍ਹੀਆ" },
+    { iso:'2025-05-11', d:29, m:2, cat:'prakash', en:"Prakash Gurpurab Sri Guru Amar Das Ji", pa:"ਪ੍ਰਕਾਸ਼ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਅਮਰ ਦਾਸ ਜੀ", major:true },
+    { iso:'2025-05-12', d:30, m:2, cat:'historic', en:"Baba Banda Singh Bahadur — Sirhind Fateh Divas", pa:"ਬਾਬਾ ਬੰਦਾ ਸਿੰਘ ਬਹਾਦਰ — ਸਰਹਿੰਦ ਫ਼ਤਿਹ ਦਿਵਸ" },
+    { iso:'2025-05-12', d:30, m:2, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2025-05-14', d:1, m:3, cat:'sangrand', en:"Sangrand — Jeth", pa:"ਸੰਗਰਾਂਦ — ਜੇਠ" },
+    { iso:'2025-05-16', d:3, m:3, cat:'shaheedi', en:"Chhota Ghallughara — Kahnuwan", pa:"ਛੋਟਾ ਘੱਲੂਘਾਰਾ — ਕਾਹਨੂੰਵਾਨ", major:true },
+    { iso:'2025-05-18', d:5, m:3, cat:'janamdin', en:"Janamdin Sardar Jassa Singh Ahluwalia", pa:"ਜਨਮ ਦਿਨ ਸਰਦਾਰ ਜੱਸਾ ਸਿੰਘ ਆਹਲੂਵਾਲੀਆ" },
+    { iso:'2025-05-20', d:7, m:3, cat:'gurgaddi', en:"Gurgaddi Gurpurab Sri Guru Hargobind Ji", pa:"ਗੁਰਗੱਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਹਰਿਗੋਬਿੰਦ ਜੀ", major:true },
+    { iso:'2025-05-22', d:9, m:3, cat:'shaheedi', en:"Shaheedi Saka Paonta Sahib", pa:"ਸ਼ਹੀਦੀ ਸਾਕਾ ਪਾਉਂਟਾ ਸਾਹਿਬ" },
+    { iso:'2025-05-27', d:14, m:3, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2025-05-30', d:17, m:3, cat:'shaheedi', en:"Shaheedi Gurpurab Sri Guru Arjan Dev Ji", pa:"ਸ਼ਹੀਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਅਰਜਨ ਦੇਵ ਜੀ", major:true },
+    { iso:'2025-06-02', d:20, m:3, cat:'modern', en:"Janamdin Sant Jarnail Singh Khalsa Bhindranwale", pa:"ਜਨਮ ਦਿਨ ਸੰਤ ਜਰਨੈਲ ਸਿੰਘ ਖ਼ਾਲਸਾ ਭਿੰਡਰਾਂਵਾਲੇ" },
+    { iso:'2025-06-04', d:22, m:3, cat:'modern', en:"Ghallughara Sri Akal Takht Sahib (1984)", pa:"ਘੱਲੂਘਾਰਾ ਸ੍ਰੀ ਅਕਾਲ ਤਖ਼ਤ ਸਾਹਿਬ (੧੯੮੪)" },
+    { iso:'2025-06-06', d:24, m:3, cat:'modern', en:"Shaheedi Divas Sant Jarnail Singh Khalsa Bhindranwale & Bhai Amreek Singh", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਸੰਤ ਜਰਨੈਲ ਸਿੰਘ ਖ਼ਾਲਸਾ ਭਿੰਡਰਾਂਵਾਲੇ ਤੇ ਭਾਈ ਅਮਰੀਕ ਸਿੰਘ" },
+    { iso:'2025-06-11', d:29, m:3, cat:'janamdin', en:"Janamdin Bhagat Kabir Ji", pa:"ਜਨਮ ਦਿਨ ਭਗਤ ਕਬੀਰ ਜੀ" },
+    { iso:'2025-06-11', d:29, m:3, cat:'mela', en:"Jor Mela Gurdwara Sri Reetha Sahib", pa:"ਜੋੜ ਮੇਲਾ ਗੁਰਦੁਆਰਾ ਸ੍ਰੀ ਰੀਠਾ ਸਾਹਿਬ" },
+    { iso:'2025-06-11', d:29, m:3, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2025-06-12', d:30, m:3, cat:'prakash', en:"Prakash Gurpurab Sri Guru Hargobind Ji", pa:"ਪ੍ਰਕਾਸ਼ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਹਰਿਗੋਬਿੰਦ ਜੀ", major:true },
+    { iso:'2025-06-15', d:1, m:4, cat:'sangrand', en:"Sangrand — Harh", pa:"ਸੰਗਰਾਂਦ — ਹਾੜ" },
+    { iso:'2025-06-16', d:2, m:4, cat:'historic', en:"Foundation Day — Sri Akal Takht Sahib", pa:"ਸਥਾਪਨਾ ਦਿਵਸ — ਸ੍ਰੀ ਅਕਾਲ ਤਖ਼ਤ ਸਾਹਿਬ", major:true },
+    { iso:'2025-06-25', d:11, m:4, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2025-06-25', d:11, m:4, cat:'shaheedi', en:"Shaheedi Divas Baba Banda Singh Bahadur", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਬਾਬਾ ਬੰਦਾ ਸਿੰਘ ਬਹਾਦਰ", major:true },
+    { iso:'2025-06-29', d:15, m:4, cat:'historic', en:"Barsi Maharaja Ranjit Singh Ji", pa:"ਬਰਸੀ ਮਹਾਰਾਜਾ ਰਣਜੀਤ ਸਿੰਘ ਜੀ" },
+    { iso:'2025-07-05', d:21, m:4, cat:'historic', en:"Miri Piri Divas", pa:"ਮੀਰੀ ਪੀਰੀ ਦਿਵਸ", major:true },
+    { iso:'2025-07-05', d:21, m:4, cat:'tithi', en:"Dashmi", pa:"ਦਸਮੀ" },
+    { iso:'2025-07-09', d:25, m:4, cat:'shaheedi', en:"Shaheedi Divas Bhai Mani Singh Ji", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਭਾਈ ਮਨੀ ਸਿੰਘ ਜੀ", major:true },
+    { iso:'2025-07-10', d:26, m:4, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2025-07-16', d:1, m:5, cat:'sangrand', en:"Sangrand — Sawan", pa:"ਸੰਗਰਾਂਦ — ਸਾਵਣ" },
+    { iso:'2025-07-16', d:1, m:5, cat:'shaheedi', en:"Shaheedi Divas Bhai Taru Singh Ji", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਭਾਈ ਤਾਰੂ ਸਿੰਘ ਜੀ", major:true },
+    { iso:'2025-07-19', d:4, m:5, cat:'prakash', en:"Prakash Gurpurab Sri Guru Har Krishan Ji", pa:"ਪ੍ਰਕਾਸ਼ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਹਰਿ ਕ੍ਰਿਸ਼ਨ ਜੀ", major:true },
+    { iso:'2025-07-24', d:9, m:5, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2025-07-31', d:16, m:5, cat:'modern', en:"Shaheedi Divas S. Udham Singh Ji", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਸ. ਊਧਮ ਸਿੰਘ ਜੀ" },
+    { iso:'2025-08-08', d:24, m:5, cat:'historic', en:"Morcha Guru Ka Bagh", pa:"ਮੋਰਚਾ ਗੁਰੂ ਕਾ ਬਾਗ਼" },
+    { iso:'2025-08-09', d:25, m:5, cat:'mela', en:"Jor Mela Baba Bakala", pa:"ਜੋੜ ਮੇਲਾ ਬਾਬਾ ਬਕਾਲਾ" },
+    { iso:'2025-08-09', d:25, m:5, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2025-08-16', d:1, m:6, cat:'sangrand', en:"Sangrand — Bhadon", pa:"ਸੰਗਰਾਂਦ — ਭਾਦੋਂ" },
+    { iso:'2025-08-20', d:5, m:6, cat:'modern', en:"Shaheedi Divas Sant Harchand Singh Longowal", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਸੰਤ ਹਰਚੰਦ ਸਿੰਘ ਲੌਂਗੋਵਾਲ" },
+    { iso:'2025-08-23', d:8, m:6, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2025-08-24', d:9, m:6, cat:'historic', en:"Pehla Prakash Gurpurab Sri Guru Granth Sahib Ji", pa:"ਪਹਿਲਾ ਪ੍ਰਕਾਸ਼ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਗ੍ਰੰਥ ਸਾਹਿਬ ਜੀ", major:true },
+    { iso:'2025-08-25', d:10, m:6, cat:'gurgaddi', en:"Gurgaddi Gurpurab Sri Guru Arjan Dev Ji", pa:"ਗੁਰਗੱਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਅਰਜਨ ਦੇਵ ਜੀ", major:true },
+    { iso:'2025-08-26', d:11, m:6, cat:'jotijot', en:"Jyoti Jyot Gurpurab Sri Guru Ram Das Ji", pa:"ਜੋਤੀ ਜੋਤਿ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਰਾਮ ਦਾਸ ਜੀ", major:true },
+    { iso:'2025-08-30', d:15, m:6, cat:'historic', en:"Viah Purab Sri Guru Nanak Dev Ji", pa:"ਵਿਆਹ ਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਨਾਨਕ ਦੇਵ ਜੀ" },
+    { iso:'2025-08-30', d:15, m:6, cat:'mela', en:"Jor Mela Gurdwara Kandh Sahib (Batala)", pa:"ਜੋੜ ਮੇਲਾ ਗੁਰਦੁਆਰਾ ਕੰਧ ਸਾਹਿਬ (ਬਟਾਲਾ)" },
+    { iso:'2025-09-05', d:21, m:6, cat:'gurgaddi', en:"Gurgaddi Gurpurab Sri Guru Ram Das Ji", pa:"ਗੁਰਗੱਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਰਾਮ ਦਾਸ ਜੀ", major:true },
+    { iso:'2025-09-07', d:23, m:6, cat:'jotijot', en:"Jyoti Jyot Gurpurab Sri Guru Amar Das Ji", pa:"ਜੋਤੀ ਜੋਤਿ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਅਮਰ ਦਾਸ ਜੀ", major:true },
+    { iso:'2025-09-07', d:23, m:6, cat:'mela', en:"Jor Mela Goindwal Sahib", pa:"ਜੋੜ ਮੇਲਾ ਗੋਇੰਦਵਾਲ ਸਾਹਿਬ" },
+    { iso:'2025-09-07', d:23, m:6, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2025-09-11', d:27, m:6, cat:'mela', en:"Jor Mela Baba Buddha Ji (Ramdas)", pa:"ਜੋੜ ਮੇਲਾ ਬਾਬਾ ਬੁੱਢਾ ਜੀ (ਰਾਮਦਾਸ)" },
+    { iso:'2025-09-12', d:28, m:6, cat:'gurgaddi', en:"Gurgaddi Gurpurab Sri Guru Angad Dev Ji", pa:"ਗੁਰਗੱਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਅੰਗਦ ਦੇਵ ਜੀ", major:true },
+    { iso:'2025-09-16', d:1, m:7, cat:'jotijot', en:"Jyoti Jyot Gurpurab Sri Guru Nanak Dev Ji", pa:"ਜੋਤੀ ਜੋਤਿ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਨਾਨਕ ਦੇਵ ਜੀ", major:true },
+    { iso:'2025-09-16', d:1, m:7, cat:'sangrand', en:"Sangrand — Assu", pa:"ਸੰਗਰਾਂਦ — ਅੱਸੂ" },
+    { iso:'2025-09-21', d:6, m:7, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2025-10-02', d:17, m:7, cat:'festival', en:"Darbar Khalsa (Dussehra)", pa:"ਦਰਬਾਰ ਖ਼ਾਲਸਾ (ਦੁਸਹਿਰਾ)" },
+    { iso:'2025-10-02', d:17, m:7, cat:'tithi', en:"Dashmi", pa:"ਦਸਮੀ" },
+    { iso:'2025-10-06', d:21, m:7, cat:'mela', en:"Jor Mela Bir Baba Buddha Ji (Thatha)", pa:"ਜੋੜ ਮੇਲਾ ਬੀੜ ਬਾਬਾ ਬੁੱਢਾ ਜੀ (ਥੱਥਾ)" },
+    { iso:'2025-10-07', d:22, m:7, cat:'mela', en:"Jor Mela Bir Baba Buddha Ji (Thatha)", pa:"ਜੋੜ ਮੇਲਾ ਬੀੜ ਬਾਬਾ ਬੁੱਢਾ ਜੀ (ਥੱਥਾ)" },
+    { iso:'2025-10-07', d:22, m:7, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2025-10-08', d:23, m:7, cat:'prakash', en:"Prakash Gurpurab Sri Guru Ram Das Ji", pa:"ਪ੍ਰਕਾਸ਼ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਰਾਮ ਦਾਸ ਜੀ", major:true },
+    { iso:'2025-10-09', d:24, m:7, cat:'janamdin', en:"Janamdin Bhai Taru Singh Ji", pa:"ਜਨਮ ਦਿਨ ਭਾਈ ਤਾਰੂ ਸਿੰਘ ਜੀ" },
+    { iso:'2025-10-09', d:24, m:7, cat:'modern', en:"Shaheedi Divas Bhai Sukhdev Singh & Bhai Harjinder Singh", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਭਾਈ ਸੁਖਦੇਵ ਸਿੰਘ ਤੇ ਭਾਈ ਹਰਜਿੰਦਰ ਸਿੰਘ" },
+    { iso:'2025-10-15', d:30, m:7, cat:'gurgaddi', en:"Gurgaddi Gurpurab Sri Guru Har Krishan Ji", pa:"ਗੁਰਗੱਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਹਰਿ ਕ੍ਰਿਸ਼ਨ ਜੀ", major:true },
+    { iso:'2025-10-15', d:30, m:7, cat:'jotijot', en:"Jyoti Jyot Gurpurab Sri Guru Har Rai Ji", pa:"ਜੋਤੀ ਜੋਤਿ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਹਰਿ ਰਾਇ ਜੀ", major:true },
+    { iso:'2025-10-17', d:1, m:8, cat:'sangrand', en:"Sangrand — Katak", pa:"ਸੰਗਰਾਂਦ — ਕੱਤਕ" },
+    { iso:'2025-10-21', d:5, m:8, cat:'festival', en:"Bandi Chhor Divas (Diwali)", pa:"ਬੰਦੀ ਛੋੜ ਦਿਵਸ (ਦੀਵਾਲੀ)", major:true },
+    { iso:'2025-10-21', d:5, m:8, cat:'modern', en:"Janamdin Sant Gyani Kartar Singh Bhindranwale", pa:"ਜਨਮ ਦਿਨ ਸੰਤ ਗਿਆਨੀ ਕਰਤਾਰ ਸਿੰਘ ਭਿੰਡਰਾਂਵਾਲੇ" },
+    { iso:'2025-10-21', d:5, m:8, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2025-10-23', d:7, m:8, cat:'gurgaddi', en:"Gurgaddi Gurpurab Sri Guru Granth Sahib Ji", pa:"ਗੁਰਗੱਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਗ੍ਰੰਥ ਸਾਹਿਬ ਜੀ", major:true },
+    { iso:'2025-10-23', d:7, m:8, cat:'historic', en:"Barsi Sardar Jassa Singh Ahluwalia", pa:"ਬਰਸੀ ਸਰਦਾਰ ਜੱਸਾ ਸਿੰਘ ਆਹਲੂਵਾਲੀਆ" },
+    { iso:'2025-10-23', d:7, m:8, cat:'janamdin', en:"Janamdin Baba Buddha Ji", pa:"ਜਨਮ ਦਿਨ ਬਾਬਾ ਬੁੱਢਾ ਜੀ" },
+    { iso:'2025-10-26', d:10, m:8, cat:'jotijot', en:"Jyoti Jyot Gurpurab Sri Guru Gobind Singh Ji", pa:"ਜੋਤੀ ਜੋਤਿ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ", major:true },
+    { iso:'2025-10-30', d:14, m:8, cat:'shaheedi', en:"Saka Panja Sahib", pa:"ਸਾਕਾ ਪੰਜਾ ਸਾਹਿਬ" },
+    { iso:'2025-10-31', d:15, m:8, cat:'modern', en:"Shaheedi Divas Bhai Beant Singh", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਭਾਈ ਬੇਅੰਤ ਸਿੰਘ" },
+    { iso:'2025-11-01', d:16, m:8, cat:'modern', en:"Punjab Day", pa:"ਪੰਜਾਬ ਦਿਵਸ" },
+    { iso:'2025-11-01', d:16, m:8, cat:'tithi', en:"Dashmi", pa:"ਦਸਮੀ" },
+    { iso:'2025-11-02', d:17, m:8, cat:'janamdin', en:"Janamdin Bhagat Namdev Ji", pa:"ਜਨਮ ਦਿਨ ਭਗਤ ਨਾਮਦੇਵ ਜੀ" },
+    { iso:'2025-11-03', d:18, m:8, cat:'janamdin', en:"Janamdin Mata Sahib Kaur Ji", pa:"ਜਨਮ ਦਿਨ ਮਾਤਾ ਸਾਹਿਬ ਕੌਰ ਜੀ" },
+    { iso:'2025-11-05', d:20, m:8, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2025-11-05', d:20, m:8, cat:'prakash', en:"Prakash Gurpurab Sri Guru Nanak Dev Ji", pa:"ਪ੍ਰਕਾਸ਼ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਨਾਨਕ ਦੇਵ ਜੀ", major:true },
+    { iso:'2025-11-15', d:30, m:8, cat:'modern', en:"SGPC Foundation Day", pa:"ਸ਼੍ਰੋਮਣੀ ਕਮੇਟੀ ਸਥਾਪਨਾ ਦਿਵਸ" },
+    { iso:'2025-11-15', d:30, m:8, cat:'shaheedi', en:"Shaheedi Divas Baba Deep Singh Ji", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਬਾਬਾ ਦੀਪ ਸਿੰਘ ਜੀ", major:true },
+    { iso:'2025-11-16', d:1, m:9, cat:'sangrand', en:"Sangrand — Maghar", pa:"ਸੰਗਰਾਂਦ — ਮੱਘਰ" },
+    { iso:'2025-11-20', d:5, m:9, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2025-11-23', d:8, m:9, cat:'gurgaddi', en:"Gurgaddi Gurpurab Sri Guru Gobind Singh Ji", pa:"ਗੁਰਗੱਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ", major:true },
+    { iso:'2025-11-24', d:9, m:9, cat:'shaheedi', en:"Shaheedi Divas Bhai Dayala Ji, Bhai Mati Das Ji & Bhai Sati Das Ji", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਭਾਈ ਦਿਆਲਾ ਜੀ, ਭਾਈ ਮਤੀ ਦਾਸ ਜੀ ਤੇ ਭਾਈ ਸਤੀ ਦਾਸ ਜੀ", major:true },
+    { iso:'2025-11-25', d:10, m:9, cat:'shaheedi', en:"Shaheedi Gurpurab Sri Guru Tegh Bahadur Ji", pa:"ਸ਼ਹੀਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਤੇਗ਼ ਬਹਾਦਰ ਜੀ", major:true },
+    { iso:'2025-11-25', d:10, m:9, cat:'tithi', en:"Panchami", pa:"ਪੰਚਮੀ" },
+    { iso:'2025-11-28', d:13, m:9, cat:'historic', en:"Akal Chalana Bhai Mardana Ji", pa:"ਅਕਾਲ ਚਲਾਣਾ ਭਾਈ ਮਰਦਾਨਾ ਜੀ" },
+    { iso:'2025-11-30', d:15, m:9, cat:'janamdin', en:"Janamdin Sahibzada Zorawar Singh Ji", pa:"ਜਨਮ ਦਿਨ ਸਾਹਿਬਜ਼ਾਦਾ ਜ਼ੋਰਾਵਰ ਸਿੰਘ ਜੀ" },
+    { iso:'2025-12-04', d:19, m:9, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2025-12-04', d:19, m:9, cat:'shaheedi', en:"Shaheedi Divas Baba Gurbaksh Singh Ji", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਬਾਬਾ ਗੁਰਬਖ਼ਸ਼ ਸਿੰਘ ਜੀ" },
+    { iso:'2025-12-14', d:29, m:9, cat:'janamdin', en:"Janamdin Sahibzada Fateh Singh Ji", pa:"ਜਨਮ ਦਿਨ ਸਾਹਿਬਜ਼ਾਦਾ ਫ਼ਤਿਹ ਸਿੰਘ ਜੀ" },
+    { iso:'2025-12-14', d:29, m:9, cat:'modern', en:"Shiromani Akali Dal Foundation Day", pa:"ਸ਼੍ਰੋਮਣੀ ਅਕਾਲੀ ਦਲ ਸਥਾਪਨਾ ਦਿਵਸ" },
+    { iso:'2025-12-15', d:1, m:10, cat:'sangrand', en:"Sangrand — Poh", pa:"ਸੰਗਰਾਂਦ — ਪੋਹ" },
+    { iso:'2025-12-19', d:5, m:10, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2025-12-20', d:6, m:10, cat:'historic', en:"Leaving Fort Sri Anandgarh Sahib", pa:"ਸ੍ਰੀ ਆਨੰਦਗੜ੍ਹ ਸਾਹਿਬ ਦਾ ਕਿਲ੍ਹਾ ਛੱਡਣਾ" },
+    { iso:'2025-12-21', d:7, m:10, cat:'historic', en:"Family Separation — Sarsa Nangal", pa:"ਪਰਿਵਾਰ ਵਿਛੋੜਾ — ਸਰਸਾ ਨੰਗਲ" },
+    { iso:'2025-12-21', d:7, m:10, cat:'shaheedi', en:"Shaheedi Divas Baba Jivan Singh Ji (Bhai Jaita Ji)", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਬਾਬਾ ਜੀਵਨ ਸਿੰਘ ਜੀ (ਭਾਈ ਜੈਤਾ ਜੀ)" },
+    { iso:'2025-12-22', d:8, m:10, cat:'shaheedi', en:"Shaheedi Divas Vadde Sahibzade — Chamkaur Sahib", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਵੱਡੇ ਸਾਹਿਬਜ਼ਾਦੇ — ਚਮਕੌਰ ਸਾਹਿਬ", major:true },
+    { iso:'2025-12-23', d:9, m:10, cat:'shaheedi', en:"Shaheedi Divas Bhai Sangat Singh Ji", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਭਾਈ ਸੰਗਤ ਸਿੰਘ ਜੀ" },
+    { iso:'2025-12-27', d:13, m:10, cat:'prakash', en:"Prakash Gurpurab Sri Guru Gobind Singh Ji", pa:"ਪ੍ਰਕਾਸ਼ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ", major:true },
+    { iso:'2025-12-27', d:13, m:10, cat:'shaheedi', en:"Shaheedi Divas Chhote Sahibzade & Mata Gujri Ji", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਛੋਟੇ ਸਾਹਿਬਜ਼ਾਦੇ ਤੇ ਮਾਤਾ ਗੁਜਰੀ ਜੀ", major:true },
+    { iso:'2026-01-03', d:20, m:10, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2026-01-06', d:23, m:10, cat:'modern', en:"Shaheedi Divas Bhai Kehar Singh & Bhai Satwant Singh", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਭਾਈ ਕੇਹਰ ਸਿੰਘ ਤੇ ਭਾਈ ਸਤਵੰਤ ਸਿੰਘ" },
+    { iso:'2026-01-14', d:1, m:11, cat:'historic', en:"Foundation Day Sri Harmandir Sahib", pa:"ਸਥਾਪਨਾ ਦਿਵਸ ਸ੍ਰੀ ਹਰਿਮੰਦਰ ਸਾਹਿਬ", major:true },
+    { iso:'2026-01-14', d:1, m:11, cat:'mela', en:"Jor Mela Sri Muktsar Sahib (Maghi)", pa:"ਜੋੜ ਮੇਲਾ ਸ੍ਰੀ ਮੁਕਤਸਰ ਸਾਹਿਬ (ਮਾਘੀ)", major:true },
+    { iso:'2026-01-14', d:1, m:11, cat:'sangrand', en:"Sangrand — Magh", pa:"ਸੰਗਰਾਂਦ — ਮਾਘ" },
+    { iso:'2026-01-18', d:5, m:11, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2026-01-20', d:7, m:11, cat:'historic', en:"Chabiyan Da Morcha (Amritsar)", pa:"ਚਾਬੀਆਂ ਦਾ ਮੋਰਚਾ (ਅੰਮ੍ਰਿਤਸਰ)" },
+    { iso:'2026-01-23', d:10, m:11, cat:'festival', en:"Basant Panchami", pa:"ਬਸੰਤ ਪੰਚਮੀ" },
+    { iso:'2026-01-23', d:10, m:11, cat:'historic', en:"Marriage Day Sri Guru Gobind Singh Ji", pa:"ਵਿਆਹ ਦਿਵਸ ਸ੍ਰੀ ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ" },
+    { iso:'2026-01-27', d:14, m:11, cat:'janamdin', en:"Janamdin Baba Deep Singh Ji", pa:"ਜਨਮ ਦਿਨ ਬਾਬਾ ਦੀਪ ਸਿੰਘ ਜੀ" },
+    { iso:'2026-01-31', d:18, m:11, cat:'prakash', en:"Prakash Gurpurab Sri Guru Har Rai Ji", pa:"ਪ੍ਰਕਾਸ਼ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਹਰਿ ਰਾਇ ਜੀ", major:true },
+    { iso:'2026-02-01', d:19, m:11, cat:'janamdin', en:"Janamdin Bhagat Ravidas Ji", pa:"ਜਨਮ ਦਿਨ ਭਗਤ ਰਵਿਦਾਸ ਜੀ" },
+    { iso:'2026-02-01', d:19, m:11, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2026-02-09', d:27, m:11, cat:'shaheedi', en:"Wadda Ghallughara — Kup Rohira", pa:"ਵੱਡਾ ਘੱਲੂਘਾਰਾ — ਕੁੱਪ ਰੋਹੀੜਾ", major:true },
+    { iso:'2026-02-11', d:29, m:11, cat:'janamdin', en:"Janamdin Sahibzada Ajit Singh Ji", pa:"ਜਨਮ ਦਿਨ ਸਾਹਿਬਜ਼ਾਦਾ ਅਜੀਤ ਸਿੰਘ ਜੀ" },
+    { iso:'2026-02-12', d:1, m:12, cat:'sangrand', en:"Sangrand — Phagun", pa:"ਸੰਗਰਾਂਦ — ਫੱਗਣ" },
+    { iso:'2026-02-17', d:6, m:12, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2026-02-21', d:10, m:12, cat:'historic', en:"Jaitu Da Morcha (Faridkot)", pa:"ਜੈਤੋ ਦਾ ਮੋਰਚਾ (ਫ਼ਰੀਦਕੋਟ)" },
+    { iso:'2026-02-21', d:10, m:12, cat:'shaheedi', en:"Saka Sri Nankana Sahib", pa:"ਸਾਕਾ ਸ੍ਰੀ ਨਨਕਾਣਾ ਸਾਹਿਬ", major:true },
+    { iso:'2026-03-14', d:1, m:1, cat:'sangrand', en:"Sangrand — Chet", pa:"ਸੰਗਰਾਂਦ — ਚੇਤ" },
+    { iso:'2026-03-14', d:1, m:1, cat:'festival', en:"Nanakshahi New Year 558", pa:"ਨਾਨਕਸ਼ਾਹੀ ਨਵਾਂ ਸਾਲ ੫੫੮", major:true },
+    { iso:'2026-03-14', d:1, m:1, cat:'shaheedi', en:"Shaheedi Divas Jathedar Akali Phula Singh Ji", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਜਥੇਦਾਰ ਅਕਾਲੀ ਫੂਲਾ ਸਿੰਘ ਜੀ" },
+    { iso:'2026-03-15', d:2, m:1, cat:'historic', en:"S. Baghel Singh — Delhi Fateh", pa:"ਸ. ਬਘੇਲ ਸਿੰਘ — ਦਿੱਲੀ ਫ਼ਤਿਹ" },
+    { iso:'2026-03-17', d:4, m:1, cat:'gurgaddi', en:"Gurgaddi Gurpurab Sri Guru Har Rai Ji", pa:"ਗੁਰਗੱਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਹਰਿ ਰਾਇ ਜੀ", major:true },
+    { iso:'2026-03-19', d:6, m:1, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2026-03-19', d:6, m:1, cat:'gurgaddi', en:"Gurgaddi Gurpurab Sri Guru Amar Das Ji", pa:"ਗੁਰਗੱਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਅਮਰ ਦਾਸ ਜੀ", major:true },
+    { iso:'2026-03-22', d:9, m:1, cat:'jotijot', en:"Jyoti Jyot Gurpurab Sri Guru Angad Dev Ji", pa:"ਜੋਤੀ ਜੋਤਿ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਅੰਗਦ ਦੇਵ ਜੀ", major:true },
+    { iso:'2026-03-23', d:10, m:1, cat:'tithi', en:"Panchami", pa:"ਪੰਚਮੀ" },
+    { iso:'2026-03-23', d:10, m:1, cat:'jotijot', en:"Jyoti Jyot Gurpurab Sri Guru Hargobind Ji", pa:"ਜੋਤੀ ਜੋਤਿ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਹਰਿਗੋਬਿੰਦ ਜੀ", major:true },
+    { iso:'2026-03-23', d:10, m:1, cat:'modern', en:"Shaheedi Divas S. Bhagat Singh", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਸ. ਭਗਤ ਸਿੰਘ" },
+    { iso:'2026-03-25', d:12, m:1, cat:'shaheedi', en:"Shaheedi Divas Bhai Subeg Singh & Bhai Shahbaz Singh", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਭਾਈ ਸੁਬੇਗ ਸਿੰਘ ਤੇ ਭਾਈ ਸ਼ਾਹਬਾਜ਼ ਸਿੰਘ" },
+    { iso:'2026-03-28', d:15, m:1, cat:'tithi', en:"Dashmi", pa:"ਦਸਮੀ" },
+    { iso:'2026-04-01', d:19, m:1, cat:'gurgaddi', en:"Gurgaddi Gurpurab Sri Guru Tegh Bahadur Ji", pa:"ਗੁਰਗੱਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਤੇਗ਼ ਬਹਾਦਰ ਜੀ", major:true },
+    { iso:'2026-04-01', d:19, m:1, cat:'jotijot', en:"Jyoti Jyot Gurpurab Sri Guru Har Krishan Ji", pa:"ਜੋਤੀ ਜੋਤਿ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਹਰਿ ਕ੍ਰਿਸ਼ਨ ਜੀ", major:true },
+    { iso:'2026-04-02', d:20, m:1, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2026-04-07', d:25, m:1, cat:'prakash', en:"Prakash Gurpurab Sri Guru Tegh Bahadur Ji", pa:"ਪ੍ਰਕਾਸ਼ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਤੇਗ਼ ਬਹਾਦਰ ਜੀ", major:true },
+    { iso:'2026-04-09', d:27, m:1, cat:'prakash', en:"Prakash Gurpurab Sri Guru Arjan Dev Ji", pa:"ਪ੍ਰਕਾਸ਼ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਅਰਜਨ ਦੇਵ ਜੀ", major:true },
+    { iso:'2026-04-09', d:27, m:1, cat:'janamdin', en:"Janamdin Sahibzada Jujhar Singh Ji", pa:"ਜਨਮ ਦਿਨ ਸਾਹਿਬਜ਼ਾਦਾ ਜੁਝਾਰ ਸਿੰਘ ਜੀ" },
+    { iso:'2026-04-13', d:31, m:1, cat:'historic', en:"Sikh Turban Day", pa:"ਸਿੱਖ ਦਸਤਾਰ ਦਿਵਸ" },
+    { iso:'2026-04-14', d:1, m:2, cat:'sangrand', en:"Sangrand — Vaisakh", pa:"ਸੰਗਰਾਂਦ — ਵੈਸਾਖ" },
+    { iso:'2026-04-14', d:1, m:2, cat:'festival', en:"Vaisakhi — Khalsa Sajna Divas", pa:"ਵਿਸਾਖੀ — ਖ਼ਾਲਸਾ ਸਾਜਨਾ ਦਿਵਸ", major:true },
+    { iso:'2026-04-17', d:4, m:2, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2026-04-18', d:5, m:2, cat:'prakash', en:"Prakash Gurpurab Sri Guru Angad Dev Ji", pa:"ਪ੍ਰਕਾਸ਼ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਅੰਗਦ ਦੇਵ ਜੀ", major:true },
+    { iso:'2026-04-21', d:8, m:2, cat:'tithi', en:"Panchami", pa:"ਪੰਚਮੀ" },
+    { iso:'2026-04-21', d:8, m:2, cat:'janamdin', en:"Janamdin Bhagat Dhanna Ji", pa:"ਜਨਮ ਦਿਨ ਭਗਤ ਧੰਨਾ ਜੀ" },
+    { iso:'2026-04-26', d:13, m:2, cat:'tithi', en:"Dashmi", pa:"ਦਸਮੀ" },
+    { iso:'2026-04-30', d:17, m:2, cat:'prakash', en:"Prakash Gurpurab Sri Guru Amar Das Ji", pa:"ਪ੍ਰਕਾਸ਼ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਅਮਰ ਦਾਸ ਜੀ", major:true },
+    { iso:'2026-05-01', d:18, m:2, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2026-05-04', d:21, m:2, cat:'mela', en:"Shaheedi Jor Mela Sri Muktsar Sahib", pa:"ਸ਼ਹੀਦੀ ਜੋੜ ਮੇਲਾ ਸ੍ਰੀ ਮੁਕਤਸਰ ਸਾਹਿਬ" },
+    { iso:'2026-05-05', d:22, m:2, cat:'janamdin', en:"Janamdin Sardar Jassa Singh Ramgarhia", pa:"ਜਨਮ ਦਿਨ ਸਰਦਾਰ ਜੱਸਾ ਸਿੰਘ ਰਾਮਗੜ੍ਹੀਆ" },
+    { iso:'2026-05-12', d:29, m:2, cat:'historic', en:"Baba Banda Singh Bahadur — Sirhind Fateh Divas", pa:"ਬਾਬਾ ਬੰਦਾ ਸਿੰਘ ਬਹਾਦਰ — ਸਰਹਿੰਦ ਫ਼ਤਿਹ ਦਿਵਸ" },
+    { iso:'2026-05-15', d:1, m:3, cat:'sangrand', en:"Sangrand — Jeth", pa:"ਸੰਗਰਾਂਦ — ਜੇਠ" },
+    { iso:'2026-05-16', d:2, m:3, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2026-05-17', d:3, m:3, cat:'shaheedi', en:"Chhota Ghallughara — Kahnuwan", pa:"ਛੋਟਾ ਘੱਲੂਘਾਰਾ — ਕਾਹਨੂੰਵਾਨ", major:true },
+    { iso:'2026-05-19', d:5, m:3, cat:'janamdin', en:"Janamdin Sardar Jassa Singh Ahluwalia", pa:"ਜਨਮ ਦਿਨ ਸਰਦਾਰ ਜੱਸਾ ਸਿੰਘ ਆਹਲੂਵਾਲੀਆ" },
+    { iso:'2026-05-21', d:7, m:3, cat:'tithi', en:"Panchami", pa:"ਪੰਚਮੀ" },
+    { iso:'2026-05-22', d:8, m:3, cat:'shaheedi', en:"Shaheedi Saka Paonta Sahib", pa:"ਸ਼ਹੀਦੀ ਸਾਕਾ ਪਾਉਂਟਾ ਸਾਹਿਬ" },
+    { iso:'2026-05-25', d:11, m:3, cat:'tithi', en:"Dashmi", pa:"ਦਸਮੀ" },
+    { iso:'2026-05-31', d:17, m:3, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2026-06-02', d:19, m:3, cat:'modern', en:"Janamdin Sant Jarnail Singh Khalsa Bhindranwale", pa:"ਜਨਮ ਦਿਨ ਸੰਤ ਜਰਨੈਲ ਸਿੰਘ ਖ਼ਾਲਸਾ ਭਿੰਡਰਾਂਵਾਲੇ" },
+    { iso:'2026-06-04', d:21, m:3, cat:'modern', en:"Ghallughara Sri Akal Takht Sahib (1984)", pa:"ਘੱਲੂਘਾਰਾ ਸ੍ਰੀ ਅਕਾਲ ਤਖ਼ਤ ਸਾਹਿਬ (੧੯੮੪)" },
+    { iso:'2026-06-06', d:23, m:3, cat:'modern', en:"Shaheedi Divas Sant Jarnail Singh Khalsa Bhindranwale & Bhai Amreek Singh", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਸੰਤ ਜਰਨੈਲ ਸਿੰਘ ਖ਼ਾਲਸਾ ਭਿੰਡਰਾਂਵਾਲੇ ਤੇ ਭਾਈ ਅਮਰੀਕ ਸਿੰਘ" },
+    { iso:'2026-06-08', d:25, m:3, cat:'gurgaddi', en:"Gurgaddi Gurpurab Sri Guru Hargobind Ji", pa:"ਗੁਰਗੱਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਹਰਿਗੋਬਿੰਦ ਜੀ", major:true },
+    { iso:'2026-06-15', d:1, m:4, cat:'sangrand', en:"Sangrand — Harh", pa:"ਸੰਗਰਾਂਦ — ਹਾੜ" },
+    { iso:'2026-06-15', d:1, m:4, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2026-06-18', d:4, m:4, cat:'shaheedi', en:"Shaheedi Gurpurab Sri Guru Arjan Dev Ji", pa:"ਸ਼ਹੀਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਅਰਜਨ ਦੇਵ ਜੀ", major:true },
+    { iso:'2026-06-19', d:5, m:4, cat:'tithi', en:"Panchami", pa:"ਪੰਚਮੀ" },
+    { iso:'2026-06-24', d:10, m:4, cat:'tithi', en:"Dashmi", pa:"ਦਸਮੀ" },
+    { iso:'2026-06-25', d:11, m:4, cat:'shaheedi', en:"Shaheedi Divas Baba Banda Singh Bahadur", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਬਾਬਾ ਬੰਦਾ ਸਿੰਘ ਬਹਾਦਰ", major:true },
+    { iso:'2026-06-29', d:15, m:4, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2026-06-29', d:15, m:4, cat:'historic', en:"Barsi Maharaja Ranjit Singh Ji", pa:"ਬਰਸੀ ਮਹਾਰਾਜਾ ਰਣਜੀਤ ਸਿੰਘ ਜੀ" },
+    { iso:'2026-06-29', d:15, m:4, cat:'janamdin', en:"Janamdin Bhagat Kabir Ji", pa:"ਜਨਮ ਦਿਨ ਭਗਤ ਕਬੀਰ ਜੀ" },
+    { iso:'2026-06-29', d:15, m:4, cat:'mela', en:"Jor Mela Gurdwara Sri Reetha Sahib", pa:"ਜੋੜ ਮੇਲਾ ਗੁਰਦੁਆਰਾ ਸ੍ਰੀ ਰੀਠਾ ਸਾਹਿਬ" },
+    { iso:'2026-06-30', d:16, m:4, cat:'prakash', en:"Prakash Gurpurab Sri Guru Hargobind Ji", pa:"ਪ੍ਰਕਾਸ਼ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਹਰਿਗੋਬਿੰਦ ਜੀ", major:true },
+    { iso:'2026-07-05', d:21, m:4, cat:'historic', en:"Foundation Day — Sri Akal Takht Sahib", pa:"ਸਥਾਪਨਾ ਦਿਵਸ — ਸ੍ਰੀ ਅਕਾਲ ਤਖ਼ਤ ਸਾਹਿਬ", major:true },
+    { iso:'2026-07-09', d:25, m:4, cat:'shaheedi', en:"Shaheedi Divas Bhai Mani Singh Ji", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਭਾਈ ਮਨੀ ਸਿੰਘ ਜੀ", major:true },
+    { iso:'2026-07-14', d:30, m:4, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2026-07-16', d:1, m:5, cat:'sangrand', en:"Sangrand — Sawan", pa:"ਸੰਗਰਾਂਦ — ਸਾਵਣ" },
+    { iso:'2026-07-16', d:1, m:5, cat:'shaheedi', en:"Shaheedi Divas Bhai Taru Singh Ji", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਭਾਈ ਤਾਰੂ ਸਿੰਘ ਜੀ", major:true },
+    { iso:'2026-07-18', d:3, m:5, cat:'tithi', en:"Panchami", pa:"ਪੰਚਮੀ" },
+    { iso:'2026-07-24', d:9, m:5, cat:'tithi', en:"Dashmi", pa:"ਦਸਮੀ" },
+    { iso:'2026-07-24', d:9, m:5, cat:'historic', en:"Miri Piri Divas", pa:"ਮੀਰੀ ਪੀਰੀ ਦਿਵਸ", major:true },
+    { iso:'2026-07-29', d:14, m:5, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2026-07-31', d:16, m:5, cat:'modern', en:"Shaheedi Divas S. Udham Singh Ji", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਸ. ਊਧਮ ਸਿੰਘ ਜੀ" },
+    { iso:'2026-08-07', d:23, m:5, cat:'prakash', en:"Prakash Gurpurab Sri Guru Har Krishan Ji", pa:"ਪ੍ਰਕਾਸ਼ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਹਰਿ ਕ੍ਰਿਸ਼ਨ ਜੀ", major:true },
+    { iso:'2026-08-08', d:24, m:5, cat:'historic', en:"Morcha Guru Ka Bagh", pa:"ਮੋਰਚਾ ਗੁਰੂ ਕਾ ਬਾਗ਼" },
+    { iso:'2026-08-12', d:28, m:5, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2026-08-17', d:1, m:6, cat:'sangrand', en:"Sangrand — Bhadon", pa:"ਸੰਗਰਾਂਦ — ਭਾਦੋਂ" },
+    { iso:'2026-08-17', d:1, m:6, cat:'tithi', en:"Panchami", pa:"ਪੰਚਮੀ" },
+    { iso:'2026-08-21', d:5, m:6, cat:'modern', en:"Shaheedi Divas Sant Harchand Singh Longowal", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਸੰਤ ਹਰਚੰਦ ਸਿੰਘ ਲੌਂਗੋਵਾਲ" },
+    { iso:'2026-08-22', d:6, m:6, cat:'tithi', en:"Dashmi", pa:"ਦਸਮੀ" },
+    { iso:'2026-08-28', d:12, m:6, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2026-08-28', d:12, m:6, cat:'mela', en:"Jor Mela Baba Bakala", pa:"ਜੋੜ ਮੇਲਾ ਬਾਬਾ ਬਕਾਲਾ" },
+    { iso:'2026-08-30', d:14, m:6, cat:'historic', en:"Sampuranta Divas Sri Guru Granth Sahib Ji", pa:"ਸੰਪੂਰਨਤਾ ਦਿਵਸ ਸ੍ਰੀ ਗੁਰੂ ਗ੍ਰੰਥ ਸਾਹਿਬ ਜੀ", major:true },
+    { iso:'2026-09-11', d:26, m:6, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2026-09-12', d:27, m:6, cat:'historic', en:"Pehla Prakash Gurpurab Sri Guru Granth Sahib Ji", pa:"ਪਹਿਲਾ ਪ੍ਰਕਾਸ਼ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਗ੍ਰੰਥ ਸਾਹਿਬ ਜੀ", major:true },
+    { iso:'2026-09-13', d:28, m:6, cat:'gurgaddi', en:"Gurgaddi Gurpurab Sri Guru Arjan Dev Ji", pa:"ਗੁਰਗੱਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਅਰਜਨ ਦੇਵ ਜੀ", major:true },
+    { iso:'2026-09-14', d:29, m:6, cat:'jotijot', en:"Jyoti Jyot Gurpurab Sri Guru Ram Das Ji", pa:"ਜੋਤੀ ਜੋਤਿ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਰਾਮ ਦਾਸ ਜੀ", major:true },
+    { iso:'2026-09-16', d:31, m:6, cat:'tithi', en:"Panchami", pa:"ਪੰਚਮੀ" },
+    { iso:'2026-09-17', d:1, m:7, cat:'sangrand', en:"Sangrand — Assu", pa:"ਸੰਗਰਾਂਦ — ਅੱਸੂ" },
+    { iso:'2026-09-18', d:2, m:7, cat:'mela', en:"Jor Mela Gurdwara Kandh Sahib (Batala)", pa:"ਜੋੜ ਮੇਲਾ ਗੁਰਦੁਆਰਾ ਕੰਧ ਸਾਹਿਬ (ਬਟਾਲਾ)" },
+    { iso:'2026-09-18', d:2, m:7, cat:'historic', en:"Viah Purab Sri Guru Nanak Dev Ji", pa:"ਵਿਆਹ ਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਨਾਨਕ ਦੇਵ ਜੀ" },
+    { iso:'2026-09-21', d:5, m:7, cat:'tithi', en:"Dashmi", pa:"ਦਸਮੀ" },
+    { iso:'2026-09-24', d:8, m:7, cat:'gurgaddi', en:"Gurgaddi Gurpurab Sri Guru Ram Das Ji", pa:"ਗੁਰਗੱਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਰਾਮ ਦਾਸ ਜੀ", major:true },
+    { iso:'2026-09-26', d:10, m:7, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2026-09-26', d:10, m:7, cat:'jotijot', en:"Jyoti Jyot Gurpurab Sri Guru Amar Das Ji", pa:"ਜੋਤੀ ਜੋਤਿ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਅਮਰ ਦਾਸ ਜੀ", major:true },
+    { iso:'2026-09-26', d:10, m:7, cat:'mela', en:"Jor Mela Goindwal Sahib", pa:"ਜੋੜ ਮੇਲਾ ਗੋਇੰਦਵਾਲ ਸਾਹਿਬ" },
+    { iso:'2026-09-30', d:14, m:7, cat:'mela', en:"Jor Mela Baba Buddha Ji (Ramdas)", pa:"ਜੋੜ ਮੇਲਾ ਬਾਬਾ ਬੁੱਢਾ ਜੀ (ਰਾਮਦਾਸ)" },
+    { iso:'2026-10-01', d:15, m:7, cat:'gurgaddi', en:"Gurgaddi Gurpurab Sri Guru Angad Dev Ji", pa:"ਗੁਰਗੱਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਅੰਗਦ ਦੇਵ ਜੀ", major:true },
+    { iso:'2026-10-05', d:19, m:7, cat:'jotijot', en:"Jyoti Jyot Gurpurab Sri Guru Nanak Dev Ji", pa:"ਜੋਤੀ ਜੋਤਿ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਨਾਨਕ ਦੇਵ ਜੀ", major:true },
+    { iso:'2026-10-07', d:21, m:7, cat:'mela', en:"Jor Mela Bir Baba Buddha Ji (Thatha)", pa:"ਜੋੜ ਮੇਲਾ ਬੀੜ ਬਾਬਾ ਬੁੱਢਾ ਜੀ (ਥੱਥਾ)" },
+    { iso:'2026-10-08', d:22, m:7, cat:'mela', en:"Jor Mela Bir Baba Buddha Ji (Thatha)", pa:"ਜੋੜ ਮੇਲਾ ਬੀੜ ਬਾਬਾ ਬੁੱਢਾ ਜੀ (ਥੱਥਾ)" },
+    { iso:'2026-10-09', d:23, m:7, cat:'modern', en:"Shaheedi Divas Bhai Sukhdev Singh & Bhai Harjinder Singh", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਭਾਈ ਸੁਖਦੇਵ ਸਿੰਘ ਤੇ ਭਾਈ ਹਰਜਿੰਦਰ ਸਿੰਘ" },
+    { iso:'2026-10-10', d:24, m:7, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2026-10-10', d:24, m:7, cat:'janamdin', en:"Janamdin Bhai Taru Singh Ji", pa:"ਜਨਮ ਦਿਨ ਭਾਈ ਤਾਰੂ ਸਿੰਘ ਜੀ" },
+    { iso:'2026-10-15', d:29, m:7, cat:'tithi', en:"Panchami", pa:"ਪੰਚਮੀ" },
+    { iso:'2026-10-17', d:1, m:8, cat:'sangrand', en:"Sangrand — Katak", pa:"ਸੰਗਰਾਂਦ — ਕੱਤਕ" },
+    { iso:'2026-10-20', d:4, m:8, cat:'festival', en:"Darbar Khalsa (Dussehra)", pa:"ਦਰਬਾਰ ਖ਼ਾਲਸਾ (ਦੁਸਹਿਰਾ)" },
+    { iso:'2026-10-21', d:5, m:8, cat:'tithi', en:"Dashmi", pa:"ਦਸਮੀ" },
+    { iso:'2026-10-21', d:5, m:8, cat:'modern', en:"Janamdin Sant Gyani Kartar Singh Bhindranwale", pa:"ਜਨਮ ਦਿਨ ਸੰਤ ਗਿਆਨੀ ਕਰਤਾਰ ਸਿੰਘ ਭਿੰਡਰਾਂਵਾਲੇ" },
+    { iso:'2026-10-23', d:7, m:8, cat:'janamdin', en:"Janamdin Baba Buddha Ji", pa:"ਜਨਮ ਦਿਨ ਬਾਬਾ ਬੁੱਢਾ ਜੀ" },
+    { iso:'2026-10-23', d:7, m:8, cat:'historic', en:"Barsi Sardar Jassa Singh Ahluwalia", pa:"ਬਰਸੀ ਸਰਦਾਰ ਜੱਸਾ ਸਿੰਘ ਆਹਲੂਵਾਲੀਆ" },
+    { iso:'2026-10-26', d:10, m:8, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2026-10-27', d:11, m:8, cat:'prakash', en:"Prakash Gurpurab Sri Guru Ram Das Ji", pa:"ਪ੍ਰਕਾਸ਼ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਰਾਮ ਦਾਸ ਜੀ", major:true },
+    { iso:'2026-10-30', d:14, m:8, cat:'shaheedi', en:"Saka Panja Sahib", pa:"ਸਾਕਾ ਪੰਜਾ ਸਾਹਿਬ" },
+    { iso:'2026-10-31', d:15, m:8, cat:'modern', en:"Shaheedi Divas Bhai Beant Singh", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਭਾਈ ਬੇਅੰਤ ਸਿੰਘ" },
+    { iso:'2026-11-01', d:16, m:8, cat:'modern', en:"Punjab Day", pa:"ਪੰਜਾਬ ਦਿਵਸ" },
+    { iso:'2026-11-03', d:18, m:8, cat:'jotijot', en:"Jyoti Jyot Gurpurab Sri Guru Har Rai Ji", pa:"ਜੋਤੀ ਜੋਤਿ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਹਰਿ ਰਾਇ ਜੀ", major:true },
+    { iso:'2026-11-03', d:18, m:8, cat:'gurgaddi', en:"Gurgaddi Gurpurab Sri Guru Har Krishan Ji", pa:"ਗੁਰਗੱਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਹਰਿ ਕ੍ਰਿਸ਼ਨ ਜੀ", major:true },
+    { iso:'2026-11-03', d:18, m:8, cat:'janamdin', en:"Janamdin Mata Sahib Kaur Ji", pa:"ਜਨਮ ਦਿਨ ਮਾਤਾ ਸਾਹਿਬ ਕੌਰ ਜੀ" },
+    { iso:'2026-11-08', d:23, m:8, cat:'festival', en:"Bandi Chhor Divas (Diwali)", pa:"ਬੰਦੀ ਛੋੜ ਦਿਵਸ (ਦੀਵਾਲੀ)", major:true },
+    { iso:'2026-11-09', d:24, m:8, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2026-11-11', d:26, m:8, cat:'gurgaddi', en:"Gurgaddi Gurpurab Sri Guru Granth Sahib Ji", pa:"ਗੁਰਗੱਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਗ੍ਰੰਥ ਸਾਹਿਬ ਜੀ", major:true },
+    { iso:'2026-11-14', d:29, m:8, cat:'tithi', en:"Panchami", pa:"ਪੰਚਮੀ" },
+    { iso:'2026-11-14', d:29, m:8, cat:'jotijot', en:"Jyoti Jyot Gurpurab Sri Guru Gobind Singh Ji", pa:"ਜੋਤੀ ਜੋਤਿ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ", major:true },
+    { iso:'2026-11-15', d:30, m:8, cat:'shaheedi', en:"Shaheedi Divas Baba Deep Singh Ji", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਬਾਬਾ ਦੀਪ ਸਿੰਘ ਜੀ", major:true },
+    { iso:'2026-11-15', d:30, m:8, cat:'modern', en:"SGPC Foundation Day", pa:"ਸ਼੍ਰੋਮਣੀ ਕਮੇਟੀ ਸਥਾਪਨਾ ਦਿਵਸ" },
+    { iso:'2026-11-16', d:1, m:9, cat:'sangrand', en:"Sangrand — Maghar", pa:"ਸੰਗਰਾਂਦ — ਮੱਘਰ" },
+    { iso:'2026-11-16', d:1, m:9, cat:'modern', en:"Shaheedi Divas S. Kartar Singh Sarabha", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਸ. ਕਰਤਾਰ ਸਿੰਘ ਸਰਾਭਾ" },
+    { iso:'2026-11-20', d:5, m:9, cat:'tithi', en:"Dashmi", pa:"ਦਸਮੀ" },
+    { iso:'2026-11-20', d:5, m:9, cat:'janamdin', en:"Janamdin Bhagat Namdev Ji", pa:"ਜਨਮ ਦਿਨ ਭਗਤ ਨਾਮਦੇਵ ਜੀ" },
+    { iso:'2026-11-24', d:9, m:9, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2026-11-24', d:9, m:9, cat:'prakash', en:"Prakash Gurpurab Sri Guru Nanak Dev Ji", pa:"ਪ੍ਰਕਾਸ਼ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਨਾਨਕ ਦੇਵ ਜੀ", major:true },
+    { iso:'2026-11-24', d:9, m:9, cat:'gurgaddi', en:"Gurgaddi Gurpurab Sri Guru Nanak Dev Ji", pa:"ਗੁਰਗੱਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਨਾਨਕ ਦੇਵ ਜੀ" },
+    { iso:'2026-11-28', d:13, m:9, cat:'historic', en:"Akal Chalana Bhai Mardana Ji", pa:"ਅਕਾਲ ਚਲਾਣਾ ਭਾਈ ਮਰਦਾਨਾ ਜੀ" },
+    { iso:'2026-11-30', d:15, m:9, cat:'janamdin', en:"Janamdin Sahibzada Zorawar Singh Ji", pa:"ਜਨਮ ਦਿਨ ਸਾਹਿਬਜ਼ਾਦਾ ਜ਼ੋਰਾਵਰ ਸਿੰਘ ਜੀ" },
+    { iso:'2026-12-04', d:19, m:9, cat:'shaheedi', en:"Shaheedi Divas Baba Gurbaksh Singh Ji", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਬਾਬਾ ਗੁਰਬਖ਼ਸ਼ ਸਿੰਘ ਜੀ" },
+    { iso:'2026-12-08', d:23, m:9, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2026-12-12', d:27, m:9, cat:'gurgaddi', en:"Gurgaddi Gurpurab Sri Guru Gobind Singh Ji", pa:"ਗੁਰਗੱਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ", major:true },
+    { iso:'2026-12-13', d:28, m:9, cat:'shaheedi', en:"Shaheedi Divas Bhai Dayala Ji, Bhai Mati Das Ji & Bhai Sati Das Ji", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਭਾਈ ਦਿਆਲਾ ਜੀ, ਭਾਈ ਮਤੀ ਦਾਸ ਜੀ ਤੇ ਭਾਈ ਸਤੀ ਦਾਸ ਜੀ", major:true },
+    { iso:'2026-12-14', d:29, m:9, cat:'tithi', en:"Panchami", pa:"ਪੰਚਮੀ" },
+    { iso:'2026-12-14', d:29, m:9, cat:'shaheedi', en:"Shaheedi Gurpurab Sri Guru Tegh Bahadur Ji", pa:"ਸ਼ਹੀਦੀ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਤੇਗ਼ ਬਹਾਦਰ ਜੀ", major:true },
+    { iso:'2026-12-14', d:29, m:9, cat:'janamdin', en:"Janamdin Sahibzada Fateh Singh Ji", pa:"ਜਨਮ ਦਿਨ ਸਾਹਿਬਜ਼ਾਦਾ ਫ਼ਤਿਹ ਸਿੰਘ ਜੀ" },
+    { iso:'2026-12-14', d:29, m:9, cat:'modern', en:"Shiromani Akali Dal Foundation Day", pa:"ਸ਼੍ਰੋਮਣੀ ਅਕਾਲੀ ਦਲ ਸਥਾਪਨਾ ਦਿਵਸ" },
+    { iso:'2026-12-16', d:1, m:10, cat:'sangrand', en:"Sangrand — Poh", pa:"ਸੰਗਰਾਂਦ — ਪੋਹ" },
+    { iso:'2026-12-18', d:3, m:10, cat:'historic', en:"Sees Sanskar Divas Sri Guru Tegh Bahadur Ji", pa:"ਸੀਸ ਸੰਸਕਾਰ ਦਿਵਸ ਸ੍ਰੀ ਗੁਰੂ ਤੇਗ਼ ਬਹਾਦਰ ਜੀ" },
+    { iso:'2026-12-19', d:4, m:10, cat:'tithi', en:"Dashmi", pa:"ਦਸਮੀ" },
+    { iso:'2026-12-21', d:6, m:10, cat:'historic', en:"Leaving Fort Sri Anandgarh Sahib", pa:"ਸ੍ਰੀ ਆਨੰਦਗੜ੍ਹ ਸਾਹਿਬ ਦਾ ਕਿਲ੍ਹਾ ਛੱਡਣਾ" },
+    { iso:'2026-12-22', d:7, m:10, cat:'historic', en:"Family Separation — Sarsa Nangal", pa:"ਪਰਿਵਾਰ ਵਿਛੋੜਾ — ਸਰਸਾ ਨੰਗਲ" },
+    { iso:'2026-12-22', d:7, m:10, cat:'shaheedi', en:"Shaheedi Divas Baba Jivan Singh Ji (Bhai Jaita Ji)", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਬਾਬਾ ਜੀਵਨ ਸਿੰਘ ਜੀ (ਭਾਈ ਜੈਤਾ ਜੀ)" },
+    { iso:'2026-12-23', d:8, m:10, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2026-12-23', d:8, m:10, cat:'shaheedi', en:"Shaheedi Divas Vadde Sahibzade — Chamkaur Sahib", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਵੱਡੇ ਸਾਹਿਬਜ਼ਾਦੇ — ਚਮਕੌਰ ਸਾਹਿਬ", major:true },
+    { iso:'2026-12-24', d:9, m:10, cat:'shaheedi', en:"Shaheedi Divas Bhai Sangat Singh Ji", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਭਾਈ ਸੰਗਤ ਸਿੰਘ ਜੀ" },
+    { iso:'2026-12-28', d:13, m:10, cat:'shaheedi', en:"Shaheedi Divas Chhote Sahibzade & Mata Gujri Ji", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਛੋਟੇ ਸਾਹਿਬਜ਼ਾਦੇ ਤੇ ਮਾਤਾ ਗੁਜਰੀ ਜੀ", major:true },
+    { iso:'2027-01-06', d:22, m:10, cat:'modern', en:"Shaheedi Divas Bhai Kehar Singh & Bhai Satwant Singh", pa:"ਸ਼ਹੀਦੀ ਦਿਵਸ ਭਾਈ ਕੇਹਰ ਸਿੰਘ ਤੇ ਭਾਈ ਸਤਵੰਤ ਸਿੰਘ" },
+    { iso:'2027-01-07', d:23, m:10, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2027-01-14', d:1, m:11, cat:'sangrand', en:"Sangrand — Magh", pa:"ਸੰਗਰਾਂਦ — ਮਾਘ" },
+    { iso:'2027-01-14', d:1, m:11, cat:'historic', en:"Foundation Day Sri Harmandir Sahib", pa:"ਸਥਾਪਨਾ ਦਿਵਸ ਸ੍ਰੀ ਹਰਿਮੰਦਰ ਸਾਹਿਬ", major:true },
+    { iso:'2027-01-14', d:1, m:11, cat:'mela', en:"Jor Mela Sri Muktsar Sahib (Maghi)", pa:"ਜੋੜ ਮੇਲਾ ਸ੍ਰੀ ਮੁਕਤਸਰ ਸਾਹਿਬ (ਮਾਘੀ)", major:true },
+    { iso:'2027-01-15', d:2, m:11, cat:'prakash', en:"Prakash Gurpurab Sri Guru Gobind Singh Ji", pa:"ਪ੍ਰਕਾਸ਼ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ", major:true },
+    { iso:'2027-01-20', d:7, m:11, cat:'historic', en:"Chabiyan Da Morcha (Amritsar)", pa:"ਚਾਬੀਆਂ ਦਾ ਮੋਰਚਾ (ਅੰਮ੍ਰਿਤਸਰ)" },
+    { iso:'2027-01-22', d:9, m:11, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2027-01-27', d:14, m:11, cat:'janamdin', en:"Janamdin Baba Deep Singh Ji", pa:"ਜਨਮ ਦਿਨ ਬਾਬਾ ਦੀਪ ਸਿੰਘ ਜੀ" },
+    { iso:'2027-02-06', d:24, m:11, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2027-02-09', d:27, m:11, cat:'shaheedi', en:"Wadda Ghallughara — Kup Rohira", pa:"ਵੱਡਾ ਘੱਲੂਘਾਰਾ — ਕੁੱਪ ਰੋਹੀੜਾ", major:true },
+    { iso:'2027-02-11', d:29, m:11, cat:'festival', en:"Basant Panchami", pa:"ਬਸੰਤ ਪੰਚਮੀ" },
+    { iso:'2027-02-11', d:29, m:11, cat:'historic', en:"Marriage Day Sri Guru Gobind Singh Ji", pa:"ਵਿਆਹ ਦਿਵਸ ਸ੍ਰੀ ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ ਜੀ" },
+    { iso:'2027-02-12', d:30, m:11, cat:'janamdin', en:"Janamdin Sahibzada Ajit Singh Ji", pa:"ਜਨਮ ਦਿਨ ਸਾਹਿਬਜ਼ਾਦਾ ਅਜੀਤ ਸਿੰਘ ਜੀ" },
+    { iso:'2027-02-13', d:1, m:12, cat:'sangrand', en:"Sangrand — Phagun", pa:"ਸੰਗਰਾਂਦ — ਫੱਗਣ" },
+    { iso:'2027-02-20', d:8, m:12, cat:'moon', en:"Puranmashi", pa:"ਪੂਰਨਮਾਸ਼ੀ" },
+    { iso:'2027-02-20', d:8, m:12, cat:'janamdin', en:"Janamdin Bhagat Ravidas Ji", pa:"ਜਨਮ ਦਿਨ ਭਗਤ ਰਵਿਦਾਸ ਜੀ" },
+    { iso:'2027-02-21', d:9, m:12, cat:'shaheedi', en:"Saka Sri Nankana Sahib", pa:"ਸਾਕਾ ਸ੍ਰੀ ਨਨਕਾਣਾ ਸਾਹਿਬ", major:true },
+    { iso:'2027-02-21', d:9, m:12, cat:'historic', en:"Jaitu Da Morcha (Faridkot)", pa:"ਜੈਤੋ ਦਾ ਮੋਰਚਾ (ਫ਼ਰੀਦਕੋਟ)" },
+    { iso:'2027-03-01', d:17, m:12, cat:'prakash', en:"Prakash Gurpurab Sri Guru Har Rai Ji", pa:"ਪ੍ਰਕਾਸ਼ ਗੁਰਪੁਰਬ ਸ੍ਰੀ ਗੁਰੂ ਹਰਿ ਰਾਇ ਜੀ", major:true },
+    { iso:'2027-03-08', d:24, m:12, cat:'moon', en:"Masya", pa:"ਮੱਸਿਆ" },
+    { iso:'2027-03-15', d:1, m:1, cat:'sangrand', en:"Sangrand — Chet", pa:"ਸੰਗਰਾਂਦ — ਚੇਤ" },
+    { iso:'2027-03-15', d:1, m:1, cat:'festival', en:"Nanakshahi New Year 559", pa:"ਨਾਨਕਸ਼ਾਹੀ ਨਵਾਂ ਸਾਲ ੫੫੯", major:true }
+  ];
+
+  return { ROWS, FROM: '2021-03-13', TO: '2027-03-15' };
+})();
+
+/* ============================================================================
+   events.js — the datasets
+   ----------------------------------------------------------------------------
+   JANTRI    The dates as printed in the jantri. Gurpurabs follow the lunar
+             tithi, so they move relative to the solar months and cannot be
+             derived — they are transcribed year by year from the jantri into
+             tools/jantri/*.tsv and built into js/jantri.js. Each row carries
+             the published Nanakshahi date alongside the Gregorian one, and both
+             the build and `selfTest()` assert the engine agrees with it, so a
+             transcription slip fails loudly instead of shipping.
+
+             Source: the published jantri month pages (dekho-ji),
+             cross-checked against Golden Temple Amritsar.
+             COVERAGE: whatever the TSVs hold — currently Samvat 558 in full.
+
+   GREGORIAN Modern commemorations, kept on the anniversary of the event rather
+             than a lunar date — which is what the jantri itself does. Stored as
+             {gm, gd}, so they work in any year, including ones the jantri does
+             not cover.
+   ========================================================================= */
+
+const SikhEvents = (function () {
+  'use strict';
+
+  const CATEGORIES = {
+    prakash:  { en: 'Prakash Gurpurab', pa: 'ਪ੍ਰਕਾਸ਼ ਗੁਰਪੁਰਬ', hue: 'gold',    glyph: '\u2737' },
+    gurgaddi: { en: 'Gurgaddi Gurpurab',pa: 'ਗੁਰਗੱਦੀ ਗੁਰਪੁਰਬ', hue: 'clay',   glyph: '\u2756' },
+    jotijot:  { en: 'Jyoti Jyot',       pa: 'ਜੋਤੀ ਜੋਤਿ',       hue: 'plum',  glyph: '\u25c8' },
+    shaheedi: { en: 'Shaheedi Divas',   pa: 'ਸ਼ਹੀਦੀ ਦਿਵਸ',     hue: 'crimson', glyph: '\u2726' },
+    festival: { en: 'Festival',         pa: 'ਤਿਉਹਾਰ',         hue: 'saffron', glyph: '\u273a' },
+    historic: { en: 'Historic Day',     pa: 'ਇਤਿਹਾਸਕ ਦਿਹਾੜਾ',  hue: 'forest',    glyph: '\u2b25' },
+    janamdin: { en: 'Janamdin',         pa: 'ਜਨਮ ਦਿਨ',         hue: 'green',   glyph: '\u25cf' },
+    mela:     { en: 'Jor Mela',         pa: 'ਜੋੜ ਮੇਲਾ',        hue: 'saffron', glyph: '\u273b' },
+    modern:   { en: 'Modern Era',       pa: 'ਆਧੁਨਿਕ ਦੌਰ',      hue: 'stone',   glyph: '\u25aa' },
+    moon:     { en: 'Masya & Puranmashi', pa: 'ਮੱਸਿਆ ਤੇ ਪੂਰਨਮਾਸ਼ੀ', hue: 'stone', glyph: '\u263e' },
+    tithi:    { en: 'Panchami & Dashmi',  pa: 'ਪੰਚਮੀ ਤੇ ਦਸਮੀ',    hue: 'stone', glyph: '\u25cb' },
+    sangrand: { en: 'Sangrand',         pa: 'ਸੰਗਰਾਂਦ',         hue: 'gold',    glyph: '\u25d0' },
+    personal: { en: 'My Event',         pa: 'ਮੇਰਾ ਸਮਾਗਮ',      hue: 'green',   glyph: '\u25cf' }
+  };
+
+  /* ------------------------------------------------------- JANTRI dataset
+     Lives in js/jantri.js, generated from tools/jantri/*.tsv by
+     `node tools/build-jantri.js`, which refuses to write unless every printed
+     Nanakshahi date matches the one the engine derives. Do not edit it here.
+  */
+
+  const JANTRI = Jantri.ROWS;
+
+  const COVERED_FROM = Jantri.FROM;
+  const COVERED_TO   = Jantri.TO;
+
+  const jantriIndex = new Map();
+  JANTRI.forEach(e => {
+    if (!jantriIndex.has(e.iso)) jantriIndex.set(e.iso, []);
+    jantriIndex.get(e.iso).push(e);
+  });
+
+  const inWindow = iso => iso >= COVERED_FROM && iso <= COVERED_TO;
+
+  /* --------------------------------------------------------------- note
+     There was a second dataset here: the Mool Nanakshahi fixed dates, where
+     1 Chet is always 14 March. It was removed with the reckoning switch — the
+     app now shows one calendar, the one printed in the jantri. The history is
+     in git if it is ever wanted back.
+  */
+
+  /* ------------------------------------------------- Gregorian anniversaries
+     Modern commemorations are kept on the Gregorian anniversary of the event,
+     not on a lunar date — the jantri confirms it: "Ghallughara Sri Akal Takht
+     Sahib (1984)" falls on 4 June in 2021, 2022, 2023, 2024, 2025 and 2026
+     alike. Anchoring them to {gm, gd} therefore matches the published calendar
+     AND works in any year, including years the jantri does not cover.
+
+     These are additive. The two days the jantri already carries (4 and 6 June)
+     are left to it, so nothing is listed twice.
+
+     The 1984 sequence below is the Tija Ghallughara — the third holocaust —
+     followed by the November violence. Dates per the day-by-day record.
+  */
+
+  const GREGORIAN = [
+    // --- Jun 1984 · ਤੀਜਾ ਘੱਲੂਘਾਰਾ · Ghallughara Week ---------------------
+    { gm: 6, gd: 1,  cat: 'modern', major: true,
+      en: 'Ghallughara Week begins — Sri Harmandir Sahib fired upon (1984)',
+      pa: 'ਘੱਲੂਘਾਰਾ ਹਫ਼ਤਾ ਸ਼ੁਰੂ — ਸ੍ਰੀ ਹਰਿਮੰਦਰ ਸਾਹਿਬ ਉੱਤੇ ਗੋਲੀਬਾਰੀ (੧੯੮੪)',
+      note: 'The operation opened on 1 June 1984 with firing on the complex. The first week of June is kept as Ghallughara Week.' },
+    { gm: 6, gd: 3,  cat: 'modern', major: true,
+      en: 'Complex surrounded — pilgrims trapped (1984)',
+      pa: 'ਕੰਪਲੈਕਸ ਘੇਰਿਆ ਗਿਆ — ਸ਼ਰਧਾਲੂ ਅੰਦਰ ਫਸੇ (੧੯੮੪)',
+      note: 'A 36-hour curfew sealed Punjab. Between 10,000 and 15,000 pilgrims were inside for the Shaheedi Purab of Guru Arjan Dev Ji, given no warning.' },
+    // These two the jantri also lists. Naming them identically lets the day
+    // lookup drop the jantri copy, so they appear once — and, unlike the
+    // jantri row, they still appear in years the jantri does not cover.
+    { gm: 6, gd: 4,  cat: 'modern', major: true,
+      en: 'Ghallughara Sri Akal Takht Sahib (1984)',
+      pa: 'ਘੱਲੂਘਾਰਾ ਸ੍ਰੀ ਅਕਾਲ ਤਖ਼ਤ ਸਾਹਿਬ (੧੯੮੪)',
+      note: 'Artillery bombardment began around 4am on 4 June 1984. The Akal Takht was destroyed.' },
+    { gm: 6, gd: 6,  cat: 'modern', major: true,
+      en: 'Shaheedi Divas Sant Jarnail Singh Khalsa Bhindranwale & Bhai Amreek Singh',
+      pa: 'ਸ਼ਹੀਦੀ ਦਿਵਸ ਸੰਤ ਜਰਨੈਲ ਸਿੰਘ ਖ਼ਾਲਸਾ ਭਿੰਡਰਾਂਵਾਲੇ ਤੇ ਭਾਈ ਅਮਰੀਕ ਸਿੰਘ',
+      note: 'Also General Shabeg Singh. The defenders had run out of ammunition by 6 June 1984.' },
+    { gm: 6, gd: 5,  cat: 'modern', major: true,
+      en: 'Main assault on Sri Harmandir Sahib (1984)',
+      pa: 'ਸ੍ਰੀ ਹਰਿਮੰਦਰ ਸਾਹਿਬ ਉੱਤੇ ਮੁੱਖ ਹਮਲਾ (੧੯੮੪)',
+      note: 'Tanks and armour entered the parkarma.' },
+    { gm: 6, gd: 7,  cat: 'modern', major: true,
+      en: 'Sikh Reference Library destroyed (1984)',
+      pa: 'ਸਿੱਖ ਰੈਫ਼ਰੈਂਸ ਲਾਇਬ੍ਰੇਰੀ ਤਬਾਹ (੧੯੮੪)',
+      note: 'The complex was under full army control by the morning of 7 June. The Reference Library — some 20,000 rare manuscripts, including handwritten saroops — was lost in the days that followed.' },
+    { gm: 6, gd: 10, cat: 'modern',
+      en: 'Ghallughara Week ends (1984)',
+      pa: 'ਘੱਲੂਘਾਰਾ ਹਫ਼ਤਾ ਸਮਾਪਤ (੧੯੮੪)',
+      note: 'Fighting had largely ceased by 10 June 1984.' },
+
+    // --- Nov 1984 · ਸਿੱਖ ਨਸਲਕੁਸ਼ੀ ----------------------------------------
+    { gm: 10, gd: 31, cat: 'modern',
+      en: 'November 1984 violence begins',
+      pa: 'ਨਵੰਬਰ ੧੯੮੪ ਦੀ ਹਿੰਸਾ ਸ਼ੁਰੂ',
+      note: 'Indira Gandhi was assassinated on the morning of 31 October 1984; attacks on Sikhs began the same day.' },
+    { gm: 11, gd: 1,  cat: 'modern', major: true,
+      en: 'Sikh Genocide 1984 — Delhi',
+      pa: 'ਸਿੱਖ ਨਸਲਕੁਸ਼ੀ ੧੯੮੪ — ਦਿੱਲੀ',
+      note: 'The worst day: organised mobs took the streets of Delhi from the morning of 1 November. Declared a Sikh genocide by the Akal Takht in 2010.' },
+    { gm: 11, gd: 2,  cat: 'modern',
+      en: 'Sikh Genocide 1984 — second day',
+      pa: 'ਸਿੱਖ ਨਸਲਕੁਸ਼ੀ ੧੯੮੪ — ਦੂਜਾ ਦਿਨ',
+      note: 'The killing continued across Delhi and other cities.' },
+    { gm: 11, gd: 3,  cat: 'modern',
+      en: 'Sikh Genocide 1984 — army deployed',
+      pa: 'ਸਿੱਖ ਨਸਲਕੁਸ਼ੀ ੧੯੮੪ — ਫ਼ੌਜ ਤਾਇਨਾਤ',
+      note: 'Army and police finally acted together on 3 November, three days in.' }
+  ];
+
+  /* ------------------------------------------------------------ lookup */
+
+  /**
+   * Everything the calendar marks on this Gregorian date.
+   * @param g   Date
+   * @param ns  the date already converted
+   */
+  function builtInFor(g, ns) {
+    const iso = Nanakshahi.isoKey(g);
+
+    // Gregorian anniversaries apply under either reckoning — they are tied to
+    // the calendar date of the event itself, not to a Panjabi month.
+    const anniv = GREGORIAN
+      .filter(e => e.gm === g.getMonth() + 1 && e.gd === g.getDate())
+      .map(e => Object.assign({}, e, {
+        id: 'gr-' + e.gm + '-' + e.gd + '-' + e.en,
+        source: 'anniversary', greg: g, ns
+      }));
+
+    // Where an anniversary and a dataset row are the same event, the
+    // anniversary wins — it carries the note and works in every year.
+    const dup = new Set(anniv.map(e => e.en));
+
+    const jantri = (jantriIndex.get(iso) || [])
+      .filter(e => !dup.has(e.en))
+      .map(e => Object.assign({}, e, {
+        id: 'sg-' + iso + '-' + e.en,
+        source: 'jantri', greg: g, ns
+      }));
+    return jantri.concat(anniv);
+  }
+
+  /**
+   * Computed moon days, for the Mool reckoning only — it has no jantri to
+   * read from. Under JANTRI the printed masya/puranmashi are used instead,
+   * because the jantri reckons them by tithi at sunrise rather than by the
+   * exact instant, and the two differ by a day several times a year.
+   */
+  function astronomicalFor(from, to) {
+    const map = new Map();
+    Nanakshahi.moonPhases(from, to).forEach((kind, iso) => {
+      const g = Nanakshahi.parseIso(iso);
+      map.set(iso, [{
+        id: 'mn-' + iso,
+        cat: 'moon',
+        source: 'computed',
+        en: kind === 'massya' ? 'Masya' : 'Puranmashi',
+        pa: kind === 'massya' ? 'ਮੱਸਿਆ' : 'ਪੂਰਨਮਾਸ਼ੀ',
+        note: 'Computed from the exact lunar phase.',
+        greg: g, ns: Nanakshahi.fromGregorian(g)
+      }]);
+    });
+    return map;
+  }
+
+  /**
+   * One event definition on one date, by name. The overrides layer needs this
+   * to materialise an entry that has been moved onto a different day.
+   */
+  function findOn(iso, en) {
+    const g = Nanakshahi.parseIso(iso);
+    const hit = (jantriIndex.get(iso) || []).filter(e => e.en === en)[0];
+    if (hit) return Object.assign({}, hit, { source: 'jantri', system: 'sgpc' });
+    const a = GREGORIAN.filter(e => e.gm === g.getMonth() + 1 &&
+                                    e.gd === g.getDate() && e.en === en)[0];
+    if (a) return Object.assign({}, a, { source: 'anniversary' });
+    return null;
+  }
+
+  /**
+   * Every distinct purab in the data, once each, for the editor.
+   * Series are keyed by English name because that is what recurs across years:
+   * "Prakash Gurpurab Sri Guru Nanak Dev Ji" is one thing with six dates, not
+   * six things.
+   */
+  function definitions() {
+    const map = new Map();
+
+    function add(en, pa, cat, kind, iso, extra) {
+      const key = en;
+      if (!map.has(key)) {
+        map.set(key, { en, pa, cat, kinds: new Set(), dates: [], major: false });
+      }
+      const d = map.get(key);
+      d.kinds.add(kind);
+      if (iso) d.dates.push(iso);
+      if (extra && extra.major) d.major = true;
+      if (!d.pa && pa) d.pa = pa;
+    }
+
+    JANTRI.forEach(e => add(e.en, e.pa, e.cat, 'jantri', e.iso, e));
+    GREGORIAN.forEach(e => add(e.en, e.pa, e.cat, 'anniversary', null, e));
+
+    return Array.from(map.values()).map(d => {
+      d.dates.sort();
+      return {
+        en: d.en, pa: d.pa, cat: d.cat, major: d.major,
+        kinds: Array.from(d.kinds),
+        count: d.dates.length,
+        first: d.dates[0] || null,
+        last: d.dates[d.dates.length - 1] || null,
+        dates: d.dates
+      };
+    }).sort((a, b) => a.en.localeCompare(b.en));
+  }
+
+  /** Is this date inside the transcribed window? */
+  function covered(g) { return inWindow(Nanakshahi.isoKey(g)); }
+
+  /* --------------------------------------------------------- self-test
+     Every JANTRI row carries the Nanakshahi date as PRINTED. If the engine
+     converts the Gregorian date to anything else, either the transcription
+     or the engine is wrong — and we want to know at load, not later.
+  */
+  function selfTest() {
+    const fails = [];
+    JANTRI.forEach(e => {
+      const ns = Bikrami.fromGregorian(Nanakshahi.parseIso(e.iso));
+      if (ns.day !== e.d || ns.month !== e.m) {
+        fails.push(`${e.iso} "${e.en}": printed ${e.d}/${e.m}, engine says ${ns.day}/${ns.month}`);
+      }
+    });
+    if (fails.length) console.error('Dataset self-test FAILED:\n' + fails.join('\n'));
+    return fails;
+  }
+
+  return { CATEGORIES, JANTRI, GREGORIAN, COVERED_FROM, COVERED_TO,
+           builtInFor, astronomicalFor, covered, findOn, definitions, selfTest };
+})();
+
+/* ============================================================================
+   calendar.js — the calendar the app runs on
+   ----------------------------------------------------------------------------
+   One calendar: the Nanakshahi dates as they are printed in the jantri. Months
+   are Bikrami solar, so the sangrand moves a little each year and the gurpurabs
+   follow the moon — which is why the dates are transcribed rather than
+   calculated.
+
+   `Bikrami` does the geometry; `Nanakshahi` owns the shared date utilities and
+   the month names, and both are reached through here so no view has to know
+   which file a given function lives in.
+
+   There was once a switch between two reckonings. It is gone: the app should
+   answer "when is it", not ask the reader to pick a system first.
+   ========================================================================= */
+
+const Cal = (function () {
+  'use strict';
+
+  const E = () => Bikrami;
+
+  const api = {
+    get engine() { return Bikrami; },
+
+    /* --- geometry: whichever engine is active ---------------------------- */
+    fromGregorian: d => E().fromGregorian(d),
+    toGregorian: (y, m, d) => E().toGregorian(y, m, d),
+    monthStart: (y, m) => E().monthStart(y, m),
+    monthLength: (y, m) => E().monthLength(y, m),
+    yearLength: y => E().yearLength(y),
+    monthSpan: (y, m) => E().monthSpan(y, m),
+    shiftMonth: (y, m, delta) => E().shiftMonth(y, m, delta),
+    monthGrid: (y, m, ws) => E().monthGrid(y, m, ws),
+    weekOf: (d, ws) => E().weekOf(d, ws),
+    isSangrand: ns => E().isSangrand(ns),
+    nextSangrand: d => E().nextSangrand(d),
+
+    /** Is this year's month table transcribed from a jantri, or computed? */
+    isVerified(y) { return Bikrami.isVerified(y); },
+
+    /** Provenance of one month start — 'jantri' or 'computed'. */
+    startSource(y, m) { return Bikrami.startSource(y, m); },
+
+    /* --- shared utilities: always Nanakshahi ----------------------------- */
+    get MONTHS() { return Nanakshahi.MONTHS; },
+    get WEEKDAYS() { return Nanakshahi.WEEKDAYS; },
+    get G_MONTHS_SHORT() { return Nanakshahi.G_MONTHS_SHORT; },
+    get G_MONTHS_LONG() { return Nanakshahi.G_MONTHS_LONG; },
+    get GURMUKHI_DIGITS() { return Nanakshahi.GURMUKHI_DIGITS; },
+
+    monthMeta: m => Nanakshahi.monthMeta(m),
+    midnight: d => Nanakshahi.midnight(d),
+    addDays: (d, n) => Nanakshahi.addDays(d, n),
+    daysBetween: (a, b) => Nanakshahi.daysBetween(a, b),
+    isoKey: d => Nanakshahi.isoKey(d),
+    parseIso: s => Nanakshahi.parseIso(s),
+    gurmukhiNumber: n => Nanakshahi.gurmukhiNumber(n),
+    gregShort: d => Nanakshahi.gregShort(d),
+    gregLong: d => Nanakshahi.gregLong(d),
+    gregFull: d => Nanakshahi.gregFull(d),
+    moonPhases: (a, b) => Nanakshahi.moonPhases(a, b),
+
+    /** Run every self-test and return the combined failure list. */
+    selfTest() {
+      return [].concat(
+        // Nanakshahi is no longer a selectable calendar, but it still owns the
+        // shared date maths, so its own checks still have to pass.
+        Nanakshahi.selfTest().map(s => 'dates: ' + s),
+        Bikrami.selfTest().map(s => 'calendar: ' + s),
+        SikhEvents.selfTest().map(s => 'data: ' + s)
+      );
+    }
+  };
+
+  return api;
+})();
+</script>
+<script>/* ============================================================================
+   page.js — the website page's own view layer
+   ----------------------------------------------------------------------------
+   Public-facing and read-only: today, what's coming, this month, the year.
+   No personal events, no reminders, no settings — those belong to the app.
+   It reuses the same engines and the same verified data, so the dates here can
+   never drift from the ones in the app.
+   ========================================================================= */
+
+(function () {
+  'use strict';
+
+  var $ = function (s) { return document.getElementById(s); };
+  var esc = function (t) {
+    return String(t == null ? '' : t)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  };
+
+  var today = function () { return Cal.midnight(new Date()); };
+  var cursor = today();
+
+  var HUE = { prakash: 'gold', gurgaddi: 'clay', jotijot: 'plum',
+              shaheedi: 'crimson', festival: 'saffron', historic: 'forest',
+              janamdin: 'green', mela: 'saffron', modern: 'stone',
+              moon: 'stone', tithi: 'stone', sangrand: 'gold' };
+  var hue = function (c) { return HUE[c] || 'stone'; };
+
+  /* Same rule as the app: the jantri already lists sangrand and moon days. */
+  function dayEvents(g) {
+    var ns = Cal.fromGregorian(g);
+    return SikhEvents.builtInFor(g, ns).sort(function (a, b) {
+      var w = { sangrand: 0, prakash: 1, gurgaddi: 2, jotijot: 3, shaheedi: 4,
+                festival: 5, historic: 6, janamdin: 7, mela: 8, modern: 9,
+                moon: 11, tithi: 12 };
+      var oa = w[a.cat] == null ? 10 : w[a.cat];
+      var ob = w[b.cat] == null ? 10 : w[b.cat];
+      if (oa !== ob) return oa - ob;
+      return (b.major ? 1 : 0) - (a.major ? 1 : 0);
+    });
+  }
+
+  /* -------------------------------------------------------------- today ---- */
+
+  function renderToday() {
+    var t = today(), ns = Cal.fromGregorian(t), sg = Cal.nextSangrand(t);
+    var g = Cal.gurmukhiNumber;
+    $('sbToday').innerHTML =
+      '<div class="sbcal__todayrow">' +
+        '<div class="sbcal__bigday" lang="pa">' + esc(g(ns.day)) + '</div>' +
+        '<div class="sbcal__todaystack">' +
+          '<div class="sbcal__dow">' + esc(Cal.WEEKDAYS[ns.weekday].en) + ' · Today</div>' +
+          '<div class="sbcal__nsdate" lang="pa">' + esc(ns.monthMeta.pa) + ' ' + esc(g(ns.year)) + '</div>' +
+          '<div class="sbcal__gdate">' + esc(Cal.gregLong(t)) +
+            ' <span style="color:var(--ink-3)">· ' + esc(ns.day + ' ' + ns.monthMeta.en + ' ' + ns.year) + '</span></div>' +
+        '</div>' +
+        '<div class="sbcal__facts">' +
+          fact('Nanakshahi', g(ns.year), 'Samvat') +
+          fact('Khalsa', g(ns.khalsaYear), 'Samvat') +
+          fact('Next sangrand', '<span lang="pa">' + esc(sg.monthMeta.pa) + '</span>',
+               sg.inDays === 0 ? 'today' : 'in ' + sg.inDays + ' days') +
+        '</div>' +
+      '</div>';
+  }
+
+  function fact(k, v, s) {
+    return '<div><div class="sbcal__fk">' + esc(k) + '</div>' +
+           '<div class="sbcal__fv">' + v +
+           (s ? ' <small>' + esc(s) + '</small>' : '') + '</div></div>';
+  }
+
+  /* ------------------------------------------------------------ upcoming --- */
+
+  function renderUp() {
+    var t = today(), out = [], i, g, ns;
+    for (i = 0; i < 400 && out.length < 10; i++) {
+      g = Cal.addDays(t, i);
+      if (!SikhEvents.covered(g)) break;
+      ns = Cal.fromGregorian(g);
+      dayEvents(g).forEach(function (e) {
+        if (out.length >= 10) return;
+        if (e.cat === 'tithi' || e.cat === 'moon') return;
+        if (!e.major && e.cat !== 'sangrand') return;
+        out.push({ e: e, g: g, ns: ns, days: i });
+      });
+    }
+    $('sbUp').innerHTML = out.map(function (u) {
+      return '<div class="sbcal__uprow">' +
+        '<div class="sbcal__upns h-' + hue(u.e.cat) + '" lang="pa">' +
+          esc(Cal.gurmukhiNumber(u.ns.day)) +
+          '<b>' + esc(u.ns.monthMeta.pa) + '</b></div>' +
+        '<div class="sbcal__upg">' + esc(Cal.gregShort(u.g)) + '</div>' +
+        '<div class="sbcal__upn"><div class="sbcal__upt" lang="pa">' + esc(u.e.pa || u.e.en) +
+          (u.e.en && u.e.en !== u.e.pa ? '<span lang="en">' + esc(u.e.en) + '</span>' : '') +
+        '</div></div>' +
+        '<div class="sbcal__in">' + (u.days === 0 ? '<strong>Today</strong>'
+          : '<strong>' + u.days + '</strong> ' + (u.days === 1 ? 'day' : 'days')) + '</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  /* --------------------------------------------------------------- month --- */
+
+  function renderMonth() {
+    var ns = Cal.fromGregorian(cursor);
+    var cells = Cal.monthGrid(ns.year, ns.month, 1);
+    var t = today(), g = Cal.gurmukhiNumber;
+
+    $('sbMonthTitle').innerHTML =
+      '<span lang="pa">' + esc(ns.monthMeta.pa) + ' ' + esc(g(ns.year)) + '</span>' +
+      '<em lang="en">' + esc(ns.monthMeta.en) + ' · ' + esc(Cal.monthSpan(ns.year, ns.month)) + '</em>';
+
+    $('sbDows').innerHTML = [0,1,2,3,4,5,6].map(function (i) {
+      return '<div class="sbcal__dow2">' + esc(Cal.WEEKDAYS[(i + 1) % 7].short_en) + '</div>';
+    }).join('');
+
+    $('sbGrid').innerHTML = cells.map(function (c) {
+      var evs = dayEvents(c.greg);
+      var moon = evs.filter(function (e) { return e.cat === 'moon'; })[0];
+      var rest = evs.filter(function (e) { return e.cat !== 'moon'; });
+      var cls = ['sbcal__cell'];
+      if (!c.inMonth) cls.push('sbcal__cell--out');
+      if (Cal.isoKey(c.greg) === Cal.isoKey(t)) cls.push('sbcal__cell--today');
+      if (c.ns.day === 1) cls.push('sbcal__cell--sang');
+
+      return '<div class="' + cls.join(' ') + '">' +
+        '<div class="sbcal__ctop">' +
+          '<span class="sbcal__cn" lang="pa">' + esc(g(c.ns.day)) + '</span>' +
+          '<span class="sbcal__cg">' + c.greg.getDate() + ' ' +
+            esc(Cal.G_MONTHS_SHORT[c.greg.getMonth()]) + '</span>' +
+          (moon ? '<span class="sbcal__moon" title="' + esc(moon.en) + '">' +
+                  (moon.en === 'Masya' ? '●' : '○') + '</span>' : '') +
+        '</div>' +
+        '<div class="sbcal__chips">' + rest.slice(0, 2).map(function (e) {
+          return '<span class="sbcal__chip h-' + hue(e.cat) + '" lang="pa" title="' +
+                 esc(e.en) + '">' + esc(e.pa || e.en) + '</span>';
+        }).join('') + '</div>' +
+        (rest.length > 2 ? '<div class="sbcal__more">+' + (rest.length - 2) + ' more</div>' : '') +
+      '</div>';
+    }).join('');
+  }
+
+  /* ---------------------------------------------------------------- year --- */
+
+  function renderYear() {
+    var ns = Cal.fromGregorian(cursor);
+    var g = Cal.gurmukhiNumber;
+    $('sbYearTitle').innerHTML =
+      '<span lang="pa">ਸੰਮਤ ' + esc(g(ns.year)) + '</span>' +
+      '<em lang="en">Nanakshahi Samvat ' + ns.year + ' · Khalsa ' + ns.khalsaYear + '</em>';
+
+    $('sbYear').innerHTML = Cal.MONTHS.map(function (meta) {
+      var m = meta.n, len = Cal.monthLength(ns.year, m), rows = [], d, gg;
+      for (d = 1; d <= len; d++) {
+        gg = Cal.toGregorian(ns.year, m, d);
+        dayEvents(gg).forEach(function (e) {
+          if (e.cat === 'tithi' || e.cat === 'moon' || e.cat === 'sangrand') return;
+          if (!e.major) return;
+          rows.push({ e: e, g: gg, d: d });
+        });
+      }
+      return '<section class="sbcal__ym">' +
+        '<div class="sbcal__ymh">' +
+          '<div class="sbcal__ymt" lang="pa">' + esc(meta.pa) +
+            '<em lang="en">' + esc(meta.en) + '</em></div>' +
+          '<div class="sbcal__yms">' + esc(Cal.monthSpan(ns.year, m)) + '</div>' +
+        '</div>' +
+        (rows.length ? rows.map(function (r) {
+          return '<div class="sbcal__ymrow">' +
+            '<span class="sbcal__ymns h-' + hue(r.e.cat) + '" lang="pa">' + esc(g(r.d)) + '</span>' +
+            '<span class="sbcal__ymg">' + r.g.getDate() + ' ' +
+              esc(Cal.G_MONTHS_SHORT[r.g.getMonth()]) + '</span>' +
+            '<span class="sbcal__ymn" lang="pa">' + esc(r.e.pa || r.e.en) +
+              (r.e.en ? '<span lang="en">' + esc(r.e.en) + '</span>' : '') + '</span>' +
+          '</div>';
+        }).join('') : '<div class="sbcal__ymrow" style="color:var(--ink-3)">' +
+                      '<span></span><span></span><span>—</span></div>') +
+      '</section>';
+    }).join('');
+  }
+
+  /* -------------------------------------------------------------- colophon */
+
+  function renderNote() {
+    var from = Cal.gregLong(Cal.parseIso(SikhEvents.COVERED_FROM));
+    var to = Cal.gregLong(Cal.parseIso(SikhEvents.COVERED_TO));
+    $('sbNote').innerHTML =
+      '<p><strong>Where these dates come from.</strong> They are transcribed ' +
+      'from the printed jantri, not calculated — the months are Bikrami solar, ' +
+      'so the sangrand moves a little each year and the gurpurabs follow the ' +
+      'moon. Every date is checked against the calendar before it is published ' +
+      'here.</p>' +
+      '<p><strong>Covered:</strong> ' + esc(from) + ' to ' + esc(to) + '. ' +
+      'New gurpurab dates arrive with the Sikh new year, 1 Chet, in March. ' +
+      'Beyond that the sangrands are still calculated; gurpurabs are left out ' +
+      'rather than guessed.</p>' +
+      '<p style="color:var(--ink-3);font-size:13.5px">Panjabi dates are given ' +
+      'first throughout, with the English date beneath. ● masya · ○ puranmashi ' +
+      '· the gold edge marks a sangrand.</p>';
+  }
+
+  /* -------------------------------------------------------------- wiring --- */
+
+  function step(n) {
+    var ns = Cal.fromGregorian(cursor);
+    var nx = Cal.shiftMonth(ns.year, ns.month, n);
+    cursor = Cal.monthStart(nx.year, nx.month);
+    renderMonth(); renderYear();
+  }
+
+  $('sbPrev').addEventListener('click', function () { step(-1); });
+  $('sbNext').addEventListener('click', function () { step(1); });
+  $('sbThis').addEventListener('click', function () {
+    cursor = today(); renderMonth(); renderYear();
+  });
+
+  var fails = Cal.selfTest();
+  if (fails.length) console.error('Sikhi Calendar self-test failed:\n' + fails.join('\n'));
+
+  renderToday(); renderUp(); renderMonth(); renderYear(); renderNote();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,617 @@
+<title>Parikrama Model Set</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400;62..125,500;62..125,600;62..125,700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<style>
+/* ── tokens: drawing office, sarovar teal ─────────────────── */
+:root{
+  --ground:#ECEEE9; --surface:#FFFFFF; --sunk:#E3E6E0;
+  --line:#CCD2C8; --hair:#DFE3DB;
+  --ink:#161A15; --muted:#5F675C;
+  --accent:#1C5E59; --accent-soft:#D9E6E4;
+  --flag:#8A4A18;
+  --sans:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --mono:"IBM Plex Mono","SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#0F120F; --surface:#171B16; --sunk:#1C211B;
+    --line:#2B322A; --hair:#232922;
+    --ink:#E6EAE3; --muted:#8D978A;
+    --accent:#5FBCB2; --accent-soft:#132E2C;
+    --flag:#CF8B4E;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0F120F; --surface:#171B16; --sunk:#1C211B;
+  --line:#2B322A; --hair:#232922;
+  --ink:#E6EAE3; --muted:#8D978A;
+  --accent:#5FBCB2; --accent-soft:#132E2C;
+  --flag:#CF8B4E;
+}
+
+*,*::before,*::after{ box-sizing:border-box; }
+body{
+  margin:0; background:var(--ground); color:var(--ink);
+  font-family:var(--sans); font-size:16px; line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{ max-width:980px; margin:0 auto; padding:0 clamp(20px,5vw,44px); }
+
+/* ── masthead ─────────────────────────────────────────────── */
+.top{ background:var(--surface); border-bottom:1px solid var(--line); }
+.masthead{ padding:clamp(36px,6vw,64px) 0 clamp(28px,4vw,44px);
+  display:flex; flex-direction:column; gap:18px; }
+.kicker{ font-family:var(--mono); font-size:11.5px; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--accent); margin:0; }
+h1{ margin:0; font-size:clamp(32px,5.4vw,54px); font-weight:700;
+  font-variation-settings:"wdth" 112; letter-spacing:-.02em; line-height:1.03;
+  text-wrap:balance; }
+.standfirst{ margin:0; max-width:60ch; font-size:clamp(16px,1.7vw,19px);
+  color:var(--muted); }
+
+/* ── sections ─────────────────────────────────────────────── */
+main{ padding:clamp(40px,6vw,68px) 0 96px;
+  display:flex; flex-direction:column; gap:clamp(44px,6vw,68px); }
+section{ display:flex; flex-direction:column; gap:18px; }
+.sec-head{ display:flex; flex-direction:column; gap:6px;
+  border-top:2px solid var(--ink); padding-top:14px; }
+.sec-head .tag{ font-family:var(--mono); font-size:11px; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--accent); }
+h2{ margin:0; font-size:clamp(22px,3vw,30px); font-weight:600;
+  font-variation-settings:"wdth" 108; letter-spacing:-.015em; line-height:1.15; }
+.lede{ margin:0; max-width:66ch; color:var(--muted); }
+p{ max-width:68ch; margin:0; }
+
+/* ── code blocks ──────────────────────────────────────────── */
+.block{ border:1px solid var(--line); background:var(--surface); }
+.block.hero{ border-color:var(--accent); }
+.bar{ display:flex; align-items:center; justify-content:space-between; gap:14px;
+  padding:9px 13px; background:var(--sunk); border-bottom:1px solid var(--hair); }
+.bar span{ font-family:var(--mono); font-size:10.5px; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--muted); }
+button.copy{ font-family:var(--mono); font-size:10.5px; letter-spacing:.1em;
+  text-transform:uppercase; cursor:pointer; border:1px solid var(--line);
+  background:var(--surface); color:var(--ink); padding:5px 12px; border-radius:2px;
+  transition:.18s ease; }
+button.copy:hover{ border-color:var(--accent); color:var(--accent); }
+button.copy:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+button.copy[data-done]{ color:var(--accent); border-color:var(--accent); }
+pre{ margin:0; padding:15px; overflow-x:auto; font-family:var(--mono);
+  font-size:13px; line-height:1.62; white-space:pre-wrap; word-break:break-word; }
+
+/* ── parts ────────────────────────────────────────────────── */
+.part{ display:flex; flex-direction:column; gap:13px; padding-top:24px;
+  border-top:1px solid var(--hair); }
+.part:first-of-type{ border-top:0; padding-top:0; }
+.part-head{ display:flex; align-items:baseline; gap:14px; flex-wrap:wrap; }
+.code{ font-family:var(--mono); font-size:13px; font-weight:600; color:var(--accent);
+  background:var(--accent-soft); padding:3px 9px; border-radius:2px; }
+h3{ margin:0; font-size:20px; font-weight:600; font-variation-settings:"wdth" 106;
+  letter-spacing:-.01em; }
+.pri{ font-family:var(--mono); font-size:10px; letter-spacing:.12em;
+  text-transform:uppercase; padding:3px 8px; border:1px solid currentColor;
+  border-radius:2px; }
+.pri.core{ color:var(--flag); }
+.pri.extra{ color:var(--muted); }
+.where{ margin:0; font-size:14.5px; color:var(--muted); flex-basis:100%; }
+
+/* ── table ────────────────────────────────────────────────── */
+.scroller{ overflow-x:auto; border:1px solid var(--line); background:var(--surface); }
+table{ width:100%; border-collapse:collapse; font-size:14.5px; }
+th,td{ text-align:left; padding:10px 14px; border-bottom:1px solid var(--hair);
+  vertical-align:top; }
+th{ font-family:var(--mono); font-size:10.5px; letter-spacing:.13em;
+  text-transform:uppercase; color:var(--muted); background:var(--sunk); white-space:nowrap; }
+tr:last-child td{ border-bottom:0; }
+td.f{ font-family:var(--mono); font-size:12.5px; color:var(--accent); white-space:nowrap; }
+
+/* ── notes ────────────────────────────────────────────────── */
+.note{ border-left:3px solid var(--accent); padding:2px 0 2px 16px;
+  display:flex; flex-direction:column; gap:6px; }
+.note b{ font-family:var(--mono); font-size:10.5px; letter-spacing:.13em;
+  text-transform:uppercase; color:var(--accent); font-weight:600; }
+.note.warn{ border-left-color:var(--flag); }
+.note.warn b{ color:var(--flag); }
+.note p{ font-size:15px; }
+
+ol.steps{ margin:0; padding-left:1.2em; display:flex; flex-direction:column; gap:11px; }
+ol.steps::marker,ol.steps li::marker{ color:var(--accent); font-family:var(--mono); font-size:13px; }
+
+footer{ border-top:1px solid var(--line); padding:22px 0 56px; }
+footer p{ font-family:var(--mono); font-size:11.5px; color:var(--muted); }
+
+@media (max-width:600px){ body{ font-size:15px; } pre{ font-size:12px; } }
+@media (prefers-reduced-motion:reduce){ *{ transition:none !important; } }
+</style>
+
+<div class="top">
+  <div class="wrap masthead">
+    <p class="kicker">Shaheedi Bunga &middot; parikrama site &middot; draft 1</p>
+    <h1>Parikrama Model Set</h1>
+    <p class="standfirst">Thirteen prompts for Claude Design &mdash; eight buildings and five pieces of
+      ground. Generate, download the GLB, and file under the name given; the build script matches
+      on those names.</p>
+    <div class="note" style="margin-top:4px;">
+      <b>Start with one</b>
+      <p>Make <span class="code">harmandir</span> first and nothing else. I will open it, check the
+        scale and orientation actually came out as asked, and drop it into the page &mdash; then we
+        both look at it before you spend an evening on the other twelve.</p>
+    </div>
+  </div>
+</div>
+
+<main class="wrap">
+
+  <!-- ── the shared block ── -->
+  <section>
+    <div class="sec-head">
+      <span class="tag">Paste this first, every time</span>
+      <h2>The block that goes in every prompt</h2>
+    </div>
+    <p class="lede">This is the half that does the real work. It is what makes eight separately
+      generated models sit together in one scene at the same scale, facing the same way, in the
+      same material language. Paste it above each prompt below.</p>
+    <div class="block hero">
+      <div class="bar"><span>Shared spec &mdash; prepend to all eight</span><button class="copy" type="button">Copy</button></div>
+      <pre>Model this as a single 3D object for a website. It is one of a set of eight
+that all sit together in the same scene, so keep it consistent with that.
+
+Scale and orientation — these matter, the models are dropped into a shared
+scene and are not rescaled by hand:
+  · Real-world scale, in metres.
+  · +Y is up. The object rests on the ground plane at y = 0.
+  · Origin centred on the footprint.
+  · The front elevation faces +Z.
+
+Style:
+  · Low to mid poly. Clean flat surfaces and a readable silhouette matter
+    more than fine detail.
+  · No image textures. Flat coloured materials only.
+  · Muted, chalky palette: lime-plaster off-white, warm sandstone, weathered
+    brass-gold. Nothing shiny — no chrome, no glass, no mirror finishes.
+  · Nineteenth-century Panjabi architecture. Weathered and hand-built, not
+    new and not CGI-perfect.
+
+Exclude: ground plane, base plate, water, terrain, surrounding buildings,
+trees, people, text, signage, and any lighting rig. The object only.</pre>
+    </div>
+  </section>
+
+  <!-- ── the parts ── -->
+  <section>
+    <div class="sec-head">
+      <span class="tag">Eight parts</span>
+      <h2>The buildings</h2>
+    </div>
+    <p class="lede">Four are marked <span class="pri core">core</span> &mdash; the page cannot be
+      rebuilt without them. The other four make the scene better but I can fall back to procedural
+      geometry for any of them, so do those only if you have the appetite.</p>
+
+    <div class="part">
+      <div class="part-head">
+        <span class="code">harmandir</span><h3>Harmandir Sahib</h3><span class="pri core">Core</span>
+        <p class="where">One, standing in the water at the centre. The most looked-at object on the page.</p>
+      </div>
+      <div class="block">
+        <div class="bar"><span>Prompt</span><button class="copy" type="button">Copy</button></div>
+        <pre>Harmandir Sahib, the shrine at Amritsar, as a standalone building.
+
+A LOW SQUARE building — 12.25 m on each side and only about 15 m to the tip
+of its finial, so it is noticeably wider than it is tall. Three storeys.
+
+Ground storey, about 5 m: a white marble base band roughly 1.5 m high, and
+everything above that band is gilded. Seven narrow arched openings to a side.
+Above it a deep overhanging eave carried on carved brackets, running right
+round the building.
+
+Second storey, about 3.5 m, set back slightly: gilded, its surfaces covered
+in small embossed panels with narrow windows. A second, shallower eave above.
+
+Then a flat terrace with a low parapet of small ROUNDED pinnacles. Four
+compact domed pavilions on short columns at the corners, and two smaller ones
+spaced along each side between them.
+
+In the middle of the terrace, a small square chamber. On top of that, a
+fluted dome shaped like an inverted lotus — only about a third of the
+building's width — sitting in a flared ring of lotus petals on a low drum,
+topped by a slender kalash finial.
+
+No minarets, no towers, no spires, no onion dome. This is not a mosque.
+Do not include the marble platform it stands on, the causeway, or the water.</pre>
+      </div>
+    </div>
+
+    <div class="part">
+      <div class="part-head">
+        <span class="code">bunga-tall</span><h3>Bunga &mdash; three storeys</h3><span class="pri core">Core</span>
+        <p class="where">Used roughly eight times around the ring, varied by scale and rotation.</p>
+      </div>
+      <div class="block">
+        <div class="bar"><span>Prompt</span><button class="copy" type="button">Copy</button></div>
+        <pre>A bunga — one of the tall narrow townhouses that stood shoulder to shoulder
+in a ring around the sacred pool at Amritsar in the nineteenth century,
+before they were demolished. This is the tall type.
+
+About 17 m wide, 12 m deep, 13 m tall. Three storeys, each set back slightly
+from the one below so the building steps inward as it rises.
+
+Every storey is an open arcaded verandah: a row of six or seven cusped arches
+carried on square piers, open right through, with a dark recessed room behind
+them. A moulded string course marks the division between storeys.
+
+A flat roof terrace with a low parapet of small rounded pinnacles, and a small
+domed pavilion on four slender columns at each corner.
+
+Lime-plastered brick, weathered, warm off-white with patches of ochre. This is
+a working residence and school, not a palace — keep it modest.
+
+No dome on the main roof. No gold anywhere.</pre>
+      </div>
+    </div>
+
+    <div class="part">
+      <div class="part-head">
+        <span class="code">bunga-mid</span><h3>Bunga &mdash; two storeys</h3><span class="pri core">Core</span>
+        <p class="where">Used roughly six times. Needs to read as a different building from the tall one, not a shrunk copy.</p>
+      </div>
+      <div class="block">
+        <div class="bar"><span>Prompt</span><button class="copy" type="button">Copy</button></div>
+        <pre>A bunga at Amritsar — one of the ring of nineteenth-century townhouses around
+the sacred pool. This is the squatter, wider type, and it should read as a
+clearly different building from the tall three-storey one, not a shrunk copy.
+
+About 14 m wide, 11 m deep, 9.5 m tall. Two storeys only, the upper set back
+slightly.
+
+The ground storey is an open arcaded verandah of five broad cusped arches on
+square piers, with a dark recessed room behind. The upper storey is more
+closed: a solid plastered wall with four small arched windows and one
+projecting carved wooden balcony (jharokha) in the middle.
+
+Flat roof, low parapet of small rounded pinnacles, and a small domed pavilion
+on slender columns at two of the four corners only — the other two left plain.
+
+Weathered lime plaster in warm off-white with patches of dusty pink and ochre.
+No dome on the main roof. No gold.</pre>
+      </div>
+    </div>
+
+    <div class="part">
+      <div class="part-head">
+        <span class="code">shaheedan</span><h3>Shaheedan da Bunga</h3><span class="pri core">Core</span>
+        <p class="where">One. The building the charity is named for &mdash; the hero of the whole page.</p>
+      </div>
+      <div class="block">
+        <div class="bar"><span>Prompt</span><button class="copy" type="button">Copy</button></div>
+        <pre>Shaheedan da Bunga — the bunga of the shaheedi jatha at Amritsar. This is the
+hero building of the set, so give it more care and detail than the others.
+
+About 16 m wide, 12 m deep, 15 m to the tip of the finial. Three storeys of
+open arcaded verandahs, each set back slightly from the one below, six cusped
+arches to a storey on square piers, dark recessed rooms behind.
+
+A flat roof terrace with a low parapet of small rounded pinnacles. A compact
+gilded domed pavilion on slender columns at each of the four corners. In the
+centre of the terrace, a single gilded dome shaped like an inverted lotus,
+sitting on a low drum, topped by a kalash finial.
+
+Warm off-white weathered lime plaster, with weathered gold on the domes and
+finials only — nowhere else.
+
+Grander than an ordinary bunga, but still recognisably a working building
+rather than a palace.</pre>
+      </div>
+    </div>
+
+    <div class="part">
+      <div class="part-head">
+        <span class="code">bunga-low</span><h3>Bunga &mdash; single storey</h3><span class="pri extra">Optional</span>
+        <p class="where">Used three or four times. Modelled on the one surviving photograph of Shaheedan da Bunga, which shows a much humbler building than the version above.</p>
+      </div>
+      <div class="block">
+        <div class="bar"><span>Prompt</span><button class="copy" type="button">Copy</button></div>
+        <pre>A single low bunga at the water's edge at Amritsar, of the plainest kind.
+
+One storey only. About 19 m wide, 11 m deep, and 7 m to the top of the
+parapet, standing on a low terrace one step above the ground.
+
+A row of six cusped-arch openings along the front, with a decorated frieze
+band running in a continuous strip above them.
+
+A flat roof with a low parapet of small rounded pinnacles, and one small domed
+pavilion on slender columns rising above one END of the roof — off-centre, not
+in the middle.
+
+Plain, weathered, humble. Off-white lime plaster going grey in places. No
+gold, no dome on the main roof.</pre>
+      </div>
+    </div>
+
+    <div class="part">
+      <div class="part-head">
+        <span class="code">ramgarhia</span><h3>Ramgarhia Bunga</h3><span class="pri extra">Optional</span>
+        <p class="where">One. Its two towers are the tallest things on the skyline and the one bunga still standing today.</p>
+      </div>
+      <div class="block">
+        <div class="bar"><span>Prompt</span><button class="copy" type="button">Copy</button></div>
+        <pre>The Ramgarhia Bunga at Amritsar — a block with two tall watchtowers. One of
+the very few bungas that still stands.
+
+The block: rectangular, about 22 m wide, 13 m deep, 12 m tall, in weathered
+red-brown brick banded with lime plaster, arcaded along the front.
+
+Rising from it, TWO SLENDER OCTAGONAL TOWERS about 48 m tall, standing about
+12 m apart. Each tower tapers as it rises and is divided into seven stages by
+projecting moulded rings, alternating red brick and pale plaster between the
+rings. Near the top each widens into a balcony ring, and is capped by a small
+open pavilion on slender columns carrying a ribbed white dome.
+
+The towers are VERY tall and VERY thin — that extreme proportion is the whole
+character of this building, so do not thicken them.</pre>
+      </div>
+    </div>
+
+    <div class="part">
+      <div class="part-head">
+        <span class="code">deori</span><h3>Darshani Deori</h3><span class="pri extra">Optional</span>
+        <p class="where">One, at the land end of the causeway. May already be inside your existing darbar-sahib export.</p>
+      </div>
+      <div class="block">
+        <div class="bar"><span>Prompt</span><button class="copy" type="button">Copy</button></div>
+        <pre>The Darshani Deori — the gateway building at the land end of the causeway at
+Amritsar, the arch every pilgrim walks through to reach the shrine.
+
+About 19 m wide, 13 m deep, 16 m to the finial. Two storeys.
+
+The lower storey is largely solid, with ONE great cusped archway cut right
+through the middle of it, tall enough to walk through, framed by a gilded
+surround. The upper storey is set back and open — an arcaded gallery of small
+cusped arches.
+
+Flat roof, low parapet of rounded pinnacles, one gilded dome in the centre,
+and a small white domed pavilion on slender columns at each of the four
+corners.
+
+White and off-white lime plaster throughout. Gold ONLY on the arch surround
+and the central dome.</pre>
+      </div>
+    </div>
+
+    <div class="part">
+      <div class="part-head">
+        <span class="code">akal-takht</span><h3>Akal Takht</h3><span class="pri extra">Optional</span>
+        <p class="where">One, on the entrance bank. Without it the skyline does not read as Amritsar.</p>
+      </div>
+      <div class="block">
+        <div class="bar"><span>Prompt</span><button class="copy" type="button">Copy</button></div>
+        <pre>The Akal Takht at Amritsar, as a standalone building.
+
+About 25 m wide, 16 m deep, 22 m tall. Five storeys, each stepping inward from
+the one below so the building tapers as it rises.
+
+Every storey has an arcaded front of cusped arches, with flat roofs and low
+parapets of small rounded pinnacles at each setback.
+
+Crowned by one large gilded dome with a kalash finial, and a small gilded
+domed pavilion on slender columns at each corner of the top roof.
+
+White lime plaster below. Gold ONLY on the domes and finials.</pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── the ground ── -->
+  <section>
+    <div class="sec-head">
+      <span class="tag">Five more</span>
+      <h2>The ground</h2>
+    </div>
+    <p class="lede">The walkway, the water, the bridge and the two things that repeat all over the
+      scene. Same shared block on top of each.</p>
+
+    <div class="part">
+      <div class="part-head">
+        <span class="code">parikrama</span><h3>The walkway</h3>
+        <p class="where">One. The ground the whole journey is walked along.</p>
+      </div>
+      <div class="block">
+        <div class="bar"><span>Prompt</span><button class="copy" type="button">Copy</button></div>
+        <pre>The parikrama — the marble walkway that rings the sacred pool at Amritsar —
+as a standalone piece of ground.
+
+A SQUARE RING, 186 m across on the outside and 156 m across on the inside, so
+the walkway itself is 15 m wide all the way round. Its surface sits about
+1.9 m above the water.
+
+Flat marble paving in warm off-white, laid in large slabs, with a repeating
+inlaid geometric border of darker stone running along both edges of the walk.
+A low balustrade of small square posts about 0.6 m high along the INNER edge
+only — the water side. Broad shallow steps down into the water at four points,
+one in the middle of each side.
+
+No water, no buildings, no lamps, no trees.</pre>
+      </div>
+    </div>
+
+    <div class="part">
+      <div class="part-head">
+        <span class="code">sarovar</span><h3>The tank</h3>
+        <p class="where">One. I will most likely keep the top surface live in code so it can ripple and reflect, and use your model for the basin and edges.</p>
+      </div>
+      <div class="block">
+        <div class="bar"><span>Prompt</span><button class="copy" type="button">Copy</button></div>
+        <pre>The sarovar — the basin of the sacred pool at Amritsar — as a standalone
+piece of ground.
+
+A square tank 156 m across. Stone sides dropping about 4 m, with one broad
+step running all the way round the inside near the top, just below the
+waterline.
+
+The water surface itself is a single flat plane filling the tank, almost
+still, with only a very slight wide undulation across it. Deep blue-green,
+nearly black.
+
+Keep the water surface as its own separate object or material so it can be
+swapped — do not merge it into the stone.
+
+No walkway, no buildings, no bridge.</pre>
+      </div>
+    </div>
+
+    <div class="part">
+      <div class="part-head">
+        <span class="code">causeway</span><h3>The pul</h3>
+        <p class="where">One. Runs from the gateway out to the shrine.</p>
+      </div>
+      <div class="block">
+        <div class="bar"><span>Prompt</span><button class="copy" type="button">Copy</button></div>
+        <pre>The causeway at Amritsar — the pul that crosses the water to the shrine — as
+a standalone object.
+
+A straight marble bridge 62 m long and 6.4 m wide, its deck standing about
+1.8 m above the water. Flat marble paving along the deck. A low balustrade of
+small turned posts carrying a moulded rail along BOTH sides. At the far end,
+a small square landing slightly wider than the bridge itself.
+
+Long, narrow and low — it should read as a walkway across water, not a road
+bridge.
+
+No water, no buildings, no lamps.</pre>
+      </div>
+    </div>
+
+    <div class="part">
+      <div class="part-head">
+        <span class="code">lamp</span><h3>Lamp standard</h3>
+        <p class="where">Repeated around fifty times, so its silhouette does a lot of work.</p>
+      </div>
+      <div class="block">
+        <div class="bar"><span>Prompt</span><button class="copy" type="button">Copy</button></div>
+        <pre>A single ornamental lamp standard from the walkway at Amritsar.
+
+About 4.2 m tall and slender. A moulded stone base about 0.4 m high, a fluted
+brass shaft rising from it, a small moulded collar near the top, and a single
+round glass globe about 0.3 m across on top.
+
+Weathered brass going green in the hollows. The globe is plain frosted glass,
+unlit.
+
+One lamp only, standing upright. No ground, no light source, no glow.</pre>
+      </div>
+    </div>
+
+    <div class="part">
+      <div class="part-head">
+        <span class="code">nishan-sahib</span><h3>Nishan Sahib</h3>
+        <p class="where">Two or three, beside the bungas.</p>
+      </div>
+      <div class="block">
+        <div class="bar"><span>Prompt</span><button class="copy" type="button">Copy</button></div>
+        <pre>A Nishan Sahib — the Sikh flagpole that stands beside a gurdwara.
+
+A tall straight pole about 16 m high and slender, wrapped along its whole
+length in cloth, with a small pointed finial at the very top.
+
+A triangular saffron flag flying from near the top, roughly 3 m along its top
+edge, tapering to a point, hanging as if in light wind rather than stretched
+flat.
+
+The pole and the flag only. No building, no base platform, no ground.</pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── filing ── -->
+  <section>
+    <div class="sec-head">
+      <span class="tag">After each one</span>
+      <h2>Where to put them</h2>
+    </div>
+    <p class="lede">Save into <span class="code">Website/Models/glb/</span> using exactly these
+      names. The folder and a copy of this list are already on your Desktop.</p>
+    <div class="scroller">
+      <table>
+        <thead><tr><th>File</th><th>What it is</th><th>Priority</th></tr></thead>
+        <tbody>
+          <tr><td class="f">harmandir.glb</td><td>The shrine, alone</td><td>Core</td></tr>
+          <tr><td class="f">bunga-tall.glb</td><td>Three-storey bunga</td><td>Core</td></tr>
+          <tr><td class="f">bunga-mid.glb</td><td>Two-storey bunga</td><td>Core</td></tr>
+          <tr><td class="f">shaheedan.glb</td><td>Shaheedan da Bunga</td><td>Core</td></tr>
+          <tr><td class="f">bunga-low.glb</td><td>Single-storey bunga</td><td>Optional</td></tr>
+          <tr><td class="f">ramgarhia.glb</td><td>Block plus twin minars</td><td>Optional</td></tr>
+          <tr><td class="f">deori.glb</td><td>The gateway</td><td>Optional</td></tr>
+          <tr><td class="f">akal-takht.glb</td><td>The Akal Takht</td><td>Optional</td></tr>
+          <tr><td class="f">parikrama.glb</td><td>The marble walkway ring</td><td>Ground</td></tr>
+          <tr><td class="f">sarovar.glb</td><td>The tank and its water surface</td><td>Ground</td></tr>
+          <tr><td class="f">causeway.glb</td><td>The pul</td><td>Ground</td></tr>
+          <tr><td class="f">lamp.glb</td><td>One lamp standard</td><td>Ground</td></tr>
+          <tr><td class="f">nishan-sahib.glb</td><td>Flagpole and flag</td><td>Ground</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note">
+      <b>Also drop in the one you already made</b>
+      <p>The existing <span class="code">darbar-sahib</span> export, under whatever name it downloads
+        as. It has the platform, water, causeway and gateway baked into one object, so I may use
+        parts of it or none of it &mdash; but I want to open it and see what is actually in there.</p>
+    </div>
+    <div class="note warn">
+      <b>GLB, not OBJ, if you get the choice</b>
+      <p>GLB carries the geometry and the materials in one file. OBJ splits them, and the
+        <span class="code">.mtl</span> gets separated from the <span class="code">.obj</span>
+        embarrassingly easily. If you end up with OBJ, keep both files together and give them the
+        same basename.</p>
+    </div>
+  </section>
+
+  <!-- ── what happens next ── -->
+  <section>
+    <div class="sec-head">
+      <span class="tag">Then</span>
+      <h2>What I do with them</h2>
+    </div>
+    <ol class="steps">
+      <li><b>Open the Harmandir first, on its own.</b> Poly count, whether the materials survived,
+        whether the scale and orientation actually came out as asked. Generated models routinely
+        ignore an origin instruction, and it is far quicker to find that out on one model than on
+        thirteen.</li>
+      <li><b>Then the rest.</b> Poly count, whether the materials survived, whether
+        the scale and orientation actually came out as asked. Generated models routinely ignore
+        an origin instruction, and it is quicker for me to correct that once than to fight it later.</li>
+      <li><b>Convert them at build time.</b> The Three.js build the site uses has no GLTF loader
+        in it, so rather than bundle one I will parse each file once in Node and emit the geometry
+        as plain arrays. That keeps the page a single self-contained file and lets me relight
+        everything from scratch.</li>
+      <li><b>Rebuild Draft 1 around them.</b> Same six chapters, same camera path, same amrit
+        vela &mdash; but every building replaced by a real model instead of the procedural
+        approximation that has been the weak point of the whole page.</li>
+    </ol>
+  </section>
+
+</main>
+
+<footer class="wrap">
+  <p>Draft 1 is frozen at Website/Mockup/_Draft_1/ &middot; this list lives at Website/Models/</p>
+</footer>
+
+<script>
+document.querySelectorAll("button.copy").forEach(function(btn){
+  btn.addEventListener("click", function(){
+    var pre = btn.closest(".block").querySelector("pre");
+    var text = pre.textContent.trim();
+    function done(){
+      btn.textContent = "Copied"; btn.setAttribute("data-done","1");
+      setTimeout(function(){ btn.textContent = "Copy"; btn.removeAttribute("data-done"); }, 1700);
+    }
+    function fallback(){
+      var r = document.createRange(); r.selectNodeContents(pre);
+      var s = getSelection(); s.removeAllRanges(); s.addRange(r);
+      btn.textContent = "Selected";
+      setTimeout(function(){ btn.textContent = "Copy"; }, 1700);
+    }
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(done, fallback);
+    } else { fallback(); }
+  });
+});
+</script>

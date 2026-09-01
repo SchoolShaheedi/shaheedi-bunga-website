@@ -1,0 +1,509 @@
+<title>Amritsar Image Brief</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap">
+
+<style>
+/* ── tokens: marble, gilt, ink, water ───────────────────────────── */
+:root{
+  --ground:#F6F4EF; --surface:#FFFFFF; --sunk:#EEEAE0;
+  --line:#DFD9CB; --line-soft:#EAE5D9;
+  --ink:#191C24; --muted:#696E7D;
+  --gold:#8E6518; --gold-line:#C9A24A; --gold-wash:#F3EAD4;
+  --water:#1C3350;
+  --ok:#2F6B4F; --bad:#9A3324;
+
+  --sans:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --serif:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --mono:"IBM Plex Mono","SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#0D1017; --surface:#141821; --sunk:#1A1F2A;
+    --line:#272D39; --line-soft:#1F2531;
+    --ink:#EDEBE4; --muted:#8E95A3;
+    --gold:#DDB463; --gold-line:#8C6E2B; --gold-wash:#221B0E;
+    --water:#7FA3CC;
+    --ok:#6FBF95; --bad:#E08472;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0D1017; --surface:#141821; --sunk:#1A1F2A;
+  --line:#272D39; --line-soft:#1F2531;
+  --ink:#EDEBE4; --muted:#8E95A3;
+  --gold:#DDB463; --gold-line:#8C6E2B; --gold-wash:#221B0E;
+  --water:#7FA3CC;
+  --ok:#6FBF95; --bad:#E08472;
+}
+
+*,*::before,*::after{ box-sizing:border-box; }
+body{
+  margin:0; background:var(--ground); color:var(--ink);
+  font-family:var(--serif); font-size:17px; line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{ max-width:920px; margin:0 auto; padding:0 clamp(20px,5vw,40px); }
+
+/* ── masthead ─────────────────────────────────────────────────── */
+.top{ border-bottom:1px solid var(--line); background:var(--surface); }
+.top::before{ content:""; display:block; height:3px;
+  background:linear-gradient(90deg,var(--gold-line),transparent 62%); }
+.masthead{ padding:clamp(38px,7vw,72px) 0 clamp(30px,5vw,52px);
+  display:flex; flex-direction:column; gap:22px; }
+.eyebrow{ font-family:var(--sans); font-size:11px; font-weight:600;
+  letter-spacing:.2em; text-transform:uppercase; color:var(--gold); margin:0; }
+h1{ font-family:var(--serif); font-weight:700; font-size:clamp(34px,5.6vw,58px);
+  line-height:1.04; letter-spacing:-.022em; margin:0; text-wrap:balance; }
+.standfirst{ margin:0; max-width:62ch; font-size:clamp(17px,1.7vw,20px);
+  color:var(--muted); line-height:1.6; }
+
+/* ── the one thing that matters ───────────────────────────────── */
+.verdict{ margin:0; padding:clamp(20px,3vw,28px) clamp(20px,3vw,30px);
+  background:var(--gold-wash); border:1px solid var(--gold-line);
+  display:flex; flex-direction:column; gap:12px; }
+.verdict h2{ margin:0; font-size:19px; font-weight:600; letter-spacing:-.01em; }
+.verdict p{ margin:0; max-width:64ch; }
+
+/* ── sections ─────────────────────────────────────────────────── */
+main{ padding:clamp(44px,7vw,76px) 0 100px; display:flex; flex-direction:column; gap:clamp(48px,7vw,80px); }
+section{ display:flex; flex-direction:column; gap:22px; }
+.sec-head{ display:flex; flex-direction:column; gap:8px;
+  border-top:1px solid var(--line); padding-top:18px; }
+.sec-head .num{ font-family:var(--sans); font-size:11px; font-weight:700;
+  letter-spacing:.2em; text-transform:uppercase; color:var(--gold); }
+h2.sec{ margin:0; font-size:clamp(24px,3.2vw,34px); font-weight:600;
+  letter-spacing:-.018em; line-height:1.16; text-wrap:balance; }
+.lede{ margin:0; max-width:66ch; color:var(--muted); }
+p{ max-width:68ch; }
+a{ color:var(--gold); text-underline-offset:2px; }
+.mono{ font-family:var(--mono); font-size:.88em; background:var(--sunk);
+  border:1px solid var(--line-soft); padding:1px 5px; border-radius:2px; }
+
+/* ── code blocks ──────────────────────────────────────────────── */
+.block{ border:1px solid var(--line); background:var(--surface); }
+.block-bar{ display:flex; align-items:center; justify-content:space-between;
+  gap:14px; padding:10px 14px; border-bottom:1px solid var(--line-soft);
+  background:var(--sunk); }
+.block-bar span{ font-family:var(--sans); font-size:10.5px; font-weight:600;
+  letter-spacing:.16em; text-transform:uppercase; color:var(--muted); }
+button.copy{ font-family:var(--sans); font-size:10.5px; font-weight:600;
+  letter-spacing:.12em; text-transform:uppercase; cursor:pointer;
+  border:1px solid var(--line); background:var(--surface); color:var(--ink);
+  padding:5px 12px; border-radius:2px; transition:.18s ease; }
+button.copy:hover{ border-color:var(--gold-line); color:var(--gold); }
+button.copy:focus-visible{ outline:2px solid var(--gold); outline-offset:2px; }
+button.copy[data-done="1"]{ color:var(--ok); border-color:var(--ok); }
+pre{ margin:0; padding:16px; overflow-x:auto;
+  font-family:var(--mono); font-size:13.5px; line-height:1.62;
+  white-space:pre-wrap; word-break:break-word; color:var(--ink); }
+pre.neg{ background:var(--sunk); border-top:1px solid var(--line-soft); font-size:12.8px; color:var(--muted); }
+
+/* ── prompt cards ─────────────────────────────────────────────── */
+.card{ display:flex; flex-direction:column; gap:14px;
+  padding-top:26px; border-top:1px solid var(--line-soft); }
+.card:first-of-type{ border-top:0; padding-top:0; }
+.card-head{ display:flex; gap:18px; align-items:baseline; flex-wrap:wrap; }
+.card-num{ font-family:var(--serif); font-weight:700; font-size:30px;
+  line-height:1; color:var(--gold-line); font-variant-numeric:tabular-nums; }
+.card-title{ margin:0; font-size:21px; font-weight:600; letter-spacing:-.012em; }
+.card-use{ margin:0; font-family:var(--sans); font-size:12.5px; letter-spacing:.02em;
+  color:var(--muted); flex-basis:100%; }
+.reject{ margin:0; font-size:15px; color:var(--muted); max-width:68ch; }
+.reject b{ color:var(--bad); font-weight:600; font-family:var(--sans);
+  font-size:11px; letter-spacing:.14em; text-transform:uppercase;
+  display:block; margin-bottom:3px; }
+
+/* ── checklist ────────────────────────────────────────────────── */
+ul.checks{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:0; }
+ul.checks li{ display:grid; grid-template-columns:auto 1fr; gap:14px;
+  padding:14px 0; border-bottom:1px solid var(--line-soft); align-items:baseline; }
+ul.checks li:first-child{ border-top:1px solid var(--line-soft); }
+ul.checks .mark{ font-family:var(--sans); font-size:10.5px; font-weight:700;
+  letter-spacing:.12em; text-transform:uppercase; color:var(--bad);
+  border:1px solid currentColor; padding:2px 7px; border-radius:2px; white-space:nowrap; }
+ul.checks p{ margin:0; }
+ul.checks strong{ font-weight:600; }
+
+/* ── source list ──────────────────────────────────────────────── */
+table{ width:100%; border-collapse:collapse; font-size:15px; }
+.scroller{ overflow-x:auto; border:1px solid var(--line); }
+th,td{ text-align:left; padding:11px 14px; border-bottom:1px solid var(--line-soft); vertical-align:top; }
+th{ font-family:var(--sans); font-size:10.5px; font-weight:600; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--muted); background:var(--sunk); white-space:nowrap; }
+tr:last-child td{ border-bottom:0; }
+td.file{ font-family:var(--mono); font-size:12.5px; }
+
+/* ── asks ─────────────────────────────────────────────────────── */
+ol.asks{ margin:0; padding:0 0 0 1.15em; display:flex; flex-direction:column; gap:14px; }
+ol.asks li::marker{ color:var(--gold); font-family:var(--sans); font-weight:700; font-size:14px; }
+ol.asks p{ margin:0; }
+ol.asks em{ color:var(--muted); font-style:normal; display:block; font-size:15px; }
+
+footer{ border-top:1px solid var(--line); padding:26px 0 60px; }
+footer p{ margin:0; font-family:var(--sans); font-size:12px; letter-spacing:.04em; color:var(--muted); }
+
+@media (max-width:620px){
+  body{ font-size:16px; }
+  .card-head{ gap:12px; }
+  .card-num{ font-size:24px; }
+}
+@media (prefers-reduced-motion:reduce){ *{ transition:none !important; } }
+</style>
+
+<div class="top">
+  <div class="wrap masthead">
+    <p class="eyebrow">Shaheedi Bunga &middot; website</p>
+    <h1>Amritsar Image Brief</h1>
+    <p class="standfirst">Prompts to generate, photographs to license, and the checks that decide
+      whether a generated image is usable. Written for the parikrama homepage, but the rules hold
+      for anything showing the Darbar Sahib.</p>
+    <div class="verdict">
+      <h2>Read this before generating anything</h2>
+      <p>Do not generate Harmandir Sahib if you can photograph it instead. Image models consistently
+        get it wrong &mdash; they add minarets, swap the fluted inverted-lotus dome for a bulbous
+        onion dome, put white marble where the gold should be, and invent Gurmukhi that reads as
+        nonsense. A distorted Darbar Sahib on a Sikh charity&rsquo;s homepage is a bigger problem
+        than a plain one. There are thousands of freely licensed photographs, four of which are
+        already in your <span class="mono">Mockup/refs</span> folder.</p>
+      <p><strong>Generate what cannot be photographed instead.</strong> The seventy bungas were
+        demolished. Nobody can photograph the parikrama as it stood in 1840, or a santhiya class
+        inside Shaheedan da Bunga. That is where generated images earn their place, and where
+        prompts 1&ndash;4 below are aimed.</p>
+    </div>
+  </div>
+</div>
+
+<main class="wrap">
+
+  <!-- ─────────────── house style ─────────────── -->
+  <section>
+    <div class="sec-head">
+      <span class="num">Step one</span>
+      <h2 class="sec">The house style block</h2>
+    </div>
+    <p class="lede">Paste this ahead of every prompt below. It is what keeps nine separate images
+      looking like one set rather than nine stock photos, and it is the half of the prompt you
+      should tune first if the results feel wrong.</p>
+    <div class="block">
+      <div class="block-bar"><span>Prepend to every prompt</span><button class="copy" type="button">Copy</button></div>
+      <pre>Photographic realism, not illustration or 3D render. Full-frame camera, 35mm
+lens, f/4, natural and available light only. Restrained desaturated palette:
+deep blue-black night, warm leaf-gold, pale warm marble, dusty ochre. Deep
+shadow, no fill light, no HDR, no bloom, no lens flare, no colour grading
+toward teal or orange. Calm and documentary, never dramatic. Nothing centred
+and symmetrical unless stated. Aspect ratio 3:2 horizontal.</pre>
+    </div>
+    <p class="reject"><b>If your tool takes parameters</b>
+      Midjourney: append <span class="mono">--ar 3:2 --style raw --s 120</span>. Anything that
+      offers a &ldquo;photographic&rdquo; or &ldquo;natural&rdquo; preset, use it. Turn off any
+      &ldquo;enhance&rdquo;, &ldquo;vivid&rdquo; or &ldquo;cinematic&rdquo; toggle &mdash; all
+      three fight the house style.</p>
+  </section>
+
+  <!-- ─────────────── generate these ─────────────── -->
+  <section>
+    <div class="sec-head">
+      <span class="num">Prompts 1&ndash;4</span>
+      <h2 class="sec">Generate these: the world that is gone</h2>
+    </div>
+    <p class="lede">No photograph of any of this exists. These four carry the story the homepage
+      is telling, and they are the ones worth spending generations on.</p>
+
+    <div class="card">
+      <div class="card-head">
+        <span class="card-num">01</span>
+        <h3 class="card-title">The ring of bungas, c. 1840</h3>
+        <p class="card-use">Chapter 2 &mdash; &ldquo;Around this water stood more than seventy bungas.&rdquo;
+          The single most important image in the set.</p>
+      </div>
+      <div class="block">
+        <div class="block-bar"><span>Prompt</span><button class="copy" type="button">Copy</button></div>
+        <pre>A wide view across a large square sacred water tank in Amritsar in the 1840s,
+before the surrounding buildings were cleared. Along every bank stands an
+unbroken wall of tall narrow Punjabi townhouses, three and four storeys high,
+built shoulder to shoulder in lime-plastered brick and sandstone. Each has
+deep arcaded verandahs with cusped arches, carved wooden balconies and
+jharokhas, fretwork screens, flat roof terraces, and small domed rooftop
+pavilions on slender columns. Two tall slender octagonal watchtowers with
+ribbed white domes rise above the roofline on one side. A broad marble
+walkway runs between the buildings and the water. In the middle of the tank,
+reached by one narrow marble causeway, sits a low square gilded shrine, small
+in the frame. Early morning, flat pale light, thin mist on the water, glassy
+reflections. Muted ochre, lime white, dusty rose, weathered teak, pale gold.
+Wide-angle architectural documentary photograph.</pre>
+        <pre class="neg">Negative: minarets, crescent moons, Taj Mahal, Mughal tomb, mosque, Hindu
+temple shikhara, gopuram, modern buildings, cars, electric lights, cables,
+crowds, tourists, text, signage, watermark, lens flare, tilt-shift, HDR</pre>
+      </div>
+      <p class="reject"><b>Reject if</b> the surrounding buildings look like a single palace rather
+        than many separate houses jammed together &mdash; the whole point is that seventy different
+        jathas each built their own. Variety of height, width and colour is the test.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <span class="card-num">02</span>
+        <h3 class="card-title">A class inside a bunga</h3>
+        <p class="card-use">Chapter 3 &mdash; &ldquo;Santhiya. Shastar vidya. Itihaas. Kirtan.&rdquo;
+          Also usable on the classes and about pages.</p>
+      </div>
+      <div class="block">
+        <div class="block-bar"><span>Prompt</span><button class="copy" type="button">Copy</button></div>
+        <pre>Interior of an arcaded upper room in a nineteenth-century Punjabi building.
+Thick lime-plastered walls, a row of cusped arches open to a verandah on one
+side, worn stone floor, a low wooden takht with a cloth canopy. Eight or nine
+Sikh men and boys in plain cotton kurtas and dastaars sit cross-legged on
+rugs in a loose semicircle facing an older teacher. Handwritten pothis on
+wooden rehals in front of them. A single oil lamp and the cold blue light of
+early morning coming through the arches, lighting faces from the side.
+Everything else in shadow. Quiet, ordinary, mid-lesson. Warm brown, indigo,
+saffron, lime white. Available-light documentary photograph, shot from the
+back of the room at seated height.</pre>
+        <pre class="neg">Negative: text on the pages, legible script, modern clothing, electric light,
+posed group portrait, everyone looking at camera, extra fingers, distorted
+hands, distorted faces, weapons pointed at people, incense, gold ornament</pre>
+      </div>
+      <p class="reject"><b>Reject if</b> any hand, face or dastaar is malformed &mdash; this image
+        shows real people, so anatomy failures are disqualifying, not fixable. Also reject if the
+        pothis show legible lettering; generated Gurmukhi is always nonsense. Crop it out or
+        regenerate.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <span class="card-num">03</span>
+        <h3 class="card-title">Shaheedan da Bunga at night</h3>
+        <p class="card-use">Chapter 5 &mdash; &ldquo;The one we are named for.&rdquo;</p>
+      </div>
+      <div class="block">
+        <div class="block-bar"><span>Prompt</span><button class="copy" type="button">Copy</button></div>
+        <pre>A single tall narrow four-storey Punjabi townhouse at the edge of a marble
+walkway beside still black water, photographed at night from across the
+walkway. Lime-plastered brick, three tiers of deep arcaded verandahs with
+cusped arches stacked one above the other, carved wooden balconies, a flat
+roof terrace with a low parapet and four small domed pavilions at the
+corners. Warm oil lamplight glows out of the arches on the middle floor only;
+every other opening is dark. A dark blue pre-dawn sky behind. Two or three
+oil lamps on tall posts stand on the walkway. Long exposure, still water,
+soft reflection of the lit windows. Muted: near-black, deep indigo, warm
+amber, pale plaster. Available-light architectural photograph, no people.</pre>
+        <pre class="neg">Negative: minarets, mosque, temple, gold, marble palace, modern lighting,
+floodlights, string lights, neon, people, cars, text, signage, lens flare</pre>
+      </div>
+      <p class="reject"><b>Reject if</b> it reads as grand or palatial. A bunga was a working
+        residence and school, not a monument. Plain, tall, a bit austere.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <span class="card-num">04</span>
+        <h3 class="card-title">The parikrama after the clearance</h3>
+        <p class="card-use">Chapter 4 &mdash; &ldquo;Almost all of them were pulled down.&rdquo;</p>
+      </div>
+      <div class="block">
+        <div class="block-bar"><span>Prompt</span><button class="copy" type="button">Copy</button></div>
+        <pre>A very wide empty white marble walkway curving around the edge of a large
+square water tank, photographed at first light with nobody on it. On the
+outer side, a low uniform modern white arcade replaces what used to stand
+there. The walkway is far too wide for the buildings around it. A line of
+plain lamp posts recedes into the distance. Flat grey-blue dawn light, no
+sun, long empty perspective, wet marble holding a faint reflection. Almost
+monochrome: cool white, pale grey, one thin band of warm light on the
+horizon. Architectural documentary photograph, low camera, wide angle.</pre>
+        <pre class="neg">Negative: crowds, people, pilgrims, gold, warm sunlight, blue sky, birds,
+decorative borders, text, signage, HDR, vivid colour</pre>
+      </div>
+      <p class="reject"><b>Reject if</b> it looks serene rather than emptied. The emotion is
+        absence &mdash; too much space, too few buildings.</p>
+    </div>
+  </section>
+
+  <!-- ─────────────── the risky ones ─────────────── -->
+  <section>
+    <div class="sec-head">
+      <span class="num">Prompts 5&ndash;7</span>
+      <h2 class="sec">Darbar Sahib, if you generate it anyway</h2>
+    </div>
+    <p class="lede">These are written to fight the specific ways models get Harmandir Sahib wrong.
+      The architecture is spelled out in unusual detail on purpose &mdash; that description is the
+      part doing the work. Expect to discard most attempts, and check every survivor against the
+      list at the end of this page.</p>
+
+    <div class="card">
+      <div class="card-head">
+        <span class="card-num">05</span>
+        <h3 class="card-title">Darshan across the water at amrit vela</h3>
+        <p class="card-use">Chapter 1 opening, or a full-bleed hero if the site goes photographic.</p>
+      </div>
+      <div class="block">
+        <div class="block-bar"><span>Prompt</span><button class="copy" type="button">Copy</button></div>
+        <pre>Harmandir Sahib in Amritsar photographed from the far bank across still black
+water, two hours before dawn. The shrine is a LOW SQUARE building, wider than
+it is tall, only three storeys, standing on a white marble platform barely
+above the water. Its entire exterior is embossed gold-plated copper, from a
+low white marble base upward — the gold covers the whole building, not just
+the top. A deep overhanging eave carried on carved brackets runs round
+between the lower and upper storeys. On the flat roof: one small fluted dome
+shaped like an inverted lotus, gold, sitting on a low drum, no more than a
+third of the building's width, topped by a slender kalash finial. Four small
+gold domed pavilions on slender columns stand at the roof corners, with
+smaller domed kiosks along each parapet edge between them. A narrow white
+marble causeway runs from the near bank to the shrine, lined with lamp posts.
+The gold is the only lit thing in the frame; everything else is near-black.
+Perfect still reflection broken into soft vertical streaks. Long exposure.</pre>
+        <pre class="neg">Negative: minarets, towers, spires, crescent moon, onion dome, bulbous dome,
+tall building, mosque, Taj Mahal, church, white marble walls, floodlights,
+blue hour teal, purple sky, crowds, boats, birds, text, signage, watermark</pre>
+      </div>
+      <p class="reject"><b>Reject if</b> the building is taller than it is wide, if the dome is a
+        fat onion rather than a shallow ribbed lotus, or if any tower rises beside it. Those three
+        failures account for almost every bad result.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <span class="card-num">06</span>
+        <h3 class="card-title">The gold facade, close</h3>
+        <p class="card-use">A texture plate &mdash; section dividers, card backgrounds, the
+          library page.</p>
+      </div>
+      <div class="block">
+        <div class="block-bar"><span>Prompt</span><button class="copy" type="button">Copy</button></div>
+        <pre>Extreme close detail of an embossed gold-plated copper wall panel on a Sikh
+shrine. Dense repoussé floral and vine ornament hammered into the sheet,
+bordered by narrow raised mouldings, with a small recessed rectangular window
+opening. Centuries of handling have worn the high points to a paler warm
+brass while the recesses stay dark. Raking light from one side at a shallow
+angle picks out every ridge. Filling the frame, shot straight on, shallow
+depth of field falling off at the edges. Warm gold, brown-black shadow, no
+other colour.</pre>
+        <pre class="neg">Negative: faces, figures, animals, calligraphy, script, lettering, symbols,
+khanda, ik onkar, arabic, sanskrit, jewels, gemstones, glitter, shine, bloom</pre>
+      </div>
+      <p class="reject"><b>Reject if</b> it contains anything resembling script or a religious
+        symbol. Generated versions of either are always wrong, and wrong here is worse than plain.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <span class="card-num">07</span>
+        <h3 class="card-title">The causeway lamps</h3>
+        <p class="card-use">A quieter horizontal image for between chapters, or the contact
+          and timetable pages.</p>
+      </div>
+      <div class="block">
+        <div class="block-bar"><span>Prompt</span><button class="copy" type="button">Copy</button></div>
+        <pre>A narrow white marble causeway crossing still dark water at night, seen along
+its length from one end at waist height. A low balustrade runs down both
+sides. Ornamental lamp standards spaced evenly along both edges, each with a
+single warm globe, receding into the distance and reflecting in the water as
+long soft vertical streaks. The far end is lost in darkness. Nobody on the
+causeway. Near-black water, cool white marble, warm amber lamplight, nothing
+else. Long exposure, low camera, strong one-point perspective.</pre>
+        <pre class="neg">Negative: people, crowds, buildings, gold, dome, boats, bright sky, moon,
+stars, coloured lights, string lights, text, signage, HDR, vignette</pre>
+      </div>
+      <p class="reject"><b>Reject if</b> the perspective wobbles or the lamp spacing is irregular
+        &mdash; the whole image is the rhythm of the lamps, so an inconsistent line kills it.</p>
+    </div>
+  </section>
+
+  <!-- ─────────────── photograph instead ─────────────── -->
+  <section>
+    <div class="sec-head">
+      <span class="num">Instead of generating</span>
+      <h2 class="sec">Photographs you can already use</h2>
+    </div>
+    <p class="lede">These four are downloaded and sitting in
+      <span class="mono">Website/Mockup/refs/</span>. All are Creative Commons, free for a
+      charity website including commercially, and all require the photographer&rsquo;s name and
+      the licence printed somewhere &mdash; a credits page is enough. Wikimedia Commons has
+      several thousand more; search &ldquo;Harmandir Sahib&rdquo; and filter by resolution.</p>
+    <div class="scroller">
+      <table>
+        <thead><tr><th>File</th><th>What it shows</th><th>Size</th><th>Licence</th></tr></thead>
+        <tbody>
+          <tr><td class="file">ref-day.jpg</td><td>Three-quarter view in daylight, the whole gold facade, the covered causeway, the Darshani Deori on the left</td><td>5011&times;3341</td><td>CC BY-SA 4.0</td></tr>
+          <tr><td class="file">ref-front.jpg</td><td>Night, lit gold across the water, the Ramgarhia Bunga minars on the skyline</td><td>4608&times;3456</td><td>CC BY-SA 4.0</td></tr>
+          <tr><td class="file">ref-night.jpg</td><td>Wide night panorama with full reflection</td><td>5163&times;2501</td><td>CC BY-SA 4.0</td></tr>
+          <tr><td class="file">ref-akal.jpg</td><td>The Akal Takht alongside the shrine</td><td>3637&times;2117</td><td>CC BY-SA 2.0</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="reject"><b>The better option</b> Photographs taken by your own sangat on jatha
+      trips. They cost nothing, need no attribution, cannot be wrong, and are yours &mdash; which
+      matters more on a charity site than image quality does. If anyone has raw files from a
+      trip, those beat every option on this page.</p>
+  </section>
+
+  <!-- ─────────────── checklist ─────────────── -->
+  <section>
+    <div class="sec-head">
+      <span class="num">Before you use it</span>
+      <h2 class="sec">The reject checklist</h2>
+    </div>
+    <p class="lede">Run every generated image past these. Any one of them is a reject, not a
+      retouch &mdash; it is faster to generate again than to fix a wrong building.</p>
+    <ul class="checks">
+      <li><span class="mark">Reject</span><p><strong>Minarets, towers or spires.</strong> Harmandir Sahib has none. If the model has given it any, it has built a mosque.</p></li>
+      <li><span class="mark">Reject</span><p><strong>A bulbous onion dome.</strong> The real dome is a shallow fluted inverted lotus sitting on a low drum, and it is small &mdash; roughly a third of the building&rsquo;s width.</p></li>
+      <li><span class="mark">Reject</span><p><strong>A white marble building with a gold roof.</strong> The whole exterior is gold above a low marble base. This is the mistake I made in the 3D model before checking the photographs.</p></li>
+      <li><span class="mark">Reject</span><p><strong>Too tall.</strong> It is about 12&nbsp;m square and only around 15&nbsp;m to the tip of the finial &mdash; wider than it is tall. Anything tower-like is wrong.</p></li>
+      <li><span class="mark">Reject</span><p><strong>Any visible lettering.</strong> Generated Gurmukhi, Devanagari and Arabic are all nonsense, and nonsense script on a shrine is not a small error.</p></li>
+      <li><span class="mark">Reject</span><p><strong>Malformed hands, faces or dastaars.</strong> Applies to any image with people in it, without exception.</p></li>
+      <li><span class="mark">Reject</span><p><strong>A crescent moon, a cross, or an invented symbol.</strong> Models reach for these whenever they are unsure what tradition they are drawing.</p></li>
+      <li><span class="mark">Check</span><p><strong>Four corner pavilions on the roof, kiosks along the parapets.</strong> Their absence is not fatal, but their presence is a good sign the model actually knows the building.</p></li>
+    </ul>
+  </section>
+
+  <!-- ─────────────── asks ─────────────── -->
+  <section>
+    <div class="sec-head">
+      <span class="num">Still needed</span>
+      <h2 class="sec">What I need from you</h2>
+    </div>
+    <p class="lede">The homepage now names Scotland, Germany, the Netherlands, East London,
+      Southall, Australia, Kuwait and Africa. That line is currently the vaguest sentence on the
+      page, and it is describing the thing that makes the charity unusual.</p>
+    <ol class="asks">
+      <li><p><strong>Which country in Africa, and which city?</strong>
+        <em>&ldquo;Africa&rdquo; on its own reads as filler. One named town does more work than a continent.</em></p></li>
+      <li><p><strong>City or gurdwara for each of the others.</strong>
+        <em>Netherlands, Australia, Kuwait, Scotland, Germany &mdash; and which gurdwaras in East London and Southall.</em></p></li>
+      <li><p><strong>The Panjab vidyala.</strong>
+        <em>Town, roughly when it opened, who teaches there, and whether there are photographs.</em></p></li>
+      <li><p><strong>What each of these actually is.</strong>
+        <em>A former student teaching on their own account is a different claim from a Shaheedi Bunga branch, and a UK charity has to be careful which one it says in public.</em></p></li>
+      <li><p><strong>Roughly how many students in each place.</strong>
+        <em>Even &ldquo;about fifteen&rdquo; is worth more than nothing, and numbers are what turn a list of countries into evidence.</em></p></li>
+    </ol>
+  </section>
+
+</main>
+
+<footer class="wrap">
+  <p>Draft &middot; for the Shaheedi Bunga website rebuild &middot; prompts are starting points, not settled copy</p>
+</footer>
+
+<script>
+document.querySelectorAll("button.copy").forEach(function(btn){
+  btn.addEventListener("click", function(){
+    var block = btn.closest(".block");
+    var text = [].slice.call(block.querySelectorAll("pre"))
+      .map(function(p){ return p.textContent.trim(); }).join("\n\n");
+    function done(){
+      btn.textContent = "Copied";
+      btn.setAttribute("data-done","1");
+      setTimeout(function(){ btn.textContent = "Copy"; btn.removeAttribute("data-done"); }, 1800);
+    }
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(done, fallback);
+    } else { fallback(); }
+    function fallback(){
+      var r = document.createRange();
+      r.selectNodeContents(block.querySelector("pre"));
+      var s = getSelection(); s.removeAllRanges(); s.addRange(r);
+      btn.textContent = "Selected";
+      setTimeout(function(){ btn.textContent = "Copy"; }, 1800);
+    }
+  });
+});
+</script>

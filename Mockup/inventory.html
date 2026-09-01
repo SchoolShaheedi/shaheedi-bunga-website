@@ -1,0 +1,602 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Everything We Have Done</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Noto+Serif+Gurmukhi:wght@400;600&display=swap">
+
+<style>
+*,*::before,*::after{ box-sizing:border-box; }
+:root{
+  --bg:#F7F6F2; --panel:#FFFFFF; --panel-2:#EFEDE6;
+  --ink:#14161C; --ink-2:#3D434F; --dim:#697082;
+  --line:rgba(20,22,28,.15); --line-2:rgba(20,22,28,.07);
+  --gold:#8A6C27; --navy:#20284F; --green:#2F6B4F; --amber:#8A5A18;
+  --sans:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --serif:"Source Serif 4",Georgia,serif;
+  --shadow:0 1px 2px rgba(20,22,28,.05), 0 8px 22px rgba(20,22,28,.06);
+}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --bg:#0B0D12; --panel:#141821; --panel-2:#1B202B;
+  --ink:#F1EFE9; --ink-2:#C3C7D0; --dim:#8B92A0;
+  --line:rgba(241,239,233,.15); --line-2:rgba(241,239,233,.07);
+  --gold:#C9A44C; --navy:#8FA0DA; --green:#79C4A0; --amber:#D9A45B;
+  --shadow:0 1px 2px rgba(0,0,0,.45), 0 10px 28px rgba(0,0,0,.4);
+}}
+:root[data-theme="dark"]{
+  --bg:#0B0D12; --panel:#141821; --panel-2:#1B202B;
+  --ink:#F1EFE9; --ink-2:#C3C7D0; --dim:#8B92A0;
+  --line:rgba(241,239,233,.15); --line-2:rgba(241,239,233,.07);
+  --gold:#C9A44C; --navy:#8FA0DA; --green:#79C4A0; --amber:#D9A45B;
+  --shadow:0 1px 2px rgba(0,0,0,.45), 0 10px 28px rgba(0,0,0,.4);
+}
+html{ -webkit-text-size-adjust:100%; }
+body{ margin:0; background:var(--bg); color:var(--ink); font-family:var(--serif); font-size:17px; line-height:1.62; }
+h1,h2,h3,h4{ font-family:var(--sans); margin:0; font-weight:600; letter-spacing:-.02em; text-wrap:balance; }
+.gm{ font-family:"Noto Serif Gurmukhi",serif; }
+.wrap{ width:min(1080px,92vw); margin-inline:auto; }
+.tnum{ font-variant-numeric:tabular-nums; }
+
+header.top{ padding:56px 0 30px; border-bottom:2px solid var(--ink); }
+.eyebrow{ font-family:var(--sans); font-size:11.5px; font-weight:600; letter-spacing:.2em; text-transform:uppercase; color:var(--gold); margin:0 0 14px; }
+header.top h1{ font-size:clamp(30px,5vw,50px); font-weight:700; line-height:1.04; }
+header.top p{ max-width:66ch; margin:18px 0 0; color:var(--ink-2); font-size:18px; }
+.counts{ display:flex; flex-wrap:wrap; gap:10px; margin-top:24px; }
+.count{ background:var(--panel); border:1px solid var(--line); border-radius:999px; padding:7px 15px;
+  font-family:var(--sans); font-size:12.5px; color:var(--ink-2); box-shadow:var(--shadow); }
+.count b{ color:var(--ink); font-weight:600; }
+
+section.grp{ padding:44px 0 8px; }
+.grp-head{ border-top:1px solid var(--line); padding-top:16px; margin-bottom:20px; }
+.grp-head .tag{ font-family:var(--sans); font-size:11px; font-weight:600; letter-spacing:.18em; text-transform:uppercase; color:var(--dim); }
+.grp-head h2{ font-size:clamp(21px,3vw,30px); margin-top:7px; }
+.grp-head p{ margin:9px 0 0; color:var(--ink-2); max-width:70ch; font-size:16px; }
+
+table{ width:100%; border-collapse:collapse; margin-top:6px; font-size:15.5px; }
+.scroll{ overflow-x:auto; }
+th{ font-family:var(--sans); font-size:10.5px; font-weight:600; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--dim); text-align:left; padding:9px 12px 9px 0; border-bottom:1px solid var(--line); white-space:nowrap; }
+td{ padding:11px 12px 11px 0; border-bottom:1px solid var(--line-2); vertical-align:top; color:var(--ink-2); }
+td:first-child{ color:var(--ink); font-family:var(--sans); font-size:15px; font-weight:500; }
+td .gm{ color:var(--gold); }
+tr:hover td{ background:var(--panel-2); }
+
+ul.plain{ margin:8px 0 0; padding-left:1.15em; color:var(--ink-2); }
+ul.plain li{ margin-bottom:7px; }
+ul.plain b{ color:var(--ink); font-weight:600; }
+
+.pill{ display:inline-block; font-family:var(--sans); font-size:10px; font-weight:600; letter-spacing:.1em;
+  text-transform:uppercase; border:1px solid currentColor; border-radius:999px; padding:3px 8px; white-space:nowrap; }
+.p-live{ color:var(--green); } .p-year{ color:var(--gold); } .p-past{ color:var(--dim); } .p-check{ color:var(--amber); }
+
+.venue-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:14px; margin-top:6px; }
+.venue{ background:var(--panel); border:1px solid var(--line); border-radius:6px; padding:18px 20px; box-shadow:var(--shadow); }
+.venue h4{ font-size:16.5px; }
+.venue p{ margin:5px 0 0; font-size:14.5px; color:var(--dim); }
+.venue .days{ margin-top:10px; font-size:14.5px; color:var(--ink-2); }
+
+.note{ background:var(--panel); border-left:3px solid var(--gold); border-radius:0 5px 5px 0;
+  padding:16px 18px; margin:22px 0 0; font-size:15.5px; color:var(--ink-2); box-shadow:var(--shadow); }
+.note b{ color:var(--ink); }
+
+footer.end{ border-top:1px solid var(--line); margin-top:52px; padding:24px 0 60px; color:var(--dim); font-size:14px; }
+@media (max-width:620px){ td:first-child{ font-size:14px; } table{ font-size:14.5px; } }
+</style>
+
+<div class="wrap">
+
+<header class="top">
+  <p class="eyebrow">Shaheedi Bunga Gurmat Vidyala · Research inventory</p>
+  <h1>Everything we have done</h1>
+  <p>A complete audit of classes, events, publications and teaching material, assembled from your Canva
+     account (~150 designs), your Instagram, your old website, the Charity Commission register and the
+     project workspace. Nothing knowingly left out.</p>
+  <div class="counts">
+    <span class="count"><b>5</b> gurdwaras</span>
+    <span class="count"><b>7</b> days a week</span>
+    <span class="count"><b>14</b> distinct class types</span>
+    <span class="count"><b>~40</b> Nanak Prakash katha decks</span>
+    <span class="count"><b>13</b> granths &amp; pothis typeset</span>
+    <span class="count"><b>20+</b> children's workbooks</span>
+    <span class="count"><b>1,182</b> Instagram posts</span>
+    <span class="count"><b>3</b> YouTube channels</span>
+    <span class="count"><b>214</b> katha episodes</span>
+    <span class="count"><b>29</b> video series</span>
+    <span class="count"><b>4</b> countries</span>
+    <span class="count"><b>10</b> students in Panjab</span>
+    <span class="count">active since <b>2017</b></span>
+    <span class="count"><b>16</b> partner orgs</span>
+    <span class="count"><b>441</b> videos catalogued</span>
+    <span class="count"><b>53</b> event posters read</span>
+    <span class="count"><b>25+</b> distinct camps</span>
+  </div>
+</header>
+
+<!-- ══ 1 ══ -->
+<section class="grp">
+  <div class="grp-head">
+    <span class="tag">Section one · confirmed</span>
+    <h2>Weekly classes — the real timetable</h2>
+    <p>Taken from your own "SB Timetable" design in Canva, last updated November 2025. This supersedes
+       every placeholder I had been using. Five gurdwaras, not four.</p>
+  </div>
+
+  <div class="venue-grid">
+    <div class="venue">
+      <h4>Guru Tegh Bahadur Gurudwara</h4>
+      <p>106 E Park Road, Leicester LE5 4QB · +44 7394 848407</p>
+      <p class="days">The main site — classes seven days a week, mornings and evenings.</p>
+    </div>
+    <div class="venue">
+      <h4>Sri Guru Dasmesh Gurudwara</h4>
+      <p>49 Gypsy Lane, Leicester LE4 6RB · +44 7394 848407</p>
+      <p class="days">Evening classes six days, plus Saturday mornings.</p>
+    </div>
+    <div class="venue">
+      <h4>Gurdwara Sahib RBL</h4>
+      <p>2 Sri Guru Ramdas Way, Hamilton, Leicester LE5 1GN · +44 7503 301353</p>
+      <p class="days">Tuesdays, 6–7.30pm — Santhiya.</p>
+    </div>
+    <div class="venue">
+      <h4>Gurudwara Shri Guru Harkrishan Sahib Ji</h4>
+      <p>48 Kenilworth Drive, Oadby, Leicester LE2 5LG · +44 7503 301353</p>
+      <p class="days">Fridays — Itihaas (adults), Sikhi Arts &amp; Crafts (kids), Santhiya.</p>
+    </div>
+    <div class="venue">
+      <h4>Gur Panth Parkash Gurudwara</h4>
+      <p>9 Ashford Road, Leicester LE2 6AA · +44 7503 301353</p>
+      <p class="days">Saturdays — Santhiya, then Kirtan and Jori/Tabla.</p>
+    </div>
+  </div>
+
+  <h3 style="margin:30px 0 4px;font-size:19px">Guru Tegh Bahadur Gurudwara — full week</h3>
+  <div class="scroll"><table>
+    <tr><th>Day</th><th>Time</th><th>Classes</th></tr>
+    <tr><td>Monday</td><td class="tnum">7–9am<br>5–8pm<br>6.30–7.30pm</td><td>Santhiya<br>Santhiya · Kirtan / Tanti Saaj · Tabla<br>Monday Night Talks — followed by pizza</td></tr>
+    <tr><td>Tuesday</td><td class="tnum">7–9am<br>5–6pm</td><td>Santhiya<br>Santhiya · Nitnem Kanth Class</td></tr>
+    <tr><td>Wednesday</td><td class="tnum">7–9am<br>5–6pm</td><td>Santhiya<br>Itihaas Class (Sri Nanak Parkash) · Kirtan</td></tr>
+    <tr><td>Thursday</td><td class="tnum">7–9am<br>5–6pm</td><td>Santhiya<br>Santhiya · Kirtan</td></tr>
+    <tr><td>Friday</td><td class="tnum">7–9am<br>5–6pm</td><td>Santhiya<br>Santhiya · Kirtan</td></tr>
+    <tr><td>Saturday</td><td class="tnum">9–11.30am<br>2–6pm<br>4–6pm<br>6–8pm</td><td>Santhiya<br>Air Rifling<br>Santhiya<br>Gatka · Kirtan / Tanti Saaj</td></tr>
+    <tr><td>Sunday</td><td class="tnum">9–11.30am<br>12.30–3pm<br>2.30–4pm<br>4–6pm</td><td>Santhiya<br>Advanced Gatka · Kirtan / Tanti Saaj · Katha Class<br>Archery<br>Santhiya</td></tr>
+  </table></div>
+
+  <h3 style="margin:30px 0 4px;font-size:19px">Sri Guru Dasmesh Gurudwara — full week</h3>
+  <div class="scroll"><table>
+    <tr><th>Day</th><th>Time</th><th>Classes</th></tr>
+    <tr><td>Mon / Tue / Thu</td><td class="tnum">6–8pm</td><td>Santhiya · Kirtan / Tanti Saaj · Jori / Tabla</td></tr>
+    <tr><td>Wednesday</td><td class="tnum">6–8pm</td><td>Itihaas Class · Kirtan / Tanti Saaj · Jori / Tabla</td></tr>
+    <tr><td>Friday</td><td class="tnum">6–7pm<br>7–8pm</td><td>Santhiya<br><b>Friday Night Sikhi (FNS)</b></td></tr>
+    <tr><td>Saturday</td><td class="tnum">10am–12pm</td><td>Santhiya</td></tr>
+    <tr><td>Sunday</td><td class="tnum">4–6pm</td><td>Santhiya · Kirtan / Tanti Saaj · Jori / Tabla</td></tr>
+  </table></div>
+
+  <h3 style="margin:30px 0 4px;font-size:19px">The fourteen class types</h3>
+  <ul class="plain">
+    <li><b>Santhiya</b> <span class="gm">ਸੰਥਿਆ</span> — by far the largest offering; runs at all five gurdwaras, every day, morning and evening</li>
+    <li><b>Kirtan / Tanti Saaj</b> <span class="gm">ਤੰਤੀ ਸਾਜ਼ ਕੀਰਤਨ</span></li>
+    <li><b>Jori / Tabla</b> <span class="gm">ਜੋੜੀ</span></li>
+    <li><b>Gatka</b> <span class="gm">ਗਤਕਾ</span> — and a separate <b>Advanced Gatka</b> on Sundays</li>
+    <li><b>Archery</b> <span class="gm">ਤੀਰਅੰਦਾਜ਼ੀ</span> — Sundays 2.30–4pm</li>
+    <li><b>Air Rifling</b> — Saturdays 2–6pm <span class="pill p-check">new to me</span></li>
+    <li><b>Katha Class</b> <span class="gm">ਕਥਾ</span> — Sundays</li>
+    <li><b>Itihaas Class</b> <span class="gm">ਇਤਿਹਾਸ</span> — taught through Sri Nanak Parkash; separate adult stream on Fridays</li>
+    <li><b>Nitnem Kanth Class</b> — Tuesdays <span class="pill p-check">new to me</span></li>
+    <li><b>Monday Night Talks</b> — followed by pizza</li>
+    <li><b>Friday Night Sikhi (FNS)</b> — its own branded programme <span class="pill p-check">new to me</span></li>
+    <li><b>Sikhi Arts &amp; Crafts</b> — children, Fridays at Oadby <span class="pill p-check">new to me</span></li>
+    <li><b>Online Santhiya</b> — its own poster series, open worldwide</li>
+    <li><b>Online Camp</b> — a 35-page poster set</li>
+  </ul>
+</section>
+
+<!-- ══ 1b ══ -->
+<section class="grp">
+  <div class="grp-head">
+    <span class="tag">Section one b · from you</span>
+    <h2>International reach</h2>
+    <p>None of this appears anywhere public — not on the website, not on Instagram, not in the charity
+       filing. It is also the most striking thing about the organisation.</p>
+  </div>
+  <div class="scroll"><table>
+    <tr><th>Where</th><th>What</th><th>Detail needed</th></tr>
+    <tr><td>Panjab</td><td><b>Shaheedi Bunga Vidyala</b> — residential</td><td><b>Confirmed from your own post, 6 Nov 2025:</b> "ten young students live and learn together — growing each day through their practice of Tabla, Kirtan, and Santhiya. With the guidance of their Ustads, the Vidyala continues to expand." Still needed: which town, when it opened, the Ustads' names.</td></tr>
+    <tr><td>Scotland</td><td>A former student now teaching</td><td>City, gurdwara, which classes, since when</td></tr>
+    <tr><td>Germany</td><td>A former student now teaching</td><td>City, gurdwara, which classes, since when</td></tr>
+    <tr><td>Worldwide</td><td>International students learning online</td><td>Which countries, roughly how many, which classes</td></tr>
+    <tr><td>Leeds</td><td>Sikhi Camp Jang Workshop</td><td>September 2025 — a camp workshop run outside Leicester</td></tr>
+    <tr><td>Smethwick, West Midlands</td><td>Activity at Guru Nanak Gurdwara Smethwick</td><td>Nerf battles, camps, #GNGcamp. Linked to the @gurmatvidyalauk channel and @gngyouthsmethwick. Is this a Shaheedi Bunga vidiyala or a partner?</td></tr>
+    <tr><td>Brand</td><td><b>"Shaheedi Bunga International"</b></td><td>Appears on your own Gurbani Santhiya Camp poster — "Shaheedi Bunga International Presents". Is this the formal name for the network?</td></tr>
+  </table></div>
+  <div class="note">
+    <b>This reframes the whole project.</b> We have been building a website for a Leicester charity.
+    What you actually have is a school that exports teachers — students trained in Leicester now running
+    classes in other countries, plus a sister vidiyala in Panjab and online students on several continents.
+    "Gurmat Vidyala" is a network, not a venue. The two YouTube playlists called <b>Parchar Tours</b> and
+    <b>Yatra</b> are probably the visual record of exactly this.
+  </div>
+</section>
+
+<!-- ══ 2 ══ -->
+<section class="grp">
+  <div class="grp-head">
+    <span class="tag">Section two</span>
+    <h2>Events, camps and samagams</h2>
+  </div>
+  <div class="scroll"><table>
+    <tr><th>Event</th><th>What it is</th><th>Detail on record</th><th>Status</th></tr>
+    <tr><td>Gurbani Vidhya Camp</td><td>Two-week residential-style camp</td><td>Third edition ran 5–18 August at Guru Tegh Bahadur Gurudwara, 9am–3pm daily. Previous years covered the complete Paath Bodh of Sri Guru Granth Sahib Ji and Vaaran Bhai Gurdas Ji. Visiting vidhvaans: Sant Hari Singh Ji Randhawe Wale, Giani Satnaam Singh Ji Hanspur Wale, Ustad Jatinder Singh Ji (Nihung Santhia), Giani Jivanpal Singh Ji. Katha workshops, kirtan on jori and tanti saaj, shastar vidhya including horse riding.</td><td><span class="pill p-year">Annual</span></td></tr>
+    <tr><td>Gatka Fight Night</td><td>Competitive gatka event</td><td>Three separate design sets — portrait posters, landscape posters and YouTube thumbnails. Fighters postered individually by name.</td><td><span class="pill p-year">Recurring</span></td></tr>
+    <tr><td>National Sikh Archery Tournament</td><td>National competition</td><td>Guru Tegh Bahadur Gurudwara. Ages 10–15 shoot at 10 metres, 16+ at 15 metres. Registration by QR code and WhatsApp. Run with partner organisations.</td><td><span class="pill p-year">Annual</span></td></tr>
+    <tr><td>25 Singh Lareevaar Akhand Paath Samagam</td><td>Akhand Paath of Sri Guru Granth Sahib Ji <em>and</em> Sri Dasam Guru Granth Sahib Ji</td><td>Dedicated four-page poster set</td><td><span class="pill p-past">Held</span></td></tr>
+    <tr><td>Saptah Path</td><td>Weeklong paath with sangat reading in turns</td><td>Has its own Instagram highlight and an achievement certificate — "Saptah Paath Abhiyaasi Award"</td><td><span class="pill p-year">Recurring</span></td></tr>
+    <tr><td>Gurpurab Samagams</td><td>Gurpurab celebrations</td><td>Eight-page poster series, plus a dedicated Parkash Purab deck for the sixth Guru</td><td><span class="pill p-year">Recurring</span></td></tr>
+    <tr><td>Hola Mohalla</td><td>Seasonal samagam</td><td>Landscape poster set (six pages)</td><td><span class="pill p-year">Annual</span></td></tr>
+    <tr><td>Sikhi Camp — Glasgow</td><td>Camp outside Leicester</td><td>Written proposal, July 2025 — evidence of expansion beyond Leicester</td><td><span class="pill p-check">Confirm</span></td></tr>
+    <tr><td>Somerset residential</td><td>Away event</td><td>"Somerset AV" seven-page design</td><td><span class="pill p-check">Confirm</span></td></tr>
+    <tr><td>Online Camp</td><td>Camp delivered online</td><td>35-page poster series — the largest event design set you have</td><td><span class="pill p-year">Recurring</span></td></tr>
+  </table></div>
+  <h3 style="margin:26px 0 4px;font-size:19px">Camps and outings recorded on YouTube</h3>
+  <div class="scroll"><table>
+    <tr><th>Event</th><th>When</th><th>Notes</th></tr>
+    <tr><td>Fearless Sikhi Camp</td><td>August 2026</td><td>Day 1 and Day 2 highlight films</td></tr>
+    <tr><td>4 Days Kamai Camp</td><td>August 2026</td><td></td></tr>
+    <tr><td>Summer Sikhi Camp</td><td>July 2026</td><td></td></tr>
+    <tr><td>Vidyala Residential Camp 2026</td><td>June 2026</td><td>Day 1 and Day 2 highlight films</td></tr>
+    <tr><td>6 Week Santhiya Camp 2026</td><td>2026</td><td>Its own playlist — the longest camp you run</td></tr>
+    <tr><td>August Sehaj Path Camp</td><td>2018</td><td>Earliest dated activity found anywhere</td></tr>
+    <tr><td>March Sehaj Path Camp</td><td>2018</td><td></td></tr>
+    <tr><td>Watermead Park outing</td><td>June 2026</td><td></td></tr>
+    <tr><td>Summer Bike Ride</td><td>—</td><td>Own playlist</td></tr>
+    <tr><td>Nagar Kirtan</td><td>—</td><td>Own playlist</td></tr>
+    <tr><td>Yatra</td><td>—</td><td>Pilgrimage travel — own playlist</td></tr>
+    <tr><td>Parchar Tours</td><td>—</td><td>Outreach touring — own playlist</td></tr>
+    <tr><td>Hola Mohalla</td><td>2025 and earlier</td><td>Two playlists</td></tr>
+    <tr><td>Divaan &amp; MySanthiya App Launch</td><td>July 2026</td><td><b>You have launched an app.</b> See media section.</td></tr>
+    <tr><td>GMMA Fight Night</td><td>—</td><td>Own playlist, distinct from the Gatka Fight Night posters</td></tr>
+    <tr><td>Kirtan Workshops</td><td>—</td><td>Own playlist</td></tr>
+    <tr><td>Live Gurpurab Samagam</td><td>—</td><td>Streamed</td></tr>
+    <tr><td>Sunday Evening Weekly Divaan</td><td>Weekly</td><td>Published to YouTube each week</td></tr>
+  </table></div>
+  <div class="note" style="margin-bottom:20px">
+    <b>Camp teams.</b> Children are split into named teams who present sakhis — <b>Team Baagnakha</b>,
+    <b>Team Kartar</b>, <b>Team Narayan Astar</b>. Recorded sakhis include Guru Nanak Dev Ji at Swarnpur,
+    the encounter with the Banmanus, Bhai Inder Sain Ji and Bhai Chanda Ji, the Fateh of Sirhind, and 1984
+    at Sri Harmandir Sahib.
+  </div>
+  <div class="note">
+    There is also a <b>53-page "A3 Posters"</b> design and an <b>eight-page "Posters General"</b> set I have not
+    opened page by page. Between them they almost certainly hold more events than the ones listed above. Say
+    the word and I will export and read every page.
+  </div>
+</section>
+
+<!-- ══ 2b ══ -->
+<section class="grp">
+  <div class="grp-head">
+    <span class="tag">Section two b · from the 53 A3 posters</span>
+    <h2>Every camp and event you have advertised</h2>
+    <p>Read page by page from your "A3 Posters" design. Dates are as printed on the posters.</p>
+  </div>
+  <div class="scroll"><table>
+    <tr><th>Event</th><th>When</th><th>Where</th><th>Detail</th></tr>
+    <tr><td>Dodgeball Competition &amp; Family Fun Day</td><td>31 May 2026, 11:30am</td><td>Falcons Primary School, George Hine House, Gipsy Lane, Leicester LE5 0TA</td><td>Free entry · Tag Archery · Bouncy Castle · Gatka</td></tr>
+    <tr><td>National Hola Mohalla UK 2026 — War Games</td><td>Saturday 7 March</td><td>Gurdwara Dashmesh Darbar, Gypsy Lane</td><td>Gatka Tournament and Tag Archery competitions</td></tr>
+    <tr><td>Hola Mohalla — Patshahi Dasvi National Tournament</td><td>—</td><td>Gurdwara Dashmesh Darbar</td><td>Sri Akal Ustat Path 9am · Sri Dasam Guru Granth Sahib Ji Bhog 10am · Gatka and Tag Archery tournaments 12pm</td></tr>
+    <tr><td>Gurbani Santhiya Camp — "Mastering the Divine Sound"</td><td>—</td><td>—</td><td><b>Shaheedi Bunga International presents.</b> Ages 13–19, 9am–12pm, limited spaces</td></tr>
+    <tr><td>Gurbani Santhiya Camp</td><td>25–29 May 2026, 3–7pm</td><td>Gurdwara Dashmesh Darbar</td><td>Also a 25–28 May edition for ages 5–18+, 3–7.30pm</td></tr>
+    <tr><td>Gurbani &amp; Kirtan Santhiya Camp</td><td>30 March – 3 April, 9am–12pm</td><td>Gurdwara Dashmesh Darbar, Gypsy Lane</td><td></td></tr>
+    <tr><td>7 Days Saptah Path &amp; Kamiya Camp</td><td>6–12 April</td><td>Gurdwara Panth Parkash, Ashford Road</td><td>For Avtar Purab of Guru Arjan Dev Ji, Guru Tegh Bahadur Sahib Ji and Sahibzade Baba Jujhar Singh Ji. <b>Fourteen poster variants</b> — your most-designed event.</td></tr>
+    <tr><td>Kamiya Camp — "Find Your Clarity"</td><td>—</td><td>Gurdwara Gur Panth Parkash</td><td>Leicester youth, ages 15+</td></tr>
+    <tr><td>4 Days Sehaj Path &amp; Kamai Camp</td><td>23–26 July 2026</td><td>Gurdwara Panth Parkash</td><td>All ages · Simran, Bhagti, Kirtan, Santhiya</td></tr>
+    <tr><td>Santhiya Camp — morning and evening</td><td>20 July – 31 August 2026</td><td>—</td><td>8–11am and 4–8pm · Santhiya, Gurbani Uchaaran, Kirtan. Six weeks.</td></tr>
+    <tr><td>Sikhi Residential Santhiya Camp</td><td>June to September</td><td>Residential</td><td>Curriculum: Santhiya, Katha, Kirtan, Archery, Martial Arts and <b>Horse Riding</b></td></tr>
+    <tr><td>Sikhi Camp — "Rise Above Fear", Bhagat Fareed Ji</td><td>28 March 2026 and 28 April 2026</td><td>Gurdwara Dashmesh Darbar, LE4 6RB</td><td>Ages 5–16+ · Wall Climbing · Bouncy Castle · Arts &amp; Craft · 9am–4.30pm</td></tr>
+    <tr><td>Kids Sikhi Camp — Bhagat Sain Ji</td><td>30/31 May</td><td>Gurdwara Sri Dashmesh Darbar</td><td>Ages 5–16+ · includes a <b>Mental Health Workshop</b></td></tr>
+    <tr><td>Kids Sikhi Camp</td><td>9am–4pm</td><td>106 East Park Road LE5 4QB</td><td>Outdoor sports, team challenges, dodgeball, bouncy castle, arts and crafts</td></tr>
+    <tr><td>Build Your Sikhi — 2-Day Kids Camp</td><td>20–21 February 2026, 9am–4pm</td><td>Guru Nanak Gurdwara, Leicester</td><td>Ages 5–16+</td></tr>
+    <tr><td>Our Happy Sikhi Camp</td><td>21 February</td><td>—</td><td>Stories &amp; Santhiya · Happy Minds · Obstacle Fun</td></tr>
+    <tr><td>Building Khalsa Kids Camp</td><td>21 February</td><td>—</td><td></td></tr>
+    <tr><td>Super Sikhi Kids Camp</td><td>21 February</td><td>—</td><td></td></tr>
+    <tr><td>Journey of Sikhi — 2-Day Kids Camp</td><td>—</td><td>—</td><td>Ages 5+</td></tr>
+    <tr><td>Growing in Sikhi — 2-Day Kids Camp</td><td>—</td><td>—</td><td></td></tr>
+    <tr><td>The Great Sikh Camp</td><td>—</td><td>The Granary</td><td>Themed zones — Mount Gurmukhi, The Listening Tree, Peaceful Pond, The Warrior Jungle Gym</td></tr>
+    <tr><td>After School Program</td><td>Term time</td><td>—</td><td>"Support your child's growth beyond school hours"</td></tr>
+  </table></div>
+  <div class="note">
+    <b>Activities that appear nowhere on the website:</b> Tag Archery · Dodgeball · Wall Climbing ·
+    Bouncy Castle · Horse Riding · Nerf battles · Obstacle courses · Mental Health Workshops ·
+    Arts &amp; Crafts · After-school provision. Roughly half of what you actually offer children is
+    recreational, and none of it is visible to a parent looking you up.
+  </div>
+</section>
+
+<!-- ══ 2c ══ -->
+<section class="grp">
+  <div class="grp-head">
+    <span class="tag">Section two c · from Instagram</span>
+    <h2>Dated history, partners and platforms</h2>
+    <p>From the 24 captions Instagram exposes without a login — 12 posts and 12 reels. The reels reach
+       furthest back.</p>
+  </div>
+  <div class="scroll"><table>
+    <tr><th>Event</th><th>Date</th><th>Where / with</th></tr>
+    <tr><td>Gatka at Baba Bir Singh Ji Naurangabad Barsi</td><td>May 2020</td><td>Earliest dated event on Instagram</td></tr>
+    <tr><td>Sikhi Camp</td><td>17 February 2022</td><td>Guru Tegh Bahadur Gurdwara</td></tr>
+    <tr><td>Sikhi Camp</td><td>18 February 2022</td><td>Guru Nanak Gurdwara, Leicester</td></tr>
+    <tr><td>Patshahi Dasvi National Hola Mohalla UK — Competition</td><td>2022</td><td>Highlights in two parts. The caption gives the history: Guru Gobind Singh Ji initiated Hola at Sri Holgarh Sahib, Anandpur Sahib, Cheth Vadhee Ekam 1757 Bikrami.</td></tr>
+    <tr><td>Gatka at Leicester Nagar Kirtan</td><td>May 2022</td><td>Guru Tegh Bahadur Gurdwara · Guru Nanak Gurdwara Holy Bones</td></tr>
+    <tr><td>Shaheedi Bunga Sikhi Camp</td><td>June 2022</td><td>Guru Nanak Gurdwara Holy Bones</td></tr>
+    <tr><td>Chaar Sahibzaade Sikhi Camp</td><td>—</td><td>Six days or more · Day 5 at Sri Guru Nanak Gurdwara, Day 6 at Gurdwara Panth Parkash</td></tr>
+    <tr><td>25 Singh Lareevaar Sri Akhand Paath Samagam</td><td>December 2021 and 6–8 Dec 2024</td><td>Commemorating the Shaheedi Purab of Sri Guru Tegh Bahadur Ji, the Gurgadhi Purab of Sri Guru Gobind Singh Ji, and the first barsi of Sant Giani Mohan Singh Ji Khalsa Bhindranwale</td></tr>
+    <tr><td>2-Day Santhiya Camp</td><td>20–21 August, 8am–12.30pm</td><td>Limited to 50 children · booked by Google Form</td></tr>
+  </table></div>
+
+  <h3 style="margin:26px 0 4px;font-size:19px">Partner organisations</h3>
+  <p style="margin:0 0 6px;color:var(--ink-2);font-size:15.5px">Tagged in your own event posts — a network
+     the website does not acknowledge at all.</p>
+  <ul class="plain">
+    <li><b>Sangat and jathebandi</b> — Nihung Santhia · Buddha Dal UK · Likhari Jatha Bhindran · Sikh2Inspire ·
+        Sikh Youth UK · Singhs Camp UK · Basics of Sikhi · Sikh Readers Circle</li>
+    <li><b>Gurdwaras</b> — Guru Tegh Bahadur · Guru Nanak Gurdwara Leicester · Guru Nanak Gurdwara Holy Bones ·
+        Guru Nanak Gurdwara Smethwick</li>
+    <li><b>Media and production</b> — DGN Sounds · Major Media · KTV UK · Her Raising Singh</li>
+    <li><b>Publishing</b> — <b>Khalis House</b>, who put students' work into print as a book</li>
+  </ul>
+
+  <h3 style="margin:26px 0 4px;font-size:19px">MySanthiya — your own learning platform</h3>
+  <p style="margin:0 0 6px;color:var(--ink-2);font-size:15.5px">Launched July 2026. From your own announcement,
+     it already has:</p>
+  <ul class="plain">
+    <li>Santhiya and learning resources</li>
+    <li>Games, quizzes and tournaments — including <b>Blooket: Sikhi Edition</b></li>
+    <li>Points and leaderboards</li>
+    <li>Learning-journey tracking and daily streaks</li>
+    <li>Certificates</li>
+  </ul>
+  <div class="note">
+    <b>This is a product, not a page.</b> A charity with its own gamified Gurbani learning platform is a
+    genuinely unusual thing, and right now a visitor to shaheedibunga.com would never know it exists.
+  </div>
+</section>
+
+<!-- ══ 2d ══ -->
+<section class="grp">
+  <div class="grp-head">
+    <span class="tag">Section two d · from your Instagram export</span>
+    <h2>Nine months in detail — Aug 2025 to May 2026</h2>
+    <p>85 captions from the data export. This is the only source with reliable dates attached to every entry.</p>
+  </div>
+  <div class="scroll"><table>
+    <tr><th>Event</th><th>Date</th><th>Detail</th></tr>
+    <tr><td>GMMA — Gatka Mixed Martial Arts event</td><td>Aug 2025</td><td>Competitive fights, "warrior spirit" highlights</td></tr>
+    <tr><td>Sikhi Camp Jang Workshop, <b>Leeds</b></td><td>Sept 2025</td><td>Outside Leicester</td></tr>
+    <tr><td>Sikhi Camp 2025</td><td>25–26 October, 9am–4pm</td><td>Guru Tegh Bahadur Gurdwara LE5 4QB · ages 5–18 · Gatka, Arts &amp; Crafts, Talks</td></tr>
+    <tr><td>Five-day Sikhi Camp</td><td>October 2025</td><td>Tabla and jori, dilruba and vaja, Gurbani Santhia</td></tr>
+    <tr><td>Sikhi Camp — sacred relics darshan</td><td>December 2025</td><td><b>Guru Tegh Bahadur Ji's shield, Guru Arjan Dev Ji's kharava, Mata Ganga Ji's kharava, and original hukamname written by Guru Sahib</b></td></tr>
+    <tr><td>Gurbani Santhiya Camp</td><td>December 2025</td><td>At least two days</td></tr>
+    <tr><td>25 Singh Akhand Path Sahib</td><td>December 2025</td><td>Video seva by Major Media</td></tr>
+    <tr><td>Gurbani Santhiya Camp</td><td>16–19 February 2026</td><td>Gurdwara Dashmesh Darbar</td></tr>
+    <tr><td>Patshahi Dasvi National Tournament — Hola Mohalla War Games 2026</td><td>February 2026</td><td>Gatka Tournament · Tag Archery · Sri Akal Ustat Path 9am</td></tr>
+    <tr><td>Sikhi Camp — Bhagat Farid Ji</td><td>March 2026</td><td>Arts and crafts workshop</td></tr>
+    <tr><td>Speed climbing Grand Final</td><td>March 2026</td><td>Competitive wall climbing for children</td></tr>
+    <tr><td>7-Day Saptah Path</td><td>March 2026</td><td>Avtar Purabs of Guru Sahiban and Avtar Dihara of Sahibzada Baba Jujhar Singh Ji</td></tr>
+    <tr><td>Gurbani Kirtan &amp; Santhiya Camp</td><td>March 2026</td><td>Leicester</td></tr>
+    <tr><td>Hola Mohalla Highlights</td><td>April 2026</td><td></td></tr>
+    <tr><td>Gurbani Santhiya Camp 2026</td><td>25–29 May 2026, 3–7pm</td><td>Gurdwara Dashmesh Darbar · five days on pronunciation, clarity and understanding</td></tr>
+  </table></div>
+
+  <h3 style="margin:26px 0 4px;font-size:19px">The Wednesday Itihaas Class — a documented curriculum</h3>
+  <p style="margin:0 0 6px;color:var(--ink-2);font-size:15.5px">At Dashmesh Gurdwara, children present creative
+     homework projects each week. Groups have names — the <b>Nagni Group</b> and the <b>Khanda Group</b>.
+     Recorded projects include:</p>
+  <ul class="plain">
+    <li>A working <b>clay well</b>, built for a sakhi</li>
+    <li><b>Chamkaur di Garhi</b> recreated in LEGO, with clay hills and LED lights for the eternal jot</li>
+    <li>A 3D model of the <b>Janam Asthan at Nankana Sahib</b></li>
+    <li>The <b>Kodhe Rakhash</b> sakhi as a 3D model</li>
+    <li>Guru Nanak Dev Ji's return to <b>Talwandi</b>; <b>Raja Shivnabh's</b> three tests</li>
+    <li><b>Kasht Yog</b> and <b>Bhagat Yog</b> explained by the children themselves</li>
+    <li>A hand fan, a map model, and a <b>ladoo-making seva class</b></li>
+  </ul>
+  <div class="note">
+    This is the single most website-ready thing I have found. It is a real curriculum, taught weekly,
+    documented with photographs, and it shows children doing something recognisable and joyful. It belongs
+    on the Itihaas class page almost verbatim.
+  </div>
+
+  <h3 style="margin:26px 0 4px;font-size:19px">Also confirmed</h3>
+  <ul class="plain">
+    <li><b>Baal Updesh collection published</b> — three books, March 2026</li>
+    <li><b>Kirtan class repertoire</b> — Raag Basant in Kaumb Taal · Raag Jaijaiwanti Guldasta and Partaal</li>
+    <li><b>MMA</b> is taught alongside Santhiya, Kirtan, Tabla and Jori</li>
+  </ul>
+</section>
+
+<!-- ══ 3 ══ -->
+<section class="grp">
+  <div class="grp-head">
+    <span class="tag">Section three</span>
+    <h2>Katha and presentation series</h2>
+    <p>The largest single body of work you have produced, and the one least visible on the current website.</p>
+  </div>
+  <div class="scroll"><table>
+    <tr><th>Series</th><th>Scale</th><th>Notes</th></tr>
+    <tr><td>Sri Guru Granth Sahib Ji Larivaar Katha</td><td>214 episodes</td><td>Ang 1 to Ang 436 and counting, published near-daily. The largest single work.</td></tr>
+    <tr><td>Sri Dasam Guru Granth Sahib Ji Santhiya</td><td>90 videos</td><td>Complete Dasam Baani santheya from Ang 1 onwards</td></tr>
+    <tr><td>Sri Nanak Prakash — chapter katha</td><td>~40 decks</td><td>Chapters 1–6, 8, 10, 11, 15–20, 22–30, 39–41, 44–46, 48–52, 54, 55. Several split into Part 1 / Part 2. Running since mid-2024 and still going — Chapter 55 was updated this month.</td></tr>
+    <tr><td>Suraj Parkash Granth</td><td>220 pages</td><td>"SB Rut 1" (175pp) and "Raas 9" (45pp)</td></tr>
+    <tr><td>Sri Gur Pur Parkash Granth</td><td>93 pages</td><td>Group presentation format</td></tr>
+    <tr><td>Larivaar Katha SGGS Ji</td><td>—</td><td>Its own design; matches the "Larreevaar Katha" on your old website</td></tr>
+    <tr><td>Adhyaatam Parkaash</td><td>51 pages</td><td>Summary deck plus a second working file</td></tr>
+    <tr><td>Yog and Sikhi</td><td>35 pages</td><td></td></tr>
+  </table></div>
+</section>
+
+<!-- ══ 4 ══ -->
+<section class="grp">
+  <div class="grp-head">
+    <span class="tag">Section four</span>
+    <h2>Itihaas — history teaching</h2>
+  </div>
+  <ul class="plain">
+    <li><b>Baba Banda Singh Bahadur</b> — A Legacy of Justice and Courage</li>
+    <li><b>The Extraordinary Life of Bhagat Kabir Ji</b></li>
+    <li><b>Life of Bibi Viro Ji</b></li>
+    <li><b>Pyare Bhai Sahib Singh Ji</b></li>
+    <li><b>Sri Guru Arjan Dev Ji</b> — "5th Guru Ji", 24 pages</li>
+    <li><b>Sri Guru Hargobind Sahib Ji</b> — three decks: Avtar, Parkash Purab, and Gurta Gaddi</li>
+    <li><b>Itihaas Sri Guru Har Rai Sahib Ji</b></li>
+    <li><b>Sri Guru Tegh Bahadur Sahib Ji</b> — including a detective-game format for children</li>
+    <li><b>M9 Shaheedi</b> — a 114-page book, plus "M9 Itihaas — Camp Saakhia" (42 pages)</li>
+    <li><b>They Tried to Erase Us</b> — 21 pages</li>
+    <li><b>1984</b> — 7 pages</li>
+    <li><b>Chhota Ghallughara</b> — image set</li>
+    <li><b>Names of the Takhats</b>, <b>ਗੁਰੂ ਸਾਹਿਬਾਂ ਦੇ ਨਾਮ</b> — foundational children's material</li>
+  </ul>
+</section>
+
+<!-- ══ 5 ══ -->
+<section class="grp">
+  <div class="grp-head">
+    <span class="tag">Section five</span>
+    <h2>Granths and pothis typeset</h2>
+    <p>Thirteen volumes, over 1,500 pages of typesetting. This is publishing work, not class material.</p>
+  </div>
+  <div class="scroll"><table>
+    <tr><th>Volume</th><th>Pages</th></tr>
+    <tr><td>Book 2 — all compositions</td><td class="tnum">306</td></tr>
+    <tr><td>Book 1 — all compositions</td><td class="tnum">288</td></tr>
+    <tr><td>Original Bachan Sai Lokan De</td><td class="tnum">243</td></tr>
+    <tr><td>Sri Sarbloh Granth Sahib Ji (A4)</td><td class="tnum">238</td></tr>
+    <tr><td>Nitnem Gutka Sahib</td><td class="tnum">160</td></tr>
+    <tr><td>Rehatname Reading</td><td class="tnum">115</td></tr>
+    <tr><td>M9 Shaheedi Book</td><td class="tnum">114</td></tr>
+    <tr><td>Sri Dasam Guru Granth Sahib Ji</td><td class="tnum">109</td></tr>
+    <tr><td>Jaap Sahib Pothi</td><td class="tnum">107</td></tr>
+    <tr><td>Tabla Granth, volumes 1–5</td><td class="tnum">185</td></tr>
+    <tr><td>ਕੀਰਤਨ ਸਾਗਰ — Kirtan Sagar</td><td class="tnum">46</td></tr>
+    <tr><td>Bhai Gurdas Ji Kabit</td><td class="tnum">13</td></tr>
+    <tr><td>Parman Sri Sarbloh</td><td class="tnum">13</td></tr>
+  </table></div>
+  <div class="note">
+    Plus, from the project workspace rather than Canva: the <b>Vichar Sagar</b> bilingual edition (Tarangs
+    one to four complete) and the <b>Bachan Sain</b> bilingual edition (Part I complete, Part II underway).
+  </div>
+</section>
+
+<!-- ══ 6 ══ -->
+<section class="grp">
+  <div class="grp-head">
+    <span class="tag">Section six</span>
+    <h2>Children's learning material</h2>
+    <p>Twenty-plus workbooks and video series. Almost none of this is visible publicly.</p>
+  </div>
+  <ul class="plain">
+    <li><b>Baal Updesh</b> — "Writting Full Baal Updesh" (207pp) and the V2 Kaida Workbook (125pp)</li>
+    <li><b>Muharni</b> — Part 1 (158 pages) and Part 2 (111 pages), built as video series</li>
+    <li><b>Kaida progression</b> — ੨ ਅੱਖਰੇ ਸ਼ਬਦ (reading and writing editions), ਦੁਲੈੰਕੜ ਵਾਲੇ ੩ ਅੱਖਰੇ ਸ਼ਬਦ, ਔਕੜ ਵਾਲੇ ੪ ਅੱਖਰੇ ਸ਼ਬਦ</li>
+    <li><b>Amolok Bachan</b> — reading and writing editions</li>
+    <li><b>Alphabet Colouring Book</b> (28pp)</li>
+    <li><b>Vocabulary series</b> — ਜਾਨਵਰਾਂ ਦੇ ਨਾਮ, ਘਰੇਲੂ ਜਾਨਵਰ, Names of Colours, Names of Shapes, Names of the Days, Days / Months / Seasons, Numbers 1–50</li>
+    <li><b>Sports and games</b> (19pp)</li>
+    <li><b>Magazine</b> — Issues 1–3, 1–5, 4–6, and a "Superhero" edition (87pp). A children's magazine nobody outside would know exists.</li>
+    <li><b>Games</b> — Sri Guru Tegh Bahadur Sahib Ji Detective Game, Missing Horse Mystery</li>
+    <li><b>Certificates</b> — Saptah Paath Abhiyaasi Award, Certificate of Achievement</li>
+  </ul>
+</section>
+
+<!-- ══ 7 ══ -->
+<section class="grp">
+  <div class="grp-head">
+    <span class="tag">Section seven</span>
+    <h2>YouTube — three channels, twenty-nine series</h2>
+    <p>The largest public archive you have, and almost none of it is reachable from the website.</p>
+  </div>
+  <div class="note" style="margin:0 0 20px">
+    <b>Your main YouTube link is broken.</b> The website and Linktree both point at
+    <code>@shaheedibungauk</code>, which now returns 404. The channel has moved to
+    <b>@shaheedibunga</b>. Anyone clicking through from your site right now hits a dead page.
+  </div>
+  <div class="scroll"><table>
+    <tr><th>Channel</th><th>Handle</th><th>What is on it</th></tr>
+    <tr><td>ਸ਼ਹੀਦੀ ਬੁੰਗਾ Shaheedi Bunga</td><td>@shaheedibunga</td><td>Main channel. The katha series, divaans, samagams, camps, gatka, archery.</td></tr>
+    <tr><td>Shaheedi Bunga Kids</td><td>@ShaheediBungaKids</td><td>Camp highlight films, children's sakhi presentations, learning videos.</td></tr>
+    <tr><td>Gurmat Vidyala</td><td>@gurmatvidyalauk</td><td>Third channel — Bachan Sai Lokan Ke series. Not linked anywhere on your site.</td></tr>
+  </table></div>
+
+  <h3 style="margin:26px 0 4px;font-size:19px">The flagship series</h3>
+  <div class="note" style="margin-top:6px">
+    <b>Sri Guru Granth Sahib Ji Larivaar Katha — 214 episodes and counting.</b> Currently at Ang 436,
+    published almost daily; episodes 202 to 214 all went out in August 2026 alone. This is the single
+    largest body of work the organisation has produced and it is invisible on the current website.
+  </div>
+
+  <h3 style="margin:24px 0 4px;font-size:19px">All twenty-nine playlists</h3>
+  <ul class="plain">
+    <li><b>Katha and teaching</b> — Larivaar Katha Sri Guru Granth Sahib Jee Maharaj · English Katha ·
+        ਸਾਖੀਆ · Monday Night Talks: Sikhi, History And Truth · Divine Dialogues: Inspiring Interviews with
+        Scholars and Saints · Gurpurab Series (podcast)</li>
+    <li><b>Santhiya</b> — 6 Week Santhiya Camp 2026 · Sri Dasam Guru Granth Sahib Ji Santhiya ·
+        August Sehaj Path Camp 2018 · March Sehaj Path Camp 2018</li>
+    <li><b>Kirtan and raag</b> — Kirtan Workshops · Raags of Sri Guru Tegh Bahadur Sahib Ji · Kavasari</li>
+    <li><b>Shastar and sport</b> — Gatka Videos · GMMA Fight Night · National Sikh Archery</li>
+    <li><b>Events</b> — Live Gurpurab Samagam · 25 Singh Laarivaar Akhand Path Sahib · Hola Mohalla 2025 ·
+        Holla Mohalla · Nagar Kirtan · Camps · Summer Bike Ride</li>
+    <li><b>Travel and outreach</b> — Parchar Tours · Yatra</li>
+    <li><b>Teachers</b> — Bhai Harjit Singh Ji (Shaheedi Bunga UK) · Bhai Pritpal Singh Ji (Shaheedi Bunga UK) ·
+        Bhai Siripal Singh Ji Darbar Sahib Wale</li>
+    <li><b>Children</b> — Kids Learning Videos</li>
+  </ul>
+
+  <h3 style="margin:26px 0 4px;font-size:19px">Other media and platforms</h3>
+  <ul class="plain">
+    <li><b>MySanthiya</b> — you have launched an app. "Divaan &amp; MySanthiya App Launch Highlights",
+        July 2026, plus Instagram posts showing a Blooket game mode and a courses/preview-as-guest flow.
+        <span class="pill p-check">needs a page of its own</span></li>
+    <li><b>Instagram</b> — @shaheedi_bunga_uk · 3,600+ followers · 1,182 posts. Highlights: Kirtan Class,
+        Saptah Path, Gurpurab Samagam, Monday Night Talk, Gatka Fight Night, Sikhi Camps,
+        <span class="gm">ਇਤਿਹਾਸ ਜਮਾਤ</span>, Katha, New Releases</li>
+    <li><b>Facebook</b> — facebook.com/ShaheediBunga, with video of Santhiya classes at Sri Dashmesh Sahib
+        Gurdwara and Kirtan classes including prachin bandish in Raag Bairari. Not linked from the website.</li>
+    <li><b>SoundCloud</b> — on your own timetable poster; linked nowhere on the site</li>
+    <li><b>Sikhi Calendar app</b> — third-party, promoted on your Linktree, iOS and Android</li>
+    <li><b>YouTube thumbnails</b> — 53-page Canva design set</li>
+    <li><b>Avatars</b> — 97-page Canva design set</li>
+    <li><b>Apps in development</b> (workspace) — Raag Explorer · Bandish Maker · Taan Maker ·
+        Kirtan Reet Explorer · Tihai Maker · Santhiya Game · Instrument Tuner · Tabla Lesson Maker</li>
+  </ul>
+</section>
+
+<!-- ══ 8 ══ -->
+<section class="grp">
+  <div class="grp-head">
+    <span class="tag">Section eight</span>
+    <h2>Governance and the public record</h2>
+  </div>
+  <ul class="plain">
+    <li><b>Registered charity 1185103</b>, England &amp; Wales · 22 Beckett Road, Leicester LE5 0HE</li>
+    <li><b>Seven trustees</b>; income £16,026 and expenditure £12,055 in the year to 5 April 2025</li>
+    <li><b>Charitable objects</b> — education and training, prevention or relief of poverty, religious activities, amateur sport</li>
+    <li><b>Monthly board meetings</b> — recorded in a Canva doc</li>
+    <li><b>Student and Class Summary by Location</b> — you already track enrolment per venue</li>
+    <li><b>Sikhi Camp Strategy Plan</b> — written strategy document</li>
+    <li><b>Contacts</b>: gurmat@shaheedibunga.com · administrator@shaheedibunga.com · shaheedibunga@outlook.com · +44 7394 848407 · +44 7503 301353 · +44 7481 848839 (archery, WhatsApp)</li>
+  </ul>
+</section>
+
+<div class="note" style="margin-top:34px">
+  <b>What this changes.</b> We have been building a website for a Leicester charity with ten classes.
+  What actually exists is a school running fourteen class types across five gurdwaras seven days a week;
+  a 214-episode katha series still publishing daily; twenty-nine video series across three YouTube
+  channels; thirteen typeset granths; a children's magazine; an app; camps going back to 2018; two
+  national competitions; and teachers it has trained now running classes in Scotland, Germany and Panjab.
+  <br><br>
+  The site we have drafted describes perhaps a fifth of it.
+</div>
+
+<footer class="end">
+  Assembled 24 August 2026 from Canva (~150 designs), Instagram, the existing shaheedibunga.com,
+  the Charity Commission register and the project workspace. Items marked <span class="pill p-check">Confirm</span>
+  or <span class="pill p-check">new to me</span> are things I found evidence for but have not had confirmed by you.
+</footer>
+
+</div>

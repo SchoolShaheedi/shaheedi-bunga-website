@@ -1,0 +1,406 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Bunga in Three Dimensions</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Noto+Serif+Gurmukhi:wght@400;600&display=swap">
+
+<style>
+*,*::before,*::after{ box-sizing:border-box; }
+:root{
+  --bg:#F7F6F2; --panel:#FFFFFF; --panel-2:#EFEDE6;
+  --ink:#14161C; --ink-2:#3D434F; --dim:#697082;
+  --line:rgba(20,22,28,.15); --line-2:rgba(20,22,28,.07);
+  --gold:#8A6C27; --navy:#20284F; --green:#2F6B4F; --red:#9E3B2E;
+  --sans:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --serif:"Source Serif 4",Georgia,serif;
+  --shadow:0 1px 2px rgba(20,22,28,.05), 0 8px 22px rgba(20,22,28,.06);
+}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --bg:#0B0D12; --panel:#141821; --panel-2:#1B202B;
+  --ink:#F1EFE9; --ink-2:#C3C7D0; --dim:#8B92A0;
+  --line:rgba(241,239,233,.15); --line-2:rgba(241,239,233,.07);
+  --gold:#C9A44C; --navy:#8FA0DA; --green:#79C4A0; --red:#E0796A;
+  --shadow:0 1px 2px rgba(0,0,0,.45), 0 10px 28px rgba(0,0,0,.4);
+}}
+:root[data-theme="dark"]{
+  --bg:#0B0D12; --panel:#141821; --panel-2:#1B202B;
+  --ink:#F1EFE9; --ink-2:#C3C7D0; --dim:#8B92A0;
+  --line:rgba(241,239,233,.15); --line-2:rgba(241,239,233,.07);
+  --gold:#C9A44C; --navy:#8FA0DA; --green:#79C4A0; --red:#E0796A;
+  --shadow:0 1px 2px rgba(0,0,0,.45), 0 10px 28px rgba(0,0,0,.4);
+}
+html{ -webkit-text-size-adjust:100%; }
+body{ margin:0; background:var(--bg); color:var(--ink); font-family:var(--serif); font-size:17px; line-height:1.62; }
+h1,h2,h3,h4{ font-family:var(--sans); margin:0; font-weight:600; letter-spacing:-.02em; text-wrap:balance; }
+.gm{ font-family:"Noto Serif Gurmukhi",serif; }
+.wrap{ width:min(1020px,92vw); margin-inline:auto; }
+.tnum{ font-variant-numeric:tabular-nums; }
+
+header.top{ padding:58px 0 30px; border-bottom:2px solid var(--ink); }
+.eyebrow{ font-family:var(--sans); font-size:11.5px; font-weight:600; letter-spacing:.2em; text-transform:uppercase; color:var(--gold); margin:0 0 14px; }
+header.top h1{ font-size:clamp(31px,5.2vw,52px); font-weight:700; line-height:1.03; }
+header.top p{ max-width:64ch; margin:18px 0 0; color:var(--ink-2); font-size:18.5px; }
+
+section.grp{ padding:46px 0 6px; }
+.grp-head{ border-top:1px solid var(--line); padding-top:16px; margin-bottom:20px; }
+.grp-head .tag{ font-family:var(--sans); font-size:11px; font-weight:600; letter-spacing:.18em; text-transform:uppercase; color:var(--dim); }
+.grp-head h2{ font-size:clamp(22px,3.2vw,32px); margin-top:7px; }
+.grp-head p{ margin:10px 0 0; color:var(--ink-2); max-width:70ch; font-size:16.5px; }
+
+p{ color:var(--ink-2); }
+.lead{ font-size:17.5px; }
+ul.plain{ margin:10px 0 18px; padding-left:1.15em; color:var(--ink-2); }
+ul.plain li{ margin-bottom:8px; }
+b,strong{ color:var(--ink); font-weight:600; }
+
+table{ width:100%; border-collapse:collapse; margin-top:8px; font-size:15.5px; }
+.scroll{ overflow-x:auto; }
+th{ font-family:var(--sans); font-size:10.5px; font-weight:600; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--dim); text-align:left; padding:9px 12px 9px 0; border-bottom:1px solid var(--line); white-space:nowrap; }
+td{ padding:11px 12px 11px 0; border-bottom:1px solid var(--line-2); vertical-align:top; color:var(--ink-2); }
+td:first-child{ color:var(--ink); font-family:var(--sans); font-size:15px; font-weight:500; }
+
+.opt{ background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:24px 26px; margin-bottom:16px; box-shadow:var(--shadow); }
+.opt.pick{ border-color:var(--gold); border-width:2px; }
+.opt h3{ font-size:21px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+.badge{ font-family:var(--sans); font-size:10px; font-weight:600; letter-spacing:.12em; text-transform:uppercase;
+  border-radius:999px; padding:4px 10px; border:1px solid currentColor; }
+.b-pick{ color:var(--gold); } .b-alt{ color:var(--dim); }
+.opt .why{ margin:12px 0 0; }
+.opt .risk{ margin:10px 0 0; font-size:15px; color:var(--dim); }
+
+.note{ background:var(--panel); border-left:3px solid var(--gold); border-radius:0 5px 5px 0;
+  padding:16px 18px; margin:20px 0 0; font-size:15.5px; color:var(--ink-2); box-shadow:var(--shadow); }
+.note.warn{ border-left-color:var(--red); }
+.note b{ color:var(--ink); }
+
+.scene{ display:grid; grid-template-columns:78px 1fr; gap:20px; padding:18px 0; border-bottom:1px solid var(--line-2); }
+.scene .n{ font-family:var(--sans); font-size:30px; font-weight:700; color:var(--gold); line-height:1; letter-spacing:-.03em; }
+.scene h4{ font-size:18.5px; }
+.scene h4 .gm{ color:var(--gold); font-size:.85em; margin-right:8px; }
+.scene p{ margin:6px 0 0; font-size:15.5px; }
+.scene .tech{ margin-top:7px; font-size:13.5px; color:var(--dim); font-family:var(--sans); }
+
+.phase{ display:grid; grid-template-columns:110px 1fr; gap:18px; padding:14px 0; border-bottom:1px solid var(--line-2); }
+.phase .p{ font-family:var(--sans); font-size:12px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--gold); }
+.phase h4{ font-size:17px; }
+.phase p{ margin:5px 0 0; font-size:15px; }
+
+.q{ background:var(--panel-2); border-radius:8px; padding:22px 24px; margin-top:16px; }
+.q h4{ font-size:17px; margin-bottom:6px; }
+.q p{ margin:0 0 16px; font-size:15.5px; }
+.q p:last-child{ margin-bottom:0; }
+
+footer.end{ border-top:1px solid var(--line); margin-top:50px; padding:24px 0 60px; color:var(--dim); font-size:14px; }
+@media (max-width:620px){ .scene,.phase{ grid-template-columns:1fr; gap:6px; } }
+</style>
+
+<div class="wrap">
+
+<header class="top">
+  <p class="eyebrow">Shaheedi Bunga · proposal, not yet built</p>
+  <h1>The Bunga in three dimensions</h1>
+  <p>A plan for a genuinely 3D website — what it would be, how it would be built, what it costs, and
+     where it could fail. Nothing has been created yet. This is for you to approve, change or reject first.</p>
+</header>
+
+<!-- ═══ 1 ═══ -->
+<section class="grp">
+  <div class="grp-head">
+    <span class="tag">One</span>
+    <h2>What the best 3D sites actually do</h2>
+  </div>
+  <p class="lead">I looked at what is winning now. Three findings matter for us.</p>
+  <ul class="plain">
+    <li><b>One hard idea, executed cleanly.</b> The sites that stand out pick a single concept — a drivable
+      physics world, one object rendered with real weight — rather than stacking effects. The ones that
+      stack effects look dated within a year.</li>
+    <li><b>Scroll is the storytelling engine.</b> Cartier, Shopify and others drive the whole experience from
+      scroll position, sequencing 3D scenes rather than moving a 2D page. This is exactly the architecture
+      we already built for the journey — so that work is not wasted.</li>
+    <li><b>3D as framing, not spectacle.</b> The most admired work uses WebGL for atmosphere and
+      composition, and lets the content stay the subject.</li>
+  </ul>
+  <div class="note">
+    <b>The trap.</b> Most "3D websites" are a rotating object nobody needs, bolted to a normal page. If we
+    do this, the 3D has to <em>be</em> the site's argument, not decoration on top of it.
+  </div>
+</section>
+
+<!-- ═══ 2 ═══ -->
+<section class="grp">
+  <div class="grp-head">
+    <span class="tag">Two</span>
+    <h2>The technical constraint, and how it is solved</h2>
+  </div>
+  <p>Everything I deliver runs inside a sandboxed page with a strict content policy: <b>no external
+     scripts</b>. That is why I could not use GSAP or Lenis earlier. It applies to Three.js too.</p>
+  <p><b>But I tested it and there is a clean way through.</b> I can download the Three.js library to your
+     machine and inline it into the page at build time. I verified this today:</p>
+  <div class="scroll"><table>
+    <tr><th>Build</th><th>Size</th><th>Gzipped</th><th>Verdict</th></tr>
+    <tr><td>three r170 module</td><td class="tnum">692 KB</td><td class="tnum">172 KB</td><td>Usable — fetched successfully</td></tr>
+    <tr><td>three r160 minified</td><td class="tnum">670 KB</td><td class="tnum">167 KB</td><td>Usable fallback</td></tr>
+  </table></div>
+  <p>For context, the photographic journey already weighs about 5 MB. Adding 692 KB of library is a 14%
+     increase — negligible. <b>Real WebGL is available to us.</b> Three.js is MIT-licensed, so inlining is
+     entirely legitimate.</p>
+  <div class="note warn">
+    <b>What is not available:</b> ready-made 3D models. You have no <code>.glb</code> files and none exist
+    for a bunga. Everything would be <b>built procedurally in code</b> — geometry generated from arches,
+    domes, pillars and lathes. That means a warm, stylised, low-poly building, not a photoreal one. I think
+    stylised is the right answer anyway, but you should picture that, not a video-game render.
+  </div>
+</section>
+
+<!-- ═══ 2b ═══ -->
+<section class="grp">
+  <div class="grp-head">
+    <span class="tag">Two b</span>
+    <h2>motionsites.ai — what it is, and what to take from it</h2>
+  </div>
+  <p>I went through it. It is worth being precise about what it actually sells, because it changes how we
+     should use it.</p>
+  <p><b>It is a library of AI prompts, not a library of websites.</b> You copy a prompt and paste it into
+     Lovable, Bolt, Cursor or Claude, and it generates a landing page. The categories are
+     <em>3d Website</em>, <em>threejs</em>, <em>Animated Backgrounds</em>, <em>Hero</em>, <em>Carousel</em>,
+     and industry sets — SaaS, Fintech, Agency, Wellness. Named templates include <b>3D Future Flora</b>
+     (explicitly Three.js), <b>Cyberpunk Reveal</b>, <b>Obsidian</b>, <b>TerraVision</b> and
+     <b>Nature Ritual</b>.</p>
+
+  <h3 style="margin:26px 0 6px;font-size:19px">Worth taking</h3>
+  <ul class="plain">
+    <li><b>Animated backgrounds as atmosphere.</b> A living, slow-moving ground behind content — this is the
+      single most transferable idea and it suits a dusk-lit bunga exactly.</li>
+    <li><b>The reveal hero.</b> Their "Cyberpunk Reveal" pattern — content uncovering itself on load — is the
+      same mechanism as the Gurmukhi inking we already built. Confirms that instinct was right.</li>
+    <li><b>3D Future Flora's particle system.</b> Growth rendered as particles. Repointed at our subject
+      that becomes something real: particles settling into a Gurmukhi letterform, or lamps lighting one by
+      one across the globe as each student joins.</li>
+  </ul>
+
+  <h3 style="margin:24px 0 6px;font-size:19px">Worth avoiding</h3>
+  <ul class="plain">
+    <li><b>Using a template as the design.</b> These are built for SaaS and agency landing pages. Dropping a
+      Sikh school into "Aurex Finance" would produce a site that looks like everyone else's, and the
+      research in section one says stacked-effect template sites date within about a year.</li>
+    <li><b>Effects for their own sake.</b> Their showcase optimises for "impress and amaze". Your visitors
+      are parents looking for Tuesday's class time and grandparents reading Gurbani.</li>
+  </ul>
+
+  <div class="note">
+    <b>One practical note:</b> motionsites.ai now offers an <b>MCP</b>. If you connect it to this account, I
+    could pull their prompt content directly rather than working from screenshots, and lift specific
+    techniques with precision. Your call — say the word and I will tell you exactly where to connect it.
+  </div>
+</section>
+
+<!-- ═══ 3 ═══ -->
+<section class="grp">
+  <div class="grp-head">
+    <span class="tag">Three</span>
+    <h2>Three concepts</h2>
+    <p>Each is a different answer to "why does this site need 3D at all?"</p>
+  </div>
+
+  <div class="opt pick">
+    <h3>A · The Bunga <span class="badge b-pick">Recommended</span></h3>
+    <p class="why">You are named after a building. A <span class="gm">ਬੁੰਗਾ</span> was a residence and school
+      beside a gurdwara where students lived while they learned. So: <b>build the bunga.</b> The visitor
+      arrives outside it at dusk, and scroll carries them through the door and inside. Each room is a class.
+      The santhiya room has pothis open on stands. The kirtan room holds a dilruba and taus. The jori room.
+      The akhaara is the courtyard. The library is upstairs, and its window looks out over the world.</p>
+    <p class="why">It is not decoration — it is the organisation's own metaphor, made literal. And it
+      resolves the thing you have been asking for since the beginning: a journey into each class, where
+      "into" finally means something spatial.</p>
+    <p class="risk"><b>Risk:</b> the most build effort. Architecture generated in code takes real time to
+      get right, and a badly-proportioned bunga would look worse than a photograph.</p>
+  </div>
+
+  <div class="opt">
+    <h3>B · The Network <span class="badge b-alt">Strong second</span></h3>
+    <p class="why">A slowly turning globe. Leicester at the centre, with arcs out to <b>Panjab</b> (ten
+      students living and learning together), <b>Scotland</b>, <b>Germany</b>, and scattered points for the
+      online students. Scroll pulls you into each node and that place's story opens.</p>
+    <p class="why">This tells the single most remarkable fact about you — that you are a school which
+      exports teachers — and a globe is genuinely the right form for it. It is also far less work than A.</p>
+    <p class="risk"><b>Risk:</b> globes are a familiar trope. It would need real restraint to avoid looking
+      like a corporate "global presence" slide.</p>
+  </div>
+
+  <div class="opt">
+    <h3>C · The Shastar Table <span class="badge b-alt">Detail piece</span></h3>
+    <p class="why">Shastar and instruments as objects you can pick up and turn — tulwar, dhal, soti,
+      dilruba, taus, jori — on a dark ground, lit like a museum case. Each one names itself in Gurmukhi as
+      you rotate it.</p>
+    <p class="risk"><b>Risk:</b> not a whole site. Better as one section inside something larger.</p>
+  </div>
+
+  <div class="note">
+    <b>My recommendation: A as the building, B as the view from its library window, C as the akhaara wall.</b>
+    One world, three moments. The bunga carries the site; the globe carries the international story; the
+    shastar carry the detail.
+  </div>
+</section>
+
+<!-- ═══ 4 ═══ -->
+<section class="grp">
+  <div class="grp-head">
+    <span class="tag">Four</span>
+    <h2>Scene by scene</h2>
+    <p>Scroll drives a single continuous camera path. There are no page loads between these.</p>
+  </div>
+
+  <div class="scene"><div class="n">01</div><div>
+    <h4>Approach</h4>
+    <p>Dusk. The bunga sits beside the gurdwara, warm light in its windows, the name inking itself on in
+       Gurmukhi and English. One line: what this is, and that every class is free.</p>
+    <p class="tech">Lathe-turned domes · extruded arches · warm point lights · slow orbit</p>
+  </div></div>
+
+  <div class="scene"><div class="n">02</div><div>
+    <h4><span class="gm">ਸੰਥਿਆ</span> The Santhiya room</h4>
+    <p>Inside. Low light, pothis open on rehals. The camera settles; the class detail appears beside it.
+       Santhiya is the foundation, so it comes first — as it does in your timetable.</p>
+    <p class="tech">Instanced rehal geometry · your own pothi photograph as texture</p>
+  </div></div>
+
+  <div class="scene"><div class="n">03</div><div>
+    <h4><span class="gm">ਕੀਰਤਨ</span> The Kirtan room</h4>
+    <p>Dilruba and taus resting against the wall. Rotating one plays its raag name. Your kirtan repertoire
+       is real and documented — Raag Basant in Kaumb Taal, Raag Jaijaiwanti Guldasta and Partaal.</p>
+    <p class="tech">Lathe geometry for the instrument bodies · optional audio on tap</p>
+  </div></div>
+
+  <div class="scene"><div class="n">04</div><div>
+    <h4><span class="gm">ਜੋੜੀ</span> The Jori room</h4>
+    <p>The jori on the floor. Tapping a drum sounds its bol. The one place where a small interaction
+       genuinely teaches something.</p>
+    <p class="tech">Simple geometry · synthesised bols, opt-in only</p>
+  </div></div>
+
+  <div class="scene"><div class="n">05</div><div>
+    <h4><span class="gm">ਅਖਾੜਾ</span> The courtyard</h4>
+    <p>Out into the open. Gatka, archery, air rifling, MMA — the shastar wall stands here, and this is where
+       the recreational half of what you do finally becomes visible: dodgeball, wall climbing, Nerf,
+       horse riding.</p>
+    <p class="tech">Sky gradient · shastar as rotatable objects · your gatka photography on the walls</p>
+  </div></div>
+
+  <div class="scene"><div class="n">06</div><div>
+    <h4><span class="gm">ਇਤਿਹਾਸ</span> The Itihaas room</h4>
+    <p>The children's own models on a table — Chamkaur di Garhi in LEGO with lights for the jot, the clay
+       well, the Janam Asthan at Nankana Sahib. <b>They build models; the site is a model.</b> This is the
+       best material in the whole audit and it belongs here.</p>
+    <p class="tech">Photographs of the real models on 3D plinths — no need to rebuild them</p>
+  </div></div>
+
+  <div class="scene"><div class="n">07</div><div>
+    <h4>The library, and the window</h4>
+    <p>Upstairs. Thirteen typeset granths on the shelves, the children's magazine, the Baal Updesh books.
+       Then the camera turns to the window — and outside it is the globe. Leicester, Panjab, Scotland,
+       Germany, and the online students.</p>
+    <p class="tech">Concept B lives here · arcs drawn as curves · gentle auto-rotation</p>
+  </div></div>
+
+  <div class="scene"><div class="n">08</div><div>
+    <h4>The door out</h4>
+    <p>Back outside. Timetable, register, donate. The practical pages are ordinary, fast HTML — never 3D.</p>
+    <p class="tech">Plain DOM · no WebGL dependency</p>
+  </div></div>
+</section>
+
+<!-- ═══ 5 ═══ -->
+<section class="grp">
+  <div class="grp-head">
+    <span class="tag">Five</span>
+    <h2>Performance — the real risk</h2>
+  </div>
+  <p>This is where I have to be blunt with you. Your audience includes parents checking class times on
+     cheap Android phones and grandparents reading Gurbani. WebGL is the heaviest thing the web can ask of
+     a device. When you last chose, you said full effects everywhere — I built that, and the scroll motion
+     could not even be verified in my own tooling.</p>
+  <p><b>What I propose instead is not a compromise on ambition. It is three doors into the same building.</b></p>
+  <div class="scroll"><table>
+    <tr><th>Device</th><th>What they get</th></tr>
+    <tr><td>Desktop and modern phones</td><td>Full 3D bunga, real-time lighting, the globe, interactive shastar</td></tr>
+    <tr><td>Older or low-memory devices</td><td>The photographic journey we already built — the same chapters, the same words, no WebGL</td></tr>
+    <tr><td>Reduced-motion, or WebGL unavailable</td><td>A clean, fast, fully readable page. Nothing breaks.</td></tr>
+  </table></div>
+  <p>Detection would be a real capability check — WebGL2 support, device memory, and a short benchmark on
+     the first frames — not guesswork from the user agent.</p>
+  <div class="note warn">
+    <b>Non-negotiable:</b> the timetable, registration and donate pages never depend on WebGL. A parent must
+    be able to find Tuesday's class time on a five-year-old phone in under three seconds. If the 3D ever
+    threatens that, the 3D loses.
+  </div>
+</section>
+
+<!-- ═══ 6 ═══ -->
+<section class="grp">
+  <div class="grp-head">
+    <span class="tag">Six</span>
+    <h2>Build phases</h2>
+    <p>Each phase ends with something you can look at and judge. Nothing is a black box until the end.</p>
+  </div>
+  <div class="phase"><div class="p">Phase 0</div><div>
+    <h4>Proof of concept</h4>
+    <p>One scene only: the bunga exterior at dusk, scroll-driven orbit, inlined Three.js. Confirms the whole
+       approach works in the sandbox and that it looks good. Small and disposable.</p>
+  </div></div>
+  <div class="phase"><div class="p">Phase 1</div><div>
+    <h4>The building</h4>
+    <p>Full procedural geometry — domes, arches, courtyard, upper floor. Lighting and materials. No content
+       yet. This is the phase where proportions get judged.</p>
+  </div></div>
+  <div class="phase"><div class="p">Phase 2</div><div>
+    <h4>The camera path</h4>
+    <p>Scroll drives the walkthrough, room to room, with the content panels appearing alongside. Real text
+       from the audit — the real timetable, real class descriptions.</p>
+  </div></div>
+  <div class="phase"><div class="p">Phase 3</div><div>
+    <h4>The globe and the shastar</h4>
+    <p>Concept B in the library window; the rotatable objects in the courtyard.</p>
+  </div></div>
+  <div class="phase"><div class="p">Phase 4</div><div>
+    <h4>Tiering and fallbacks</h4>
+    <p>Capability detection, the photographic fallback path, reduced-motion, and testing on a genuinely slow
+       device profile.</p>
+  </div></div>
+  <div class="phase"><div class="p">Phase 5</div><div>
+    <h4>The practical site</h4>
+    <p>Timetable, classes, library, register, donate, about — plain and fast, wired to the real data from
+       the audit. This is the part that actually serves parents.</p>
+  </div></div>
+</section>
+
+<!-- ═══ 7 ═══ -->
+<section class="grp">
+  <div class="grp-head">
+    <span class="tag">Seven</span>
+    <h2>What I need from you</h2>
+  </div>
+  <div class="q">
+    <h4>1 · Concept</h4>
+    <p>A, B, C, or the hybrid I recommend?</p>
+    <h4>2 · motionsites.ai</h4>
+    <p>Do you want me to mine specific templates for effects — and shall we connect their MCP so I can read the prompts directly?</p>
+    <h4>3 · The tiering question</h4>
+    <p>Do you accept three doors into the same building — full 3D where the device allows, the photographic
+       journey where it does not? Or do you want one experience for everyone, accepting it will be slow for
+       some?</p>
+    <h4>4 · Photography</h4>
+    <p>Still the biggest lever. 1400px is the ceiling from your old site. Original phone photos would be
+       3000px+ and would lift both the 3D textures and the fallback.</p>
+    <h4>5 · The Panjab vidyala</h4>
+    <p>For the globe: which town, when it opened, the Ustads' names, and whether photographs exist.</p>
+    <h4>6 · Scotland and Germany</h4>
+    <p>Cities and gurdwaras, so the arcs land somewhere real rather than on a country.</p>
+  </div>
+</section>
+
+<footer class="end">
+  Plan only — nothing built. Research from Awwwards-tier 3D site analyses, August 2026. Three.js
+  availability verified locally the same day. All content drawn from the audit in "Everything We Have Done".
+</footer>
+
+</div>
