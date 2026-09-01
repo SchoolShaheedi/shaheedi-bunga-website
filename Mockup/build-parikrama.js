@@ -46,3 +46,6 @@ h = h.split('__WAA__').join('https://wa.me/' + WA_NUMBER + '?text=' + WAA_TEXT);
 const out = path.join(here, 'parikrama.built.html');
 fs.writeFileSync(out, '<!doctype html>\n' + h);
 console.log('built', (h.length / 1048576).toFixed(2), 'MB');
+
+// keep the Pages entry point pointing at this build
+console.log('Pages entry: ../index.html redirects to Mockup/parikrama.built.html');
