@@ -43,6 +43,13 @@ console.log('archery tiles inlined:', atiles.length);
 const WAA_TEXT = encodeURIComponent("Sat Sri Akal — I'd like to ask about the Archery Akhara.");
 h = h.split('__WAA__').join('https://wa.me/' + WA_NUMBER + '?text=' + WAA_TEXT);
 
+const DIL = path.resolve(here, '../Assets/Dilruba');
+h = h.split('__DPLATE_STILL__').join(b64(path.join(DIL, 'plate-still.webp'), 'image/webp'));
+h = h.split('__DPLATE_BOW__').join(b64(path.join(DIL, 'plate-bow.webp'), 'image/webp'));
+const WAD_TEXT = encodeURIComponent("Sat Sri Akal — I'd like to ask about learning dilruba.");
+h = h.split('__WAD__').join('https://wa.me/' + WA_NUMBER + '?text=' + WAD_TEXT);
+console.log('dilruba plates inlined: 2');
+
 const out = path.join(here, 'parikrama.built.html');
 fs.writeFileSync(out, '<!doctype html>\n' + h);
 console.log('built', (h.length / 1048576).toFixed(2), 'MB');
