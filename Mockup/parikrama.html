@@ -192,6 +192,32 @@ body.nogl canvas,body.nogl .stage,body.nogl .rail,body.nogl .cue,body.nogl .scri
 .flood.go{ animation:floodIn 980ms cubic-bezier(.6,0,.2,1) forwards; }
 @keyframes floodIn{ 0%{opacity:0} 42%{opacity:1} 58%{opacity:1} 100%{opacity:0} }
 
+/* Dilruba route only: the flood warms rather than going flat black, so the
+   panel arrives like a lamp coming up on the instrument instead of a cut.
+   It reuses floodIn, so it inherits the reduced-motion and ?still overrides. */
+.flood.warm{ background:
+  radial-gradient(52% 46% at 50% 46%, #2A2318 0%, #14110C 55%, #08090C 100%); }
+
+/* ── dilruba panel ── */
+#vidd .dil-stage{ position:relative; display:grid; place-items:center;
+  padding:calc(var(--u)*1.2) 0 calc(var(--u)*2.4); }
+/* the museum-case pool from Directions/Instruments.dc.html */
+#vidd .dil-stage::before{ content:""; position:absolute; inset:0; pointer-events:none;
+  background:radial-gradient(46% 44% at 50% 46%, rgba(42,35,24,.92) 0%, rgba(8,9,12,0) 100%); }
+#vidd dilruba-bow{ display:block; width:min(560px, 84vw); position:relative; }
+#vidd .dil-cue{ position:relative; margin:calc(var(--u)*0.5) 0 0; font-family:var(--mono);
+  font-size:max(11px, calc(var(--u)*0.76)); letter-spacing:.16em; text-transform:uppercase;
+  color:rgba(244,245,247,.4); }
+#vidd .dil-cue .for-touch{ display:none; }
+@media (hover:none) and (pointer:coarse){
+  #vidd .dil-cue .for-pointer{ display:none; }
+  #vidd .dil-cue .for-touch{ display:inline; }
+}
+#vidd.on .dil-stage{ animation:dilRise 720ms cubic-bezier(.2,.7,.15,1) 140ms both; }
+@keyframes dilRise{ from{ opacity:0; transform:translateY(calc(var(--u)*1)); } to{ opacity:1; transform:none; } }
+@media (prefers-reduced-motion:reduce){ #vidd.on .dil-stage{ animation:none; } }
+html.still #vidd.on .dil-stage{ animation:none; }
+
 .vid{ position:fixed; inset:0; z-index:20; overflow-y:auto; overscroll-behavior:contain;
   background:var(--vbg); color:var(--vtext); display:none; font-family:var(--sans);
   --u:min(1vw, 19.2px); }
@@ -513,6 +539,7 @@ html.still .drift img{ animation:none; }
         <a href="/vidyala/santhiya" data-route="santhiya">Santhiya Vidyala</a>
         <a href="/vidyala/kirtan" data-route="kirtan">Kirtan Vidyala</a>
         <a href="/akhara/archery" data-route="archery">Archery Akhara</a>
+        <a href="/saaj/dilruba" data-route="dilruba">Dilruba</a>
         <span class="soon">Tabla &amp; Jori Vidyala &middot; soon</span>
         <span class="soon">Katha Vidyala &middot; soon</span>
         <span class="soon">Itihaas Vidyala &middot; soon</span>
@@ -535,6 +562,7 @@ html.still .drift img{ animation:none; }
     <a href="/vidyala/santhiya" data-route="santhiya"><b>Santhiya Vidyala</b><i>Learn to read sudh Gurbani — every day, five gurdwaras &amp; online</i></a>
     <a href="/vidyala/kirtan" data-route="kirtan"><b>Kirtan Vidyala</b><i>Learn kirtan on tanti saaj — dilruba, taus, rabab</i></a>
     <a href="/akhara/archery" data-route="archery"><b>Archery Akhara</b><i>Traditional archery &mdash; Sundays at East Park Road</i></a>
+    <a href="/saaj/dilruba" data-route="dilruba"><b>Dilruba</b><i>The bowed saaj &mdash; taught in the Kirtan Vidyala</i></a>
     <a class="soon" aria-disabled="true"><b>Tabla &amp; Jori Vidyala</b><i>Page coming soon</i></a>
     <a class="soon" aria-disabled="true"><b>Katha Vidyala</b><i>Page coming soon</i></a>
     <a class="soon" aria-disabled="true"><b>Itihaas Vidyala</b><i>Page coming soon</i></a>
@@ -620,6 +648,7 @@ html.still .drift img{ animation:none; }
         <a data-route="santhiya">Santhiya Vidyala</a>
         <a data-route="kirtan">Kirtan Vidyala</a>
         <a data-route="archery">Archery Akhara</a>
+        <a data-route="dilruba">Dilruba</a>
         <span class="soon">Tabla &amp; Jori &middot; soon</span>
         <span class="soon">Katha &middot; soon</span>
         <span class="soon">Itihaas &middot; soon</span>
@@ -734,6 +763,7 @@ html.still .drift img{ animation:none; }
         <a data-route="santhiya">Santhiya Vidyala</a>
         <a data-route="kirtan">Kirtan Vidyala</a>
         <a data-route="archery">Archery Akhara</a>
+        <a data-route="dilruba">Dilruba</a>
         <span class="soon">Tabla &amp; Jori &middot; soon</span>
         <span class="soon">Katha &middot; soon</span>
         <span class="soon">Itihaas &middot; soon</span>
@@ -801,6 +831,7 @@ html.still .drift img{ animation:none; }
         <a data-route="santhiya">Santhiya Vidyala</a>
         <a data-route="kirtan">Kirtan Vidyala</a>
         <a data-route="archery">Archery Akhara</a>
+        <a data-route="dilruba">Dilruba</a>
         <span class="soon">Gatka &middot; soon</span>
         <span class="soon">Katha &middot; soon</span>
       </div>
@@ -942,6 +973,316 @@ html.still .drift img{ animation:none; }
 
   <p class="vfoot">Shaheedi Bunga &middot; Registered charity in England &amp; Wales &middot; 1185103</p>
 </section>
+
+<section class="vid" id="vidd" aria-hidden="true" aria-label="Dilruba">
+  <div class="vid-nav">
+    <div class="vid-mark">
+      <img src="__VIDLOGO__" alt="Shaheedi Bunga Gurmat Vidyala" width="42" height="42">
+      <span><b>Dilruba</b><i>Shaheedi Bunga &middot; Gurmat Sangeet</i></span>
+    </div>
+    <div class="vdrop">
+      <button type="button" class="vdrop-btn" aria-expanded="false">Vidyale <i aria-hidden="true">&#9662;</i></button>
+      <div class="vdrop-menu" hidden>
+        <a data-route="santhiya">Santhiya Vidyala</a>
+        <a data-route="kirtan">Kirtan Vidyala</a>
+        <a data-route="archery">Archery Akhara</a>
+        <a data-route="dilruba">Dilruba</a>
+        <span class="soon">Tabla &amp; Jori &middot; soon</span>
+        <span class="soon">Katha &middot; soon</span>
+      </div>
+    </div>
+    <a class="wa wa-nav" href="__WAD__" target="_blank" rel="noopener"
+       aria-label="Message us on WhatsApp about learning dilruba">__WASVG__ WhatsApp</a>
+    <button class="vid-back" type="button">&larr; Parikrama</button>
+  </div>
+
+  <header class="vhero" style="min-height:44vh; padding-bottom:calc(var(--u)*1.2);">
+    <p class="lbl" data-rv>Tanti saaj &mdash; <b>Dilruba</b> &middot; Taught in the Kirtan Vidyala</p>
+    <p class="gurline gur" data-rv>ਦਿਲਰੁਬਾ</p>
+    <h1 data-rv>The dilruba.</h1>
+    <p class="lede" data-rv>A bowed saaj, played upright against the shoulder, and drawn
+      one note at a time.</p>
+  </header>
+
+  <!-- The gaj follows the cursor. Two plates composited on a canvas by
+       <dilruba-bow>, defined in the script below this panel. -->
+  <div class="dil-stage">
+    <dilruba-bow interactive background="transparent" period="3.1" amplitude="72"
+      data-still="__DPLATE_STILL__" data-bow="__DPLATE_BOW__"
+      role="img"
+      aria-label="A Singh seated cross-legged, drawing the gaj across the dilruba's strings."></dilruba-bow>
+    <p class="dil-cue" aria-hidden="true">
+      <span class="for-pointer">Move your cursor to draw the gaj</span>
+      <span class="for-touch">The gaj draws itself, slowly</span>
+    </p>
+  </div>
+
+  <div class="vwrap">
+    <div class="vsec">
+      <p class="lbl">What you learn</p>
+      <div>
+        <p data-rv>PLACEHOLDER &mdash; to be written with Ustad Ji. What actually
+          separates the dilruba from the taus and saranda beside it, and what a
+          beginner's first weeks really look like.</p>
+        <p class="vnote">Content is being written &mdash; nothing here is confirmed.</p>
+      </div>
+    </div>
+    <div class="vsec">
+      <p class="lbl">Where &amp; when</p>
+      <div>
+        <p data-rv>Dilruba is taught within the <b>Kirtan Vidyala</b>. See that page for
+          the classes and locations, or message us and we will tell you this week&rsquo;s.</p>
+        <p class="vnote">Days and times are confirmed on the Kirtan Vidyala page, not here.</p>
+      </div>
+    </div>
+  </div>
+
+  <section class="vcta" style="padding-top:calc(var(--u)*3.4)">
+    <p class="gurline gur" data-rv>ਪਹਿਲੀ ਤਾਰ ਤੋਂ ਸ਼ੁਰੂ ਕਰੋ</p>
+    <h2 data-rv>Start from the first string.</h2>
+    <p class="wa-row" data-rv><a class="wa" href="__WAD__" target="_blank" rel="noopener">__WASVG__ Message us on WhatsApp</a></p>
+    <p class="contact" data-rv>Or email gurmat@shaheedibunga.com</p>
+  </section>
+
+  <p class="vfoot">Shaheedi Bunga &middot; Registered charity in England &amp; Wales &middot; 1185103</p>
+</section>
+
+<script>
+/* <dilruba-bow> — a bowing loop composited from two plates.
+ *
+ * The still plate holds everything that never moves. The bow plate holds the
+ * bowing arm, the hand and the gaj, cut as one piece. Each frame the bow plate
+ * is drawn in bands parallel to the bow's own axis: the upper arm band sits
+ * still, the elbow band eases through a shear, and the forearm/hand/bow band
+ * translates as one rigid unit along the axis. Bands run parallel to the
+ * stroke, so an axial slide never opens a gap between them.
+ *
+ *   <dilruba-bow interactive></dilruba-bow>
+ *
+ * Inlined here because these mockups are reviewed as Claude Artifacts, which
+ * are a single file. It is self-contained and can be lifted back out.
+ *
+ * Attributes:
+ *   src          folder holding the plates (default: this script's folder)
+ *   format       plate file extension (default "webp")
+ *   background   CSS colour, or "transparent"
+ *   period       seconds per full out-and-back of the idle stroke
+ *   amplitude    px of travel, in source-image units
+ *   interactive  cursor X across the viewport draws the gaj; it eases back
+ *                into the idle stroke once the cursor has been still
+ *   paused       park on a single frame
+ *
+ * Motion always travels along the bow's own axis. Never rotate it: the plates
+ * were cut so that an axial slide keeps the moving piece over the strip of
+ * artwork it was lifted from, and rotating exposes what is underneath.
+ */
+(function () {
+  const HERE = (document.currentScript && document.currentScript.src) || '';
+  const BASE = HERE ? HERE.replace(/[^/]*$/, '') : '';
+  const SRC = 1254;
+  const THETA = Math.atan(0.180);
+  const OX = 168, OY = 755;
+  const W0 = -100, W1 = 41;       // shear band, measured across the bow axis
+  const BANDS = 40;
+  const SHEAR_RECT = [190, 640, 290, 215];
+  const smooth = (t) => t * t * (3 - 2 * t);
+
+  const EASE = 0.09;              // per 60fps frame, how hard the gaj chases the cursor
+  const IDLE_AFTER = 2600;        // ms of stillness before the idle stroke resumes
+  const reduceMQ = window.matchMedia
+    ? window.matchMedia('(prefers-reduced-motion: reduce)') : null;
+  const reduced = () => !!(reduceMQ && reduceMQ.matches);
+
+  class DilrubaBow extends HTMLElement {
+    connectedCallback() {
+      if (this._built) return;
+      this._built = true;
+      const root = this.attachShadow({ mode: 'open' });
+      root.innerHTML =
+        '<style>:host{display:block;position:relative;line-height:0}' +
+        'canvas{display:block;width:100%;height:auto}</style><canvas></canvas>';
+      this.canvas = root.querySelector('canvas');
+      this.ctx = this.canvas.getContext('2d');
+
+      this._phase = 0;            // position within the idle stroke, 0..1
+      this._d = 0;                // the travel actually drawn this frame
+      this._targetD = 0;          // where the cursor wants it
+      this._lastPointer = -Infinity;
+      this._fromPointer = false;
+      this._last = null;
+      this._visible = true;
+
+      const dir = (this.getAttribute('src') || BASE || 'dilruba').replace(/\/$/, '');
+      const ext = this.getAttribute('format') || 'webp';
+      let pending = 2;
+      const ready = () => { if (--pending === 0) { this.resize(); this.start(); } };
+      this.still = new Image(); this.bow = new Image();
+      this.still.onload = ready; this.bow.onload = ready;
+      this.still.onerror = this.bow.onerror = () =>
+        console.error('dilruba-bow: plate failed to load from ' + dir);
+      // data-still / data-bow win when present: it lets a host page hand the
+      // plates over directly (a build inlining them as data URIs, say) without
+      // relying on a global that could collide with the page's own code.
+      this.still.src = this.getAttribute('data-still') || dir + '/plate-still.' + ext;
+      this.bow.src = this.getAttribute('data-bow') || dir + '/plate-bow.' + ext;
+
+      this._ro = new ResizeObserver(() => { this.resize(); this._render(this._d); });
+      this._ro.observe(this);
+
+      this._onPointer = (e) => {
+        if (!this.hasAttribute('interactive') || reduced()) return;
+        const w = window.innerWidth || 1;
+        let t = e.clientX / w;
+        t = t < 0 ? 0 : t > 1 ? 1 : t;
+        this._targetD = t * this._amp();
+        this._lastPointer = performance.now();
+        this._fromPointer = true;
+      };
+      window.addEventListener('pointermove', this._onPointer, { passive: true });
+
+      this._onVisibility = () => this._sync();
+      document.addEventListener('visibilitychange', this._onVisibility);
+      if (reduceMQ && reduceMQ.addEventListener) {
+        this._onReduce = () => { this._phase = 0; this._d = 0; this._sync(); };
+        reduceMQ.addEventListener('change', this._onReduce);
+      }
+      if ('IntersectionObserver' in window) {
+        this._io = new IntersectionObserver((entries) => {
+          this._visible = entries[0].isIntersecting;
+          this._sync();
+        }, { threshold: 0 });
+        this._io.observe(this);
+      }
+    }
+
+    disconnectedCallback() {
+      if (this._ro) this._ro.disconnect();
+      if (this._io) this._io.disconnect();
+      window.removeEventListener('pointermove', this._onPointer);
+      document.removeEventListener('visibilitychange', this._onVisibility);
+      if (this._onReduce && reduceMQ) reduceMQ.removeEventListener('change', this._onReduce);
+      this.stop();
+    }
+
+    _amp() { return parseFloat(this.getAttribute('amplitude') || '42'); }
+
+    // The idle stroke: one smooth out-and-back that ends at exactly the start
+    // value and slope, so the loop has no seam.
+    _dAt(phase) { return this._amp() * 0.5 * (1 - Math.cos(phase * Math.PI * 2)); }
+
+    resize() {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const w = this.clientWidth || SRC;
+      const px = Math.max(1, Math.round(w * dpr));
+      if (this.canvas.width !== px) {
+        this.canvas.width = px; this.canvas.height = px;
+      }
+      // Setting canvas.width resets context state, so re-assert this after.
+      // The plates are large and drawn scaled down; without it the downscale
+      // is noticeably softer, worst on fine detail like the frets and toes.
+      this.ctx.imageSmoothingEnabled = true;
+      this.ctx.imageSmoothingQuality = 'high';
+      this._scale = px / SRC;
+    }
+
+    _sync() {
+      const ok = this._visible && !document.hidden &&
+        !reduced() && !this.hasAttribute('paused');
+      if (ok) this.start(); else { this.stop(); this._render(this._d); }
+    }
+
+    start() {
+      if (this._raf) return;
+      if (reduced() || this.hasAttribute('paused')) { this._render(this._dAt(0)); return; }
+      this._last = null;
+      const tick = (now) => {
+        this._step(now);
+        this._raf = requestAnimationFrame(tick);
+      };
+      this._raf = requestAnimationFrame(tick);
+    }
+
+    stop() {
+      if (this._raf) { cancelAnimationFrame(this._raf); this._raf = 0; }
+      this._last = null;
+    }
+
+    _step(now) {
+      const dt = this._last === null ? 16.7 : Math.min(now - this._last, 100);
+      this._last = now;
+
+      const chasing = this.hasAttribute('interactive') &&
+        (now - this._lastPointer) < IDLE_AFTER;
+
+      if (chasing) {
+        // frame-rate independent approach toward the cursor
+        const k = 1 - Math.pow(1 - EASE, dt / 16.7);
+        this._d += (this._targetD - this._d) * k;
+      } else {
+        if (this._fromPointer) {
+          // Re-enter the idle stroke from wherever the cursor left the gaj,
+          // by solving the stroke for the phase that matches the current
+          // travel. Without this the gaj jumps when the cursor goes still.
+          const amp = this._amp();
+          let c = amp === 0 ? 1 : 1 - 2 * this._d / amp;
+          c = c < -1 ? -1 : c > 1 ? 1 : c;
+          this._phase = Math.acos(c) / (Math.PI * 2);
+          this._fromPointer = false;
+        }
+        const period = parseFloat(this.getAttribute('period') || '3.1') * 1000;
+        this._phase = (this._phase + dt / period) % 1;
+        this._d = this._dAt(this._phase);
+      }
+      this._render(this._d);
+    }
+
+    /* Kept for callers that drive the stroke by phase directly. */
+    draw(phase) {
+      this._phase = phase;
+      this._render(this._dAt(phase));
+    }
+
+    _render(d) {
+      const g = this.ctx, s = this._scale;
+      if (!g || !s || !this.still || !this.still.complete || !this.bow.complete) return;
+      this._d = d;
+
+      const bg = this.getAttribute('background') || '#faf6ee';
+      g.setTransform(1, 0, 0, 1, 0, 0);
+      g.clearRect(0, 0, this.canvas.width, this.canvas.height);
+      if (bg !== 'transparent') {
+        g.fillStyle = bg; g.fillRect(0, 0, this.canvas.width, this.canvas.height);
+      }
+      g.setTransform(s, 0, 0, s, 0, 0);
+      g.drawImage(this.still, 0, 0);
+
+      // Each band carries a continuous shear (not a step), so the sleeve's
+      // silhouette stays a smooth curve instead of a staircase.
+      const band = (w0, w1, k, e, rect) => {
+        g.save();
+        g.translate(OX, OY); g.rotate(THETA);
+        g.beginPath(); g.rect(-3000, w0, 6000, w1 - w0); g.clip();
+        g.transform(1, 0, k, 1, e, 0);
+        g.rotate(-THETA); g.translate(-OX, -OY);
+        if (rect) g.drawImage(this.bow, rect[0], rect[1], rect[2], rect[3],
+          rect[0], rect[1], rect[2], rect[3]);
+        else g.drawImage(this.bow, 0, 0);
+        g.restore();
+      };
+      band(-3000, W0 + 0.5, 0, 0);
+      const h = (W1 - W0) / BANDS;
+      for (let i = 0; i < BANDS; i++) {
+        const a = W0 + i * h;
+        const fa = smooth(i / BANDS), fb = smooth((i + 1) / BANDS);
+        const k = d * (fb - fa) / h;
+        band(a - 0.5, a + h + 0.5, k, d * fa - k * a, SHEAR_RECT);
+      }
+      band(W1 - 0.5, 3000, 0, d);
+    }
+  }
+  if (!customElements.get('dilruba-bow')) customElements.define('dilruba-bow', DilrubaBow);
+})();
+</script>
 
 <div class="rail" id="rail"></div>
 
@@ -2691,7 +3032,8 @@ RAF = requestAnimationFrame(tick);
   var PANELS = {
     santhiya: { el: vid,                             url:"/vidyala/santhiya", title:"Santhiya Vidyala · Shaheedi Bunga" },
     kirtan:   { el: document.getElementById("vidk"), url:"/vidyala/kirtan",   title:"Kirtan Vidyala · Shaheedi Bunga" },
-    archery:  { el: document.getElementById("vida"), url:"/akhara/archery",   title:"Archery Akhara · Shaheedi Bunga" }
+    archery:  { el: document.getElementById("vida"), url:"/akhara/archery",   title:"Archery Akhara · Shaheedi Bunga" },
+    dilruba:  { el: document.getElementById("vidd"), url:"/saaj/dilruba",     title:"Dilruba · Shaheedi Bunga" }
   };
   var HOME = location.pathname + location.search;
   var current = null, busy = false, wiredEls = [];
@@ -2713,6 +3055,7 @@ RAF = requestAnimationFrame(tick);
   function go(key, push){
     if(busy || key === current) return;
     busy = true;
+    flood.classList.toggle("warm", key === "dilruba");
     flood.classList.remove("go"); void flood.offsetWidth; flood.classList.add("go");
     var MID = reduce ? 0 : 430;
     setTimeout(function(){
