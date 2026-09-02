@@ -213,6 +213,69 @@ body.nogl canvas,body.nogl .stage,body.nogl .rail,body.nogl .cue,body.nogl .scri
 #vidd .vdrop-menu a:hover{ background:rgba(180,137,44,.1); }
 #vidd .vid-back:hover{ border-color:rgba(180,137,44,.5); background:rgba(180,137,44,.09); }
 
+/* ── the week timetable ── */
+#vidd .dtt{ padding:calc(var(--u)*1.4) calc(var(--u)*2.3) calc(var(--u)*3.4); }
+#vidd .dtt-top{ display:flex; align-items:baseline; justify-content:space-between;
+  gap:calc(var(--u)*1.4); flex-wrap:wrap; border-bottom:1px solid var(--vline);
+  padding-bottom:calc(var(--u)*0.8); }
+#vidd .dtt h2{ font-size:max(26px, calc(var(--u)*3.2)); letter-spacing:-.05em; }
+#vidd .dtt-next{ font-family:var(--mono); font-size:max(11px, calc(var(--u)*0.8));
+  letter-spacing:.13em; text-transform:uppercase; color:var(--gold); margin:0; }
+
+/* day strip: a roving-tabindex tablist */
+#vidd .dtt-days{ display:flex; gap:0; margin:calc(var(--u)*1.1) 0 0; position:relative;
+  flex-wrap:wrap; }
+#vidd .dtt-day{ appearance:none; background:none; border:0; cursor:pointer;
+  font-family:var(--mono); font-size:max(11px, calc(var(--u)*0.82)); letter-spacing:.14em;
+  text-transform:uppercase; color:rgba(22,41,74,.5); padding:calc(var(--u)*0.7) calc(var(--u)*1.1);
+  position:relative; transition:color .2s ease; }
+#vidd .dtt-day:hover{ color:var(--vtext); }
+#vidd .dtt-day[aria-selected="true"]{ color:var(--vtext); }
+#vidd .dtt-day .n{ display:block; font-size:max(9px, calc(var(--u)*0.62)); letter-spacing:.1em;
+  color:rgba(22,41,74,.38); margin-top:3px; }
+#vidd .dtt-day[aria-selected="true"] .n{ color:var(--gold); }
+#vidd .dtt-day.today::before{ content:""; position:absolute; top:calc(var(--u)*0.3); left:50%;
+  transform:translateX(-50%); width:4px; height:4px; border-radius:50%; background:var(--gold); }
+#vidd .dtt-day:focus-visible{ outline:2px solid var(--gold); outline-offset:-2px; }
+
+/* the marker under the selected day, drawn like a gaj: a tapered stroke */
+#vidd .dtt-stroke{ position:absolute; bottom:0; height:3px; pointer-events:none;
+  background:linear-gradient(90deg, rgba(180,137,44,0) 0%, var(--gold) 18%, var(--gold) 82%, rgba(180,137,44,0) 100%);
+  transition:transform .42s cubic-bezier(.2,.7,.15,1), width .42s cubic-bezier(.2,.7,.15,1);
+  transform-origin:left center; }
+
+#vidd .dtt-panel{ border-top:1px solid var(--vline); }
+#vidd .dtt-panel:focus-visible{ outline:2px solid var(--gold); outline-offset:2px; }
+#vidd .dtt-row{ display:grid; grid-template-columns:calc(var(--u)*6) 1.4fr 1.7fr calc(var(--u)*6);
+  gap:calc(var(--u)*1.2); padding:calc(var(--u)*1.0) 0; border-bottom:1px solid var(--vline);
+  align-items:baseline; }
+#vidd .dtt-row.head{ padding:calc(var(--u)*0.5) 0; }
+#vidd .dtt-row.head span{ font-family:var(--mono); font-size:max(9.5px, calc(var(--u)*0.64));
+  letter-spacing:.16em; text-transform:uppercase; color:rgba(22,41,74,.42); }
+#vidd .dtt-t{ font-family:var(--mono); font-size:max(16px, calc(var(--u)*1.5)); color:var(--gold); }
+#vidd .dtt-c{ font-size:max(16px, calc(var(--u)*1.5)); font-weight:600; color:var(--vtext); }
+#vidd .dtt-c .gm{ display:block; font-family:var(--gur, var(--sans)); font-weight:400;
+  font-size:max(12px, calc(var(--u)*0.95)); color:rgba(22,41,74,.55); margin-bottom:2px; }
+#vidd .dtt-w{ font-size:max(13px, calc(var(--u)*1.05)); color:rgba(22,41,74,.68); }
+#vidd .dtt-a{ font-family:var(--mono); font-size:max(11px, calc(var(--u)*0.82));
+  text-align:right; color:rgba(22,41,74,.55); }
+#vidd .dtt-row.past{ opacity:.42; }
+#vidd .dtt-row.now{ background:rgba(180,137,44,.09); box-shadow:inset 3px 0 0 var(--gold); }
+#vidd .dtt-row.now .dtt-c::after{ content:"on now"; margin-left:calc(var(--u)*0.6);
+  font-family:var(--mono); font-size:max(9px, calc(var(--u)*0.6)); letter-spacing:.14em;
+  text-transform:uppercase; color:var(--gold); vertical-align:middle; }
+#vidd .dtt-empty{ padding:calc(var(--u)*1.6) 0; color:rgba(22,41,74,.6);
+  font-size:max(14px, calc(var(--u)*1.1)); }
+#vidd .dtt-empty button{ appearance:none; background:none; border:0; padding:0; cursor:pointer;
+  color:var(--gold); font:inherit; text-decoration:underline; text-underline-offset:3px; }
+@media (max-width:700px){
+  #vidd .dtt-row{ grid-template-columns:auto 1fr; row-gap:calc(var(--u)*0.4); }
+  #vidd .dtt-row.head{ display:none; }
+  #vidd .dtt-w{ grid-column:1 / -1; }
+  #vidd .dtt-a{ text-align:left; grid-column:1 / -1; }
+}
+@media (prefers-reduced-motion:reduce){ #vidd .dtt-stroke{ transition:none; } }
+
 #vidd .dil-stage{ position:relative; display:grid; place-items:center;
   padding:calc(var(--u)*1.2) 0 calc(var(--u)*2.4); }
 /* the museum-case pool from Directions/Instruments.dc.html */
@@ -551,7 +614,7 @@ html.still .drift img{ animation:none; }
       <button type="button" class="vdrop-btn" aria-expanded="false">Vidyale <i aria-hidden="true">&#9662;</i></button>
       <div class="vdrop-menu" hidden>
         <a href="/vidyala/santhiya" data-route="santhiya">Santhiya Vidyala</a>
-        <a href="/saaj/dilruba" data-route="dilruba">Dilruba</a>
+        <a href="/saaj/dilruba" data-route="dilruba">Dilruba Vidyala</a>
         <a href="/akhara/archery" data-route="archery">Archery Akhara</a>
         <span class="soon">Tabla &amp; Jori Vidyala &middot; soon</span>
         <span class="soon">Katha Vidyala &middot; soon</span>
@@ -573,7 +636,7 @@ html.still .drift img{ animation:none; }
 <div class="menu" id="menu" hidden>
   <nav aria-label="All pages">
     <a href="/vidyala/santhiya" data-route="santhiya"><b>Santhiya Vidyala</b><i>Learn to read sudh Gurbani — every day, five gurdwaras &amp; online</i></a>
-    <a href="/saaj/dilruba" data-route="dilruba"><b>Dilruba</b><i>The bowed saaj of Gurmat Sangeet &mdash; tanti saaj &amp; vocal kirtan</i></a>
+    <a href="/saaj/dilruba" data-route="dilruba"><b>Dilruba Vidyala</b><i>The bowed saaj &mdash; tanti saaj &amp; vocal kirtan</i></a>
     <a href="/akhara/archery" data-route="archery"><b>Archery Akhara</b><i>Traditional archery &mdash; Sundays at East Park Road</i></a>
     <a class="soon" aria-disabled="true"><b>Tabla &amp; Jori Vidyala</b><i>Page coming soon</i></a>
     <a class="soon" aria-disabled="true"><b>Katha Vidyala</b><i>Page coming soon</i></a>
@@ -659,7 +722,7 @@ html.still .drift img{ animation:none; }
       <div class="vdrop-menu" hidden>
         <a data-route="santhiya">Santhiya Vidyala</a>
         <a data-route="archery">Archery Akhara</a>
-        <a data-route="dilruba">Dilruba</a>
+        <a data-route="dilruba">Dilruba Vidyala</a>
         <span class="soon">Tabla &amp; Jori &middot; soon</span>
         <span class="soon">Katha &middot; soon</span>
         <span class="soon">Itihaas &middot; soon</span>
@@ -773,7 +836,7 @@ html.still .drift img{ animation:none; }
       <div class="vdrop-menu" hidden>
         <a data-route="santhiya">Santhiya Vidyala</a>
         <a data-route="archery">Archery Akhara</a>
-        <a data-route="dilruba">Dilruba</a>
+        <a data-route="dilruba">Dilruba Vidyala</a>
         <span class="soon">Gatka &middot; soon</span>
         <span class="soon">Katha &middot; soon</span>
       </div>
@@ -920,14 +983,14 @@ html.still .drift img{ animation:none; }
   <div class="vid-nav">
     <div class="vid-mark">
       <img src="__VIDLOGO__" alt="Shaheedi Bunga Gurmat Vidyala" width="42" height="42">
-      <span><b>Dilruba</b><i>Shaheedi Bunga &middot; Gurmat Sangeet</i></span>
+      <span><b>Dilruba</b><i>Shaheedi Bunga &middot; Gurmat Vidyala</i></span>
     </div>
     <div class="vdrop">
       <button type="button" class="vdrop-btn" aria-expanded="false">Vidyale <i aria-hidden="true">&#9662;</i></button>
       <div class="vdrop-menu" hidden>
         <a data-route="santhiya">Santhiya Vidyala</a>
         <a data-route="archery">Archery Akhara</a>
-        <a data-route="dilruba">Dilruba</a>
+        <a data-route="dilruba">Dilruba Vidyala</a>
         <span class="soon">Tabla &amp; Jori &middot; soon</span>
         <span class="soon">Katha &middot; soon</span>
       </div>
@@ -937,12 +1000,8 @@ html.still .drift img{ animation:none; }
     <button class="vid-back" type="button">&larr; Parikrama</button>
   </div>
 
-  <header class="vhero" style="min-height:44vh; padding-bottom:calc(var(--u)*1.2);">
-    <p class="lbl" data-rv>Tanti saaj &mdash; <b>Dilruba</b> &middot; Vocal kirtan on the string instruments</p>
-    <p class="gurline gur" data-rv>ਦਿਲਰੁਬਾ</p>
-    <h1 data-rv>The dilruba.</h1>
-    <p class="lede" data-rv>A bowed saaj, played upright against the shoulder, and drawn
-      one note at a time.</p>
+  <header class="vhero" style="min-height:auto; padding-bottom:calc(var(--u)*0.4);">
+    <h1 data-rv>Dilruba Vidyala</h1>
   </header>
 
   <!-- The gaj follows the cursor. Two plates composited on a canvas by
@@ -958,38 +1017,21 @@ html.still .drift img{ animation:none; }
     </p>
   </div>
 
-  <div class="vwrap">
-    <div class="vsec">
-      <p class="lbl">What you learn</p>
-      <div>
-        <p class="steps" data-rv><span class="first">Dilruba</span><span>Taus</span><span>Rabab</span><span>Saranda</span><span>Harmonium</span><span>Raag &amp; taal</span></p>
-        <p data-rv>You start on an instrument from the first lesson &mdash; instruments are
-          provided &mdash; and sing what you play. <strong>No music reading, no prior
-          instrument, no fee.</strong> Adults and children learn in separate groups.</p>
-        <p class="vnote">PLACEHOLDER &mdash; what separates the dilruba from the taus and
-          saranda beside it, and what a beginner&rsquo;s first weeks really look like, is
-          still to be written with Ustad Ji.</p>
-      </div>
+  <!-- Week timetable. Data lives in DTT below, in the same shape as CLASSES in
+       Mockup/journey.html, so the real timetable can be pasted straight in. -->
+  <section class="dtt" aria-labelledby="dttH">
+    <div class="dtt-top">
+      <h2 id="dttH">The week</h2>
+      <p class="dtt-next" id="dttNext"></p>
     </div>
-    <div class="vsec">
-      <p class="lbl">Where &amp; when</p>
-      <div>
-        <p data-rv>Classes run at <strong>Guru Tegh Bahadur Gurdwara</strong>, 106 East
-          Park Road, and at <strong>Gurudwara Shri Guru Dashmesh Sahib</strong>,
-          49 Gipsy Lane.</p>
-        <p class="vnote">Exact days and times are being confirmed &mdash; message us on
-          WhatsApp and we will tell you this week&rsquo;s classes.</p>
-      </div>
-    </div>
-  </div>
 
-  <section class="vcta" style="padding-top:calc(var(--u)*3.4)">
-    <p class="gurline gur" data-rv>ਪਹਿਲੀ ਤਾਰ ਤੋਂ ਸ਼ੁਰੂ ਕਰੋ</p>
-    <h2 data-rv>Start from the first string.</h2>
-    <p class="wa-row" data-rv><a class="wa" href="__WAD__" target="_blank" rel="noopener">__WASVG__ Message us on WhatsApp</a></p>
-    <p class="contact" data-rv>Or email gurmat@shaheedibunga.com</p>
+    <div class="dtt-days" role="tablist" aria-label="Days of the week" id="dttDays"></div>
+
+    <div class="dtt-panel" id="dttBody" role="tabpanel" tabindex="0" aria-live="polite"></div>
+
+    <p class="vnote" id="dttNote">PLACEHOLDER timetable &mdash; every time, place and age
+      range below is invented. Real times to come from Ustad Ji.</p>
   </section>
-
   <p class="vfoot">Shaheedi Bunga &middot; Registered charity in England &amp; Wales &middot; 1185103</p>
 </section>
 
@@ -1227,6 +1269,187 @@ html.still .drift img{ animation:none; }
     }
   }
   if (!customElements.get('dilruba-bow')) customElements.define('dilruba-bow', DilrubaBow);
+})();
+</script>
+
+<script>
+/* Dilruba Vidyala — the week timetable.
+ *
+ * DTT is in the same shape as CLASSES in Mockup/journey.html, so the real
+ * timetable can be pasted straight in:
+ *   day 0=Sunday..6=Saturday, h/m = 24h start, mins = length,
+ *   gm/en = names, where = venue, ages = label, mode = "inperson"|"online".
+ *
+ * EVERY ROW BELOW IS INVENTED. Placeholder until Ustad Ji gives the real one.
+ */
+(function () {
+  'use strict';
+  var DTT = [
+    { day:2, h:18, m:0,  mins:90, gm:"ਦਿਲਰੁਬਾ", en:"Dilruba — beginners",
+      where:"Guru Tegh Bahadur Gurdwara · 106 East Park Road", ages:"9+", mode:"inperson" },
+    { day:3, h:19, m:0,  mins:90, gm:"ਤੰਤੀ ਸਾਜ਼", en:"Tanti saaj kirtan",
+      where:"Gurudwara Shri Guru Dashmesh Sahib · 49 Gipsy Lane", ages:"11+", mode:"inperson" },
+    { day:4, h:18, m:30, mins:60, gm:"ਦਿਲਰੁਬਾ", en:"Dilruba — continuing",
+      where:"Guru Tegh Bahadur Gurdwara · 106 East Park Road", ages:"All", mode:"inperson" },
+    { day:6, h:11, m:0,  mins:90, gm:"ਆਨਲਾਈਨ", en:"Dilruba online",
+      where:"Live over video · open worldwide", ages:"All", mode:"online" }
+  ];
+  var DAYS  = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+  var SHORT = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+
+  var days = document.getElementById("dttDays");
+  var body = document.getElementById("dttBody");
+  var next = document.getElementById("dttNext");
+  if (!days || !body) return;
+
+  var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var today = new Date().getDay();
+  var sel = today;
+  var stroke;
+
+  var pad = function (n) { return (n < 10 ? "0" : "") + n; };
+  var hhmm = function (c) { return pad(c.h) + ":" + pad(c.m); };
+  var startMins = function (c) { return c.h * 60 + c.m; };
+  var forDay = function (d) {
+    return DTT.filter(function (c) { return c.day === d; })
+              .sort(function (a, b) { return startMins(a) - startMins(b); });
+  };
+
+  /* what is on right now, and what is next after it */
+  function nowMins() { var n = new Date(); return n.getHours() * 60 + n.getMinutes(); }
+  function liveState(c) {
+    if (c.day !== new Date().getDay()) return "";
+    var s = startMins(c), e = s + c.mins, n = nowMins();
+    if (n >= s && n < e) return "now";
+    if (n >= e) return "past";
+    return "";
+  }
+  function findNext() {
+    var n = nowMins(), t = new Date().getDay();
+    for (var ahead = 0; ahead < 8; ahead++) {
+      var d = (t + ahead) % 7;
+      var list = forDay(d);
+      for (var i = 0; i < list.length; i++) {
+        if (ahead > 0 || startMins(list[i]) + list[i].mins > n) {
+          return { c: list[i], ahead: ahead, d: d };
+        }
+      }
+    }
+    return null;
+  }
+
+  function buildDays() {
+    days.innerHTML = "";
+    DAYS.forEach(function (name, d) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "dtt-day" + (d === today ? " today" : "");
+      b.setAttribute("role", "tab");
+      b.setAttribute("aria-selected", d === sel ? "true" : "false");
+      b.setAttribute("aria-controls", "dttBody");
+      b.tabIndex = d === sel ? 0 : -1;
+      var n = forDay(d).length;
+      b.innerHTML = SHORT[d] + '<span class="n">' + (n ? n + (n > 1 ? " classes" : " class") : "—") + '</span>';
+      b.setAttribute("aria-label", name + ", " + (n ? n + " class" + (n > 1 ? "es" : "") : "no classes")
+        + (d === today ? ", today" : ""));
+      b.addEventListener("click", function () { select(d, true); });
+      days.appendChild(b);
+    });
+    stroke = document.createElement("span");
+    stroke.className = "dtt-stroke";
+    days.appendChild(stroke);
+  }
+
+  function moveStroke() {
+    var b = days.querySelector('[aria-selected="true"]');
+    if (!b || !stroke) return;
+    stroke.style.width = b.offsetWidth + "px";
+    stroke.style.transform = "translateX(" + b.offsetLeft + "px)";
+  }
+
+  function renderDay() {
+    var list = forDay(sel);
+    body.innerHTML = "";
+    if (!list.length) {
+      var nx = null;
+      for (var a = 1; a <= 7 && !nx; a++) { var d = (sel + a) % 7; if (forDay(d).length) nx = d; }
+      var p = document.createElement("p");
+      p.className = "dtt-empty";
+      p.textContent = "No dilruba classes on " + DAYS[sel] + ". ";
+      if (nx !== null) {
+        var btn = document.createElement("button");
+        btn.type = "button";
+        btn.textContent = "Next is " + DAYS[nx] + ".";
+        btn.addEventListener("click", function () { select(nx, true); });
+        p.appendChild(btn);
+      }
+      body.appendChild(p);
+      return;
+    }
+    var head = document.createElement("div");
+    head.className = "dtt-row head";
+    head.setAttribute("aria-hidden", "true");
+    head.innerHTML = "<span>Time</span><span>Class</span><span>Where</span><span style='text-align:right'>Ages</span>";
+    body.appendChild(head);
+
+    list.forEach(function (c) {
+      var state = liveState(c);
+      var row = document.createElement("div");
+      row.className = "dtt-row" + (state ? " " + state : "");
+      var gm = c.gm ? '<span class="gm">' + c.gm + "</span>" : "";
+      row.innerHTML =
+        '<span class="dtt-t">' + hhmm(c) + "</span>" +
+        '<span class="dtt-c">' + gm + c.en + "</span>" +
+        '<span class="dtt-w">' + c.where + "</span>" +
+        '<span class="dtt-a">' + c.ages + "</span>";
+      if (state === "now") row.setAttribute("aria-current", "true");
+      body.appendChild(row);
+    });
+  }
+
+  function renderNext() {
+    if (!next) return;
+    var n = findNext();
+    if (!n) { next.textContent = ""; return; }
+    var when = n.ahead === 0 ? "today" : n.ahead === 1 ? "tomorrow" : DAYS[n.d];
+    next.textContent = "Next · " + when + " " + hhmm(n.c) + " · " + n.c.en;
+  }
+
+  function select(d, focus) {
+    sel = d;
+    days.querySelectorAll(".dtt-day").forEach(function (b, i) {
+      var on = i === d;
+      b.setAttribute("aria-selected", on ? "true" : "false");
+      b.tabIndex = on ? 0 : -1;
+      if (on && focus) b.focus();
+    });
+    renderDay();
+    moveStroke();
+  }
+
+  /* arrow keys walk the week, the way a tablist should */
+  days.addEventListener("keydown", function (e) {
+    var k = e.key, d = null;
+    if (k === "ArrowRight") d = (sel + 1) % 7;
+    else if (k === "ArrowLeft") d = (sel + 6) % 7;
+    else if (k === "Home") d = 0;
+    else if (k === "End") d = 6;
+    else return;
+    e.preventDefault();
+    select(d, true);
+  });
+
+  buildDays();
+  renderDay();
+  renderNext();
+  /* The panel is display:none until its route opens, so offsetWidth is 0 at
+     init and the marker would sit unpositioned until the first click. A
+     ResizeObserver catches the moment it gains layout, and resizes after. */
+  if (window.ResizeObserver) new ResizeObserver(moveStroke).observe(days);
+  else requestAnimationFrame(moveStroke);
+  addEventListener("resize", moveStroke);
+  /* the live "on now" marker would otherwise go stale on a page left open */
+  setInterval(function () { renderDay(); renderNext(); }, 60000);
 })();
 </script>
 
@@ -2978,7 +3201,7 @@ RAF = requestAnimationFrame(tick);
   var PANELS = {
     santhiya: { el: vid,                             url:"/vidyala/santhiya", title:"Santhiya Vidyala · Shaheedi Bunga" },
     archery:  { el: document.getElementById("vida"), url:"/akhara/archery",   title:"Archery Akhara · Shaheedi Bunga" },
-    dilruba:  { el: document.getElementById("vidd"), url:"/saaj/dilruba",     title:"Dilruba · Shaheedi Bunga" }
+    dilruba:  { el: document.getElementById("vidd"), url:"/saaj/dilruba",     title:"Dilruba Vidyala · Shaheedi Bunga" }
   };
   var HOME = location.pathname + location.search;
   var current = null, busy = false, wiredEls = [];
