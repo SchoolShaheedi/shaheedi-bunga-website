@@ -196,18 +196,32 @@ body.nogl canvas,body.nogl .stage,body.nogl .rail,body.nogl .cue,body.nogl .scri
    panel arrives like a lamp coming up on the instrument instead of a cut.
    It reuses floodIn, so it inherits the reduced-motion and ?still overrides. */
 .flood.warm{ background:
-  radial-gradient(52% 46% at 50% 46%, #2A2318 0%, #14110C 55%, #08090C 100%); }
+  radial-gradient(58% 50% at 50% 46%, #F6EFE0 0%, #EFE7D6 100%); }
 
-/* ── dilruba panel ── */
+/* ── dilruba panel: a light plate, like pages/santhiya.html. It paints its
+      own ground rather than following the surrounding dark panels, so every
+      colour the shared .vid rules assume is re-stated here. ── */
+#vidd{
+  --vbg:#FAF6EE; --vtext:#16294A; --vmuted:rgba(22,41,74,.66);
+  --vline:rgba(22,41,74,.14); --gold:#B4892C;
+}
+#vidd p{ color:rgba(22,41,74,.74); }
+#vidd .vid-nav{ background:rgba(250,246,238,.94); }
+#vidd .vdrop-menu{ background:rgba(250,246,238,.98); border-color:rgba(180,137,44,.34);
+  box-shadow:0 22px 44px -22px rgba(22,41,74,.3); }
+#vidd .vdrop-menu a, #vidd .vdrop-menu span{ color:rgba(22,41,74,.85); }
+#vidd .vdrop-menu a:hover{ background:rgba(180,137,44,.1); }
+#vidd .vid-back:hover{ border-color:rgba(180,137,44,.5); background:rgba(180,137,44,.09); }
+
 #vidd .dil-stage{ position:relative; display:grid; place-items:center;
   padding:calc(var(--u)*1.2) 0 calc(var(--u)*2.4); }
 /* the museum-case pool from Directions/Instruments.dc.html */
 #vidd .dil-stage::before{ content:""; position:absolute; inset:0; pointer-events:none;
-  background:radial-gradient(46% 44% at 50% 46%, rgba(42,35,24,.92) 0%, rgba(8,9,12,0) 100%); }
+  background:radial-gradient(46% 44% at 50% 46%, rgba(233,224,203,.85) 0%, rgba(250,246,238,0) 100%); }
 #vidd dilruba-bow{ display:block; width:min(560px, 84vw); position:relative; }
 #vidd .dil-cue{ position:relative; margin:calc(var(--u)*0.5) 0 0; font-family:var(--mono);
   font-size:max(11px, calc(var(--u)*0.76)); letter-spacing:.16em; text-transform:uppercase;
-  color:rgba(244,245,247,.4); }
+  color:rgba(22,41,74,.5); }
 #vidd .dil-cue .for-touch{ display:none; }
 @media (hover:none) and (pointer:coarse){
   #vidd .dil-cue .for-pointer{ display:none; }
@@ -537,9 +551,8 @@ html.still .drift img{ animation:none; }
       <button type="button" class="vdrop-btn" aria-expanded="false">Vidyale <i aria-hidden="true">&#9662;</i></button>
       <div class="vdrop-menu" hidden>
         <a href="/vidyala/santhiya" data-route="santhiya">Santhiya Vidyala</a>
-        <a href="/vidyala/kirtan" data-route="kirtan">Kirtan Vidyala</a>
-        <a href="/akhara/archery" data-route="archery">Archery Akhara</a>
         <a href="/saaj/dilruba" data-route="dilruba">Dilruba</a>
+        <a href="/akhara/archery" data-route="archery">Archery Akhara</a>
         <span class="soon">Tabla &amp; Jori Vidyala &middot; soon</span>
         <span class="soon">Katha Vidyala &middot; soon</span>
         <span class="soon">Itihaas Vidyala &middot; soon</span>
@@ -560,9 +573,8 @@ html.still .drift img{ animation:none; }
 <div class="menu" id="menu" hidden>
   <nav aria-label="All pages">
     <a href="/vidyala/santhiya" data-route="santhiya"><b>Santhiya Vidyala</b><i>Learn to read sudh Gurbani — every day, five gurdwaras &amp; online</i></a>
-    <a href="/vidyala/kirtan" data-route="kirtan"><b>Kirtan Vidyala</b><i>Learn kirtan on tanti saaj — dilruba, taus, rabab</i></a>
+    <a href="/saaj/dilruba" data-route="dilruba"><b>Dilruba</b><i>The bowed saaj of Gurmat Sangeet &mdash; tanti saaj &amp; vocal kirtan</i></a>
     <a href="/akhara/archery" data-route="archery"><b>Archery Akhara</b><i>Traditional archery &mdash; Sundays at East Park Road</i></a>
-    <a href="/saaj/dilruba" data-route="dilruba"><b>Dilruba</b><i>The bowed saaj &mdash; taught in the Kirtan Vidyala</i></a>
     <a class="soon" aria-disabled="true"><b>Tabla &amp; Jori Vidyala</b><i>Page coming soon</i></a>
     <a class="soon" aria-disabled="true"><b>Katha Vidyala</b><i>Page coming soon</i></a>
     <a class="soon" aria-disabled="true"><b>Itihaas Vidyala</b><i>Page coming soon</i></a>
@@ -646,7 +658,6 @@ html.still .drift img{ animation:none; }
       <button type="button" class="vdrop-btn" aria-expanded="false">Vidyale <i aria-hidden="true">&#9662;</i></button>
       <div class="vdrop-menu" hidden>
         <a data-route="santhiya">Santhiya Vidyala</a>
-        <a data-route="kirtan">Kirtan Vidyala</a>
         <a data-route="archery">Archery Akhara</a>
         <a data-route="dilruba">Dilruba</a>
         <span class="soon">Tabla &amp; Jori &middot; soon</span>
@@ -751,74 +762,6 @@ html.still .drift img{ animation:none; }
   <p class="vfoot">Shaheedi Bunga &middot; Registered charity in England &amp; Wales &middot; 1185103</p>
 </section>
 
-<section class="vid" id="vidk" aria-hidden="true" aria-label="Kirtan Vidyala">
-  <div class="vid-nav">
-    <div class="vid-mark">
-      <img src="__VIDLOGO__" alt="Shaheedi Bunga Gurmat Vidyala" width="42" height="42">
-      <span><b>Kirtan</b><i>Shaheedi Bunga &middot; Gurmat Vidyala</i></span>
-    </div>
-    <div class="vdrop">
-      <button type="button" class="vdrop-btn" aria-expanded="false">Vidyale <i aria-hidden="true">&#9662;</i></button>
-      <div class="vdrop-menu" hidden>
-        <a data-route="santhiya">Santhiya Vidyala</a>
-        <a data-route="kirtan">Kirtan Vidyala</a>
-        <a data-route="archery">Archery Akhara</a>
-        <a data-route="dilruba">Dilruba</a>
-        <span class="soon">Tabla &amp; Jori &middot; soon</span>
-        <span class="soon">Katha &middot; soon</span>
-        <span class="soon">Itihaas &middot; soon</span>
-      </div>
-    </div>
-    <a class="wa wa-nav" href="__WAK__" target="_blank" rel="noopener"
-       aria-label="Message us on WhatsApp about kirtan classes">__WASVG__ WhatsApp</a>
-    <button class="vid-back" type="button">&larr; Parikrama</button>
-  </div>
-
-  <header class="vhero" style="min-height:52vh; padding-bottom:calc(var(--u)*2.4);">
-    <p class="lbl" data-rv>02 &mdash; <b>Kirtan Vidyala</b> &middot; Tanti saaj &amp; vocal kirtan</p>
-    <p class="gurline gur" data-rv>ਤੰਤੀ ਸਾਜ਼ ਨਾਲ ਕੀਰਤਨ ਸਿੱਖੋ</p>
-    <h1 data-rv>Learn kirtan<br>on tanti saaj.</h1>
-    <p class="lede" data-rv>Dilruba, taus, rabab and saranda &mdash; kirtan learned on the
-      string instruments it was written for, from the first note.</p>
-  </header>
-
-  <div class="g3d" id="g3d">
-    <p class="g3d-hint">Drag &larr;&rarr;</p>
-    <div class="g3d-track" id="g3dTrack"></div>
-  </div>
-
-  <div class="vwrap">
-    <div class="vsec">
-      <p class="lbl">What you learn</p>
-      <div>
-        <p class="steps" data-rv><span class="first">Dilruba</span><span>Taus</span><span>Rabab</span><span>Saranda</span><span>Harmonium</span><span>Raag &amp; taal</span></p>
-        <p data-rv>You start on an instrument from the first lesson &mdash; instruments are
-          provided &mdash; and sing what you play. <strong>No music reading, no prior
-          instrument, no fee.</strong> Adults and children learn in separate groups.</p>
-      </div>
-    </div>
-    <div class="vsec">
-      <p class="lbl">Where &amp; when</p>
-      <div>
-        <p data-rv>Kirtan and tanti saaj classes run at <strong>Guru Tegh Bahadur
-          Gurdwara</strong>, 106 East Park Road, and at <strong>Gurudwara Shri Guru
-          Dashmesh Sahib</strong>, 49 Gipsy Lane.</p>
-        <p class="vnote">Exact days and times are being confirmed &mdash; message us on
-          WhatsApp and we will tell you this week&rsquo;s classes.</p>
-      </div>
-    </div>
-  </div>
-
-  <section class="vcta" style="padding-top:calc(var(--u)*3.4)">
-    <p class="gurline gur" data-rv>ਪਹਿਲੀ ਤਾਰ ਤੋਂ ਸ਼ੁਰੂ ਕਰੋ</p>
-    <h2 data-rv>Start from the first string.</h2>
-    <p class="wa-row" data-rv><a class="wa" href="__WAK__" target="_blank" rel="noopener">__WASVG__ Message us on WhatsApp</a></p>
-    <p class="contact" data-rv>Or email gurmat@shaheedibunga.com</p>
-  </section>
-
-  <p class="vfoot">Shaheedi Bunga &middot; Registered charity in England &amp; Wales &middot; 1185103</p>
-</section>
-
 <section class="vid" id="vida" aria-hidden="true" aria-label="Archery Akhara">
   <div class="vid-nav">
     <div class="vid-mark">
@@ -829,7 +772,6 @@ html.still .drift img{ animation:none; }
       <button type="button" class="vdrop-btn" aria-expanded="false">Vidyale <i aria-hidden="true">&#9662;</i></button>
       <div class="vdrop-menu" hidden>
         <a data-route="santhiya">Santhiya Vidyala</a>
-        <a data-route="kirtan">Kirtan Vidyala</a>
         <a data-route="archery">Archery Akhara</a>
         <a data-route="dilruba">Dilruba</a>
         <span class="soon">Gatka &middot; soon</span>
@@ -984,7 +926,6 @@ html.still .drift img{ animation:none; }
       <button type="button" class="vdrop-btn" aria-expanded="false">Vidyale <i aria-hidden="true">&#9662;</i></button>
       <div class="vdrop-menu" hidden>
         <a data-route="santhiya">Santhiya Vidyala</a>
-        <a data-route="kirtan">Kirtan Vidyala</a>
         <a data-route="archery">Archery Akhara</a>
         <a data-route="dilruba">Dilruba</a>
         <span class="soon">Tabla &amp; Jori &middot; soon</span>
@@ -997,7 +938,7 @@ html.still .drift img{ animation:none; }
   </div>
 
   <header class="vhero" style="min-height:44vh; padding-bottom:calc(var(--u)*1.2);">
-    <p class="lbl" data-rv>Tanti saaj &mdash; <b>Dilruba</b> &middot; Taught in the Kirtan Vidyala</p>
+    <p class="lbl" data-rv>Tanti saaj &mdash; <b>Dilruba</b> &middot; Vocal kirtan on the string instruments</p>
     <p class="gurline gur" data-rv>ਦਿਲਰੁਬਾ</p>
     <h1 data-rv>The dilruba.</h1>
     <p class="lede" data-rv>A bowed saaj, played upright against the shoulder, and drawn
@@ -1021,18 +962,23 @@ html.still .drift img{ animation:none; }
     <div class="vsec">
       <p class="lbl">What you learn</p>
       <div>
-        <p data-rv>PLACEHOLDER &mdash; to be written with Ustad Ji. What actually
-          separates the dilruba from the taus and saranda beside it, and what a
-          beginner's first weeks really look like.</p>
-        <p class="vnote">Content is being written &mdash; nothing here is confirmed.</p>
+        <p class="steps" data-rv><span class="first">Dilruba</span><span>Taus</span><span>Rabab</span><span>Saranda</span><span>Harmonium</span><span>Raag &amp; taal</span></p>
+        <p data-rv>You start on an instrument from the first lesson &mdash; instruments are
+          provided &mdash; and sing what you play. <strong>No music reading, no prior
+          instrument, no fee.</strong> Adults and children learn in separate groups.</p>
+        <p class="vnote">PLACEHOLDER &mdash; what separates the dilruba from the taus and
+          saranda beside it, and what a beginner&rsquo;s first weeks really look like, is
+          still to be written with Ustad Ji.</p>
       </div>
     </div>
     <div class="vsec">
       <p class="lbl">Where &amp; when</p>
       <div>
-        <p data-rv>Dilruba is taught within the <b>Kirtan Vidyala</b>. See that page for
-          the classes and locations, or message us and we will tell you this week&rsquo;s.</p>
-        <p class="vnote">Days and times are confirmed on the Kirtan Vidyala page, not here.</p>
+        <p data-rv>Classes run at <strong>Guru Tegh Bahadur Gurdwara</strong>, 106 East
+          Park Road, and at <strong>Gurudwara Shri Guru Dashmesh Sahib</strong>,
+          49 Gipsy Lane.</p>
+        <p class="vnote">Exact days and times are being confirmed &mdash; message us on
+          WhatsApp and we will tell you this week&rsquo;s classes.</p>
       </div>
     </div>
   </div>
@@ -3031,7 +2977,6 @@ RAF = requestAnimationFrame(tick);
   /* ── the router: one flood transition, any number of vidyala panels ── */
   var PANELS = {
     santhiya: { el: vid,                             url:"/vidyala/santhiya", title:"Santhiya Vidyala · Shaheedi Bunga" },
-    kirtan:   { el: document.getElementById("vidk"), url:"/vidyala/kirtan",   title:"Kirtan Vidyala · Shaheedi Bunga" },
     archery:  { el: document.getElementById("vida"), url:"/akhara/archery",   title:"Archery Akhara · Shaheedi Bunga" },
     dilruba:  { el: document.getElementById("vidd"), url:"/saaj/dilruba",     title:"Dilruba · Shaheedi Bunga" }
   };
@@ -3359,69 +3304,6 @@ RAF = requestAnimationFrame(tick);
     drawBow(); layoutArib(); layoutBulls();
   })();
   addEventListener("resize", function(){ lastW = 0; layoutArib(); layoutBulls(); });
-})();
-
-/* ── the kirtan gallery: velocity + friction + lean, wrapped infinitely ── */
-(function(){
-  var box = document.getElementById("g3d"), track = document.getElementById("g3dTrack");
-  if(!box || !track) return;
-  var T = __KTILES__;
-  var tiles = [];
-  T.concat(T).forEach(function(src){           // doubled: wrap at half width
-    var f = document.createElement("figure");
-    var im = document.createElement("img");
-    im.src = src; im.alt = ""; im.loading = "lazy"; im.draggable = false;
-    f.appendChild(im); track.appendChild(f); tiles.push({ f:f, im:im });
-  });
-
-  var pos = 0, vel = 0, drag = false, lastX = 0, half = 0, sk = 0;
-  function measure(){ half = track.scrollWidth / 2; }
-  addEventListener("resize", measure);
-
-  function frame(){
-    requestAnimationFrame(frame);
-    if(!document.body.classList.contains("vid-open")) return;
-    if(!half) measure();
-    if(!drag){
-      vel *= 0.94;
-      if(Math.abs(vel) < 0.35 && !reduce) vel += (0.35 - Math.abs(vel)) * 0.05 * (vel < 0 ? -1 : 1 || 1);
-    }
-    pos += vel;
-    if(half > 0){
-      if(pos >= half) pos -= half;
-      if(pos < 0) pos += half;
-    }
-    track.style.transform = "translate3d(" + (-pos).toFixed(2) + "px,0,0)";
-    var want = Math.max(-9, Math.min(9, vel * 0.7));
-    sk += (want - sk) * 0.12;                  // the lean follows, slightly behind
-    track.style.setProperty("--sk", sk.toFixed(2) + "deg");
-    /* counter-parallax inside each visible frame */
-    var vw = innerWidth;
-    for(var k = 0; k < tiles.length; k++){
-      var r = tiles[k].f.offsetLeft - pos;
-      if(r < -400 || r > vw + 100) continue;
-      var c = (r + 130 - vw / 2) / vw;         // -0.5 .. 0.5 across the screen
-      tiles[k].im.style.transform = "translateX(" + (c * 10).toFixed(2) + "%)";
-    }
-  }
-  requestAnimationFrame(frame);
-
-  box.addEventListener("pointerdown", function(e){
-    drag = true; lastX = e.clientX; box.classList.add("dragging");
-    box.setPointerCapture(e.pointerId);
-  });
-  box.addEventListener("pointermove", function(e){
-    if(!drag) return;
-    var dx = e.clientX - lastX; lastX = e.clientX;
-    pos -= dx; vel = -dx;
-  });
-  function up(e){ if(!drag) return; drag = false; box.classList.remove("dragging");
-    try{ box.releasePointerCapture(e.pointerId); }catch(err){} }
-  box.addEventListener("pointerup", up);
-  box.addEventListener("pointercancel", up);
-  box.addEventListener("wheel", function(e){
-    if(Math.abs(e.deltaX) > Math.abs(e.deltaY)){ vel += e.deltaX * 0.35; e.preventDefault(); }
-  }, { passive:false });
 })();
 
 /* ── the Vidyale dropdowns ── */
