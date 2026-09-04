@@ -262,6 +262,7 @@ body.nogl canvas,body.nogl .stage,body.nogl .rail,body.nogl .cue,body.nogl .scri
 #vidd .dtt-w{ font-size:max(13px, calc(var(--u)*1.05)); color:rgba(22,41,74,.68); }
 /* the venue legend: what runs, and what is still to come */
 #vidd .dtt-venues{ margin:calc(var(--u)*1.6) 0 0; }
+#vidd #dttNote b{ font-weight:600; color:var(--vtext); }
 #vidd .dtt-v{ display:flex; align-items:baseline; justify-content:space-between;
   gap:calc(var(--u)*1.2); margin:0; padding:calc(var(--u)*0.62) 0;
   border-bottom:1px solid var(--vline); }
@@ -1043,8 +1044,8 @@ html.still .drift img{ animation:none; }
 
     <div class="dtt-venues" id="dttVenues"></div>
 
-    <p class="vnote" id="dttNote">Gipsy Lane days and times are confirmed. Age ranges are
-      not published yet &mdash; message us and we will tell you whether a class suits.</p>
+    <p class="vnote" id="dttNote"><b>Every class is open to any age.</b> Gipsy Lane days
+      and times are confirmed.</p>
   </section>
   <p class="vfoot">Shaheedi Bunga &middot; Registered charity in England &amp; Wales &middot; 1185103</p>
 </section>
@@ -1293,12 +1294,12 @@ html.still .drift img{ animation:none; }
  *   day 0=Sunday..6=Saturday, h/m = 24h start, mins = length,
  *   gm/en = names, at = a VENUES key.
  *
- * The four rows below are the GIPSY LANE classes, given by Harteg, who
- * attends them. Days and times are his. What is NOT yet known:
- *   - age ranges (so no Ages column is shown rather than a guessed one)
- *   - whether any row is a beginners/continuing split, so all four read
- *     simply "Dilruba"
- *   - the classes at the other gurdwaras, which show as coming soon below.
+ * Every row below is a GIPSY LANE class, given by Harteg, who attends them.
+ * Days and times are his. There is no Ages column by design: every class is
+ * open to any age, so a column of "All" in every row would be noise - the
+ * note under the table says it once instead. Not yet known: whether any row
+ * is a beginners/continuing split (so all read simply "Dilruba"), and the
+ * classes at other gurdware, which show as coming soon below.
  * Adding a venue is one VENUES entry plus its rows — nothing else changes.
  */
 (function () {
@@ -1312,6 +1313,13 @@ html.still .drift img{ animation:none; }
      the moment Ustad Ji says it is happening. */
   var SOON = ["Other gurdware"];
   var DTT = [
+    /* mornings: Monday to Friday */
+    { day:1, h:8,  m:0, mins:120, gm:"ਦਿਲਰੁਬਾ", en:"Dilruba", at:"gipsy" },
+    { day:2, h:8,  m:0, mins:120, gm:"ਦਿਲਰੁਬਾ", en:"Dilruba", at:"gipsy" },
+    { day:3, h:8,  m:0, mins:120, gm:"ਦਿਲਰੁਬਾ", en:"Dilruba", at:"gipsy" },
+    { day:4, h:8,  m:0, mins:120, gm:"ਦਿਲਰੁਬਾ", en:"Dilruba", at:"gipsy" },
+    { day:5, h:8,  m:0, mins:120, gm:"ਦਿਲਰੁਬਾ", en:"Dilruba", at:"gipsy" },
+    /* evenings */
     { day:0, h:17, m:0, mins:60,  gm:"ਦਿਲਰੁਬਾ", en:"Dilruba", at:"gipsy" },
     { day:2, h:19, m:0, mins:60,  gm:"ਦਿਲਰੁਬਾ", en:"Dilruba", at:"gipsy" },
     { day:4, h:19, m:0, mins:60,  gm:"ਦਿਲਰੁਬਾ", en:"Dilruba", at:"gipsy" },
