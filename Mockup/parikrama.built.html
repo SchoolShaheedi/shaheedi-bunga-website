@@ -247,19 +247,30 @@ body.nogl canvas,body.nogl .stage,body.nogl .rail,body.nogl .cue,body.nogl .scri
 
 #vidd .dtt-panel{ border-top:1px solid var(--vline); }
 #vidd .dtt-panel:focus-visible{ outline:2px solid var(--gold); outline-offset:2px; }
-#vidd .dtt-row{ display:grid; grid-template-columns:calc(var(--u)*6) 1.4fr 1.7fr calc(var(--u)*6);
+#vidd .dtt-row{ display:grid; grid-template-columns:calc(var(--u)*7) 1.3fr 1.4fr;
   gap:calc(var(--u)*1.2); padding:calc(var(--u)*1.0) 0; border-bottom:1px solid var(--vline);
   align-items:baseline; }
 #vidd .dtt-row.head{ padding:calc(var(--u)*0.5) 0; }
 #vidd .dtt-row.head span{ font-family:var(--mono); font-size:max(9.5px, calc(var(--u)*0.64));
   letter-spacing:.16em; text-transform:uppercase; color:rgba(22,41,74,.42); }
 #vidd .dtt-t{ font-family:var(--mono); font-size:max(16px, calc(var(--u)*1.5)); color:var(--gold); }
+#vidd .dtt-t em{ display:block; font-style:normal; font-size:max(10px, calc(var(--u)*0.72));
+  letter-spacing:.08em; color:rgba(180,137,44,.62); margin-top:2px; }
 #vidd .dtt-c{ font-size:max(16px, calc(var(--u)*1.5)); font-weight:600; color:var(--vtext); }
 #vidd .dtt-c .gm{ display:block; font-family:var(--gur, var(--sans)); font-weight:400;
   font-size:max(12px, calc(var(--u)*0.95)); color:rgba(22,41,74,.55); margin-bottom:2px; }
 #vidd .dtt-w{ font-size:max(13px, calc(var(--u)*1.05)); color:rgba(22,41,74,.68); }
-#vidd .dtt-a{ font-family:var(--mono); font-size:max(11px, calc(var(--u)*0.82));
-  text-align:right; color:rgba(22,41,74,.55); }
+/* the venue legend: what runs, and what is still to come */
+#vidd .dtt-venues{ margin:calc(var(--u)*1.6) 0 0; }
+#vidd .dtt-v{ display:flex; align-items:baseline; justify-content:space-between;
+  gap:calc(var(--u)*1.2); margin:0; padding:calc(var(--u)*0.62) 0;
+  border-bottom:1px solid var(--vline); }
+#vidd .dtt-v b{ font-weight:500; font-size:max(13px, calc(var(--u)*1.02));
+  color:var(--vtext); }
+#vidd .dtt-v span{ font-family:var(--mono); font-size:max(10px, calc(var(--u)*0.7));
+  letter-spacing:.14em; text-transform:uppercase; color:var(--gold); white-space:nowrap; }
+#vidd .dtt-v.soon{ opacity:.55; }
+#vidd .dtt-v.soon span{ color:rgba(22,41,74,.5); }
 #vidd .dtt-row.past{ opacity:.42; }
 #vidd .dtt-row.now{ background:rgba(180,137,44,.09); box-shadow:inset 3px 0 0 var(--gold); }
 #vidd .dtt-row.now .dtt-c::after{ content:"on now"; margin-left:calc(var(--u)*0.6);
@@ -273,7 +284,7 @@ body.nogl canvas,body.nogl .stage,body.nogl .rail,body.nogl .cue,body.nogl .scri
   #vidd .dtt-row{ grid-template-columns:auto 1fr; row-gap:calc(var(--u)*0.4); }
   #vidd .dtt-row.head{ display:none; }
   #vidd .dtt-w{ grid-column:1 / -1; }
-  #vidd .dtt-a{ text-align:left; grid-column:1 / -1; }
+  #vidd .dtt-v{ flex-direction:column; gap:2px; }
 }
 @media (prefers-reduced-motion:reduce){ #vidd .dtt-stroke{ transition:none; } }
 
@@ -1030,8 +1041,10 @@ html.still .drift img{ animation:none; }
 
     <div class="dtt-panel" id="dttBody" role="tabpanel" tabindex="0" aria-live="polite"></div>
 
-    <p class="vnote" id="dttNote">PLACEHOLDER timetable &mdash; every time, place and age
-      range below is invented. Real times to come from Ustad Ji.</p>
+    <div class="dtt-venues" id="dttVenues"></div>
+
+    <p class="vnote" id="dttNote">Gipsy Lane days and times are confirmed. Age ranges are
+      not published yet &mdash; message us and we will tell you whether a class suits.</p>
   </section>
   <p class="vfoot">Shaheedi Bunga &middot; Registered charity in England &amp; Wales &middot; 1185103</p>
 </section>
@@ -1276,24 +1289,33 @@ html.still .drift img{ animation:none; }
 <script>
 /* Dilruba Vidyala — the week timetable.
  *
- * DTT is in the same shape as CLASSES in Mockup/journey.html, so the real
- * timetable can be pasted straight in:
+ * Same shape as CLASSES in Mockup/journey.html:
  *   day 0=Sunday..6=Saturday, h/m = 24h start, mins = length,
- *   gm/en = names, where = venue, ages = label, mode = "inperson"|"online".
+ *   gm/en = names, at = a VENUES key.
  *
- * EVERY ROW BELOW IS INVENTED. Placeholder until Ustad Ji gives the real one.
+ * The four rows below are the GIPSY LANE classes, given by Harteg, who
+ * attends them. Days and times are his. What is NOT yet known:
+ *   - age ranges (so no Ages column is shown rather than a guessed one)
+ *   - whether any row is a beginners/continuing split, so all four read
+ *     simply "Dilruba"
+ *   - the classes at the other gurdwaras, which show as coming soon below.
+ * Adding a venue is one VENUES entry plus its rows — nothing else changes.
  */
 (function () {
   'use strict';
+  var VENUES = {
+    gipsy: { short:"Gipsy Lane",
+             full:"Gurudwara Shri Guru Dashmesh Sahib &middot; 49 Gipsy Lane, Leicester" }
+  };
+  /* Deliberately not naming a second gurdwara: "coming soon" beside a name
+     reads as a promise, and no other venue has been confirmed. Add one here
+     the moment Ustad Ji says it is happening. */
+  var SOON = ["Other gurdware"];
   var DTT = [
-    { day:2, h:18, m:0,  mins:90, gm:"ਦਿਲਰੁਬਾ", en:"Dilruba — beginners",
-      where:"Guru Tegh Bahadur Gurdwara · 106 East Park Road", ages:"9+", mode:"inperson" },
-    { day:3, h:19, m:0,  mins:90, gm:"ਤੰਤੀ ਸਾਜ਼", en:"Tanti saaj kirtan",
-      where:"Gurudwara Shri Guru Dashmesh Sahib · 49 Gipsy Lane", ages:"11+", mode:"inperson" },
-    { day:4, h:18, m:30, mins:60, gm:"ਦਿਲਰੁਬਾ", en:"Dilruba — continuing",
-      where:"Guru Tegh Bahadur Gurdwara · 106 East Park Road", ages:"All", mode:"inperson" },
-    { day:6, h:11, m:0,  mins:90, gm:"ਆਨਲਾਈਨ", en:"Dilruba online",
-      where:"Live over video · open worldwide", ages:"All", mode:"online" }
+    { day:0, h:17, m:0, mins:60,  gm:"ਦਿਲਰੁਬਾ", en:"Dilruba", at:"gipsy" },
+    { day:2, h:19, m:0, mins:60,  gm:"ਦਿਲਰੁਬਾ", en:"Dilruba", at:"gipsy" },
+    { day:4, h:19, m:0, mins:60,  gm:"ਦਿਲਰੁਬਾ", en:"Dilruba", at:"gipsy" },
+    { day:6, h:17, m:0, mins:120, gm:"ਦਿਲਰੁਬਾ", en:"Dilruba", at:"gipsy" }
   ];
   var DAYS  = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
   var SHORT = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
@@ -1311,6 +1333,10 @@ html.still .drift img{ animation:none; }
   var pad = function (n) { return (n < 10 ? "0" : "") + n; };
   var hhmm = function (c) { return pad(c.h) + ":" + pad(c.m); };
   var startMins = function (c) { return c.h * 60 + c.m; };
+  var endMins   = function (c) { return startMins(c) + c.mins; };
+  var endHHMM   = function (c) { var e = endMins(c) % 1440;
+    return pad(Math.floor(e / 60)) + ":" + pad(e % 60); };
+  var venue = function (c) { return VENUES[c.at] || { short:c.at, full:c.at }; };
   var forDay = function (d) {
     return DTT.filter(function (c) { return c.day === d; })
               .sort(function (a, b) { return startMins(a) - startMins(b); });
@@ -1390,7 +1416,7 @@ html.still .drift img{ animation:none; }
     var head = document.createElement("div");
     head.className = "dtt-row head";
     head.setAttribute("aria-hidden", "true");
-    head.innerHTML = "<span>Time</span><span>Class</span><span>Where</span><span style='text-align:right'>Ages</span>";
+    head.innerHTML = "<span>Time</span><span>Class</span><span>Where</span>";
     body.appendChild(head);
 
     list.forEach(function (c) {
@@ -1398,14 +1424,31 @@ html.still .drift img{ animation:none; }
       var row = document.createElement("div");
       row.className = "dtt-row" + (state ? " " + state : "");
       var gm = c.gm ? '<span class="gm">' + c.gm + "</span>" : "";
+      var v = venue(c);
       row.innerHTML =
-        '<span class="dtt-t">' + hhmm(c) + "</span>" +
+        '<span class="dtt-t">' + hhmm(c) + '<em>&rarr; ' + endHHMM(c) + "</em></span>" +
         '<span class="dtt-c">' + gm + c.en + "</span>" +
-        '<span class="dtt-w">' + c.where + "</span>" +
-        '<span class="dtt-a">' + c.ages + "</span>";
+        '<span class="dtt-w">' + v.short + "</span>";
       if (state === "now") row.setAttribute("aria-current", "true");
       body.appendChild(row);
     });
+  }
+
+  /* One venue is running; the rest are named as coming soon. Rendered rather
+     than written into the markup so it stays true to VENUES/SOON. */
+  function renderVenues() {
+    var el = document.getElementById("dttVenues");
+    if (!el) return;
+    var out = "";
+    Object.keys(VENUES).forEach(function (k) {
+      var n = DTT.filter(function (c) { return c.at === k; }).length;
+      out += '<p class="dtt-v"><b>' + VENUES[k].full + "</b>" +
+             '<span>' + n + " class" + (n === 1 ? "" : "es") + " a week</span></p>";
+    });
+    SOON.forEach(function (name) {
+      out += '<p class="dtt-v soon"><b>' + name + "</b><span>Coming soon</span></p>";
+    });
+    el.innerHTML = out;
   }
 
   function renderNext() {
@@ -1443,6 +1486,7 @@ html.still .drift img{ animation:none; }
   buildDays();
   renderDay();
   renderNext();
+  renderVenues();
   /* The panel is display:none until its route opens, so offsetWidth is 0 at
      init and the marker would sit unpositioned until the first click. A
      ResizeObserver catches the moment it gains layout, and resizes after. */
