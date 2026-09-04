@@ -42,3 +42,7 @@ Models/_Unused/
 
 # stray screenshot, not part of the site
 Screenshot*.png
+
+# wrangler writes an account-id cache here when Pages commands are run
+# from inside the repo. It is local state, not part of the site.
+.wrangler/
