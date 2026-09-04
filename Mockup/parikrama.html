@@ -213,80 +213,115 @@ body.nogl canvas,body.nogl .stage,body.nogl .rail,body.nogl .cue,body.nogl .scri
 #vidd .vdrop-menu a:hover{ background:rgba(180,137,44,.1); }
 #vidd .vid-back:hover{ border-color:rgba(180,137,44,.5); background:rgba(180,137,44,.09); }
 
-/* ── the week timetable ── */
-#vidd .dtt{ padding:calc(var(--u)*1.4) calc(var(--u)*2.3) calc(var(--u)*3.4); }
-#vidd .dtt-top{ display:flex; align-items:baseline; justify-content:space-between;
-  gap:calc(var(--u)*1.4); flex-wrap:wrap; border-bottom:1px solid var(--vline);
-  padding-bottom:calc(var(--u)*0.8); }
-#vidd .dtt h2{ font-size:max(26px, calc(var(--u)*3.2)); letter-spacing:-.05em; }
-#vidd .dtt-next{ font-family:var(--mono); font-size:max(11px, calc(var(--u)*0.8));
-  letter-spacing:.13em; text-transform:uppercase; color:var(--gold); margin:0; }
+/* ── the week: one calendar, Monday first, with the empty hours cut out ──
+   The whole week is on screen at once. This timetable is small and highly
+   regular — five identical mornings, then the evenings — and its shape is
+   the most useful thing about it, which a day-at-a-time tab strip threw
+   away. The axis is banded rather than continuous: nothing happens between
+   10:00 and 17:00, and seven blank hours of grid say nothing. */
+#vidd .wk{ padding:calc(var(--u)*1.4) calc(var(--u)*2.3) calc(var(--u)*3.4); }
+#vidd .wk-top{ display:flex; align-items:baseline; justify-content:space-between;
+  gap:calc(var(--u)*1.4); flex-wrap:wrap; padding-bottom:calc(var(--u)*1.1); }
+#vidd .wk h2{ font-size:max(26px, calc(var(--u)*3.2)); letter-spacing:-.05em; }
+#vidd .wk-next{ margin:0; font-family:var(--mono); font-size:max(11px, calc(var(--u)*0.8));
+  letter-spacing:.13em; text-transform:uppercase; color:var(--gold); }
 
-/* day strip: a roving-tabindex tablist */
-#vidd .dtt-days{ display:flex; gap:0; margin:calc(var(--u)*1.1) 0 0; position:relative;
-  flex-wrap:wrap; }
-#vidd .dtt-day{ appearance:none; background:none; border:0; cursor:pointer;
-  font-family:var(--mono); font-size:max(11px, calc(var(--u)*0.82)); letter-spacing:.14em;
-  text-transform:uppercase; color:rgba(22,41,74,.5); padding:calc(var(--u)*0.7) calc(var(--u)*1.1);
-  position:relative; transition:color .2s ease; }
-#vidd .dtt-day:hover{ color:var(--vtext); }
-#vidd .dtt-day[aria-selected="true"]{ color:var(--vtext); }
-#vidd .dtt-day .n{ display:block; font-size:max(9px, calc(var(--u)*0.62)); letter-spacing:.1em;
-  color:rgba(22,41,74,.38); margin-top:3px; }
-#vidd .dtt-day[aria-selected="true"] .n{ color:var(--gold); }
-#vidd .dtt-day.today::before{ content:""; position:absolute; top:calc(var(--u)*0.3); left:50%;
-  transform:translateX(-50%); width:4px; height:4px; border-radius:50%; background:var(--gold); }
-#vidd .dtt-day:focus-visible{ outline:2px solid var(--gold); outline-offset:-2px; }
+#vidd .wk-grid{ --gut:calc(var(--u)*3.6); --rowh:max(46px, calc(var(--u)*3.9)); }
+#vidd .wk-head, #vidd .wk-band{ display:grid;
+  grid-template-columns:var(--gut) repeat(7, minmax(0,1fr)); }
+#vidd .wk-band{ position:relative; height:calc(var(--rowh) * var(--hrs)); }
 
-/* the marker under the selected day, drawn like a gaj: a tapered stroke */
-#vidd .dtt-stroke{ position:absolute; bottom:0; height:3px; pointer-events:none;
-  background:linear-gradient(90deg, rgba(180,137,44,0) 0%, var(--gold) 18%, var(--gold) 82%, rgba(180,137,44,0) 100%);
-  transition:transform .42s cubic-bezier(.2,.7,.15,1), width .42s cubic-bezier(.2,.7,.15,1);
-  transform-origin:left center; }
+#vidd .wk-dh{ font-family:var(--mono); font-size:max(10px, calc(var(--u)*0.74));
+  letter-spacing:.15em; text-transform:uppercase; color:rgba(22,41,74,.5);
+  padding:0 0 calc(var(--u)*0.55); text-align:center; }
+#vidd .wk-dh.today{ color:var(--gold); }
+#vidd .wk-dh i{ display:block; font-style:normal; font-size:max(8.5px, calc(var(--u)*0.58));
+  letter-spacing:.1em; color:rgba(22,41,74,.34); margin-top:2px; }
+#vidd .wk-dh.today i{ color:rgba(180,137,44,.72); }
 
-#vidd .dtt-panel{ border-top:1px solid var(--vline); }
-#vidd .dtt-panel:focus-visible{ outline:2px solid var(--gold); outline-offset:2px; }
-#vidd .dtt-row{ display:grid; grid-template-columns:calc(var(--u)*7) 1.3fr 1.4fr;
-  gap:calc(var(--u)*1.2); padding:calc(var(--u)*1.0) 0; border-bottom:1px solid var(--vline);
-  align-items:baseline; }
-#vidd .dtt-row.head{ padding:calc(var(--u)*0.5) 0; }
-#vidd .dtt-row.head span{ font-family:var(--mono); font-size:max(9.5px, calc(var(--u)*0.64));
-  letter-spacing:.16em; text-transform:uppercase; color:rgba(22,41,74,.42); }
-#vidd .dtt-t{ font-family:var(--mono); font-size:max(16px, calc(var(--u)*1.5)); color:var(--gold); }
-#vidd .dtt-t em{ display:block; font-style:normal; font-size:max(10px, calc(var(--u)*0.72));
-  letter-spacing:.08em; color:rgba(180,137,44,.62); margin-top:2px; }
-#vidd .dtt-c{ font-size:max(16px, calc(var(--u)*1.5)); font-weight:600; color:var(--vtext); }
-#vidd .dtt-c .gm{ display:block; font-family:var(--gur, var(--sans)); font-weight:400;
-  font-size:max(12px, calc(var(--u)*0.95)); color:rgba(22,41,74,.55); margin-bottom:2px; }
-#vidd .dtt-w{ font-size:max(13px, calc(var(--u)*1.05)); color:rgba(22,41,74,.68); }
-/* the venue legend: what runs, and what is still to come */
-#vidd .dtt-venues{ margin:calc(var(--u)*1.6) 0 0; }
-#vidd #dttNote b{ font-weight:600; color:var(--vtext); }
-#vidd .dtt-v{ display:flex; align-items:baseline; justify-content:space-between;
-  gap:calc(var(--u)*1.2); margin:0; padding:calc(var(--u)*0.62) 0;
-  border-bottom:1px solid var(--vline); }
-#vidd .dtt-v b{ font-weight:500; font-size:max(13px, calc(var(--u)*1.02));
-  color:var(--vtext); }
-#vidd .dtt-v span{ font-family:var(--mono); font-size:max(10px, calc(var(--u)*0.7));
-  letter-spacing:.14em; text-transform:uppercase; color:var(--gold); white-space:nowrap; }
-#vidd .dtt-v.soon{ opacity:.55; }
-#vidd .dtt-v.soon span{ color:rgba(22,41,74,.5); }
-#vidd .dtt-row.past{ opacity:.42; }
-#vidd .dtt-row.now{ background:rgba(180,137,44,.09); box-shadow:inset 3px 0 0 var(--gold); }
-#vidd .dtt-row.now .dtt-c::after{ content:"on now"; margin-left:calc(var(--u)*0.6);
-  font-family:var(--mono); font-size:max(9px, calc(var(--u)*0.6)); letter-spacing:.14em;
-  text-transform:uppercase; color:var(--gold); vertical-align:middle; }
-#vidd .dtt-empty{ padding:calc(var(--u)*1.6) 0; color:rgba(22,41,74,.6);
-  font-size:max(14px, calc(var(--u)*1.1)); }
-#vidd .dtt-empty button{ appearance:none; background:none; border:0; padding:0; cursor:pointer;
-  color:var(--gold); font:inherit; text-decoration:underline; text-underline-offset:3px; }
-@media (max-width:700px){
-  #vidd .dtt-row{ grid-template-columns:auto 1fr; row-gap:calc(var(--u)*0.4); }
-  #vidd .dtt-row.head{ display:none; }
-  #vidd .dtt-w{ grid-column:1 / -1; }
-  #vidd .dtt-v{ flex-direction:column; gap:2px; }
+/* hour rules, behind the day tracks only */
+#vidd .wk-rules{ position:absolute; top:0; bottom:0; left:var(--gut); right:0;
+  pointer-events:none;
+  background-image:linear-gradient(to bottom, var(--vline) 0 1px, transparent 1px);
+  background-size:100% calc(100% / var(--hrs)); background-repeat:repeat-y; }
+#vidd .wk-gutter{ position:relative; }
+#vidd .wk-hr{ position:absolute; right:calc(var(--u)*0.7); transform:translateY(-50%);
+  font-family:var(--mono); font-size:max(9.5px, calc(var(--u)*0.68));
+  color:rgba(22,41,74,.4); white-space:nowrap; }
+#vidd .wk-col{ position:relative; border-left:1px solid var(--vline); }
+#vidd .wk-col:last-child{ border-right:1px solid var(--vline); }
+#vidd .wk-col.today{ background:rgba(180,137,44,.07); }
+
+/* the break between bands: the hours with nothing in them, said once */
+#vidd .wk-break{ display:flex; align-items:center; gap:calc(var(--u)*0.9);
+  margin-left:var(--gut); padding:calc(var(--u)*0.72) 0; }
+#vidd .wk-break::before, #vidd .wk-break::after{ content:""; flex:1 1 auto; height:1px;
+  background:repeating-linear-gradient(90deg, var(--vline) 0 3px, transparent 3px 7px); }
+#vidd .wk-break span{ font-family:var(--mono); font-size:max(9px, calc(var(--u)*0.62));
+  letter-spacing:.16em; text-transform:uppercase; color:rgba(22,41,74,.34);
+  white-space:nowrap; }
+
+/* a class. Its height is its length, so a two-hour Saturday looks like one. */
+#vidd .wk-blk{ position:absolute; left:3px; right:3px; appearance:none; cursor:pointer;
+  display:flex; flex-direction:column; justify-content:center; gap:1px;
+  padding:calc(var(--u)*0.3) calc(var(--u)*0.5); text-align:left; overflow:hidden;
+  background:rgba(180,137,44,.16); border:1px solid rgba(180,137,44,.38);
+  border-left:2px solid var(--gold); border-radius:2px; color:var(--vtext);
+  transition:background .18s ease, transform .18s ease; }
+#vidd .wk-blk .t{ font-family:var(--mono); font-size:max(11.5px, calc(var(--u)*0.92));
+  color:#7C5E13; }
+#vidd .wk-blk .e{ font-family:var(--mono); font-size:max(9px, calc(var(--u)*0.64));
+  color:rgba(22,41,74,.52); }
+#vidd .wk-blk:hover, #vidd .wk-blk:focus-visible{ background:rgba(180,137,44,.28);
+  transform:translateY(-1px); outline:none; }
+#vidd .wk-blk:focus-visible{ box-shadow:0 0 0 2px var(--gold); }
+#vidd .wk-blk[aria-pressed="true"]{ background:rgba(180,137,44,.32); }
+#vidd .wk-blk.now{ background:var(--gold); border-color:var(--gold); }
+#vidd .wk-blk.now .t{ color:#FFFDF6; }
+#vidd .wk-blk.now .e{ color:rgba(255,253,246,.82); }
+#vidd .wk-blk.past{ opacity:.5; }
+
+/* where the clock is, right now */
+#vidd .wk-now{ position:absolute; left:var(--gut); right:0; height:1px;
+  background:var(--gold); pointer-events:none; z-index:2; }
+#vidd .wk-now::before{ content:""; position:absolute; left:-3px; top:-2.5px;
+  width:6px; height:6px; border-radius:50%; background:var(--gold); }
+
+/* the line under the grid: whichever class you are pointing at */
+#vidd .wk-detail{ margin:calc(var(--u)*1.2) 0 0; min-height:calc(var(--u)*2.2);
+  font-size:max(14px, calc(var(--u)*1.18)); color:var(--vtext); }
+#vidd .wk-detail .d{ font-family:var(--mono); font-size:max(10px, calc(var(--u)*0.72));
+  letter-spacing:.14em; text-transform:uppercase; color:var(--gold);
+  margin-right:calc(var(--u)*0.8); }
+#vidd .wk-detail .w{ color:rgba(22,41,74,.62); }
+#vidd .wk-where{ margin:calc(var(--u)*0.9) 0 0; padding-top:calc(var(--u)*0.9);
+  border-top:1px solid var(--vline); font-size:max(12.5px, calc(var(--u)*0.98));
+  color:rgba(22,41,74,.66); }
+#vidd .wk-where b{ font-weight:500; color:var(--vtext); }
+#vidd .wk-where .soon{ font-family:var(--mono); font-size:max(9.5px, calc(var(--u)*0.66));
+  letter-spacing:.13em; text-transform:uppercase; color:rgba(22,41,74,.45); }
+
+/* narrow screens: seven tracks stop being readable, so the same week
+   becomes a list — still whole, still Monday first, no tabs. */
+#vidd .wk-list{ display:none; }
+@media (max-width:760px){
+  #vidd .wk-grid{ display:none; }
+  #vidd .wk-list{ display:block; }
+  #vidd .wk-d{ display:flex; align-items:baseline; gap:calc(var(--u)*1.2);
+    padding:calc(var(--u)*0.85) 0; border-bottom:1px solid var(--vline); }
+  #vidd .wk-d .dy{ flex:0 0 calc(var(--u)*7); font-family:var(--mono);
+    font-size:max(10.5px, calc(var(--u)*0.78)); letter-spacing:.14em;
+    text-transform:uppercase; color:rgba(22,41,74,.55); }
+  #vidd .wk-d.today .dy{ color:var(--gold); }
+  #vidd .wk-d .cl{ display:flex; flex-wrap:wrap; gap:calc(var(--u)*0.6); }
+  #vidd .wk-d .chip{ font-family:var(--mono); font-size:max(11px, calc(var(--u)*0.88));
+    color:#7C5E13; background:rgba(180,137,44,.16);
+    border:1px solid rgba(180,137,44,.32); border-radius:2px;
+    padding:calc(var(--u)*0.26) calc(var(--u)*0.62); }
+  #vidd .wk-d .chip.now{ background:var(--gold); border-color:var(--gold); color:#FFFDF6; }
+  #vidd .wk-d .none{ font-size:max(12px, calc(var(--u)*0.94)); color:rgba(22,41,74,.34); }
 }
-@media (prefers-reduced-motion:reduce){ #vidd .dtt-stroke{ transition:none; } }
+@media (prefers-reduced-motion:reduce){ #vidd .wk-blk{ transition:none; } }
 
 #vidd .dil-stage{ position:relative; display:grid; place-items:center;
   padding:calc(var(--u)*1.2) 0 calc(var(--u)*2.4); }
@@ -1012,7 +1047,8 @@ html.still .drift img{ animation:none; }
     <button class="vid-back" type="button">&larr; Parikrama</button>
   </div>
 
-  <header class="vhero" style="min-height:auto; padding-bottom:calc(var(--u)*0.4);">
+  <!-- .vhero carries no rules in this file, so the spacing is stated here. -->
+  <header class="vhero" style="min-height:auto; padding:calc(var(--u)*1.5) 0 calc(var(--u)*0.4);">
     <h1 data-rv>Dilruba Vidyala</h1>
   </header>
 
@@ -1029,21 +1065,25 @@ html.still .drift img{ animation:none; }
     </p>
   </div>
 
-  <!-- Week timetable. Data lives in DTT below, in the same shape as CLASSES in
-       Mockup/journey.html, so the real timetable can be pasted straight in. -->
-  <section class="dtt" aria-labelledby="dttH">
-    <div class="dtt-top">
-      <h2 id="dttH">The week</h2>
-      <p class="dtt-next" id="dttNext"></p>
+  <!-- The week. One calendar, Monday first, every class on screen at once.
+       Data lives in DTT below, in the same shape as CLASSES in
+       Mockup/journey.html, so a real change drops straight in. -->
+  <section class="wk" aria-labelledby="wkH">
+    <div class="wk-top">
+      <h2 id="wkH">The week</h2>
+      <p class="wk-next" id="wkNext"></p>
     </div>
 
-    <div class="dtt-days" role="tablist" aria-label="Days of the week" id="dttDays"></div>
+    <div class="wk-grid" id="wkGrid">
+      <div class="wk-head" id="wkHead"></div>
+      <div class="wk-bands" id="wkBands"></div>
+    </div>
+    <div class="wk-list" id="wkList"></div>
 
-    <div class="dtt-panel" id="dttBody" role="tabpanel" tabindex="0" aria-live="polite"></div>
+    <p class="wk-detail" id="wkDetail" aria-live="polite"></p>
+    <p class="wk-where" id="wkWhere"></p>
 
-    <div class="dtt-venues" id="dttVenues"></div>
-
-    <p class="vnote" id="dttNote"><b>Every class is open to any age.</b> Gipsy Lane days
+    <p class="vnote"><b>Every class is open to any age.</b> Gipsy Lane days
       and times are confirmed.</p>
   </section>
   <p class="vfoot">Shaheedi Bunga &middot; Registered charity in England &amp; Wales &middot; 1185103</p>
@@ -1287,19 +1327,25 @@ html.still .drift img{ animation:none; }
 </script>
 
 <script>
-/* Dilruba Vidyala — the week timetable.
+/* Dilruba Vidyala — the week.
  *
- * Same shape as CLASSES in Mockup/journey.html:
+ * One calendar, Monday first: seven day tracks, each class a block whose
+ * height is its length, so the shape of the week reads at a glance — five
+ * two-hour mornings, then the evenings. A day-at-a-time tab strip hid
+ * exactly that, and left a single row in a full-width table.
+ *
+ * DTT is the same shape as CLASSES in Mockup/journey.html:
  *   day 0=Sunday..6=Saturday, h/m = 24h start, mins = length,
  *   gm/en = names, at = a VENUES key.
  *
- * Every row below is a GIPSY LANE class, given by Harteg, who attends them.
- * Days and times are his. There is no Ages column by design: every class is
- * open to any age, so a column of "All" in every row would be noise - the
- * note under the table says it once instead. Not yet known: whether any row
- * is a beginners/continuing split (so all read simply "Dilruba"), and the
- * classes at other gurdware, which show as coming soon below.
- * Adding a venue is one VENUES entry plus its rows — nothing else changes.
+ * Every row is a GIPSY LANE class, given by Harteg, who attends them; the
+ * mornings are there too, confirmed. There is no Ages column by design:
+ * every class is open to any age, so the note says it once. Not yet known:
+ * whether any row is a beginners/continuing split (so all read simply
+ * "Dilruba"), and the classes at other gurdware, marked coming soon.
+ *
+ * The bands are derived from the data, so a 07:00 or 21:00 class widens its
+ * band on its own, and a new midday class closes the break by itself.
  */
 (function () {
   'use strict';
@@ -1308,8 +1354,7 @@ html.still .drift img{ animation:none; }
              full:"Gurudwara Shri Guru Dashmesh Sahib &middot; 49 Gipsy Lane, Leicester" }
   };
   /* Deliberately not naming a second gurdwara: "coming soon" beside a name
-     reads as a promise, and no other venue has been confirmed. Add one here
-     the moment Ustad Ji says it is happening. */
+     reads as a promise, and none has been confirmed. */
   var SOON = ["Other gurdware"];
   var DTT = [
     /* mornings: Monday to Friday */
@@ -1319,189 +1364,244 @@ html.still .drift img{ animation:none; }
     { day:4, h:8,  m:0, mins:120, gm:"ਦਿਲਰੁਬਾ", en:"Dilruba", at:"gipsy" },
     { day:5, h:8,  m:0, mins:120, gm:"ਦਿਲਰੁਬਾ", en:"Dilruba", at:"gipsy" },
     /* evenings */
-    { day:0, h:17, m:0, mins:60,  gm:"ਦਿਲਰੁਬਾ", en:"Dilruba", at:"gipsy" },
     { day:2, h:19, m:0, mins:60,  gm:"ਦਿਲਰੁਬਾ", en:"Dilruba", at:"gipsy" },
     { day:4, h:19, m:0, mins:60,  gm:"ਦਿਲਰੁਬਾ", en:"Dilruba", at:"gipsy" },
-    { day:6, h:17, m:0, mins:120, gm:"ਦਿਲਰੁਬਾ", en:"Dilruba", at:"gipsy" }
+    { day:6, h:17, m:0, mins:120, gm:"ਦਿਲਰੁਬਾ", en:"Dilruba", at:"gipsy" },
+    { day:0, h:17, m:0, mins:60,  gm:"ਦਿਲਰੁਬਾ", en:"Dilruba", at:"gipsy" }
   ];
+
   var DAYS  = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
   var SHORT = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+  /* the week reads Monday first */
+  var ORDER = [1,2,3,4,5,6,0];
 
-  var days = document.getElementById("dttDays");
-  var body = document.getElementById("dttBody");
-  var next = document.getElementById("dttNext");
-  if (!days || !body) return;
-
-  var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
-  var today = new Date().getDay();
-  var sel = today;
-  var stroke;
+  var head = document.getElementById("wkHead");
+  var bands = document.getElementById("wkBands");
+  var list = document.getElementById("wkList");
+  var nextEl = document.getElementById("wkNext");
+  var detail = document.getElementById("wkDetail");
+  var whereEl = document.getElementById("wkWhere");
+  if (!head || !bands) return;
 
   var pad = function (n) { return (n < 10 ? "0" : "") + n; };
-  var hhmm = function (c) { return pad(c.h) + ":" + pad(c.m); };
-  var startMins = function (c) { return c.h * 60 + c.m; };
-  var endMins   = function (c) { return startMins(c) + c.mins; };
-  var endHHMM   = function (c) { var e = endMins(c) % 1440;
-    return pad(Math.floor(e / 60)) + ":" + pad(e % 60); };
-  var venue = function (c) { return VENUES[c.at] || { short:c.at, full:c.at }; };
-  var forDay = function (d) {
+  var hm  = function (mins) { var t = ((mins % 1440) + 1440) % 1440;
+    return pad(Math.floor(t / 60)) + ":" + pad(t % 60); };
+  var startOf = function (c) { return c.h * 60 + c.m; };
+  var endOf   = function (c) { return startOf(c) + c.mins; };
+  var venue   = function (c) { return VENUES[c.at] || { short:c.at, full:c.at }; };
+  var forDay  = function (d) {
     return DTT.filter(function (c) { return c.day === d; })
-              .sort(function (a, b) { return startMins(a) - startMins(b); });
+              .sort(function (a, b) { return startOf(a) - startOf(b); });
   };
 
-  /* what is on right now, and what is next after it */
-  function nowMins() { var n = new Date(); return n.getHours() * 60 + n.getMinutes(); }
-  function liveState(c) {
-    if (c.day !== new Date().getDay()) return "";
-    var s = startMins(c), e = s + c.mins, n = nowMins();
-    if (n >= s && n < e) return "now";
-    if (n >= e) return "past";
-    return "";
+  /* The axis is banded, not continuous. Classes are clustered, and any gap
+     of GAP minutes or more between clusters becomes a labelled break rather
+     than blank grid — with mornings at 08:00 and evenings at 17:00, a
+     continuous axis spends seven of its twelve hours saying nothing. Each
+     band is rounded out to whole hours so the rules land on the labels. */
+  var GAP = 120;
+  var BANDS = (function () {
+    var sorted = DTT.slice().sort(function (a, b) { return startOf(a) - startOf(b); });
+    var out = [];
+    sorted.forEach(function (c) {
+      var last = out[out.length - 1];
+      if (last && startOf(c) <= last.b + GAP) { last.b = Math.max(last.b, endOf(c)); }
+      else { out.push({ a:startOf(c), b:endOf(c) }); }
+    });
+    return out.map(function (band) {
+      var a = Math.floor(band.a / 60) * 60, b = Math.ceil(band.b / 60) * 60;
+      if (b === a) b = a + 60;
+      return { a:a, b:b, span:b - a };
+    });
+  })();
+  var bandOf = function (t) {
+    for (var i = 0; i < BANDS.length; i++) {
+      if (t >= BANDS[i].a && t <= BANDS[i].b) return i;
+    }
+    return -1;
+  };
+  var pctIn = function (band, mins) { return ((mins - band.a) / band.span) * 100; };
+
+  function now()      { var n = new Date(); return n.getHours() * 60 + n.getMinutes(); }
+  function todayIdx() { return new Date().getDay(); }
+  function state(c) {
+    if (c.day !== todayIdx()) return "";
+    var n = now();
+    if (n >= startOf(c) && n < endOf(c)) return "now";
+    return n >= endOf(c) ? "past" : "";
   }
+
+  /* the next class, wrapping into next week if today's are done */
   function findNext() {
-    var n = nowMins(), t = new Date().getDay();
+    var n = now(), t = todayIdx();
     for (var ahead = 0; ahead < 8; ahead++) {
-      var d = (t + ahead) % 7;
-      var list = forDay(d);
-      for (var i = 0; i < list.length; i++) {
-        if (ahead > 0 || startMins(list[i]) + list[i].mins > n) {
-          return { c: list[i], ahead: ahead, d: d };
-        }
+      var d = (t + ahead) % 7, l = forDay(d);
+      for (var i = 0; i < l.length; i++) {
+        if (ahead > 0 || endOf(l[i]) > n) return { c:l[i], ahead:ahead, d:d };
       }
     }
     return null;
   }
 
-  function buildDays() {
-    days.innerHTML = "";
-    DAYS.forEach(function (name, d) {
-      var b = document.createElement("button");
-      b.type = "button";
-      b.className = "dtt-day" + (d === today ? " today" : "");
-      b.setAttribute("role", "tab");
-      b.setAttribute("aria-selected", d === sel ? "true" : "false");
-      b.setAttribute("aria-controls", "dttBody");
-      b.tabIndex = d === sel ? 0 : -1;
+  function whenWord(ahead, d) {
+    return ahead === 0 ? "Today" : ahead === 1 ? "Tomorrow" : DAYS[d];
+  }
+
+  /* the line under the grid — the next class by default, or whichever block
+     is being pointed at or has focus */
+  function showDetail(c, label) {
+    var v = venue(c);
+    detail.innerHTML = '<span class="d">' + label + "</span>" +
+      hm(startOf(c)) + " &ndash; " + hm(endOf(c)) + " &middot; " + c.en +
+      ' <span class="w">&middot; ' + v.full + "</span>";
+  }
+  function resetDetail() {
+    var n = findNext();
+    if (!n) { detail.textContent = ""; return; }
+    showDetail(n.c, whenWord(n.ahead, n.d));
+  }
+
+  function build() {
+    /* day headings */
+    head.innerHTML = '<div class="wk-corner"></div>';
+    ORDER.forEach(function (d) {
       var n = forDay(d).length;
-      b.innerHTML = SHORT[d] + '<span class="n">' + (n ? n + (n > 1 ? " classes" : " class") : "—") + '</span>';
-      b.setAttribute("aria-label", name + ", " + (n ? n + " class" + (n > 1 ? "es" : "") : "no classes")
-        + (d === today ? ", today" : ""));
-      b.addEventListener("click", function () { select(d, true); });
-      days.appendChild(b);
+      var el = document.createElement("div");
+      el.className = "wk-dh" + (d === todayIdx() ? " today" : "");
+      el.innerHTML = "<b>" + SHORT[d] + "</b><i>" +
+        (n ? n + (n > 1 ? " classes" : " class") : "&mdash;") + "</i>";
+      head.appendChild(el);
     });
-    stroke = document.createElement("span");
-    stroke.className = "dtt-stroke";
-    days.appendChild(stroke);
-  }
 
-  function moveStroke() {
-    var b = days.querySelector('[aria-selected="true"]');
-    if (!b || !stroke) return;
-    stroke.style.width = b.offsetWidth + "px";
-    stroke.style.transform = "translateX(" + b.offsetLeft + "px)";
-  }
+    bands.innerHTML = "";
+    var n = now(), inBand = bandOf(n);
 
-  function renderDay() {
-    var list = forDay(sel);
-    body.innerHTML = "";
-    if (!list.length) {
-      var nx = null;
-      for (var a = 1; a <= 7 && !nx; a++) { var d = (sel + a) % 7; if (forDay(d).length) nx = d; }
-      var p = document.createElement("p");
-      p.className = "dtt-empty";
-      p.textContent = "No dilruba classes on " + DAYS[sel] + ". ";
-      if (nx !== null) {
-        var btn = document.createElement("button");
-        btn.type = "button";
-        btn.textContent = "Next is " + DAYS[nx] + ".";
-        btn.addEventListener("click", function () { select(nx, true); });
-        p.appendChild(btn);
+    BANDS.forEach(function (band, bi) {
+      /* the hours with nothing in them, said once instead of drawn */
+      if (bi > 0) {
+        var brk = document.createElement("div");
+        brk.className = "wk-break";
+        brk.innerHTML = "<span>no classes &middot; " + hm(BANDS[bi - 1].b) +
+                        " &ndash; " + hm(band.a) + "</span>";
+        bands.appendChild(brk);
       }
-      body.appendChild(p);
-      return;
-    }
-    var head = document.createElement("div");
-    head.className = "dtt-row head";
-    head.setAttribute("aria-hidden", "true");
-    head.innerHTML = "<span>Time</span><span>Class</span><span>Where</span>";
-    body.appendChild(head);
 
-    list.forEach(function (c) {
-      var state = liveState(c);
-      var row = document.createElement("div");
-      row.className = "dtt-row" + (state ? " " + state : "");
-      var gm = c.gm ? '<span class="gm">' + c.gm + "</span>" : "";
-      var v = venue(c);
-      row.innerHTML =
-        '<span class="dtt-t">' + hhmm(c) + '<em>&rarr; ' + endHHMM(c) + "</em></span>" +
-        '<span class="dtt-c">' + gm + c.en + "</span>" +
-        '<span class="dtt-w">' + v.short + "</span>";
-      if (state === "now") row.setAttribute("aria-current", "true");
-      body.appendChild(row);
+      var wrap = document.createElement("div");
+      wrap.className = "wk-band";
+      wrap.style.setProperty("--hrs", String(band.span / 60));
+
+      var rules = document.createElement("div");
+      rules.className = "wk-rules";
+      rules.setAttribute("aria-hidden", "true");
+      wrap.appendChild(rules);
+
+      var gut = document.createElement("div");
+      gut.className = "wk-gutter";
+      gut.setAttribute("aria-hidden", "true");
+      for (var t = band.a; t <= band.b; t += 60) {
+        var lab = document.createElement("span");
+        lab.className = "wk-hr";
+        lab.style.top = pctIn(band, t) + "%";
+        lab.textContent = hm(t);
+        gut.appendChild(lab);
+      }
+      wrap.appendChild(gut);
+
+      ORDER.forEach(function (d) {
+        var col = document.createElement("div");
+        col.className = "wk-col" + (d === todayIdx() ? " today" : "");
+        var mine = forDay(d).filter(function (c) {
+          return startOf(c) >= band.a && startOf(c) < band.b;
+        });
+        col.setAttribute("role", "group");
+        col.setAttribute("aria-label", DAYS[d] + ", " +
+          (mine.length ? mine.length + " class" + (mine.length > 1 ? "es" : "")
+                       : "no class") + " between " + hm(band.a) + " and " + hm(band.b));
+        mine.forEach(function (c) { col.appendChild(blockFor(c, d, band)); });
+        wrap.appendChild(col);
+      });
+
+      /* the clock, in whichever band holds it */
+      if (bi === inBand) {
+        var line = document.createElement("div");
+        line.className = "wk-now";
+        line.style.top = pctIn(band, n) + "%";
+        line.setAttribute("aria-hidden", "true");
+        wrap.appendChild(line);
+      }
+
+      bands.appendChild(wrap);
     });
+
+    buildList();
   }
 
-  /* One venue is running; the rest are named as coming soon. Rendered rather
-     than written into the markup so it stays true to VENUES/SOON. */
-  function renderVenues() {
-    var el = document.getElementById("dttVenues");
-    if (!el) return;
-    var out = "";
-    Object.keys(VENUES).forEach(function (k) {
-      var n = DTT.filter(function (c) { return c.at === k; }).length;
-      out += '<p class="dtt-v"><b>' + VENUES[k].full + "</b>" +
-             '<span>' + n + " class" + (n === 1 ? "" : "es") + " a week</span></p>";
+  function blockFor(c, d, band) {
+    var st = state(c);
+    var b = document.createElement("button");
+    b.type = "button";
+    b.className = "wk-blk" + (st ? " " + st : "");
+    b.style.top = pctIn(band, startOf(c)) + "%";
+    b.style.height = (c.mins / band.span) * 100 + "%";
+    b.setAttribute("aria-pressed", "false");
+    b.setAttribute("aria-label", DAYS[d] + " " + hm(startOf(c)) + " to " + hm(endOf(c)) +
+      ", " + c.en + ", " + venue(c).short + (st === "now" ? ", on now" : ""));
+    b.innerHTML = '<span class="t">' + hm(startOf(c)) + "</span>" +
+                  '<span class="e">&rarr; ' + hm(endOf(c)) + "</span>";
+    var label = st === "now" ? "On now" : DAYS[d];
+    b.addEventListener("mouseenter", function () { showDetail(c, label); });
+    b.addEventListener("focus",      function () { showDetail(c, label); });
+    b.addEventListener("mouseleave", resetDetail);
+    b.addEventListener("blur",       resetDetail);
+    b.addEventListener("click", function () {
+      bands.querySelectorAll(".wk-blk").forEach(function (o) {
+        o.setAttribute("aria-pressed", o === b ? "true" : "false");
+      });
+      showDetail(c, label);
     });
-    SOON.forEach(function (name) {
-      out += '<p class="dtt-v soon"><b>' + name + "</b><span>Coming soon</span></p>";
+    return b;
+  }
+
+  /* the same week as a list, for narrow screens */
+  function buildList() {
+    list.innerHTML = "";
+    ORDER.forEach(function (d) {
+      var l = forDay(d);
+      var row = document.createElement("div");
+      row.className = "wk-d" + (d === todayIdx() ? " today" : "");
+      var chips = l.map(function (c) {
+        return '<span class="chip' + (state(c) === "now" ? " now" : "") + '">' +
+               hm(startOf(c)) + "&ndash;" + hm(endOf(c)) + "</span>";
+      }).join("");
+      row.innerHTML = '<span class="dy">' + SHORT[d] + "</span>" +
+        (l.length ? '<span class="cl">' + chips + "</span>"
+                  : '<span class="none">No class</span>');
+      list.appendChild(row);
     });
-    el.innerHTML = out;
   }
 
   function renderNext() {
-    if (!next) return;
     var n = findNext();
-    if (!n) { next.textContent = ""; return; }
-    var when = n.ahead === 0 ? "today" : n.ahead === 1 ? "tomorrow" : DAYS[n.d];
-    next.textContent = "Next · " + when + " " + hhmm(n.c) + " · " + n.c.en;
+    if (!n) { nextEl.textContent = ""; return; }
+    nextEl.innerHTML = state(n.c) === "now"
+      ? "On now &middot; until " + hm(endOf(n.c))
+      : "Next &middot; " + whenWord(n.ahead, n.d).toLowerCase() + " " + hm(startOf(n.c));
   }
 
-  function select(d, focus) {
-    sel = d;
-    days.querySelectorAll(".dtt-day").forEach(function (b, i) {
-      var on = i === d;
-      b.setAttribute("aria-selected", on ? "true" : "false");
-      b.tabIndex = on ? 0 : -1;
-      if (on && focus) b.focus();
-    });
-    renderDay();
-    moveStroke();
+  function renderWhere() {
+    var out = Object.keys(VENUES).map(function (k) {
+      var n = DTT.filter(function (c) { return c.at === k; }).length;
+      return "<b>" + VENUES[k].full + "</b> &middot; " + n + " class" + (n === 1 ? "" : "es") + " a week";
+    }).join(" &nbsp; ");
+    if (SOON.length) {
+      out += ' <span class="soon">&nbsp;&middot;&nbsp; ' + SOON.join(", ") + ": coming soon</span>";
+    }
+    whereEl.innerHTML = out;
   }
 
-  /* arrow keys walk the week, the way a tablist should */
-  days.addEventListener("keydown", function (e) {
-    var k = e.key, d = null;
-    if (k === "ArrowRight") d = (sel + 1) % 7;
-    else if (k === "ArrowLeft") d = (sel + 6) % 7;
-    else if (k === "Home") d = 0;
-    else if (k === "End") d = 6;
-    else return;
-    e.preventDefault();
-    select(d, true);
-  });
-
-  buildDays();
-  renderDay();
-  renderNext();
-  renderVenues();
-  /* The panel is display:none until its route opens, so offsetWidth is 0 at
-     init and the marker would sit unpositioned until the first click. A
-     ResizeObserver catches the moment it gains layout, and resizes after. */
-  if (window.ResizeObserver) new ResizeObserver(moveStroke).observe(days);
-  else requestAnimationFrame(moveStroke);
-  addEventListener("resize", moveStroke);
-  /* the live "on now" marker would otherwise go stale on a page left open */
-  setInterval(function () { renderDay(); renderNext(); }, 60000);
+  build(); renderNext(); renderWhere(); resetDetail();
+  /* left open, the clock line and "on now" would go stale */
+  setInterval(function () { build(); renderNext(); resetDetail(); }, 60000);
 })();
 </script>
 
