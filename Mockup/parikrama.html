@@ -348,33 +348,61 @@ html.still #vidd.on .dil-stage{ animation:none; }
   font-size:max(20px, calc(var(--u)*2.3)); line-height:1.25; }
 #vidd .dhero h1{ margin:0; font-size:max(44px, calc(var(--u)*6.6)); }
 
-/* ── the gallery: one strip in perspective ──
-   This is Ustad Ji's own kirtan gallery, recovered from the commit that
-   removed that panel: wheel or drag adds velocity, friction takes it away,
-   and the whole track leans with the motion, each image counter-sliding
-   inside its frame — that counter-slide is what sells the depth. Re-dressed
-   for a cream ground, where his darkening filter would have read as grime. */
-#vidd .dgal{ position:relative; overflow:hidden; perspective:1100px;
-  padding:calc(var(--u)*1.8) 0 calc(var(--u)*2.2);
-  cursor:grab; touch-action:pan-y; user-select:none; }
-#vidd .dgal.dragging{ cursor:grabbing; }
-#vidd .dgal:focus-visible{ outline:2px solid var(--gold); outline-offset:-4px; }
-#vidd .dgal-track{ display:flex; gap:calc(var(--u)*0.8); width:max-content;
-  transform-style:preserve-3d; will-change:transform; }
-#vidd .dgal figure{ margin:0; width:clamp(190px, 21vw, 300px); aspect-ratio:4/5;
-  flex:none; overflow:hidden; background:#EDE5D4;
-  transform:rotateY(var(--sk,0deg)); transform-style:preserve-3d;
-  box-shadow:0 26px 44px -30px rgba(22,41,74,.5); }
-#vidd .dgal img{ width:112%; height:100%; object-fit:cover; display:block;
-  margin-left:-6%; will-change:transform; pointer-events:none;
-  filter:saturate(.88) contrast(1.03); transition:filter .4s ease; }
-#vidd .dgal figure:hover img{ filter:none; }
-/* the strip fades into the page rather than being cut off by it */
-#vidd .dgal::before, #vidd .dgal::after{ content:""; position:absolute; top:0; bottom:0;
-  width:calc(var(--u)*4); z-index:2; pointer-events:none; }
-#vidd .dgal::before{ left:0;  background:linear-gradient(90deg, var(--vbg), rgba(250,246,238,0)); }
-#vidd .dgal::after{ right:0; background:linear-gradient(270deg, var(--vbg), rgba(250,246,238,0)); }
-@media (prefers-reduced-motion:reduce){ #vidd .dgal img{ transition:none; } }
+/* ── the wall: columns of cards drifting upward, forever ──
+   Pure CSS transform on each column; no per-frame JS, so it holds 60fps with
+   every card on screen. Each column's list is duplicated and the column
+   animates translateY 0 -> -50%, which lands the duplicate exactly where the
+   original began.
+
+   THE GAP IS MARGIN, NOT flex/grid `gap`, AND THAT IS LOad-BEARING. With a
+   real gap, a doubled list of N cards is 2N cards + (2N-1) gaps, so 50% of it
+   is half a gap short of one list — and the loop shows a visible jump every
+   time round. As bottom margin on every card, the height is exactly
+   2N*(card+gap) and half of it is exactly one list. */
+/* Tall enough, and columns narrow enough, that two and a bit cards are in
+   view at once — at full width the cards came out 415px tall in a 467px
+   window, which is a slideshow, not a wall. */
+#vidd .dwall{ position:relative; overflow:hidden;
+  height:clamp(460px, 78vh, 780px);
+  -webkit-mask-image:linear-gradient(to bottom, transparent 0%, #000 10%, #000 90%, transparent 100%);
+          mask-image:linear-gradient(to bottom, transparent 0%, #000 10%, #000 90%, transparent 100%); }
+#vidd .dwall:focus-visible{ outline:2px solid var(--gold); outline-offset:-4px; }
+/* Capped per column, not overall: these are portrait 4:5 photographs, not the
+   landscape screenshots this pattern usually carries, so a column that grows
+   with the viewport makes a card taller than the window. 250px a column keeps
+   a card near 310px and two-and-a-bit of them in view. */
+#vidd .dwall-grid{ display:grid; grid-template-columns:repeat(var(--cols,4), minmax(0,1fr));
+  column-gap:var(--wgap); align-items:start;
+  max-width:calc(var(--cols,4) * 250px); margin-inline:auto;
+  padding:0 calc(var(--u)*2.3); --wgap:clamp(14px, calc(var(--u)*1.4), 24px); }
+#vidd .dwall-col{ animation:dwallUp var(--dur, 32s) linear infinite;
+  will-change:transform; }
+@keyframes dwallUp{ from{ transform:translate3d(0,0,0); } to{ transform:translate3d(0,-50%,0); } }
+
+#vidd .dwall figure{ margin:0 0 var(--wgap); border-radius:14px; overflow:hidden;
+  background:#EDE5D4; position:relative; aspect-ratio:4/5;
+  box-shadow:0 18px 34px -22px rgba(22,41,74,.45); }
+#vidd .dwall img{ width:100%; height:100%; object-fit:cover; display:block; }
+#vidd .dwall figcaption{ position:absolute; left:0; right:0; bottom:0;
+  padding:calc(var(--u)*1.6) calc(var(--u)*0.9) calc(var(--u)*0.75);
+  font-family:var(--mono); font-size:max(9.5px, calc(var(--u)*0.66));
+  letter-spacing:.13em; text-transform:uppercase; color:#FFFDF6;
+  background:linear-gradient(to top, rgba(10,18,34,.72), rgba(10,18,34,0)); }
+
+/* a look at one card stops the wall */
+#vidd .dwall:hover .dwall-col,
+#vidd .dwall:focus-within .dwall-col{ animation-play-state:paused; }
+
+/* Reduced motion: a real static grid — the duplicate half would otherwise
+   show every photograph twice, standing still. */
+@media (prefers-reduced-motion:reduce){
+  #vidd .dwall{ height:auto; -webkit-mask-image:none; mask-image:none; }
+  #vidd .dwall-col{ animation:none; }
+  #vidd .dwall .dup{ display:none; }
+}
+html.still #vidd .dwall{ height:auto; -webkit-mask-image:none; mask-image:none; }
+html.still #vidd .dwall-col{ animation:none; }
+html.still #vidd .dwall .dup{ display:none; }
 
 @media (max-width:900px){
   #vidd .dhero{ grid-template-columns:1fr; min-height:0;
@@ -1106,11 +1134,11 @@ html.still .drift img{ animation:none; }
 
   <!-- The gallery. Ustad Ji's kirtan strip, recovered and re-dressed; the
        tiles are inlined by build-parikrama.js. -->
-  <section class="dgal-sec" aria-label="Photographs from the Vidyala">
-    <div class="dgal" id="dgal" tabindex="0" role="group"
-         aria-label="Photographs from Shaheedi Bunga's classes. Drag, scroll or use the arrow keys.">
-      <div class="dgal-track" id="dgalTrack"></div>
-    </div>
+  <!-- The wall. Columns of cards drifting upward; built by buildWall() below
+       from the tiles build-parikrama.js inlines. -->
+  <section class="dwall-sec" aria-label="Photographs from the Vidyala">
+    <div class="dwall" id="dwall" tabindex="0" role="group"
+         aria-label="Photographs from Shaheedi Bunga's classes, drifting slowly. Focus to pause."></div>
   </section>
 
   <!-- The week. One calendar, Monday first, every class on screen at once.
@@ -1653,31 +1681,114 @@ html.still .drift img{ animation:none; }
 </script>
 
 <script>
-/* The dilruba gallery — one strip in perspective.
+/* The wall — columns of cards drifting slowly upward, forever.
  *
- * This is Ustad Ji's kirtan gallery, recovered from the commit that removed
- * that panel, so the motion is his: wheel or drag adds velocity, friction
- * takes it away, the track leans with the motion, and each image counter-
- * slides inside its frame — that counter-slide is what sells the depth.
+ * This repo is one hand-written HTML file with no framework and no build step
+ * beyond inlining assets, so "a reusable component taking an array of card
+ * data" is a function taking an array of card data. buildWall() is the whole
+ * of it: give it a mount, an array of { src, alt, title? }, and it deals the
+ * cards into columns and starts them.
  *
- * Changed from his version: its own ids, so restoring the kirtan gallery
- * cannot collide with it; `reduce` is declared here rather than inherited
- * from the enclosing scope; alt text on every tile instead of alt="";
- * and arrow keys, because drag and wheel alone leave a keyboard out.
+ * The motion is CSS: each column's list is duplicated and the column animates
+ * translateY 0 -> -50% linearly, forever, so the duplicate arrives exactly
+ * where the original started. Nothing runs per frame. JS only measures, once,
+ * to set each column's duration — because the speed has to be the same in
+ * every column, and equal durations only give equal speed when the columns
+ * are the same height.
  */
-(function(){
+(function () {
   'use strict';
-  var box = document.getElementById("dgal"), track = document.getElementById("dgalTrack");
-  if(!box || !track) return;
-  var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches
-            || document.documentElement.classList.contains("still");
 
-  /* src paired with what is actually in the photograph */
-  var T = __DTILES__;
+  var SPEED = 38;          // px per second, the same in every column
+  var MIN_S = 25, MAX_S = 75;
+
+  function buildWall(mount, cards, opts) {
+    if (!mount || !cards || !cards.length) return;
+    opts = opts || {};
+    var wanted = opts.columns || 4;
+    var grid, cols;
+
+    /* Columns come from how many cards of a decent width actually fit, not
+       from fixed breakpoints. The pattern this came from carries landscape
+       screenshots, where two fat columns are fine; these are portrait 4:5
+       photographs, so two columns on a tablet makes a card taller than the
+       window and the wall becomes a slideshow. A phone lands on 2, a tablet
+       on 3-4, a desktop on the configured 4. */
+    var MIN_CARD = 170;
+    function columnsNow() {
+      var w = mount.clientWidth || innerWidth || 1200;
+      var gap = 20;
+      var fits = Math.floor((w + gap) / (MIN_CARD + gap));
+      return Math.max(1, Math.min(wanted, fits));
+    }
+
+    function card(c, dup) {
+      var f = document.createElement("figure");
+      if (dup) { f.className = "dup"; f.setAttribute("aria-hidden", "true"); }
+      var im = document.createElement("img");
+      im.src = c.src; im.alt = dup ? "" : (c.alt || "");
+      im.loading = "lazy"; im.decoding = "async"; im.draggable = false;
+      f.appendChild(im);
+      if (c.title) {
+        var cap = document.createElement("figcaption");
+        cap.textContent = c.title;
+        f.appendChild(cap);
+      }
+      return f;
+    }
+
+    function build(n) {
+      mount.innerHTML = "";
+      grid = document.createElement("div");
+      grid.className = "dwall-grid";
+      grid.style.setProperty("--cols", String(n));
+      cols = [];
+      for (var i = 0; i < n; i++) {
+        var col = document.createElement("div");
+        col.className = "dwall-col";
+        grid.appendChild(col); cols.push(col);
+      }
+      /* dealt round-robin, so neighbouring columns never start on the same
+         photograph and the wall does not read as a repeating block */
+      cards.forEach(function (c, i) { cols[i % n].appendChild(card(c, false)); });
+      cards.forEach(function (c, i) { cols[i % n].appendChild(card(c, true)); });
+      mount.appendChild(grid);
+      pace();
+    }
+
+    /* One measure per layout. A column's loop travels exactly half its own
+       height; at a fixed speed that means a duration per column. */
+    function pace() {
+      cols.forEach(function (col) {
+        var travel = col.scrollHeight / 2;
+        if (!travel) return;
+        var secs = Math.min(MAX_S, Math.max(MIN_S, travel / SPEED));
+        col.style.setProperty("--dur", secs.toFixed(1) + "s");
+        /* a negative delay starts each column part-way through the same loop,
+           so they drift out of step without drifting at different speeds */
+        col.style.animationDelay = "-" + (secs * (cols.indexOf(col) / cols.length)).toFixed(1) + "s";
+      });
+    }
+
+    var at = columnsNow();
+    build(at);
+    /* images arrive after layout, so the first measure is usually short */
+    if (window.ResizeObserver) new ResizeObserver(pace).observe(mount);
+    addEventListener("resize", function () {
+      var n = columnsNow();
+      if (n !== at) { at = n; build(n); } else { pace(); }
+    });
+    addEventListener("load", pace);
+  }
+
+  var mount = document.getElementById("dwall");
+  if (!mount) return;
+
+  var SRC = __DTILES__;
   /* Index-matched to the sorted filenames in Assets/Kirtan/tiles:
      k01 k02 k03 k05 k07 k11 k15 k22 k24 k26 k27 k28. Written from the
      photographs themselves; four show a dilruba, the rest are the other
-     classes and the samagams. */
+     classes and the samagams. No titles — the panel carries no text. */
   var ALT = [
     "A student playing the dilruba at a samagam, gaj drawn across the strings.",
     "A student bowing the dilruba, seated at the microphone.",
@@ -1692,69 +1803,9 @@ html.still .drift img{ animation:none; }
     "A santhiya class, and a student playing violin.",
     "Hands on the tabla, close in."
   ];
-  var tiles = [];
-  T.concat(T).forEach(function(src, i){        // doubled: wrap at half width
-    var f = document.createElement("figure");
-    var im = document.createElement("img");
-    im.src = src; im.alt = i < T.length ? (ALT[i] || "") : "";
-    im.loading = "lazy"; im.draggable = false;
-    if(i >= T.length) f.setAttribute("aria-hidden", "true");  // the repeat
-    f.appendChild(im); track.appendChild(f); tiles.push({ f:f, im:im });
-  });
-
-  var pos = 0, vel = 0, drag = false, lastX = 0, half = 0, sk = 0;
-  function measure(){ half = track.scrollWidth / 2; }
-  addEventListener("resize", measure);
-
-  function frame(){
-    requestAnimationFrame(frame);
-    if(!document.body.classList.contains("vid-open")) return;
-    if(!half) measure();
-    if(!drag){
-      vel *= 0.94;
-      if(Math.abs(vel) < 0.35 && !reduce) vel += (0.35 - Math.abs(vel)) * 0.05 * (vel < 0 ? -1 : 1);
-    }
-    pos += vel;
-    if(half > 0){
-      if(pos >= half) pos -= half;
-      if(pos < 0) pos += half;
-    }
-    track.style.transform = "translate3d(" + (-pos).toFixed(2) + "px,0,0)";
-    var want = Math.max(-9, Math.min(9, vel * 0.7));
-    sk += (want - sk) * 0.12;                  // the lean follows, slightly behind
-    track.style.setProperty("--sk", sk.toFixed(2) + "deg");
-    /* counter-parallax inside each visible frame */
-    var vw = box.clientWidth || innerWidth;
-    for(var k = 0; k < tiles.length; k++){
-      var r = tiles[k].f.offsetLeft - pos;
-      if(r < -400 || r > vw + 100) continue;
-      var c = (r + 130 - vw / 2) / vw;         // -0.5 .. 0.5 across the strip
-      tiles[k].im.style.transform = "translateX(" + (c * 10).toFixed(2) + "%)";
-    }
-  }
-  requestAnimationFrame(frame);
-
-  box.addEventListener("pointerdown", function(e){
-    drag = true; lastX = e.clientX; box.classList.add("dragging");
-    box.setPointerCapture(e.pointerId);
-  });
-  box.addEventListener("pointermove", function(e){
-    if(!drag) return;
-    var dx = e.clientX - lastX; lastX = e.clientX;
-    pos -= dx; vel = -dx;
-  });
-  function up(e){ if(!drag) return; drag = false; box.classList.remove("dragging");
-    try{ box.releasePointerCapture(e.pointerId); }catch(err){} }
-  box.addEventListener("pointerup", up);
-  box.addEventListener("pointercancel", up);
-  box.addEventListener("wheel", function(e){
-    if(Math.abs(e.deltaX) > Math.abs(e.deltaY)){ vel += e.deltaX * 0.35; e.preventDefault(); }
-  }, { passive:false });
-  /* drag and wheel alone leave a keyboard out */
-  box.addEventListener("keydown", function(e){
-    if(e.key === "ArrowRight")     { vel += 9; e.preventDefault(); }
-    else if(e.key === "ArrowLeft") { vel -= 9; e.preventDefault(); }
-  });
+  buildWall(mount, SRC.map(function (src, i) {
+    return { src: src, alt: ALT[i] || "" };
+  }), { columns: 4 });
 })();
 </script>
 
