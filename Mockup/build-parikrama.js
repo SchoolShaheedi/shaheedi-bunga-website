@@ -46,9 +46,11 @@ h = h.split('__WAA__').join('https://wa.me/' + WA_NUMBER + '?text=' + WAA_TEXT);
 const DIL = path.resolve(here, '../Assets/Dilruba');
 h = h.split('__DPLATE_STILL__').join(b64(path.join(DIL, 'plate-still.webp'), 'image/webp'));
 h = h.split('__DPLATE_BOW__').join(b64(path.join(DIL, 'plate-bow.webp'), 'image/webp'));
-const DGAL = path.resolve(DIL, 'gallery');
-const dtiles = fs.readdirSync(DGAL).filter(f => f.endsWith('.jpg')).sort()
-  .map(f => b64(path.join(DGAL, f), 'image/jpeg'));
+/* The dilruba strip shows the whole Kirtan tile set, so it reads that folder
+   rather than keeping a byte-for-byte copy of it. ALT[] in the gallery
+   script is index-matched to this sorted order. */
+const dtiles = fs.readdirSync(K).filter(f => f.endsWith('.jpg')).sort()
+  .map(f => b64(path.join(K, f), 'image/jpeg'));
 /* split/join, not replace: replace() swaps only the first match, and the
    token is also named in a comment in the page. */
 h = h.split('__DTILES__').join(JSON.stringify(dtiles));

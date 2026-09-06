@@ -329,14 +329,6 @@ body.nogl canvas,body.nogl .stage,body.nogl .rail,body.nogl .cue,body.nogl .scri
 #vidd .dil-stage::before{ content:""; position:absolute; inset:0; pointer-events:none;
   background:radial-gradient(46% 44% at 50% 46%, rgba(233,224,203,.85) 0%, rgba(250,246,238,0) 100%); }
 #vidd dilruba-bow{ display:block; width:min(560px, 100%); position:relative; }
-#vidd .dil-cue{ position:relative; margin:calc(var(--u)*0.5) 0 0; font-family:var(--mono);
-  font-size:max(11px, calc(var(--u)*0.76)); letter-spacing:.16em; text-transform:uppercase;
-  color:rgba(22,41,74,.5); }
-#vidd .dil-cue .for-touch{ display:none; }
-@media (hover:none) and (pointer:coarse){
-  #vidd .dil-cue .for-pointer{ display:none; }
-  #vidd .dil-cue .for-touch{ display:inline; }
-}
 #vidd.on .dil-stage{ animation:dilRise 720ms cubic-bezier(.2,.7,.15,1) 140ms both; }
 @keyframes dilRise{ from{ opacity:0; transform:translateY(calc(var(--u)*1)); } to{ opacity:1; transform:none; } }
 @media (prefers-reduced-motion:reduce){ #vidd.on .dil-stage{ animation:none; } }
@@ -352,30 +344,9 @@ html.still #vidd.on .dil-stage{ animation:none; }
   padding:calc(var(--u)*2.2) calc(var(--u)*2.3) calc(var(--u)*1.6);
   min-height:calc(100vh - 64px); }
 #vidd .dhero-type{ max-width:34ch; }
-#vidd .dhero .lbl{ margin:0 0 calc(var(--u)*1.5); }
 #vidd .dhero .gurline{ margin:0 0 calc(var(--u)*0.7); color:var(--gold);
   font-size:max(20px, calc(var(--u)*2.3)); line-height:1.25; }
 #vidd .dhero h1{ margin:0; font-size:max(44px, calc(var(--u)*6.6)); }
-#vidd .dhero .lede{ margin:calc(var(--u)*1.3) 0 0;
-  font-size:max(16px, calc(var(--u)*1.5)); line-height:1.5;
-  color:rgba(22,41,74,.76); }
-#vidd .dhero .vnote{ margin-top:calc(var(--u)*0.9); }
-#vidd .dhero-cta{ margin:calc(var(--u)*1.7) 0 0; display:flex; align-items:center;
-  gap:calc(var(--u)*1.4); flex-wrap:wrap; }
-#vidd .dhero-cta .free{ font-family:var(--mono); font-size:max(10px, calc(var(--u)*0.7));
-  letter-spacing:.14em; text-transform:uppercase; color:rgba(22,41,74,.5); }
-
-/* the scroll cue, on the hero's own baseline */
-#vidd .dscroll{ display:flex; align-items:center; gap:calc(var(--u)*0.8);
-  margin:0; padding:0 calc(var(--u)*2.3) calc(var(--u)*2.4);
-  font-family:var(--mono); font-size:max(9.5px, calc(var(--u)*0.66));
-  letter-spacing:.2em; text-transform:uppercase; color:rgba(22,41,74,.4); }
-#vidd .dscroll::after{ content:""; flex:0 0 auto; width:calc(var(--u)*4); height:1px;
-  background:linear-gradient(90deg, rgba(22,41,74,.3), rgba(22,41,74,0)); }
-#vidd .dscroll i{ font-style:normal; animation:dnudge 2.4s ease-in-out infinite; }
-@keyframes dnudge{ 0%,100%{ transform:translateY(0); opacity:.55 } 50%{ transform:translateY(3px); opacity:1 } }
-@media (prefers-reduced-motion:reduce){ #vidd .dscroll i{ animation:none; } }
-html.still #vidd .dscroll i{ animation:none; }
 
 /* ── the gallery: one strip in perspective ──
    This is Ustad Ji's own kirtan gallery, recovered from the commit that
@@ -383,16 +354,8 @@ html.still #vidd .dscroll i{ animation:none; }
    and the whole track leans with the motion, each image counter-sliding
    inside its frame — that counter-slide is what sells the depth. Re-dressed
    for a cream ground, where his darkening filter would have read as grime. */
-#vidd .dgal-top{ display:flex; align-items:baseline; justify-content:space-between;
-  gap:calc(var(--u)*1.4); flex-wrap:wrap;
-  padding:calc(var(--u)*1.6) calc(var(--u)*2.3) 0; }
-#vidd .dgal-top h2{ font-size:max(26px, calc(var(--u)*3.2)); letter-spacing:-.05em; }
-#vidd .dgal-hint{ margin:0; font-family:var(--mono);
-  font-size:max(9.5px, calc(var(--u)*0.68)); letter-spacing:.2em;
-  text-transform:uppercase; color:rgba(22,41,74,.42); }
-
 #vidd .dgal{ position:relative; overflow:hidden; perspective:1100px;
-  padding:calc(var(--u)*1.1) 0 calc(var(--u)*1.4);
+  padding:calc(var(--u)*1.8) 0 calc(var(--u)*2.2);
   cursor:grab; touch-action:pan-y; user-select:none; }
 #vidd .dgal.dragging{ cursor:grabbing; }
 #vidd .dgal:focus-visible{ outline:2px solid var(--gold); outline-offset:-4px; }
@@ -411,7 +374,6 @@ html.still #vidd .dscroll i{ animation:none; }
   width:calc(var(--u)*4); z-index:2; pointer-events:none; }
 #vidd .dgal::before{ left:0;  background:linear-gradient(90deg, var(--vbg), rgba(250,246,238,0)); }
 #vidd .dgal::after{ right:0; background:linear-gradient(270deg, var(--vbg), rgba(250,246,238,0)); }
-#vidd .dgal-note{ margin:0; padding:0 calc(var(--u)*2.3); }
 @media (prefers-reduced-motion:reduce){ #vidd .dgal img{ transition:none; } }
 
 @media (max-width:900px){
@@ -419,7 +381,6 @@ html.still #vidd .dscroll i{ animation:none; }
     padding:calc(var(--u)*1.2) calc(var(--u)*2.3) calc(var(--u)*1.2); }
   #vidd .dhero-type{ max-width:none; order:2; }
   #vidd .dhero .dil-stage{ order:1; }
-  #vidd .dscroll{ display:none; }
 }
 
 .vid{ position:fixed; inset:0; z-index:20; overflow-y:auto; overscroll-behavior:contain;
@@ -1131,17 +1092,8 @@ html.still .drift img{ animation:none; }
        by <dilruba-bow>, defined in the script below this panel. -->
   <header class="dhero">
     <div class="dhero-type">
-      <p class="lbl" data-rv>Tanti saaj &middot; <b>Dilruba</b> &middot; Gurmat Sangeet</p>
       <p class="gurline gur" data-rv>ਦਿਲਰੁਬਾ</p>
       <h1 data-rv>Dilruba Vidyala</h1>
-      <p class="lede" data-rv>A bowed saaj, held upright against the shoulder and
-        drawn one note at a time. Taught at Gipsy Lane, to any age.</p>
-      <p class="vnote">PLACEHOLDER wording &mdash; the lede above is mine, not Ustad
-        Ji&rsquo;s. What separates the dilruba from the taus and saranda beside it,
-        and what a beginner&rsquo;s first weeks look like, is still to be written.</p>
-      <p class="dhero-cta">
-        <a class="wa" href="__WAD__" target="_blank" rel="noopener">__WASVG__ Message us on WhatsApp</a>
-      </p>
     </div>
 
     <div class="dil-stage">
@@ -1149,28 +1101,16 @@ html.still .drift img{ animation:none; }
         data-still="__DPLATE_STILL__" data-bow="__DPLATE_BOW__"
         role="img"
         aria-label="A Singh seated cross-legged, drawing the gaj across the dilruba's strings."></dilruba-bow>
-      <p class="dil-cue" aria-hidden="true">
-        <span class="for-pointer">Move your cursor to draw the gaj</span>
-        <span class="for-touch">The gaj draws itself, slowly</span>
-      </p>
     </div>
   </header>
 
-  <p class="dscroll" aria-hidden="true">The week <i>&darr;</i></p>
-
   <!-- The gallery. Ustad Ji's kirtan strip, recovered and re-dressed; the
        tiles are inlined by build-parikrama.js. -->
-  <section class="dgal-sec" aria-labelledby="dgalH">
-    <div class="dgal-top">
-      <h2 id="dgalH">In the class</h2>
-      <p class="dgal-hint" aria-hidden="true">Drag &larr;&rarr;</p>
-    </div>
+  <section class="dgal-sec" aria-label="Photographs from the Vidyala">
     <div class="dgal" id="dgal" tabindex="0" role="group"
-         aria-label="Photographs from dilruba classes. Drag, scroll or use the arrow keys.">
+         aria-label="Photographs from Shaheedi Bunga's classes. Drag, scroll or use the arrow keys.">
       <div class="dgal-track" id="dgalTrack"></div>
     </div>
-    <p class="vnote dgal-note">Photographs from Shaheedi Bunga&rsquo;s own classes and
-      samagams, already published by the Vidyala.</p>
   </section>
 
   <!-- The week. One calendar, Monday first, every class on screen at once.
@@ -1190,9 +1130,6 @@ html.still .drift img{ animation:none; }
 
     <p class="wk-detail" id="wkDetail" aria-live="polite"></p>
     <p class="wk-where" id="wkWhere"></p>
-
-    <p class="vnote"><b>Every class is open to any age.</b> Gipsy Lane days
-      and times are confirmed.</p>
   </section>
   <p class="vfoot">Shaheedi Bunga &middot; Registered charity in England &amp; Wales &middot; 1185103</p>
 </section>
@@ -1461,9 +1398,11 @@ html.still .drift img{ animation:none; }
     gipsy: { short:"Gipsy Lane",
              full:"Gurudwara Shri Guru Dashmesh Sahib &middot; 49 Gipsy Lane, Leicester" }
   };
-  /* Deliberately not naming a second gurdwara: "coming soon" beside a name
-     reads as a promise, and none has been confirmed. */
-  var SOON = ["Other gurdware"];
+  /* Empty on purpose. There were classes at Guru Tegh Bahadur Gurudwara and
+     there are not any more, so "coming soon" would be wrong in both
+     directions — it promises a return nobody has announced. Add a venue here
+     only when one is actually starting. */
+  var SOON = [];
   var DTT = [
     /* mornings: Monday to Friday */
     { day:1, h:8,  m:0, mins:120, gm:"ਦਿਲਰੁਬਾ", en:"Dilruba", at:"gipsy" },
@@ -1735,11 +1674,23 @@ html.still .drift img{ animation:none; }
 
   /* src paired with what is actually in the photograph */
   var T = __DTILES__;
+  /* Index-matched to the sorted filenames in Assets/Kirtan/tiles:
+     k01 k02 k03 k05 k07 k11 k15 k22 k24 k26 k27 k28. Written from the
+     photographs themselves; four show a dilruba, the rest are the other
+     classes and the samagams. */
   var ALT = [
     "A student playing the dilruba at a samagam, gaj drawn across the strings.",
     "A student bowing the dilruba, seated at the microphone.",
+    "The sangat gathered outside for a group photograph.",
+    "A student at the harmonium, tabla waiting beside them.",
+    "Several classes at once: tabla, dilruba and violin.",
     "Close on the gaj crossing the dilruba's strings.",
-    "A student with a dilruba across the lap, its case open beside them."
+    "Two students on stage, one at the microphone and one at the tabla.",
+    "A student playing tabla, hands mid-stroke.",
+    "A student with a dilruba across the lap, its case open beside them.",
+    "Scenes from a samagam at the gurdwara.",
+    "A santhiya class, and a student playing violin.",
+    "Hands on the tabla, close in."
   ];
   var tiles = [];
   T.concat(T).forEach(function(src, i){        // doubled: wrap at half width
