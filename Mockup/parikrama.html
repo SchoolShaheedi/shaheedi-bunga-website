@@ -389,8 +389,9 @@ html.still #vidd.on .dil-stage{ animation:none; }
   letter-spacing:.13em; text-transform:uppercase; color:#FFFDF6;
   background:linear-gradient(to top, rgba(10,18,34,.72), rgba(10,18,34,0)); }
 
-/* a look at one card stops the wall */
-#vidd .dwall:hover .dwall-col,
+/* The wall does not stop for the pointer - moving over it to reach the
+   timetable should not halt the page. Focus still pauses it, so there is
+   a way to stop the motion for anyone who needs one. */
 #vidd .dwall:focus-within .dwall-col{ animation-play-state:paused; }
 
 /* Reduced motion: a real static grid — the duplicate half would otherwise
