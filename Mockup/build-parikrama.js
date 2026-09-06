@@ -46,6 +46,13 @@ h = h.split('__WAA__').join('https://wa.me/' + WA_NUMBER + '?text=' + WAA_TEXT);
 const DIL = path.resolve(here, '../Assets/Dilruba');
 h = h.split('__DPLATE_STILL__').join(b64(path.join(DIL, 'plate-still.webp'), 'image/webp'));
 h = h.split('__DPLATE_BOW__').join(b64(path.join(DIL, 'plate-bow.webp'), 'image/webp'));
+const DGAL = path.resolve(DIL, 'gallery');
+const dtiles = fs.readdirSync(DGAL).filter(f => f.endsWith('.jpg')).sort()
+  .map(f => b64(path.join(DGAL, f), 'image/jpeg'));
+/* split/join, not replace: replace() swaps only the first match, and the
+   token is also named in a comment in the page. */
+h = h.split('__DTILES__').join(JSON.stringify(dtiles));
+console.log('dilruba gallery tiles inlined:', dtiles.length);
 const WAD_TEXT = encodeURIComponent("Sat Sri Akal — I'd like to ask about learning dilruba.");
 h = h.split('__WAD__').join('https://wa.me/' + WA_NUMBER + '?text=' + WAD_TEXT);
 console.log('dilruba plates inlined: 2');

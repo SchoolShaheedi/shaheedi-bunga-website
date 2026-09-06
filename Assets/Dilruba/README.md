@@ -35,3 +35,22 @@ Three things are load-bearing, and the page breaks quietly if they change:
 The plates carry a 1px pale fringe around the silhouette, from anti-aliasing
 against the light background they were cut from. It is invisible on this page's
 cream ground; it would show if they were ever placed on a dark one.
+
+## gallery/
+
+Four photographs from Shaheedi Bunga's own classes and samagams, shown in the
+strip on the dilruba panel. They are copies of `Assets/Kirtan/tiles/k01, k02,
+k11, k24` — the four of that set that show a dilruba being played.
+
+They are **copied, not referenced**, so the dilruba panel does not break if the
+Kirtan tiles are ever reorganised. 172KB for the four.
+
+They are kept as the original JPEGs on purpose. Re-encoding them to WebP was
+measured and came out **larger** (164KB → 185KB) as well as slightly softer:
+they are already-compressed JPEGs, so a second lossy pass only adds work for
+the encoder. Do not "optimise" them to WebP.
+
+`Mockup/build-parikrama.js` inlines every `.jpg` in this folder as `__DTILES__`,
+so adding a photo here is the only step needed to add it to the strip — but
+`ALT[]` in the gallery script is index-matched to the sorted filenames, so add
+its alt text there at the same position.
