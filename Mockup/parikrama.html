@@ -377,6 +377,43 @@ html.still #vidd.on .dil-stage{ animation:none; }
 @media (prefers-reduced-motion:reduce){ #vidd .dscroll i{ animation:none; } }
 html.still #vidd .dscroll i{ animation:none; }
 
+/* ── the gallery: one strip in perspective ──
+   This is Ustad Ji's own kirtan gallery, recovered from the commit that
+   removed that panel: wheel or drag adds velocity, friction takes it away,
+   and the whole track leans with the motion, each image counter-sliding
+   inside its frame — that counter-slide is what sells the depth. Re-dressed
+   for a cream ground, where his darkening filter would have read as grime. */
+#vidd .dgal-top{ display:flex; align-items:baseline; justify-content:space-between;
+  gap:calc(var(--u)*1.4); flex-wrap:wrap;
+  padding:calc(var(--u)*1.6) calc(var(--u)*2.3) 0; }
+#vidd .dgal-top h2{ font-size:max(26px, calc(var(--u)*3.2)); letter-spacing:-.05em; }
+#vidd .dgal-hint{ margin:0; font-family:var(--mono);
+  font-size:max(9.5px, calc(var(--u)*0.68)); letter-spacing:.2em;
+  text-transform:uppercase; color:rgba(22,41,74,.42); }
+
+#vidd .dgal{ position:relative; overflow:hidden; perspective:1100px;
+  padding:calc(var(--u)*1.1) 0 calc(var(--u)*1.4);
+  cursor:grab; touch-action:pan-y; user-select:none; }
+#vidd .dgal.dragging{ cursor:grabbing; }
+#vidd .dgal:focus-visible{ outline:2px solid var(--gold); outline-offset:-4px; }
+#vidd .dgal-track{ display:flex; gap:calc(var(--u)*0.8); width:max-content;
+  transform-style:preserve-3d; will-change:transform; }
+#vidd .dgal figure{ margin:0; width:clamp(190px, 21vw, 300px); aspect-ratio:4/5;
+  flex:none; overflow:hidden; background:#EDE5D4;
+  transform:rotateY(var(--sk,0deg)); transform-style:preserve-3d;
+  box-shadow:0 26px 44px -30px rgba(22,41,74,.5); }
+#vidd .dgal img{ width:112%; height:100%; object-fit:cover; display:block;
+  margin-left:-6%; will-change:transform; pointer-events:none;
+  filter:saturate(.88) contrast(1.03); transition:filter .4s ease; }
+#vidd .dgal figure:hover img{ filter:none; }
+/* the strip fades into the page rather than being cut off by it */
+#vidd .dgal::before, #vidd .dgal::after{ content:""; position:absolute; top:0; bottom:0;
+  width:calc(var(--u)*4); z-index:2; pointer-events:none; }
+#vidd .dgal::before{ left:0;  background:linear-gradient(90deg, var(--vbg), rgba(250,246,238,0)); }
+#vidd .dgal::after{ right:0; background:linear-gradient(270deg, var(--vbg), rgba(250,246,238,0)); }
+#vidd .dgal-note{ margin:0; padding:0 calc(var(--u)*2.3); }
+@media (prefers-reduced-motion:reduce){ #vidd .dgal img{ transition:none; } }
+
 @media (max-width:900px){
   #vidd .dhero{ grid-template-columns:1fr; min-height:0;
     padding:calc(var(--u)*1.2) calc(var(--u)*2.3) calc(var(--u)*1.2); }
@@ -1121,6 +1158,21 @@ html.still .drift img{ animation:none; }
 
   <p class="dscroll" aria-hidden="true">The week <i>&darr;</i></p>
 
+  <!-- The gallery. Ustad Ji's kirtan strip, recovered and re-dressed; the
+       tiles are inlined by build-parikrama.js. -->
+  <section class="dgal-sec" aria-labelledby="dgalH">
+    <div class="dgal-top">
+      <h2 id="dgalH">In the class</h2>
+      <p class="dgal-hint" aria-hidden="true">Drag &larr;&rarr;</p>
+    </div>
+    <div class="dgal" id="dgal" tabindex="0" role="group"
+         aria-label="Photographs from dilruba classes. Drag, scroll or use the arrow keys.">
+      <div class="dgal-track" id="dgalTrack"></div>
+    </div>
+    <p class="vnote dgal-note">Photographs from Shaheedi Bunga&rsquo;s own classes and
+      samagams, already published by the Vidyala.</p>
+  </section>
+
   <!-- The week. One calendar, Monday first, every class on screen at once.
        Data lives in DTT below, in the same shape as CLASSES in
        Mockup/journey.html, so a real change drops straight in. -->
@@ -1658,6 +1710,100 @@ html.still .drift img{ animation:none; }
   build(); renderNext(); renderWhere(); resetDetail();
   /* left open, the clock line and "on now" would go stale */
   setInterval(function () { build(); renderNext(); resetDetail(); }, 60000);
+})();
+</script>
+
+<script>
+/* The dilruba gallery — one strip in perspective.
+ *
+ * This is Ustad Ji's kirtan gallery, recovered from the commit that removed
+ * that panel, so the motion is his: wheel or drag adds velocity, friction
+ * takes it away, the track leans with the motion, and each image counter-
+ * slides inside its frame — that counter-slide is what sells the depth.
+ *
+ * Changed from his version: its own ids, so restoring the kirtan gallery
+ * cannot collide with it; `reduce` is declared here rather than inherited
+ * from the enclosing scope; alt text on every tile instead of alt="";
+ * and arrow keys, because drag and wheel alone leave a keyboard out.
+ */
+(function(){
+  'use strict';
+  var box = document.getElementById("dgal"), track = document.getElementById("dgalTrack");
+  if(!box || !track) return;
+  var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches
+            || document.documentElement.classList.contains("still");
+
+  /* src paired with what is actually in the photograph */
+  var T = __DTILES__;
+  var ALT = [
+    "A student playing the dilruba at a samagam, gaj drawn across the strings.",
+    "A student bowing the dilruba, seated at the microphone.",
+    "Close on the gaj crossing the dilruba's strings.",
+    "A student with a dilruba across the lap, its case open beside them."
+  ];
+  var tiles = [];
+  T.concat(T).forEach(function(src, i){        // doubled: wrap at half width
+    var f = document.createElement("figure");
+    var im = document.createElement("img");
+    im.src = src; im.alt = i < T.length ? (ALT[i] || "") : "";
+    im.loading = "lazy"; im.draggable = false;
+    if(i >= T.length) f.setAttribute("aria-hidden", "true");  // the repeat
+    f.appendChild(im); track.appendChild(f); tiles.push({ f:f, im:im });
+  });
+
+  var pos = 0, vel = 0, drag = false, lastX = 0, half = 0, sk = 0;
+  function measure(){ half = track.scrollWidth / 2; }
+  addEventListener("resize", measure);
+
+  function frame(){
+    requestAnimationFrame(frame);
+    if(!document.body.classList.contains("vid-open")) return;
+    if(!half) measure();
+    if(!drag){
+      vel *= 0.94;
+      if(Math.abs(vel) < 0.35 && !reduce) vel += (0.35 - Math.abs(vel)) * 0.05 * (vel < 0 ? -1 : 1);
+    }
+    pos += vel;
+    if(half > 0){
+      if(pos >= half) pos -= half;
+      if(pos < 0) pos += half;
+    }
+    track.style.transform = "translate3d(" + (-pos).toFixed(2) + "px,0,0)";
+    var want = Math.max(-9, Math.min(9, vel * 0.7));
+    sk += (want - sk) * 0.12;                  // the lean follows, slightly behind
+    track.style.setProperty("--sk", sk.toFixed(2) + "deg");
+    /* counter-parallax inside each visible frame */
+    var vw = box.clientWidth || innerWidth;
+    for(var k = 0; k < tiles.length; k++){
+      var r = tiles[k].f.offsetLeft - pos;
+      if(r < -400 || r > vw + 100) continue;
+      var c = (r + 130 - vw / 2) / vw;         // -0.5 .. 0.5 across the strip
+      tiles[k].im.style.transform = "translateX(" + (c * 10).toFixed(2) + "%)";
+    }
+  }
+  requestAnimationFrame(frame);
+
+  box.addEventListener("pointerdown", function(e){
+    drag = true; lastX = e.clientX; box.classList.add("dragging");
+    box.setPointerCapture(e.pointerId);
+  });
+  box.addEventListener("pointermove", function(e){
+    if(!drag) return;
+    var dx = e.clientX - lastX; lastX = e.clientX;
+    pos -= dx; vel = -dx;
+  });
+  function up(e){ if(!drag) return; drag = false; box.classList.remove("dragging");
+    try{ box.releasePointerCapture(e.pointerId); }catch(err){} }
+  box.addEventListener("pointerup", up);
+  box.addEventListener("pointercancel", up);
+  box.addEventListener("wheel", function(e){
+    if(Math.abs(e.deltaX) > Math.abs(e.deltaY)){ vel += e.deltaX * 0.35; e.preventDefault(); }
+  }, { passive:false });
+  /* drag and wheel alone leave a keyboard out */
+  box.addEventListener("keydown", function(e){
+    if(e.key === "ArrowRight")     { vel += 9; e.preventDefault(); }
+    else if(e.key === "ArrowLeft") { vel -= 9; e.preventDefault(); }
+  });
 })();
 </script>
 
