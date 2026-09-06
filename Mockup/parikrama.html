@@ -405,6 +405,26 @@ html.still #vidd .dwall{ height:auto; -webkit-mask-image:none; mask-image:none; 
 html.still #vidd .dwall-col{ animation:none; }
 html.still #vidd .dwall .dup{ display:none; }
 
+/* ── the prose block, between the hero and the wall ──
+   A single measure rather than columns: the real text is not written yet, and
+   a two-column setting only holds together at a length nobody has committed
+   to. One column takes whatever arrives. */
+#vidd .dsay{ padding:calc(var(--u)*3.4) calc(var(--u)*2.3) calc(var(--u)*3);
+  border-top:1px solid var(--vline); }
+/* The body size is set on the wrapper so that `ch` means what it says: with
+   the measure in ch but the type scaling on --u, a wide screen grew the text
+   to 51px inside a column still 568px wide, and the lead fell to about forty
+   characters a line. Sizes are clamped at both ends for the same reason -
+   this is a subsection, and it should not out-shout the hero. */
+#vidd .dsay-in{ max-width:64ch;
+  font-size:clamp(15px, calc(var(--u)*1.18), 19px); }
+#vidd .dsay h2{ font-size:clamp(26px, calc(var(--u)*2.7), 44px); letter-spacing:-.05em;
+  margin:0 0 calc(var(--u)*1.4); }
+#vidd .dsay .lead{ margin:0; font-size:clamp(17px, calc(var(--u)*1.55), 25px);
+  line-height:1.45; color:var(--vtext); }
+#vidd .dsay p + p{ margin:calc(var(--u)*1.15) 0 0; }
+#vidd .dsay p{ font-size:inherit; line-height:1.66; color:rgba(22,41,74,.72); }
+
 @media (max-width:900px){
   #vidd .dhero{ grid-template-columns:1fr; min-height:0;
     padding:calc(var(--u)*1.2) calc(var(--u)*2.3) calc(var(--u)*1.2); }
@@ -1135,6 +1155,26 @@ html.still .drift img{ animation:none; }
 
   <!-- The gallery. Ustad Ji's kirtan strip, recovered and re-dressed; the
        tiles are inlined by build-parikrama.js. -->
+
+  <!-- PLACEHOLDER. Lorem until Ustad Ji's words arrive - replace the whole
+       .dsay-in block; the heading and the opening paragraph are separate
+       sizes, so keep .lead on whichever paragraph should lead. -->
+  <section class="dsay" aria-labelledby="dsayH">
+    <div class="dsay-in">
+      <h2 id="dsayH" data-rv>Lorem ipsum dolor sit amet</h2>
+      <p class="lead" data-rv>Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+      <p data-rv>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
+        nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
+        reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+        pariatur, excepteur sint occaecat cupidatat non proident.</p>
+      <p data-rv>Sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut
+        perspiciatis unde omnis iste natus error sit voluptatem accusantium
+        doloremque laudantium, totam rem aperiam eaque ipsa quae ab illo
+        inventore veritatis.</p>
+    </div>
+  </section>
+
   <!-- The wall. Columns of cards drifting upward; built by buildWall() below
        from the tiles build-parikrama.js inlines. -->
   <section class="dwall-sec" aria-label="Photographs from the Vidyala">
