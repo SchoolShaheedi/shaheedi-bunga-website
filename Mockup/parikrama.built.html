@@ -410,8 +410,14 @@ html.still #vidd .dwall .dup{ display:none; }
    A single measure rather than columns: the real text is not written yet, and
    a two-column setting only holds together at a length nobody has committed
    to. One column takes whatever arrives. */
-#vidd .dsay{ padding:calc(var(--u)*3.4) calc(var(--u)*2.3) calc(var(--u)*3);
-  border-top:1px solid var(--vline); }
+/* A shade deeper than the panel, full width, so the block reads as its own
+   thing between the hero and the photographs. Hairlines top and bottom keep
+   the edge crisp where the two creams meet, which is otherwise a mushy
+   boundary at this little contrast. */
+#vidd .dsay{ padding:calc(var(--u)*3.4) calc(var(--u)*2.3) calc(var(--u)*3.2);
+  background:#F1E9D7;
+  border-top:1px solid rgba(22,41,74,.09);
+  border-bottom:1px solid rgba(22,41,74,.09); }
 /* The body size is set on the wrapper so that `ch` means what it says: with
    the measure in ch but the type scaling on --u, a wide screen grew the text
    to 51px inside a column still 568px wide, and the lead fell to about forty
@@ -1157,22 +1163,24 @@ html.still .drift img{ animation:none; }
   <!-- The gallery. Ustad Ji's kirtan strip, recovered and re-dressed; the
        tiles are inlined by build-parikrama.js. -->
 
-  <!-- PLACEHOLDER. Lorem until Ustad Ji's words arrive - replace the whole
-       .dsay-in block; the heading and the opening paragraph are separate
-       sizes, so keep .lead on whichever paragraph should lead. -->
+  <!-- DRAFT COPY, to be adjusted. Every sentence below is either a plain
+       description of the instrument or something Harteg confirmed: the venue,
+       the nine classes, and that any age is welcome. Deliberately NOT said
+       here, because nobody has confirmed it for the dilruba class
+       specifically: whether there is a fee, whether instruments are provided,
+       and whether any prior music or Gurmukhi is needed. The Santhiya panel
+       says "No fee, no audition, no Gurmukhi" - of santhiya, not of this. -->
   <section class="dsay" aria-labelledby="dsayH">
     <div class="dsay-in">
-      <h2 id="dsayH" data-rv>Lorem ipsum dolor sit amet</h2>
-      <p class="lead" data-rv>Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-      <p data-rv>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-        nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-        reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-        pariatur, excepteur sint occaecat cupidatat non proident.</p>
-      <p data-rv>Sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut
-        perspiciatis unde omnis iste natus error sit voluptatem accusantium
-        doloremque laudantium, totam rem aperiam eaque ipsa quae ab illo
-        inventore veritatis.</p>
+      <h2 id="dsayH" data-rv>Start on the instrument.</h2>
+      <p class="lead" data-rv>The dilruba is a bowed saaj &mdash; held upright against
+        the shoulder and drawn with a gaj, one note at a time. Of all the tanti saaj
+        it sits closest to the human voice, which is why kirtan is learned on it.</p>
+      <p data-rv>Classes run nine times a week at Gipsy Lane: every weekday morning,
+        two evenings, and both days of the weekend. You do not join a term or wait
+        for one to start &mdash; you come to the next class.</p>
+      <p data-rv>Every class is open to any age, and you sit with the instrument from
+        the first lesson rather than working up to it.</p>
     </div>
   </section>
 
