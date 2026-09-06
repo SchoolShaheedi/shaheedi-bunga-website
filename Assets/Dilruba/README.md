@@ -36,21 +36,23 @@ The plates carry a 1px pale fringe around the silhouette, from anti-aliasing
 against the light background they were cut from. It is invisible on this page's
 cream ground; it would show if they were ever placed on a dark one.
 
-## gallery/
+## The gallery photographs
 
-Four photographs from Shaheedi Bunga's own classes and samagams, shown in the
-strip on the dilruba panel. They are copies of `Assets/Kirtan/tiles/k01, k02,
-k11, k24` — the four of that set that show a dilruba being played.
+The strip on the dilruba panel shows all twelve photographs in
+`Assets/Kirtan/tiles` — the set that came with the Kirtan panel and stayed in
+the repo when that panel was removed. Four of them (k01, k02, k11, k24) show a
+dilruba being played; the rest are the other classes and the samagams.
 
-They are **copied, not referenced**, so the dilruba panel does not break if the
-Kirtan tiles are ever reorganised. 172KB for the four.
+`Mockup/build-parikrama.js` reads that folder directly rather than keeping a
+copy here: with all twelve in use, a copy would be a byte-for-byte duplicate.
+That makes the dilruba panel depend on `Assets/Kirtan/tiles`, which is a real
+dependency worth knowing about — though the build already read that folder for
+its own `__KTILES__` token, so nothing new breaks if it moves.
 
-They are kept as the original JPEGs on purpose. Re-encoding them to WebP was
+**`ALT[]` in the gallery script is index-matched to the sorted filenames.**
+Adding or removing a tile means editing that array at the same position, or
+every photograph after it gets someone else's description.
+
+The tiles are JPEGs and should stay JPEGs. Re-encoding four of them to WebP was
 measured and came out **larger** (164KB → 185KB) as well as slightly softer:
-they are already-compressed JPEGs, so a second lossy pass only adds work for
-the encoder. Do not "optimise" them to WebP.
-
-`Mockup/build-parikrama.js` inlines every `.jpg` in this folder as `__DTILES__`,
-so adding a photo here is the only step needed to add it to the strip — but
-`ALT[]` in the gallery script is index-matched to the sorted filenames, so add
-its alt text there at the same position.
+they are already-compressed JPEGs, so a second lossy pass only adds work.
