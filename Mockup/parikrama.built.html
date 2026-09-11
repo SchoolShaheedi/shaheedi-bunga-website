@@ -414,7 +414,11 @@ html.still #vidd .dwall .dup{ display:none; }
    thing between the hero and the photographs. Hairlines top and bottom keep
    the edge crisp where the two creams meet, which is otherwise a mushy
    boundary at this little contrast. */
-#vidd .dsay{ padding:calc(var(--u)*3.4) calc(var(--u)*2.3) calc(var(--u)*3.2);
+/* Every gap in here has a floor in px. Spacing driven only by --u collapses
+   on a narrow viewport - --u bottoms out at 4.5px under 767px, which turned
+   a 4.4x padding into 19px and left the block cramped exactly where there is
+   least room to spare. */
+#vidd .dsay{ padding:max(40px, calc(var(--u)*4.4)) calc(var(--u)*2.3) max(38px, calc(var(--u)*4.2));
   background:#F1E9D7;
   border-top:1px solid rgba(22,41,74,.09);
   border-bottom:1px solid rgba(22,41,74,.09); }
@@ -426,11 +430,12 @@ html.still #vidd .dwall .dup{ display:none; }
 #vidd .dsay-in{ max-width:64ch;
   font-size:clamp(15px, calc(var(--u)*1.18), 19px); }
 #vidd .dsay h2{ font-size:clamp(26px, calc(var(--u)*2.7), 44px); letter-spacing:-.05em;
-  margin:0 0 calc(var(--u)*1.4); }
+  margin:0 0 max(20px, calc(var(--u)*2.1)); }
 #vidd .dsay .lead{ margin:0; font-size:clamp(17px, calc(var(--u)*1.55), 25px);
-  line-height:1.45; color:var(--vtext); }
-#vidd .dsay p + p{ margin:calc(var(--u)*1.15) 0 0; }
-#vidd .dsay p{ font-size:inherit; line-height:1.66; color:rgba(22,41,74,.72); }
+  line-height:1.52; color:var(--vtext); }
+#vidd .dsay .lead + p{ margin-top:max(22px, calc(var(--u)*2)); }
+#vidd .dsay p + p{ margin:max(17px, calc(var(--u)*1.65)) 0 0; }
+#vidd .dsay p{ font-size:inherit; line-height:1.74; color:rgba(22,41,74,.72); }
 
 @media (max-width:900px){
   #vidd .dhero{ grid-template-columns:1fr; min-height:0;
@@ -1182,8 +1187,9 @@ html.still .drift img{ animation:none; }
     <div class="dsay-in">
       <!-- The heading carries the discipline, not the name - the name is in
            the lead below, which is the better place for it: it draws you in,
-           and the heading is honest about what follows. -->
-      <h2 id="dsayH" data-rv>It asks a lot of you.</h2>
+           and the heading is honest about what follows. Sentence case and a
+           full stop, like every other heading on the site. -->
+      <h2 id="dsayH" data-rv>A test of commitment.</h2>
       <p class="lead" data-rv>The dilruba is a puratan saaj, created by Guru Gobind
         Singh Ji. Its name means heart-snatcher &mdash; for the beauty of the sound.</p>
       <p data-rv>It is a difficult saaj, and learning it asks real commitment and
