@@ -3704,7 +3704,11 @@ RAF = requestAnimationFrame(tick);
   addEventListener("popstate", function(){ go(fromPath(), false); });
   if(fromPath()) go(fromPath(), false);
   else if(/[?&]vida\b/.test(location.search)) go("archery", false);
-  else if(/[?&]vidk\b/.test(location.search)) go("kirtan", false);
+  /* ?vidd opens the dilruba panel - what /saaj/dilruba/ hands over to. The
+     \b keeps it clear of ?vid below, which would otherwise match the prefix.
+     The old ?vidk branch is gone with the Kirtan panel it opened: PANELS no
+     longer has that key, so it threw on PANELS[key].el. */
+  else if(/[?&]vidd\b/.test(location.search)) go("dilruba", false);
   else if(/[?&]vid\b/.test(location.search)) go("santhiya", false);
 })();
 
