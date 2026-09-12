@@ -56,3 +56,27 @@ every photograph after it gets someone else's description.
 The tiles are JPEGs and should stay JPEGs. Re-encoding four of them to WebP was
 measured and came out **larger** (164KB → 185KB) as well as slightly softer:
 they are already-compressed JPEGs, so a second lossy pass only adds work.
+
+## The share card
+
+`saaj/dilruba/preview.jpg` is the thumbnail chat apps show when the page's
+link is shared. It is **generated, not hand-made**:
+
+```bash
+python3 Assets/Dilruba/make-preview.py
+```
+
+That composites the two plates, crops to the figure, sets it on the panel's
+cream at 1200×630, and writes `saaj/dilruba/preview.source.json` recording the
+hash of each plate it used.
+
+**`build-parikrama.js` re-hashes the plates on every build** and fails if they
+no longer match, so a changed illustration cannot leave a stale thumbnail on
+every link that has already been shared. It also reads the JPEG's own frame
+header and fails if the file is not the size `og:image:width` /
+`og:image:height` claim — chat apps lay the card out from those numbers, so a
+mismatch crops the picture.
+
+So: **change a plate, re-run the script, commit both outputs.** The build will
+tell you if you forget. If the whole `saaj/dilruba/` folder is ever removed the
+check skips rather than failing, since that means the page went on purpose.
