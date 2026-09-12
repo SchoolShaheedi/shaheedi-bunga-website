@@ -1,5 +1,5 @@
 // Inline three.js, the packed models, the vidyala logo and the week photographs.
-const fs = require('fs'), path = require('path');
+const fs = require('fs'), path = require('path'), crypto = require('crypto');
 const here = __dirname;
 let h = fs.readFileSync(path.join(here, 'parikrama.html'), 'utf8');
 
@@ -55,6 +55,72 @@ const dtiles = fs.readdirSync(K).filter(f => f.endsWith('.jpg')).sort()
    token is also named in a comment in the page. */
 h = h.split('__DTILES__').join(JSON.stringify(dtiles));
 console.log('dilruba gallery tiles inlined:', dtiles.length);
+/* ── the share card must not drift from the artwork ──
+   saaj/dilruba/preview.jpg is generated from the two plates by
+   Assets/Dilruba/make-preview.py, which records their hashes alongside it.
+   Re-hash them here so a changed plate fails the build loudly instead of
+   leaving a stale thumbnail on every link anyone has shared. Also check the
+   JPEG really is the size the og: tags claim - chat apps lay the card out
+   from those numbers, so a mismatch crops the picture. */
+(() => {
+  const dir = path.resolve(here, '../saaj/dilruba');
+  const jpg = path.join(dir, 'preview.jpg');
+  const lockPath = path.join(dir, 'preview.source.json');
+  const REGEN = 'run: python3 Assets/Dilruba/make-preview.py';
+
+  /* If the whole folder is gone the page was removed on purpose, and that is
+     not a reason to break the build for everything else on the site. A folder
+     that exists but is missing pieces is a mistake, and does throw. */
+  if (!fs.existsSync(dir)) {
+    console.log('share card: saaj/dilruba not present, skipping');
+    return;
+  }
+
+  for (const f of [jpg, lockPath]) {
+    if (!fs.existsSync(f)) {
+      throw new Error(`share card missing: ${path.relative(path.resolve(here, '..'), f)} — ${REGEN}`);
+    }
+  }
+  const lock = JSON.parse(fs.readFileSync(lockPath, 'utf8'));
+
+  for (const [rel, want] of Object.entries(lock.plates)) {
+    const got = crypto.createHash('sha256')
+      .update(fs.readFileSync(path.resolve(here, '..', rel))).digest('hex');
+    if (got !== want) {
+      throw new Error(`${rel} changed since the share card was made, so the thumbnail `
+        + `no longer matches the artwork — ${REGEN}`);
+    }
+  }
+
+  /* JPEG frame header, read without a library: walk the markers to the SOF */
+  const buf = fs.readFileSync(jpg);
+  let i = 2, dims = null;
+  while (i < buf.length - 9 && buf[i] === 0xFF) {
+    const marker = buf[i + 1], len = buf.readUInt16BE(i + 2);
+    if (marker >= 0xC0 && marker <= 0xCF && ![0xC4, 0xC8, 0xCC].includes(marker)) {
+      dims = { height: buf.readUInt16BE(i + 5), width: buf.readUInt16BE(i + 7) };
+      break;
+    }
+    i += 2 + len;
+  }
+  if (!dims) throw new Error(`could not read the size of saaj/dilruba/preview.jpg`);
+  if (dims.width !== lock.width || dims.height !== lock.height) {
+    throw new Error(`share card is ${dims.width}x${dims.height} but preview.source.json `
+      + `says ${lock.width}x${lock.height} — ${REGEN}`);
+  }
+
+  /* and the og: tags must agree with the file */
+  const share = fs.readFileSync(path.join(dir, 'index.html'), 'utf8');
+  for (const [prop, want] of [['og:image:width', lock.width], ['og:image:height', lock.height]]) {
+    const m = share.match(new RegExp(`property="${prop}" content="(\\d+)"`));
+    if (!m || Number(m[1]) !== want) {
+      throw new Error(`saaj/dilruba/index.html declares ${prop}=${m ? m[1] : 'nothing'} but `
+        + `the image is ${want}px — fix the tag`);
+    }
+  }
+  console.log(`share card checked: ${dims.width}x${dims.height}, plates unchanged`);
+})();
+
 const WAD_TEXT = encodeURIComponent("Sat Sri Akal — I'd like to ask about learning dilruba.");
 h = h.split('__WAD__').join('https://wa.me/' + WA_NUMBER + '?text=' + WAD_TEXT);
 console.log('dilruba plates inlined: 2');

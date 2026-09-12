@@ -1,0 +1,9 @@
+{
+  "_comment": "Written by Assets/Dilruba/make-preview.py. build-parikrama.js checks these hashes against the plates on disk, so a changed plate fails the build instead of leaving a stale share card.",
+  "width": 1200,
+  "height": 630,
+  "plates": {
+    "Assets/Dilruba/plate-still.webp": "906a05bff9f8dddf09d27bea4629d05cc6a1e6b42c36094ce365903a8f0a7a63",
+    "Assets/Dilruba/plate-bow.webp": "190c32b10c36acfa61f80f467d27dbe01db1d5f5761352656d073e8517726073"
+  }
+}
