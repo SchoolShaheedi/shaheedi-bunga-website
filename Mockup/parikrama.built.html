@@ -548,6 +548,9 @@ body.vid-open > canvas{ display:none; }
 .s2type h1 span:nth-child(2){ transform:translateZ(34px); color:rgba(244,245,247,.9); }
 .s2lede{ margin-top:calc(var(--u)*1.2); max-width:34ch; transform:translateZ(12px); transform-origin:left center; }
 .s2meta{ position:absolute; top:calc(var(--u)*5.5); left:calc(var(--u)*2.3); z-index:2; }
+.akhero .s2hint{ transition:opacity .5s ease; }
+.akhero.shot .s2hint{ opacity:0; }      /* the arrow has gone; stop asking */
+@media (prefers-reduced-motion:reduce){ .akhero .s2hint{ transition:none; } }
 .s2hint{ position:absolute; right:calc(var(--u)*2.3); bottom:calc(var(--u)*1.8);
   font-family:var(--mono); font-size:max(9.5px,calc(var(--u)*0.62)); letter-spacing:.2em;
   text-transform:uppercase; color:var(--vmuted); z-index:2; }
@@ -583,9 +586,15 @@ html.js-off .rib-stage, html.js-off .rib-bar{ display:none; }
 html.js-off .rib-fallback{ display:flex; }
 
 /* ═══ ARCHERY AKHARA ═══
-   Hero: a dhanush drawn by cursor, released on scroll, arrow into the camera.
+   Hero: a dhanush drawn by the scroll, loosed at the end of it, arrow into
+   the camera.
    Then the arrow-flight ribbon, the bullseye camera zoom, and the league. */
-.akhero{ position:relative; height:100vh; min-height:580px; overflow:hidden; }
+/* The runway. Its height is how much scroll the draw and the loose get; the
+   pin holds the screen for all of it. NO overflow here - an ancestor with
+   overflow:hidden stops position:sticky working, which is the one thing that
+   would quietly break this. */
+.akhero{ position:relative; height:220vh; min-height:1280px; }
+.akpin{ position:sticky; top:0; height:100vh; min-height:580px; overflow:hidden; }
 .akstage{ position:absolute; inset:0; z-index:1; }
 .akstage canvas{ position:absolute !important; inset:0 !important; z-index:auto !important;
   width:100%; height:100%; display:block; }
@@ -595,7 +604,10 @@ html.js-off .rib-fallback{ display:flex; }
 .akcopy{ position:absolute; inset:0; z-index:3; display:flex; flex-direction:column;
   justify-content:flex-end; padding:0 46% calc(var(--u)*6) calc(var(--u)*2.3);
   pointer-events:none; }
-@media(max-width:900px){ .akcopy{ padding-right:calc(var(--u)*2.3); } }
+/* Narrow: the copy wraps to more lines and ran into the hint below it -
+   measured a 5px overlap at 375px. Clear the hint's own band. */
+@media(max-width:900px){ .akcopy{ padding-right:calc(var(--u)*2.3);
+  padding-bottom:calc(var(--u)*6 + 30px); } }
 .akdraw{ position:absolute; right:calc(var(--u)*2.3); top:50%; transform:translateY(-50%);
   z-index:3; display:flex; flex-direction:column; align-items:flex-end; gap:6px; }
 .akdraw span{ font-family:var(--mono); font-size:max(9.5px,calc(var(--u)*0.62));
@@ -995,8 +1007,12 @@ html.still .drift img{ animation:none; }
     <button class="vid-back" type="button">&larr; Parikrama</button>
   </div>
 
-  <!-- 1 ─ hero: draw the bow, release on scroll -->
+  <!-- 1 ─ hero: the scroll draws the bow, then looses it.
+       .akhero is a tall runway; .akpin holds the screen while you scroll
+       through it. Everything inside is absolutely positioned, so the pin has
+       to be a positioned element - sticky is, which is why it works here. -->
   <header class="akhero" id="akhero">
+   <div class="akpin" id="akpin">
     <div class="akstage"><canvas id="akc" aria-hidden="true"></canvas></div>
     <div class="akmist" aria-hidden="true"></div>
     <p class="lbl" style="position:absolute;top:calc(var(--u)*5.5);left:calc(var(--u)*2.3);z-index:3">
@@ -1013,7 +1029,8 @@ html.still .drift img{ animation:none; }
         carried, taught the way it was taught &mdash; stance, breath, and the loose. Sundays
         at Guru Tegh Bahadur Gurdwara.</p>
     </div>
-    <p class="s2hint">Move down to draw &middot; scroll to release</p>
+    <p class="s2hint">Keep scrolling to draw</p>
+   </div>
   </header>
 
   <!-- 2 ─ the arrow-flight ribbon -->
@@ -3723,8 +3740,9 @@ RAF = requestAnimationFrame(tick);
 
 
 /* ── ARCHERY AKHARA ───────────────────────────────────────────────────────
-   The dhanush draws as the cursor moves down the hero; scrolling past releases
-   it and the arrow flies at the camera. Then the arrow-flight ribbon and the
+   The dhanush draws as you scroll through the pinned hero; at the end of the
+   draw it looses and the arrow flies at the camera. Scroll rather than cursor
+   so it works on a touch screen, where pointermove never fired at all. Then the arrow-flight ribbon and the
    bullseye camera zoom. The string is solved as a chain of points with a light
    verlet pass so it wobbles on release rather than snapping rigidly — the same
    idea as the brief's physics solver, hand-rolled because no CDN is reachable. */
@@ -3855,19 +3873,18 @@ RAF = requestAnimationFrame(tick);
   /* state */
   var draw = 0, drawT = 0, released = false, arrowZ = 0, arrowV = 0, wob = 0;
   var hero = document.getElementById("akhero");
+  var pin  = document.getElementById("akpin");
+  var DRAW_A = 0.06, DRAW_B = 0.62, FIRE = 0.68;   // fractions of the runway
   var bar = document.getElementById("akBar"), lbs = document.getElementById("akLbs");
 
-  panel.addEventListener("pointermove", function(e){
-    if(released) return;
-    var r = hero.getBoundingClientRect();
-    drawT = Math.max(0, Math.min(1, (e.clientY - r.top) / Math.max(1, r.height)));
-  }, { passive:true });
 
   function release(){
     if(released) return;
     released = true; arrowZ = 0; arrowV = 0; wob = draw;
+    hero.classList.add("shot");
   }
-  function reset(){ released = false; arrowZ = 0; arrowV = 0; drawT = 0; }
+  function reset(){ released = false; arrowZ = 0; arrowV = 0; drawT = 0;
+    hero.classList.remove("shot"); }
 
   var lastW = 0, lastH = 0;
   function drawBow(){
@@ -3875,7 +3892,7 @@ RAF = requestAnimationFrame(tick);
     if(w !== lastW || h !== lastH){ lastW=w; lastH=h; R.setSize(w,h,false);
       cam.aspect = w/h; cam.updateProjectionMatrix(); fitBow(); }
 
-    draw += ((released ? 0 : drawT) - draw) * (released ? 0.42 : 0.10);
+    draw += ((released ? 0 : drawT) - draw) * (released ? 0.42 : 0.16);
 
     /* limbs bend progressively toward the tips */
     for(var i=0;i<upper.length;i++){
@@ -3989,8 +4006,14 @@ RAF = requestAnimationFrame(tick);
   (function loop(){
     requestAnimationFrame(loop);
     if(!panel.classList.contains("on")) return;
-    var st = panel.scrollTop, hh = hero.offsetHeight;
-    if(st > hh * 0.55) release(); else if(st < hh * 0.2 && released) reset();
+    /* Progress through the runway: 0 as the hero pins, 1 as it lets go.
+       The draw is scrubbed across most of it; past FIRE the loose happens on
+       its own clock, so the shot has its own speed rather than the speed of
+       whoever is scrolling. The tail is the room to watch it. */
+    var run = Math.max(1, hero.offsetHeight - pin.offsetHeight);
+    var p = Math.max(0, Math.min(1, (panel.scrollTop - hero.offsetTop) / run));
+    if(!released) drawT = Math.max(0, Math.min(1, (p - DRAW_A) / (DRAW_B - DRAW_A)));
+    if(p >= FIRE) release(); else if(p < DRAW_A && released) reset();
     drawBow(); layoutArib(); layoutBulls();
   })();
   addEventListener("resize", function(){ lastW = 0; layoutArib(); layoutBulls(); });
