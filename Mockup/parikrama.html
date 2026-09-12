@@ -3816,9 +3816,33 @@ RAF = requestAnimationFrame(tick);
   sc.add(ARROW);
 
   BOW.rotation.y = -1.16;                    // near profile — the draw reads across
-  BOW.position.set(1.15, 0, 0);
+  /* The bow sits to the right of the camera axis, which frames well on a wide
+     screen and leaves the empty half for the headline. fov is VERTICAL, so a
+     narrow viewport shrinks the horizontal frustum until this offset falls
+     outside it - on a 375px phone the hero showed an arrow nock and nothing
+     else. fitBow() below compresses the whole composition toward the axis
+     when the frame is narrow, and leaves a wide one exactly as it was.
+
+     Compressing beats panning the camera: the arrow's flight ends at x=0, so
+     the camera has to stay on that axis or the shot no longer comes at you. */
+  var BOW_HOME = 1.15;          // the wide composition
+  var BOW_X = BOW_HOME;         // what is actually used, after fitting
+  var BOW_S = 1;                // and the matching scale for the draw
+  var HALF_V = Math.tan(34 * Math.PI / 360);   // tan(fov/2), per unit of depth
+
+  function fitBow(){
+    var halfW = HALF_V * cam.position.z * cam.aspect;
+    /* 0.62 of the half-width keeps the draw inside the frame; the second cap
+       leaves room for the bow's own width about its centre. */
+    BOW_X = Math.min(BOW_HOME, halfW * 0.62, halfW - 0.34);
+    if(!(BOW_X > 0.05)) BOW_X = 0.05;          // absurdly narrow frames
+    BOW_S = BOW_X / BOW_HOME;
+    BOW.position.x = BOW_X;
+  }
+
+  BOW.position.set(BOW_X, 0, 0);
   BOW.scale.setScalar(0.86);
-  ARROW.position.x = 1.15;
+  ARROW.position.x = BOW_X;
 
   /* state */
   var draw = 0, drawT = 0, released = false, arrowZ = 0, arrowV = 0, wob = 0;
@@ -3841,7 +3865,7 @@ RAF = requestAnimationFrame(tick);
   function drawBow(){
     var w = Math.max(1, cv.clientWidth), h = Math.max(1, cv.clientHeight);
     if(w !== lastW || h !== lastH){ lastW=w; lastH=h; R.setSize(w,h,false);
-      cam.aspect = w/h; cam.updateProjectionMatrix(); }
+      cam.aspect = w/h; cam.updateProjectionMatrix(); fitBow(); }
 
     draw += ((released ? 0 : drawT) - draw) * (released ? 0.42 : 0.10);
 
@@ -3865,7 +3889,7 @@ RAF = requestAnimationFrame(tick);
 
     if(released){
       arrowV += 0.055; arrowZ += arrowV;
-      ARROW.position.set(1.15 - arrowZ * 1.15, 0, arrowZ * 6);
+      ARROW.position.set(BOW_X - arrowZ * BOW_X, 0, arrowZ * 6);
       ARROW.rotation.z += 0.22;
       var sc_ = 1 + arrowZ * 1.4;
       ARROW.scale.setScalar(Math.min(sc_, 6));
@@ -3873,7 +3897,7 @@ RAF = requestAnimationFrame(tick);
     }else{
       ARROW.visible = true; ARROW.scale.setScalar(1); ARROW.rotation.z = 0;
       ARROW.rotation.y = -1.16;
-      ARROW.position.set(1.15 + draw * 0.66, 0, draw * 0.30 - 0.1);
+      ARROW.position.set(BOW_X + draw * 0.66 * BOW_S, 0, draw * 0.30 - 0.1);
     }
 
     if(bar) bar.style.height = (draw * 100).toFixed(1) + "%";
