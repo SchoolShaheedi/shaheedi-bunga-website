@@ -6,32 +6,31 @@ answered on 2026-09-20 and is done.
 
 ---
 
-## 1. Fifteen archers are named, with a public note saying not to
+## 1. ~~Fifteen archers are named~~ — RESOLVED 2026-09-20
 
-`Mockup/parikrama.html`, section `04 — The league`.
+> **Answered.** Ustad Ji said to take the table out altogether; a new one goes
+> in when the new league starts.
 
-The standings table names every archer in full with their weekly scores:
+The standings table listed fifteen archers in full with their weekly scores,
+under a note — itself public — asking that they confirm first. Ustad Ji's
+answer settles it: the table is gone from the page, and the note with it.
 
-> Jasvir Singh · Gurvinder Singh · Jaspreet Singh · Satvinder Singh ·
-> Gurtek Singh · Dilbag Singh · Balinder Singh Samra · Satvir Singh ·
-> Dr Satwinder Singh · Gurjan Singh · Arshdeep Singh · Hardeep Singh ·
-> Kulvinder Singh · Hari Singh · Manvir Singh
+**The names are not repeated here.** This file is inside the repo, and the
+repo is served by GitHub Pages: it was fetchable at
+`schoolshaheedi.github.io/shaheedi-bunga-website/Content_Drafts/archery-to-confirm.md`
+and returned a 200 with the roster in it. Writing the names down to record
+that they should not be published would have published them.
 
-Directly beneath it, **visible to every visitor**, is this line:
+For the same reason the table was **deleted rather than commented out**. An
+HTML comment ships to every visitor; view source would have carried the
+fifteen names exactly as the table did.
 
-> "Standings as published — confirm the archers are happy to be named before
-> this goes live."
-
-So the page carries its own warning, and the thing it warns about has already
-happened: the names are published, and the warning is published with them.
-
-**The question for Ustad Ji:** are these fifteen happy to be named on the
-public website, with scores?
-
-**If the answer is yes** — the note comes off and the table stays as it is.
-**If it is no, or not yet** — the options are initials (`Jasvir S.`), which
-keeps the standings readable while identifying nobody, or hiding the table
-until it is settled. Either is a small change.
+**To restore it when the new league starts:** the markup and the full roster
+are in git history, in `Mockup/parikrama.html` immediately before commit
+`357b449`. `git show <that commit>^:Mockup/parikrama.html` has the table intact.
+The `.lg` table styles were left in the stylesheet, so a new table needs the
+rows and nothing else. Section numbering will need putting back too — "When"
+was renumbered from 05 to 04 when the league came out.
 
 ---
 
