@@ -639,7 +639,21 @@ html.js-off .rib-fallback{ display:flex; }
   grid-template-columns:1fr 1fr; align-items:center; gap:calc(var(--u)*2);
   padding:0 calc(var(--u)*2.3); overflow:hidden; }
 @media(max-width:900px){ .bulls-pin{ grid-template-columns:1fr; } }
-.bulls-text{ position:relative; z-index:2; }
+.bulls-text{ position:relative; z-index:2; isolation:isolate; }
+/* The copy is rgba(244,245,247,.72) and the target's outer ring is
+   rgb(244,245,247) - the same colour, contrast 1.00. Once the boss grows past
+   the text the words do not get covered, they get camouflaged, which is worse
+   because nothing looks broken. The text already paints on top; what it needed
+   was a ground of its own. Harmless where they do not overlap: the scrim is
+   the panel's own near-black fading to nothing. */
+.bulls-text::before{ content:""; position:absolute;
+  left:-14%; right:-14%; top:-60%; bottom:-14%;
+  z-index:-1; pointer-events:none;
+  background:linear-gradient(to bottom,
+    rgba(8,9,12,.97) 0%, rgba(8,9,12,.96) 74%, rgba(8,9,12,.78) 88%, rgba(8,9,12,0) 100%); }
+/* and a halo on the words themselves, so a line that reaches past the scrim is
+   still readable rather than merely nearly readable */
+.pillar h3, .pillar p{ text-shadow:0 1px 10px rgba(8,9,12,.92), 0 0 3px rgba(8,9,12,.85); }
 /* every pillar stays absolutely positioned — switching to relative on the active
    one reflowed the stack mid-crossfade and printed two of them on top of each other */
 .bulls-text{ min-height:calc(var(--u)*16); }
