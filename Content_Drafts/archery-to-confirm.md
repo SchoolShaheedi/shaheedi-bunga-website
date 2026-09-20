@@ -1,8 +1,8 @@
 # Archery page — two things to check with Ustad Ji
 
 Raised 2026-09-20. Harteg does not do archery, so neither of these is his to
-answer. **Both are live on the public site right now.** Nothing has been
-changed on the page pending an answer.
+answer. **Item 1 is still live on the public site and still unanswered.** Item 2 was
+answered on 2026-09-20 and is done.
 
 ---
 
@@ -35,7 +35,13 @@ until it is settled. Either is a small change.
 
 ---
 
-## 2. The Sunday time on the page disagrees with the charity's own poster
+## 2. ~~The Sunday time disagrees with the charity's own poster~~ — RESOLVED 2026-09-20
+
+> **Answered.** Ustad Ji confirmed 2.30–4pm. The page now says 2.30–4pm in
+> both places, the "confirm before publishing" note is gone, and the time is
+> stated under the hero as well. Kept below for the record.
+
+### What the question was
 
 The page says:
 
@@ -61,11 +67,9 @@ written before that document, and 3–4pm is a half-hour slip.
 current? If it is, the page should read 2.30–4pm and the "confirm before
 publishing" note comes off.
 
-**Why this is worth settling before anything else on the page:** the plan is to
-put the time in one line directly under the hero, so someone can see when
-archery is on without scrolling through the whole page. That line has not been
-added yet, because putting a disputed half-hour in the most prominent place on
-the page is the wrong order to do things in.
+**The hero line this was blocking** is now in: "Sundays 2.30–4pm · East Park
+Road", directly under the headline, so nobody has to scroll the page to find
+out when archery is on.
 
 ---
 

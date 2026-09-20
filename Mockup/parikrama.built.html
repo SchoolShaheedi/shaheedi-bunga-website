@@ -594,7 +594,14 @@ html.js-off .rib-fallback{ display:flex; }
    overflow:hidden stops position:sticky working, which is the one thing that
    would quietly break this. */
 .akhero{ position:relative; height:220vh; min-height:1280px; }
-.akpin{ position:sticky; top:0; height:100vh; min-height:580px; overflow:hidden; }
+/* The nav is sticky and takes flow space, so a 100vh pin starting below it
+   runs 59px past the bottom of the screen - and the hero anchors its copy to
+   the bottom, so that band was always below the fold at rest. It went unseen
+   until a line was added down there. Sticking below the nav and taking its
+   height off fixes it in both states, stuck and not. --navh is measured in
+   the archery script, since the nav's height is type-dependent. */
+.akpin{ position:sticky; top:var(--navh, 0px); height:calc(100vh - var(--navh, 0px));
+  min-height:520px; overflow:hidden; }
 .akstage{ position:absolute; inset:0; z-index:1; }
 .akstage canvas{ position:absolute !important; inset:0 !important; z-index:auto !important;
   width:100%; height:100%; display:block; }
@@ -608,6 +615,13 @@ html.js-off .rib-fallback{ display:flex; }
    measured a 5px overlap at 375px. Clear the hint's own band. */
 @media(max-width:900px){ .akcopy{ padding-right:calc(var(--u)*2.3);
   padding-bottom:calc(var(--u)*6 + 30px); } }
+@media(min-width:901px){ .akcopy{ padding-bottom:calc(var(--u)*5); } }
+/* Reads as the page's own label voice rather than a badge bolted on.
+   Scoped to .akcopy because a bare .akwhen is (0,1,0) and loses to .vid p
+   at (0,1,1) - it rendered in muted body grey instead of gold. */
+.akcopy .akwhen{ margin:calc(var(--u)*1.5) 0 0; font-family:var(--mono);
+  font-size:max(11px, calc(var(--u)*0.78)); letter-spacing:.16em;
+  text-transform:uppercase; color:var(--gold); line-height:1.5; }
 .akdraw{ position:absolute; right:calc(var(--u)*2.3); top:50%; transform:translateY(-50%);
   z-index:3; display:flex; flex-direction:column; align-items:flex-end; gap:6px; }
 .akdraw span{ font-family:var(--mono); font-size:max(9.5px,calc(var(--u)*0.62));
@@ -1040,8 +1054,11 @@ html.still .drift img{ animation:none; }
       <p class="gurline gur" data-rv>ਤੀਰ ਅੰਦਾਜ਼ੀ</p>
       <h1 data-rv style="font-size:max(40px,calc(var(--u)*7.0));letter-spacing:-.055em;line-height:.88">Draw. Breathe.<br>Release.</h1>
       <p class="lede" data-rv style="margin-top:calc(var(--u)*1.2)">The dhanush the Khalsa
-        carried, taught the way it was taught &mdash; stance, breath, and the loose. Sundays
-        at Guru Tegh Bahadur Gurdwara.</p>
+        carried, taught the way it was taught &mdash; stance, breath, and the loose.</p>
+      <!-- The whole page is a long scroll, and the one thing most people came for
+           was at the bottom of it. Said once, here, where they arrive.
+           The same time is stated again in section 05 - CHANGE BOTH TOGETHER. -->
+      <p class="akwhen" data-rv>Sundays 2.30&ndash;4pm &middot; East Park Road</p>
     </div>
     <p class="s2hint">Keep scrolling to draw</p>
    </div>
@@ -1136,10 +1153,13 @@ html.still .drift img{ animation:none; }
     <div class="vsec">
       <p class="lbl">05 &mdash; When</p>
       <div>
-        <p data-rv><strong>Sundays, 3&ndash;4pm</strong> &mdash; archery and shastar vidya at
+        <!-- 2.30pm is the charity's own poster (Assets/Instagram/timetable-poster-gtb.jpg)
+             and Content_Drafts/timetable-confirmed.md, confirmed by Ustad Ji. The page
+             said 3-4pm, which was a half-hour slip. This time also appears under the
+             hero - CHANGE BOTH TOGETHER. -->
+        <p data-rv><strong>Sundays, 2.30&ndash;4pm</strong> &mdash; archery and shastar vidya at
           Guru Tegh Bahadur Gurdwara, 106 East Park Road, Leicester LE5 4QB.
           Air rifling runs Saturday afternoons at the same hall.</p>
-        <p class="vnote">Times taken from your own posters &mdash; confirm before publishing.</p>
         <p data-rv style="margin-top:calc(var(--u)*1.1)">Bows, arrows and safety equipment are
           provided. <strong>Ages 14 and over</strong> for the league; younger archers shoot at
           camps and the Sikhi Camp tag-archery sessions.</p>
@@ -3888,6 +3908,18 @@ RAF = requestAnimationFrame(tick);
   var draw = 0, drawT = 0, released = false, arrowZ = 0, arrowV = 0, wob = 0;
   var hero = document.getElementById("akhero");
   var pin  = document.getElementById("akpin");
+  /* The pin sits below the nav, so it needs the nav's measured height. The
+     panel is display:none until its route opens, so measuring at parse time
+     returns 0 - a ResizeObserver catches the moment it gains layout, and
+     every change after. */
+  var nav  = panel.querySelector(".vid-nav");
+  function navVar(){
+    if(!nav) return;
+    var h = nav.offsetHeight;
+    if(h) panel.style.setProperty("--navh", h + "px");
+  }
+  navVar();
+  if(nav && window.ResizeObserver) new ResizeObserver(navVar).observe(nav);
   var DRAW_A = 0.06, DRAW_B = 0.62, FIRE = 0.68;   // fractions of the runway
   var bar = document.getElementById("akBar"), lbs = document.getElementById("akLbs");
 
@@ -4030,7 +4062,7 @@ RAF = requestAnimationFrame(tick);
     if(p >= FIRE) release(); else if(p < DRAW_A && released) reset();
     drawBow(); layoutArib(); layoutBulls();
   })();
-  addEventListener("resize", function(){ lastW = 0; layoutArib(); layoutBulls(); });
+  addEventListener("resize", function(){ lastW = 0; navVar(); layoutArib(); layoutBulls(); });
 })();
 
 /* ── the Vidyale dropdowns ── */
