@@ -83,7 +83,7 @@ slowed. Save as `draw-release.mp4` here (H.264, 1920×1080, under 8 MB) and tell
 ## Until it arrives
 
 The hero runs a **procedural dhanush** built in code — recurved limbs, a real
-string that bends to the draw, and an arrow that releases and flies at the camera.
+string that bends to the draw, and an arrow that the string carries off the bow and flies downrange.
 It is flat-shaded and plain, but the physics is real, so you can judge the draw
 weight, the release snap and the arrow speed now. Your model swaps straight in
 against the mesh names above.
