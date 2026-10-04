@@ -802,7 +802,7 @@ html.still .drift img{ animation:none; }
     <div class="vdrop">
       <button type="button" class="vdrop-btn" aria-expanded="false">Vidyale <i aria-hidden="true">&#9662;</i></button>
       <div class="vdrop-menu" hidden>
-        <a href="/vidyala/santhiya" data-route="santhiya">Santhiya Vidyala</a>
+        <span class="soon">Santhiya Vidyala &middot; soon</span>
         <a href="/saaj/dilruba" data-route="dilruba">Kirtan Vidyala</a>
         <a href="/akhara/archery" data-route="archery">Archery Akhara</a>
         <span class="soon">Tabla &amp; Jori Vidyala &middot; soon</span>
@@ -824,7 +824,7 @@ html.still .drift img{ animation:none; }
 
 <div class="menu" id="menu" hidden>
   <nav aria-label="All pages">
-    <a href="/vidyala/santhiya" data-route="santhiya"><b>Santhiya Vidyala</b><i>Learn to read sudh Gurbani — every day, five gurdwaras &amp; online</i></a>
+    <span class="soon"><b>Santhiya Vidyala</b><i>Learn to read sudh Gurbani — coming soon</i></span>
     <a href="/saaj/dilruba" data-route="dilruba"><b>Kirtan Vidyala</b><i>Kirtan on the tanti saaj &mdash; dilruba, taus, rabab, saranda</i></a>
     <a href="/akhara/archery" data-route="archery"><b>Archery Akhara</b><i>Traditional archery &mdash; Sundays at East Park Road</i></a>
     <a class="soon" aria-disabled="true"><b>Tabla &amp; Jori Vidyala</b><i>Page coming soon</i></a>
@@ -909,7 +909,7 @@ html.still .drift img{ animation:none; }
     <div class="vdrop">
       <button type="button" class="vdrop-btn" aria-expanded="false">Vidyale <i aria-hidden="true">&#9662;</i></button>
       <div class="vdrop-menu" hidden>
-        <a data-route="santhiya">Santhiya Vidyala</a>
+        <span class="soon">Santhiya Vidyala &middot; soon</span>
         <a data-route="archery">Archery Akhara</a>
         <a data-route="dilruba">Kirtan Vidyala</a>
         <span class="soon">Tabla &amp; Jori &middot; soon</span>
@@ -1023,7 +1023,7 @@ html.still .drift img{ animation:none; }
     <div class="vdrop">
       <button type="button" class="vdrop-btn" aria-expanded="false">Vidyale <i aria-hidden="true">&#9662;</i></button>
       <div class="vdrop-menu" hidden>
-        <a data-route="santhiya">Santhiya Vidyala</a>
+        <span class="soon">Santhiya Vidyala &middot; soon</span>
         <a data-route="archery">Archery Akhara</a>
         <a data-route="dilruba">Kirtan Vidyala</a>
         <span class="soon">Gatka &middot; soon</span>
@@ -1165,7 +1165,7 @@ html.still .drift img{ animation:none; }
     <div class="vdrop">
       <button type="button" class="vdrop-btn" aria-expanded="false">Vidyale <i aria-hidden="true">&#9662;</i></button>
       <div class="vdrop-menu" hidden>
-        <a data-route="santhiya">Santhiya Vidyala</a>
+        <span class="soon">Santhiya Vidyala &middot; soon</span>
         <a data-route="archery">Archery Akhara</a>
         <a data-route="dilruba">Kirtan Vidyala</a>
         <span class="soon">Tabla &amp; Jori &middot; soon</span>
@@ -3666,7 +3666,9 @@ RAF = requestAnimationFrame(tick);
 
   /* ── the router: one flood transition, any number of vidyala panels ── */
   var PANELS = {
-    santhiya: { el: vid,                             url:"/vidyala/santhiya", title:"Santhiya Vidyala · Shaheedi Bunga" },
+    /* Santhiya is coming soon on Ustad Ji's word. The route is removed so the
+       panel cannot be opened; the panel's own markup is left untouched in the
+       page, ready to come back by restoring this one line and its nav links. */
     archery:  { el: document.getElementById("vida"), url:"/akhara/archery",   title:"Archery Akhara · Shaheedi Bunga" },
     dilruba:  { el: document.getElementById("vidd"), url:"/saaj/dilruba",     title:"Kirtan Vidyala · Shaheedi Bunga" }
   };
@@ -3751,7 +3753,8 @@ RAF = requestAnimationFrame(tick);
      The old ?vidk branch is gone with the Kirtan panel it opened: PANELS no
      longer has that key, so it threw on PANELS[key].el. */
   else if(/[?&]vidd\b/.test(location.search)) go("dilruba", false);
-  else if(/[?&]vid\b/.test(location.search)) go("santhiya", false);
+  /* ?vid opened santhiya. With the route gone it would throw on PANELS[key].el,
+     the same way ?vidk did when Kirtan was replaced. */
 })();
 
 
