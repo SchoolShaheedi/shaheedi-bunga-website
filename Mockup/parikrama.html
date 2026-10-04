@@ -585,9 +585,9 @@ html.js-off .rib-stage, html.js-off .rib-bar{ display:none; }
 html.js-off .rib-fallback{ display:flex; }
 
 /* ═══ ARCHERY AKHARA ═══
-   Hero: a dhanush drawn by the scroll, loosed at the end of it, arrow into
-   the camera.
-   Then the arrow-flight ribbon, the bullseye camera zoom, and the league. */
+   Hero: a dhanush drawn by the scroll, loosed at the end of it, arrow away
+   downrange.
+   Then the arrow-flight ribbon and the bullseye camera zoom. */
 /* The runway. Its height is how much scroll the draw and the loose get; the
    pin holds the screen for all of it. NO overflow here - an ancestor with
    overflow:hidden stops position:sticky working, which is the one thing that
@@ -1056,7 +1056,8 @@ html.still .drift img{ animation:none; }
         carried, taught the way it was taught &mdash; stance, breath, and the loose.</p>
       <!-- The whole page is a long scroll, and the one thing most people came for
            was at the bottom of it. Said once, here, where they arrive.
-           The same time is stated again in section 05 - CHANGE BOTH TOGETHER. -->
+           The same time is stated again in section 04 and the closing call -
+           CHANGE ALL THREE TOGETHER. -->
       <p class="akwhen" data-rv>Sundays 2.30&ndash;4pm &middot; East Park Road</p>
     </div>
     <p class="s2hint">Keep scrolling to draw</p>
@@ -1071,8 +1072,8 @@ html.still .drift img{ animation:none; }
           <p class="lbl">02 &mdash; The range</p>
           <h2 style="margin-top:calc(var(--u)*0.6)">Down the shooting line.</h2>
         </div>
-        <p class="lede" style="max-width:24ch">Sunday afternoons, a sports hall in Leicester,
-          and a boss at eighteen metres.</p>
+        <p class="lede" style="max-width:24ch">Sunday afternoons, the hall at Guru Tegh
+          Bahadur Gurdwara, and a boss at eighteen metres.</p>
       </div>
       <div class="arib-stage">
         <div class="arib-track" id="aribTrack"></div>
@@ -1130,12 +1131,12 @@ html.still .drift img{ animation:none; }
         <!-- 2.30pm is the charity's own poster (Assets/Instagram/timetable-poster-gtb.jpg)
              and Content_Drafts/timetable-confirmed.md, confirmed by Ustad Ji. The page
              said 3-4pm, which was a half-hour slip. This time also appears under the
-             hero - CHANGE BOTH TOGETHER. -->
+             hero and in the closing call - CHANGE ALL THREE TOGETHER. -->
         <p data-rv><strong>Sundays, 2.30&ndash;4pm</strong> &mdash; archery and shastar vidya at
           Guru Tegh Bahadur Gurdwara, 106 East Park Road, Leicester LE5 4QB.
           Air rifling runs Saturday afternoons at the same hall.</p>
         <p data-rv style="margin-top:calc(var(--u)*1.1)">Bows, arrows and safety equipment are
-          provided. <strong>Ages 14 and over</strong> for the league; younger archers shoot at
+          provided. <strong>Ages 14 and over</strong> on Sundays; younger archers shoot at
           camps and the Sikhi Camp tag-archery sessions.</p>
       </div>
     </div>
@@ -1144,7 +1145,8 @@ html.still .drift img{ animation:none; }
   <section class="vcta">
     <p class="gurline gur" data-rv>ਐਤਵਾਰ ਨੂੰ ਆਓ</p>
     <h2 data-rv>Come on Sunday.</h2>
-    <p data-rv>Three in the afternoon at East Park Road. You do not need a bow,
+    <!-- The time again - see the hero and section 04. CHANGE ALL THREE TOGETHER. -->
+    <p data-rv>Half past two at East Park Road. You do not need a bow,
       and you do not need to have held one.</p>
     <p class="wa-row" data-rv><a class="wa" href="__WAA__" target="_blank" rel="noopener">__WASVG__ Message us on WhatsApp</a></p>
     <p class="contact" data-rv>Or email gurmat@shaheedibunga.com</p>
@@ -3663,9 +3665,14 @@ RAF = requestAnimationFrame(tick);
   var HOME = location.pathname + location.search;
   var current = null, busy = false, wiredEls = [];
 
+  /* In once its top clears 90% of the screen - or once it is wholly on
+     screen. The second clause is for pinned heroes: a line near the bottom
+     of a sticky pin never moves while you scroll, so on a short phone the
+     archery time (top at 671px of 740, the cutoff at 666) waited forever. */
   function revealIn(el){
     el.querySelectorAll("[data-rv]:not(.in)").forEach(function(n){
-      if(n.getBoundingClientRect().top < innerHeight * 0.9) n.classList.add("in");
+      var r = n.getBoundingClientRect();
+      if(r.top < innerHeight * 0.9 || (r.bottom <= innerHeight && r.bottom > 0)) n.classList.add("in");
     });
   }
   function wirePanel(el){
@@ -3742,11 +3749,12 @@ RAF = requestAnimationFrame(tick);
 
 /* ── ARCHERY AKHARA ───────────────────────────────────────────────────────
    The dhanush draws as you scroll through the pinned hero; at the end of the
-   draw it looses and the arrow flies at the camera. Scroll rather than cursor
+   draw it looses and the arrow flies off downrange. Scroll rather than cursor
    so it works on a touch screen, where pointermove never fired at all. Then the arrow-flight ribbon and the
-   bullseye camera zoom. The string is solved as a chain of points with a light
-   verlet pass so it wobbles on release rather than snapping rigidly — the same
-   idea as the brief's physics solver, hand-rolled because no CDN is reachable. */
+   bullseye camera zoom. The string is a chain of points tied to the limb tips;
+   once loosed it is a damped spring, so it wobbles on release rather than
+   snapping rigidly — the same idea as the brief's physics solver, hand-rolled
+   because no CDN is reachable. */
 (function(){
   var panel = document.getElementById("vida");
   if(!panel || typeof THREE === "undefined") return;
@@ -3810,6 +3818,7 @@ RAF = requestAnimationFrame(tick);
       if(i === N-1){
         var tip = new THREE.Mesh(new THREE.BoxGeometry(.05,.05,.02), mGold);
         tip.position.y = .145 * sign; h.add(tip);
+        segs.tip = tip;                              // where the string is tied
       }
       prev.add(h); prev = h; segs.push(h);
     }
@@ -3830,7 +3839,8 @@ RAF = requestAnimationFrame(tick);
   var strTube = new THREE.Mesh(new THREE.CylinderGeometry(.008,.008,2.0,6), mString);
   BOW.add(strTube);
 
-  /* the arrow */
+  /* the arrow. It is a child of the bow, so it lives in the bow's own frame:
+     the shaft runs along local Z, head toward -Z (downrange), nock at +0.75. */
   var ARROW = new THREE.Group();
   var shaft = new THREE.Mesh(new THREE.CylinderGeometry(.011,.011,1.5,8), mShaft);
   shaft.rotation.x = Math.PI/2; ARROW.add(shaft);
@@ -3840,7 +3850,9 @@ RAF = requestAnimationFrame(tick);
     var f = new THREE.Mesh(new THREE.BoxGeometry(.002,.075,.13), mLac);
     f.position.z = .66; f.rotation.z = k * Math.PI * 2/3; ARROW.add(f);
   });
-  sc.add(ARROW);
+  var NOCK = .75;               // shaft half-length: where the string sits
+  var REST_X = .07;             // beside the grip, on the camera side of it
+  BOW.add(ARROW);
 
   BOW.rotation.y = -1.16;                    // near profile — the draw reads across
   /* The bow sits to the right of the camera axis, which frames well on a wide
@@ -3850,11 +3862,10 @@ RAF = requestAnimationFrame(tick);
      else. fitBow() below compresses the whole composition toward the axis
      when the frame is narrow, and leaves a wide one exactly as it was.
 
-     Compressing beats panning the camera: the arrow's flight ends at x=0, so
-     the camera has to stay on that axis or the shot no longer comes at you. */
+     Compressing beats panning the camera: the bow is framed against the
+     headline, and a camera that moved would take the headline with it. */
   var BOW_HOME = 1.15;          // the wide composition
   var BOW_X = BOW_HOME;         // what is actually used, after fitting
-  var BOW_S = 1;                // and the matching scale for the draw
   var HALF_V = Math.tan(34 * Math.PI / 360);   // tan(fov/2), per unit of depth
 
   function fitBow(){
@@ -3863,16 +3874,19 @@ RAF = requestAnimationFrame(tick);
        leaves room for the bow's own width about its centre. */
     BOW_X = Math.min(BOW_HOME, halfW * 0.62, halfW - 0.34);
     if(!(BOW_X > 0.05)) BOW_X = 0.05;          // absurdly narrow frames
-    BOW_S = BOW_X / BOW_HOME;
     BOW.position.x = BOW_X;
   }
 
   BOW.position.set(BOW_X, 0, 0);
   BOW.scale.setScalar(0.86);
-  ARROW.position.x = BOW_X;
 
-  /* state */
-  var draw = 0, drawT = 0, released = false, arrowZ = 0, arrowV = 0, wob = 0;
+  /* state.
+     draw   - 0 braced, 1 full draw. Below 0 is the string overshooting forward.
+     drawV  - its velocity, only used once loosed: the string is a spring then.
+     flight - 0 nocked, 1 in the air, 2 gone.
+     aZ/aV  - the arrow's own position and speed along the bow's local Z. */
+  var draw = 0, drawT = 0, drawV = 0, released = false, wob = 0;
+  var flight = 0, aZ = 0, aV = 0, aAge = 0, lastNow = 0;
   var hero = document.getElementById("akhero");
   var pin  = document.getElementById("akpin");
   /* The pin sits below the nav, so it needs the nav's measured height. The
@@ -3880,66 +3894,119 @@ RAF = requestAnimationFrame(tick);
      returns 0 - a ResizeObserver catches the moment it gains layout, and
      every change after. */
   var nav  = panel.querySelector(".vid-nav");
+  var navWas = 0;
   function navVar(){
     if(!nav) return;
     var h = nav.offsetHeight;
-    if(h) panel.style.setProperty("--navh", h + "px");
+    if(!h || h === navWas) return;
+    navWas = h;
+    panel.style.setProperty("--navh", h + "px");
+    /* The pin just got shorter, which moves the hero copy up. The panel's
+       reveal pass ran on its first frame, before this measurement, and saw
+       the time line still below the fold; a scroll event asks it to look
+       again. */
+    panel.dispatchEvent(new Event("scroll"));
   }
   navVar();
   if(nav && window.ResizeObserver) new ResizeObserver(navVar).observe(nav);
   var DRAW_A = 0.06, DRAW_B = 0.62, FIRE = 0.68;   // fractions of the runway
   var bar = document.getElementById("akBar"), lbs = document.getElementById("akLbs");
 
+  /* The loose. Everything below is in seconds, not frames: the old version
+     moved the arrow a fixed step per frame, so the shot ran twice as fast on a
+     120Hz MacBook screen as on a 60Hz one, and was over in six frames on
+     either. It also teleported the arrow to a new spot at twice the size on
+     the first frame, and flew it nock-first. Now the string, as a damped
+     spring, carries the arrow forward off the bow; the arrow leaves the string
+     as the string passes brace height, keeping the string's speed, and flies
+     on downrange, the way it was pointing. Nothing jumps. */
+  var STRING_K = 480;           // spring stiffness: ~70ms from full draw to brace
+  var STRING_C = 20;            // damping: one small overshoot, a wobble, then still
+  var MIN_LAUNCH = 9;           // local units/s, so a half-drawn loose still flies
+  var GONE_AT = -16;            // local Z well past the right edge, at any width
 
   function release(){
     if(released) return;
-    released = true; arrowZ = 0; arrowV = 0; wob = draw;
+    released = true; drawV = 0; wob = Math.max(.25, draw);
     hero.classList.add("shot");
   }
-  function reset(){ released = false; arrowZ = 0; arrowV = 0; drawT = 0;
+  function reset(){ released = false; drawT = 0; drawV = 0; flight = 0; aAge = 0;
+    ARROW.visible = true; ARROW.rotation.set(0, 0, 0);
     hero.classList.remove("shot"); }
 
   var lastW = 0, lastH = 0;
+  var vU = new THREE.Vector3(), vL = new THREE.Vector3();
   function drawBow(){
     var w = Math.max(1, cv.clientWidth), h = Math.max(1, cv.clientHeight);
     if(w !== lastW || h !== lastH){ lastW=w; lastH=h; R.setSize(w,h,false);
       cam.aspect = w/h; cam.updateProjectionMatrix(); fitBow(); }
 
-    draw += ((released ? 0 : drawT) - draw) * (released ? 0.42 : 0.16);
+    var now = performance.now();
+    /* capped, so a panel reopened after a minute does not integrate a minute,
+       and floored, because one negative step through exp() is an infinity */
+    var dt = lastNow ? Math.max(0, Math.min(0.05, (now - lastNow) / 1000)) : 1/60;
+    lastNow = now;
 
-    /* limbs bend progressively toward the tips */
+    if(!released){
+      /* follow the scroll, eased; 10.5/s is the old 0.16-per-frame at 60Hz */
+      draw += (drawT - draw) * (1 - Math.exp(-dt * 10.5));
+    }else{
+      /* the string snaps home. Sub-stepped: a stiff spring integrated in one
+         50ms step would blow up. */
+      for(var s = 0, n = Math.ceil(dt / (1/240)), sdt = dt / n; s < n; s++){
+        drawV += (-STRING_K * draw - STRING_C * drawV) * sdt;
+        draw  += drawV * sdt;
+      }
+    }
+
+    /* limbs bend progressively toward the tips. The lower limb hangs the
+       other way, so the same bend is the opposite rotation - with one sign for
+       both, only the upper limb drew and the lower one bent away from the
+       string, which tipped the arrow downward as it drew. */
+    var bend = Math.max(0, draw);
     for(var i=0;i<upper.length;i++){
       var k = (i+1)/upper.length;
-      upper[i].rotation.x = upper[i].userData.rest + draw * 0.20 * k;
-      lower[i].rotation.x = lower[i].userData.rest + draw * 0.20 * k;
+      upper[i].rotation.x = upper[i].userData.rest + bend * 0.20 * k;
+      lower[i].rotation.x = lower[i].userData.rest - bend * 0.20 * k;
     }
-    /* string: nock pulled toward +Z, ends anchored, verlet relax + wobble */
-    wob *= 0.90;
+    /* The string is tied to the limb tips wherever the bend has put them, so
+       it never floats free of the bow. Drawn, it is a V to the nock, as a real
+       string is with an arrow on it; loosed, a fading harmonic rides on top. */
+    BOW.updateMatrixWorld(true);
+    BOW.worldToLocal(upper.tip.getWorldPosition(vU));
+    BOW.worldToLocal(lower.tip.getWorldPosition(vL));
+    wob *= Math.exp(-dt * 6.3);
+    var nockY = (vU.y + vL.y) / 2, braceZ = (vU.z + vL.z) / 2;
     for(var i=0;i<SN;i++){
-      var t = i/(SN-1), yy = (t - .5) * (2.0 - draw*0.22);
-      var pull = Math.sin(t*Math.PI);                      // max at the nock
-      var z = pull * draw * 0.72;
-      if(released) z += Math.sin(t*Math.PI*3 + performance.now()*0.02) * wob * 0.05 * pull;
-      pts[i].set(0, yy, z);
+      var t = i/(SN-1);
+      var vee = 1 - Math.abs(2*t - 1);                  // max at the nock
+      var z = vee * draw * 0.72;
+      if(released) z += Math.sin(t*Math.PI*3 + now*0.02) * wob * 0.05 * Math.sin(t*Math.PI);
+      pts[i].set(vL.x + (vU.x - vL.x) * t, vL.y + (vU.y - vL.y) * t, vL.z + (vU.z - vL.z) * t + z);
     }
     strGeo.setFromPoints(pts); strGeo.attributes.position.needsUpdate = true;
     strTube.visible = false;
 
-    if(released){
-      arrowV += 0.055; arrowZ += arrowV;
-      ARROW.position.set(BOW_X - arrowZ * BOW_X, 0, arrowZ * 6);
-      ARROW.rotation.z += 0.22;
-      var sc_ = 1 + arrowZ * 1.4;
-      ARROW.scale.setScalar(Math.min(sc_, 6));
-      if(arrowZ > 1.2) ARROW.visible = false;
-    }else{
-      ARROW.visible = true; ARROW.scale.setScalar(1); ARROW.rotation.z = 0;
-      ARROW.rotation.y = -1.16;
-      ARROW.position.set(BOW_X + draw * 0.66 * BOW_S, 0, draw * 0.30 - 0.1);
+    var nockZ = braceZ + draw * 0.72;
+    if(flight === 0){
+      /* on the string. Once loosed, it leaves as the string passes brace. */
+      ARROW.position.set(REST_X, nockY, nockZ - NOCK);
+      if(released && draw <= 0){
+        flight = 1; aZ = ARROW.position.z;
+        aV = Math.min(drawV * 0.72, -MIN_LAUNCH);
+      }
+    }else if(flight === 1){
+      aAge += dt;
+      aV *= Math.exp(-dt * 0.5);                         // a little air drag
+      aZ += aV * dt;
+      ARROW.position.set(REST_X, nockY - 0.35 * aAge * aAge, aZ);
+      ARROW.rotation.z += dt * 14;                       // fletching spin
+      if(aZ < GONE_AT){ flight = 2; ARROW.visible = false; }
     }
 
-    if(bar) bar.style.height = (draw * 100).toFixed(1) + "%";
-    if(lbs) lbs.textContent = Math.round(draw * 45) + " lb";
+    var shown = Math.max(0, draw);
+    if(bar) bar.style.height = (shown * 100).toFixed(1) + "%";
+    if(lbs) lbs.textContent = Math.round(shown * 45) + " lb";
     R.render(sc, cam);
   }
 
