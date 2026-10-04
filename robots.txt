@@ -1,0 +1,21 @@
+# Shaheedi Bunga
+#
+# The repository is served whole, so every draft, archive and working file in
+# it is reachable on the web. Only three things are the public site; the rest
+# is kept out of search rather than deleted.
+#
+# Longest match wins, so the Allow lines below beat the Disallow above them.
+
+User-agent: *
+
+Disallow: /Mockup/
+Disallow: /Content_Drafts/
+Disallow: /Directions/
+Disallow: /Models/
+Disallow: /Assets/
+
+# the site itself
+Allow: /$
+Allow: /Mockup/parikrama.built.html
+# the shareable Kirtan Vidyala link, and the image its card uses
+Allow: /saaj/
