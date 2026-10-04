@@ -10,10 +10,16 @@ Hosting was deliberately left open.
   panel's own markup is untouched in the page, so it comes back by restoring
   one line in `PANELS` and its nav links. `?vid` retired with it — it would
   have thrown on a missing panel, the way `?vidk` did.
-- **Drafts kept out of search.** `robots.txt` plus a `noindex` meta on all 31
-  other HTML files. Nothing deleted, every existing link still works.
+- **Drafts kept out of search.** A `noindex` meta on all 31 other HTML files,
+  plus a `robots.txt`. Nothing deleted, every existing link still works.
   `Mockup/parikrama.html` deliberately has **no** meta: it is the source of
   the live page and the build would inherit it.
+
+  **The noindex metas are doing all the work today.** Crawlers read robots.txt
+  from the host root, and on a project site this one sits at a sub-path:
+  `schoolshaheedi.github.io/robots.txt` is a 404 and that is the file that
+  counts. It starts working the day the site answers on its own domain. Worth
+  re-checking after the move that it is reachable at `/robots.txt`.
 
 ## Blocked on someone else
 
