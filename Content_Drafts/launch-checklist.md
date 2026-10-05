@@ -40,10 +40,14 @@ never let a deploy pick the default.
 Pointing `shaheedibunga.com` at the new site **takes the Google Sites down as
 the public face of the charity.** Worth being deliberate about:
 
-- The Google Sites has **Resources** (Granth and Pothi Drive folders,
-  presentations) and a **Gallery** (two Google Photos albums) and a
-  **Contact Us** page. The new site has none of these. Switching the domain
-  loses them unless they are rebuilt or linked.
+- ~~The Google Sites has Resources, a Gallery and a Contact Us page that the
+  new site lacks.~~ **Closed 2026-10-05.** `/resources/`, `/gallery/` and
+  `/contact/` are built: all 44 granths, pothis and talks listed with sizes
+  and linked to the same Drive folders; 88 photographs; and contact details
+  the old site never actually carried — it said only "Shaheedi Bunga
+  Leicester, UK".
+- Still worth checking before the switch: whether anything else on the Google
+  Sites is relied on that nobody has mentioned.
 - Safer order: put the new site on a subdomain, check it on the real domain
   with real devices, then switch the apex when Ustad Ji is happy.
 

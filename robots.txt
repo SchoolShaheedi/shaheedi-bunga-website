@@ -26,3 +26,14 @@ Allow: /$
 Allow: /Mockup/parikrama.built.html
 # the shareable Kirtan Vidyala link, and the image its card uses
 Allow: /saaj/
+
+# the resources, gallery and contact pages, and the photographs the gallery
+# shows - the only part of /Assets/ that is meant to be found
+Allow: /resources/
+Allow: /gallery/
+Allow: /contact/
+Allow: /site.css
+Allow: /Assets/Kirtan/
+Allow: /Assets/Archery/
+Allow: /Assets/Santhiya/
+Allow: /Assets/Brand/

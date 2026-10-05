@@ -1,0 +1,60 @@
+/* Shared by the resources, gallery and contact pages.
+   Not used by Mockup/parikrama.built.html, which carries its own CSS inline.
+   These pages are deliberately light: linked assets rather than inlined ones,
+   because the main page is already 11MB and these are read, not experienced. */
+
+:root{
+  --bg:#08090C; --ink:#F4F5F7; --muted:rgba(244,245,247,.62);
+  --faint:rgba(244,245,247,.40); --line:rgba(255,255,255,.10);
+  --gold:#E9CE83; --gold-dim:rgba(233,206,131,.5);
+  --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --sans:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --serif:"Source Serif 4",Georgia,serif;
+  --gur:"Noto Serif Gurmukhi",serif;
+  --u:min(1vw,19.2px);
+}
+@media(max-width:991px){ :root{ --u:min(1vw,8.6px); } }
+@media(max-width:767px){ :root{ --u:min(1vw,4.5px); } }
+
+*{ box-sizing:border-box; }
+body{ margin:0; background:var(--bg); color:var(--ink); font-family:var(--sans);
+  font-size:max(15px,calc(var(--u)*1.15)); line-height:1.65;
+  -webkit-font-smoothing:antialiased; }
+a{ color:var(--gold); }
+.gur{ font-family:var(--gur); font-weight:600; letter-spacing:0; }
+
+/* masthead, the same shape as the panels' nav */
+.top{ position:sticky; top:0; z-index:10; display:flex; align-items:center;
+  gap:calc(var(--u)*1.2); padding:calc(var(--u)*1.1) calc(var(--u)*2.3);
+  background:rgba(8,9,12,.92); backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line); }
+.top img{ width:42px; height:42px; display:block; }
+.top .mark b{ display:block; font-family:var(--serif); font-weight:600;
+  font-size:max(15px,calc(var(--u)*1.2)); line-height:1.1; }
+.top .mark i{ display:block; font-style:normal; font-family:var(--mono);
+  font-size:max(9.5px,calc(var(--u)*0.62)); letter-spacing:.16em;
+  text-transform:uppercase; color:var(--faint); margin-top:2px; }
+.top nav{ margin-left:auto; display:flex; gap:calc(var(--u)*1.4); align-items:center; }
+.top nav a{ font-family:var(--mono); font-size:max(10px,calc(var(--u)*0.68));
+  letter-spacing:.16em; text-transform:uppercase; color:var(--muted);
+  text-decoration:none; }
+.top nav a:hover, .top nav a[aria-current]{ color:var(--gold); }
+@media(max-width:620px){ .top .mark{ display:none; } .top nav{ margin-left:0; } }
+
+.wrap{ max-width:1120px; margin:0 auto; padding:calc(var(--u)*4) calc(var(--u)*2.3) calc(var(--u)*6); }
+.lbl{ font-family:var(--mono); font-size:max(10px,calc(var(--u)*0.72));
+  letter-spacing:.2em; text-transform:uppercase; color:var(--gold); margin:0; }
+h1{ font-size:max(40px,calc(var(--u)*6.2)); line-height:.92; letter-spacing:-.05em;
+  margin:calc(var(--u)*1.2) 0 0; font-weight:700; }
+.lede{ max-width:60ch; margin:calc(var(--u)*1.6) 0 0; color:var(--muted);
+  font-size:max(16px,calc(var(--u)*1.35)); }
+h2{ font-family:var(--serif); font-weight:600; letter-spacing:-.02em;
+  font-size:max(24px,calc(var(--u)*2.6)); margin:0; }
+.note{ font-family:var(--mono); font-size:max(10px,calc(var(--u)*0.7));
+  letter-spacing:.1em; color:var(--faint); }
+
+.foot{ border-top:1px solid var(--line); margin-top:calc(var(--u)*5);
+  padding:calc(var(--u)*2.4) calc(var(--u)*2.3); text-align:center;
+  font-family:var(--mono); font-size:max(9.5px,calc(var(--u)*0.64));
+  letter-spacing:.14em; text-transform:uppercase; color:var(--faint); }
+.foot a{ color:var(--faint); }
