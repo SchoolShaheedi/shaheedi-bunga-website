@@ -7,6 +7,8 @@
   <url><loc>https://www.shaheedibunga.com/saaj/dilruba/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://www.shaheedibunga.com/resources/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://www.shaheedibunga.com/gallery/</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://www.shaheedibunga.com/about/</loc><changefreq>yearly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.shaheedibunga.com/donate/</loc><changefreq>yearly</changefreq><priority>0.7</priority></url>
   <url><loc>https://www.shaheedibunga.com/contact/</loc><changefreq>yearly</changefreq><priority>0.7</priority></url>
   <url><loc>https://www.shaheedibunga.com/sikhi-calendar/privacy/</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
 </urlset>
