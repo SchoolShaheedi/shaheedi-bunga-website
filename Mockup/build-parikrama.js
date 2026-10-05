@@ -125,9 +125,22 @@ const WAD_TEXT = encodeURIComponent("Sat Sri Akal — I'd like to ask about lear
 h = h.split('__WAD__').join('https://wa.me/' + WA_NUMBER + '?text=' + WAD_TEXT);
 console.log('dilruba plates inlined: 2');
 
-const out = path.join(here, 'parikrama.built.html');
-fs.writeFileSync(out, '<!doctype html>\n' + h);
-console.log('built', (h.length / 1048576).toFixed(2), 'MB');
+/* The site answers at the root. Landing on the domain and being bounced to
+   /Mockup/parikrama.built.html reads as unfinished, and a custom domain
+   serves the repo root as /. The old path keeps working as a small redirect
+   rather than a second 11MB copy - links to it have already been shared. */
+const root = path.resolve(here, '..');
+fs.writeFileSync(path.join(root, 'index.html'), '<!doctype html>\n' + h);
+console.log('built', (h.length / 1048576).toFixed(2), 'MB -> index.html');
 
-// keep the Pages entry point pointing at this build
-console.log('Pages entry: ../index.html redirects to Mockup/parikrama.built.html');
+fs.writeFileSync(path.join(here, 'parikrama.built.html'),
+  '<!doctype html>\n<meta charset="utf-8">\n'
+  + '<meta name="robots" content="noindex">\n'
+  + '<title>Shaheedi Bunga</title>\n'
+  + '<!-- The build moved to the site root. This stays so links already shared\n'
+  + '     to the old path still arrive somewhere. -->\n'
+  + '<link rel="canonical" href="../">\n'
+  + '<meta http-equiv="refresh" content="0; url=../">\n'
+  + '<p style="font:15px system-ui;padding:24px">'
+  + '<a href="../">Shaheedi Bunga</a></p>\n');
+console.log('old path kept as a redirect: Mockup/parikrama.built.html -> /');

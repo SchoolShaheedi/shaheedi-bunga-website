@@ -23,7 +23,6 @@ Disallow: /Assets/
 
 # the site itself
 Allow: /$
-Allow: /Mockup/parikrama.built.html
 # the shareable Kirtan Vidyala link, and the image its card uses
 Allow: /saaj/
 
@@ -37,3 +36,5 @@ Allow: /Assets/Kirtan/
 Allow: /Assets/Archery/
 Allow: /Assets/Santhiya/
 Allow: /Assets/Brand/
+
+Sitemap: https://www.shaheedibunga.com/sitemap.xml

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- The five pages that are the public site. Everything else in the repo is
+     working material and is kept out of search by robots.txt and a noindex
+     meta on each file. These URLs only resolve once DNS points here. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://www.shaheedibunga.com/</loc><changefreq>monthly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://www.shaheedibunga.com/saaj/dilruba/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.shaheedibunga.com/resources/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.shaheedibunga.com/gallery/</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://www.shaheedibunga.com/contact/</loc><changefreq>yearly</changefreq><priority>0.7</priority></url>
+</urlset>
