@@ -70,3 +70,19 @@ the public face of the charity.** Worth being deliberate about:
 
 - `Content_Drafts/archery-to-confirm.md` — the league table question is
   closed; nothing outstanding there now.
+
+## Worth building next: a /classes/ page
+
+"Find a class" on the home page now points at `/contact/`, which names both
+gurdware and what runs at each. It does not give times, and times are what
+someone clicking that button wants.
+
+Everything needed already exists, in two places:
+
+- Kirtan Vidyala — nine a week at Gipsy Lane, in the `DTT` array in
+  `Mockup/parikrama.html`
+- Archery Akhara — Sundays 2.30-4pm at East Park Road
+- Santhiya — coming soon
+
+The catch is drift: that would be a third copy of the same times. If it is
+built, it should read from one source rather than restate them.
