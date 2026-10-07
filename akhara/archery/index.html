@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<title>Archery Akhara &middot; Shaheedi Bunga</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- A real page at a real path, so the archery link can be shared.
+     The nav has linked /akhara/archery since the page was built, but the site
+     is one file with client-side routes, so that URL only ever existed as a
+     pushState address - every shared link, every "open in new tab" and every
+     refresh on that panel returned a 404. This page is what the URL now
+     resolves to: it carries the share card, then hands over to the site with
+     ?vida, which opens the panel.
+
+     Modelled on saaj/dilruba/index.html. The share image is the site card
+     rather than one of its own - there is no archery photograph good enough
+     to put on a link preview yet, and the site card is honest.
+
+     og:image and og:url are absolute: a crawler has no page to resolve a
+     relative path against. -->
+<link rel="canonical" href="https://www.shaheedibunga.com/akhara/archery/">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Shaheedi Bunga">
+<meta property="og:title" content="Archery Akhara &middot; Shaheedi Bunga">
+<meta property="og:description" content="Traditional archery at Guru Tegh Bahadur Gurdwara, Leicester. Stance, breath and the loose — bows provided, no fee and no experience needed.">
+<meta property="og:url" content="https://www.shaheedibunga.com/akhara/archery/">
+<meta property="og:image" content="https://www.shaheedibunga.com/share/home.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="The Shaheedi Bunga Gurmat Vidyala seal.">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Archery Akhara &middot; Shaheedi Bunga">
+<meta name="twitter:description" content="Traditional archery at Guru Tegh Bahadur Gurdwara, Leicester. Bows provided, no fee and no experience needed.">
+<meta name="twitter:image" content="https://www.shaheedibunga.com/share/home.jpg">
+
+<meta name="theme-color" content="#08090C">
+<meta name="description" content="Traditional archery at Guru Tegh Bahadur Gurdwara, Leicester. Stance, breath and the loose — bows provided, no fee and no experience needed.">
+
+<!-- Crawlers read the tags above and ignore the refresh; people get sent on. -->
+<meta http-equiv="refresh" content="0; url=../../?vida">
+
+<style>
+  html{ background:#08090C; color:#F4F5F7;
+        font:15px/1.6 "Archivo","Helvetica Neue",Arial,sans-serif; }
+  body{ margin:0; display:grid; place-items:center; min-height:100vh;
+        text-align:center; padding:24px; }
+  a{ color:#E9CE83; }
+</style>
+
+<div>
+  <p>Opening the Archery Akhara&hellip;</p>
+  <p><a href="../../?vida">Open it directly</a></p>
+</div>

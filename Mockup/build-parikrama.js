@@ -3,17 +3,36 @@ const fs = require('fs'), path = require('path'), crypto = require('crypto');
 const here = __dirname;
 let h = fs.readFileSync(path.join(here, 'parikrama.html'), 'utf8');
 
-h = h.replace('__THREE__',  () => fs.readFileSync(path.join(here, 'lib/three.min.js'), 'utf8'));
-h = h.replace('__MODELS__', () => fs.readFileSync(path.resolve(here, '../Models/models.packed.json'), 'utf8'));
+/* ── Three.js and the packed models ship as their own cached files ──
+   Inlined they were 4.5 MB of every page load, re-downloaded every visit and
+   duplicated on each vidyala page. As classic <script src> they still execute
+   in document order before the page script, so the init sequence is unchanged,
+   but the browser caches them once and shares them across the whole site. */
+const rootDir = path.resolve(here, '..');
+fs.mkdirSync(path.join(rootDir, 'lib'), { recursive: true });
+fs.copyFileSync(path.join(here, 'lib/three.min.js'), path.join(rootDir, 'lib/three.min.js'));
+fs.writeFileSync(path.join(rootDir, 'lib/models.packed.js'),
+  'var PACKED = ' + fs.readFileSync(path.resolve(here, '../Models/models.packed.json'), 'utf8') + ';');
+console.log('runtime files: /lib/three.min.js, /lib/models.packed.js');
 
+/* ── images are FILES, not base64 ──
+   Inlining everything was a requirement of previewing in a Claude Artifact,
+   where no external file can load. On real hosting it is pure cost: it put the
+   homepage at 11.88 MB and the browser had to download every photograph before
+   it could paint anything. As URLs the same images stream in progressively,
+   cache on their own, and are shared between pages instead of duplicated.
+   Root-relative so the deep-link pages at /vidyala/… resolve them too. */
 const b64 = (p, mime) => 'data:' + mime + ';base64,' + fs.readFileSync(p).toString('base64');
-h = h.split('__VIDLOGO__').join(b64(path.resolve(here, '../Assets/Brand/gurmat-vidyala-512.png'), 'image/png'));
+const url = p => '/' + path.relative(path.resolve(here, '..'), p).split(path.sep).join('/');
+const urls = (dir, ext = '.jpg') =>
+  fs.readdirSync(dir).filter(f => f.endsWith(ext)).sort().map(f => url(path.join(dir, f)));
+
+h = h.split('__VIDLOGO__').join(url(path.resolve(here, '../Assets/Brand/gurmat-vidyala-512.png')));
 
 const D = path.resolve(here, '../Assets/Santhiya/drift');
-const drift = fs.readdirSync(D).filter(f => f.endsWith('.jpg')).sort()
-  .map(f => b64(path.join(D, f), 'image/jpeg'));
+const drift = urls(D);
 h = h.replace('__DRIFT__', () => JSON.stringify(drift));
-console.log('drift images inlined:', drift.length);
+console.log('drift images linked:', drift.length);
 
 // WhatsApp — number from the Guru Tegh Bahadur weekly timetable poster.
 // Change WA_NUMBER here if a different line should take class enquiries.
@@ -27,34 +46,31 @@ const WA_SVG = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
 h = h.split('__WASVG__').join(WA_SVG);
 
 const K = path.resolve(here, '../Assets/Kirtan/tiles');
-const ktiles = fs.readdirSync(K).filter(f => f.endsWith('.jpg')).sort()
-  .map(f => b64(path.join(K, f), 'image/jpeg'));
+const ktiles = urls(K);
 h = h.replace('__KTILES__', () => JSON.stringify(ktiles));
-console.log('kirtan tiles inlined:', ktiles.length);
+console.log('kirtan tiles linked:', ktiles.length);
 const WAK_TEXT = encodeURIComponent(
   "Sat Sri Akal — I'd like to ask about Kirtan / tanti saaj classes.");
 h = h.split('__WAK__').join('https://wa.me/' + WA_NUMBER + '?text=' + WAK_TEXT);
 
 const A = path.resolve(here, '../Assets/Archery/tiles');
-const atiles = fs.readdirSync(A).filter(f => f.endsWith('.jpg')).sort()
-  .map(f => b64(path.join(A, f), 'image/jpeg'));
+const atiles = urls(A);
 h = h.replace('__ATILES__', () => JSON.stringify(atiles));
-console.log('archery tiles inlined:', atiles.length);
+console.log('archery tiles linked:', atiles.length);
 const WAA_TEXT = encodeURIComponent("Sat Sri Akal — I'd like to ask about the Archery Akhara.");
 h = h.split('__WAA__').join('https://wa.me/' + WA_NUMBER + '?text=' + WAA_TEXT);
 
 const DIL = path.resolve(here, '../Assets/Dilruba');
-h = h.split('__DPLATE_STILL__').join(b64(path.join(DIL, 'plate-still.webp'), 'image/webp'));
-h = h.split('__DPLATE_BOW__').join(b64(path.join(DIL, 'plate-bow.webp'), 'image/webp'));
+h = h.split('__DPLATE_STILL__').join(url(path.join(DIL, 'plate-still.webp')));
+h = h.split('__DPLATE_BOW__').join(url(path.join(DIL, 'plate-bow.webp')));
 /* The dilruba strip shows the whole Kirtan tile set, so it reads that folder
    rather than keeping a byte-for-byte copy of it. ALT[] in the gallery
    script is index-matched to this sorted order. */
-const dtiles = fs.readdirSync(K).filter(f => f.endsWith('.jpg')).sort()
-  .map(f => b64(path.join(K, f), 'image/jpeg'));
+const dtiles = ktiles;   /* same URLs — the browser fetches each file once */
 /* split/join, not replace: replace() swaps only the first match, and the
    token is also named in a comment in the page. */
 h = h.split('__DTILES__').join(JSON.stringify(dtiles));
-console.log('dilruba gallery tiles inlined:', dtiles.length);
+console.log('dilruba gallery tiles linked:', dtiles.length, '(shared with kirtan)');
 /* ── the share card must not drift from the artwork ──
    saaj/dilruba/preview.jpg is generated from the two plates by
    Assets/Dilruba/make-preview.py, which records their hashes alongside it.
@@ -123,7 +139,7 @@ console.log('dilruba gallery tiles inlined:', dtiles.length);
 
 const WAD_TEXT = encodeURIComponent("Sat Sri Akal — I'd like to ask about learning dilruba.");
 h = h.split('__WAD__').join('https://wa.me/' + WA_NUMBER + '?text=' + WAD_TEXT);
-console.log('dilruba plates inlined: 2');
+console.log('dilruba plates linked: 2');
 
 /* The site answers at the root. Landing on the domain and being bounced to
    /Mockup/parikrama.built.html reads as unfinished, and a custom domain
