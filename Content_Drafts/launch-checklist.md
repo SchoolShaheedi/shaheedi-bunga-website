@@ -86,3 +86,29 @@ Everything needed already exists, in two places:
 
 The catch is drift: that would be a third copy of the same times. If it is
 built, it should read from one source rather than restate them.
+
+---
+
+## /classes/ — built 8 Oct 2026
+
+The note below said a classes page would be better than sending "Find a class"
+to Contact, and warned it would become a third copy of the timetable. It is
+built, and it avoids that: **it carries no times of its own.** Each class says
+what it is and which gurdwara it is at, and the live ones link to their own
+page for the times. The only numbers on it are "nine classes a week" (a count,
+already on Contact) and "Sundays" (a day, already everywhere).
+
+Six vidyale, taken from the hidden All-pages menu in `index.html` so the two
+lists cannot disagree: Kirtan Vidyala and the Archery Akhara link to their
+pages; Santhiya, Tabla & Jori, Katha and Itihaas show a "page being written"
+panel instead of a photograph — a stand-in image would imply there is
+somewhere to click.
+
+Santhiya and Tabla & Jori are marked **Running**, because Contact and About
+both say they run; Katha and Itihaas carry no such claim, because nothing in
+the repo establishes whether they run weekly. **Worth asking Ustad Ji**, along
+with whether Katha and Itihaas should be listed at all yet.
+
+"Classes" was added to the shared nav on all seven content pages, and
+`/classes/` to the sitemap. Without the nav entry the page would have been
+reachable only from the hero button.

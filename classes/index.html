@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Classes &middot; Shaheedi Bunga</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Every class Shaheedi Bunga teaches in Leicester — the Kirtan Vidyala, the Archery Akhara, santhiya and tabla. All free, open to any age, taught by volunteers.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+Gurmukhi:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="../site.css">
+<link rel="icon" href="../Assets/Brand/gurmat-vidyala-512.png">
+<style>
+/* The hub the hero's "Find a class" button leads to. Deliberately NOT a
+   timetable: the Kirtan Vidyala's nine times live on its own page and the
+   akhara's time lives on its own page, and a third copy of either would drift
+   out of date the first time one of them changed. This page says what is
+   taught and where, and sends people to the class page for the times. */
+
+.list{ margin-top:calc(var(--u)*3.4); border-top:1px solid var(--line); }
+
+.cls{ display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);
+  gap:calc(var(--u)*2.6); align-items:center;
+  border-bottom:1px solid var(--line); padding:calc(var(--u)*2.8) 0;
+  text-decoration:none; color:inherit; }
+.cls .media{ position:relative; aspect-ratio:3/2; overflow:hidden;
+  background:#101217; border:1px solid var(--line); }
+.cls .media img{ width:100%; height:100%; object-fit:cover; display:block;
+  transition:transform .6s cubic-bezier(.2,.7,.2,1); }
+a.cls:hover .media img{ transform:scale(1.035); }
+
+/* The placeholder panel for a class whose page is not written yet. It is a
+   panel rather than a photograph on purpose - a stand-in image would imply
+   there is somewhere to go. */
+.cls .soon{ display:flex; align-items:center; justify-content:center;
+  height:100%; font-family:var(--mono); letter-spacing:.18em;
+  text-transform:uppercase; font-size:max(9.5px,calc(var(--u)*0.66));
+  color:var(--faint); background:
+    repeating-linear-gradient(135deg,rgba(255,255,255,.022) 0 10px,transparent 10px 20px); }
+
+.cls .n{ font-family:var(--mono); font-size:max(9.5px,calc(var(--u)*0.64));
+  letter-spacing:.2em; color:var(--gold); }
+.cls h2{ font-size:max(34px,calc(var(--u)*4.4)); line-height:.95;
+  letter-spacing:-.04em; font-family:var(--sans); font-weight:700;
+  margin:calc(var(--u)*0.7) 0 0; }
+a.cls:hover h2{ color:var(--gold); }
+.cls p{ color:var(--muted); margin:calc(var(--u)*1) 0 0; max-width:46ch; }
+.cls .where{ font-family:var(--mono); font-size:max(10px,calc(var(--u)*0.7));
+  letter-spacing:.1em; color:var(--faint); margin-top:calc(var(--u)*1.1);
+  line-height:1.9; }
+.cls .go{ display:inline-block; margin-top:calc(var(--u)*1.3);
+  font-family:var(--mono); font-size:max(10.5px,calc(var(--u)*0.74));
+  letter-spacing:.14em; text-transform:uppercase; color:var(--gold);
+  border-bottom:1px solid var(--gold-dim); padding-bottom:3px; }
+.cls .pending{ display:inline-block; margin-top:calc(var(--u)*1.3);
+  font-family:var(--mono); font-size:max(10.5px,calc(var(--u)*0.74));
+  letter-spacing:.14em; text-transform:uppercase; color:var(--faint); }
+
+/* The media sits second in the source on the odd rows so the eye zig-zags
+   down the page instead of running down one rail. */
+.cls:nth-child(even) .media{ order:2; }
+
+@media(max-width:780px){
+  .cls{ grid-template-columns:1fr; gap:calc(var(--u)*1.6); }
+  .cls:nth-child(even) .media{ order:0; }
+}
+
+.tail{ margin-top:calc(var(--u)*3); color:var(--muted); max-width:58ch; }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <img src="../Assets/Brand/gurmat-vidyala-512.png" alt="" width="42" height="42">
+  <span class="mark"><b>Shaheedi Bunga</b><i>Gurmat Vidyala</i></span>
+  <nav>
+    <a href="../">Home</a>
+    <a href="../classes/" aria-current="page">Classes</a>
+    <a href="../resources/">Resources</a>
+    <a href="../gallery/">Gallery</a>
+    <a href="../about/">About</a>
+    <a href="../contact/">Contact</a>
+  </nav>
+</header>
+
+<main class="wrap">
+  <p class="lbl">Classes</p>
+  <h1>Find a class.</h1>
+  <p class="lede">Everything the vidyala teaches, in one place. Every class is
+    free, open to any age, and taught by volunteers. There is nothing to book
+    and no audition &mdash; turn up.</p>
+
+  <div class="list">
+
+    <a class="cls" href="../saaj/dilruba/">
+      <div class="media">
+        <img src="../saaj/dilruba/preview.jpg" alt="A Singh seated with a dilruba and bow." width="1200" height="630" loading="lazy">
+      </div>
+      <div>
+        <p class="n">01 &mdash; Open now</p>
+        <h2>Kirtan<br>Vidyala</h2>
+        <p>Kirtan on the tanti saaj &mdash; dilruba, taus, rabab, saranda &mdash;
+          taught from the first note. A test of commitment more than of talent.</p>
+        <p class="where">Gurudwara Shri Guru Dashmesh Sahib, Gipsy Lane<br>
+          Nine classes a week &middot; mornings and evenings</p>
+        <span class="go">See the page &rarr;</span>
+      </div>
+    </a>
+
+    <a class="cls" href="../akhara/archery/">
+      <div class="media">
+        <img src="../Assets/Archery/tiles/a12.jpg" alt="An archer at full draw in the akhara." width="460" height="575" loading="lazy">
+      </div>
+      <div>
+        <p class="n">02 &mdash; Open now</p>
+        <h2>Archery<br>Akhara</h2>
+        <p>The dhanush the Khalsa carried, taught the way it was taught &mdash;
+          stance, breath, and the loose. Bows are provided and no experience is
+          needed.</p>
+        <p class="where">Guru Tegh Bahadur Gurdwara, East Park Road<br>
+          Sundays</p>
+        <span class="go">See the page &rarr;</span>
+      </div>
+    </a>
+
+    <div class="cls">
+      <div class="media"><div class="soon">Page being written</div></div>
+      <div>
+        <p class="n">03 &mdash; Running</p>
+        <h2>Santhiya<br>Vidyala</h2>
+        <p>Learning to read sudh Gurbani &mdash; the pronunciation, the pauses
+          and the meaning. It is where everything else at the vidyala starts.</p>
+        <p class="where">Guru Tegh Bahadur Gurdwara, East Park Road<br>
+          Also online</p>
+        <span class="pending">Ask on WhatsApp for times</span>
+      </div>
+    </div>
+
+    <div class="cls">
+      <div class="media"><div class="soon">Page being written</div></div>
+      <div>
+        <p class="n">04 &mdash; Running</p>
+        <h2>Tabla &amp; Jori<br>Vidyala</h2>
+        <p>Taal, on the tabla and on the jori, taught alongside the saaj so the
+          kirtan has something to stand on.</p>
+        <p class="where">Guru Tegh Bahadur Gurdwara, East Park Road</p>
+        <span class="pending">Ask on WhatsApp for times</span>
+      </div>
+    </div>
+
+    <div class="cls">
+      <div class="media"><div class="soon">Page being written</div></div>
+      <div>
+        <p class="n">05</p>
+        <h2>Katha<br>Vidyala</h2>
+        <p>Expounding Gurbani &mdash; what the shabad says and how to say it to
+          a sangat.</p>
+        <span class="pending">Ask on WhatsApp</span>
+      </div>
+    </div>
+
+    <div class="cls">
+      <div class="media"><div class="soon">Page being written</div></div>
+      <div>
+        <p class="n">06</p>
+        <h2>Itihaas<br>Vidyala</h2>
+        <p>The history of the Panth &mdash; the sakhian, the shaheeds, and the
+          bungas these classes are named after.</p>
+        <span class="pending">Ask on WhatsApp</span>
+      </div>
+    </div>
+
+  </div>
+
+  <p class="tail">Not sure which to start with, or want this week&rsquo;s times?
+    <a href="../contact/">Message us</a> &mdash; someone will tell you where to
+    turn up.</p>
+</main>
+
+<p class="foot">Shaheedi Bunga &middot; Leicester, UK<br><a href="../privacy/">Privacy</a> &middot; <a href="../safeguarding/">Safeguarding</a></p>
+</body>
+</html>
