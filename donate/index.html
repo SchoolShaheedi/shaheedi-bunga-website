@@ -9,31 +9,21 @@
 <link rel="stylesheet" href="../site.css">
 <link rel="icon" href="../Assets/Brand/gurmat-vidyala-512.png">
 <style>
-/* No bank details, card form or donation platform here: none exists yet.
-   See Content_Drafts/donate-page-notes.md before adding one, and before
-   adding anything about Gift Aid. */
+/* Bank transfer only - no form, and no charity-finance figures: Ustad Ji
+   asked for both to be left out. See Content_Drafts/donate-page-notes.md
+   before adding anything about Gift Aid. */
 .band{ border-top:1px solid var(--line); padding:calc(var(--u)*2.8) 0; }
 .band h2{ margin-bottom:calc(var(--u)*1.1); }
 .band p{ max-width:62ch; color:var(--muted); margin:0 0 calc(var(--u)*1); }
 .band p:last-child{ margin-bottom:0; }
-.facts{ display:grid; gap:1px; background:var(--line); border:1px solid var(--line);
-  margin-top:calc(var(--u)*1.6); grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); }
-.facts div{ background:var(--bg); padding:calc(var(--u)*1.3) calc(var(--u)*1.2); }
-.facts dt{ font-family:var(--mono); font-size:max(9.5px,calc(var(--u)*0.66));
+.bank{ display:grid; gap:1px; background:var(--line); border:1px solid var(--line);
+  margin-top:calc(var(--u)*1.6); grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); }
+.bank div{ background:var(--bg); padding:calc(var(--u)*1.3) calc(var(--u)*1.2); }
+.bank dt{ font-family:var(--mono); font-size:max(9.5px,calc(var(--u)*0.66));
   letter-spacing:.16em; text-transform:uppercase; color:var(--gold); }
-.facts dd{ margin:calc(var(--u)*0.5) 0 0; font-size:max(17px,calc(var(--u)*1.5)); font-weight:600; }
-.facts dd small{ display:block; font-weight:400; font-size:max(12px,calc(var(--u)*0.94));
-  color:var(--faint); margin-top:4px; }
-.ways{ display:grid; gap:calc(var(--u)*1.2); margin-top:calc(var(--u)*1.6);
-  grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); }
-.way{ border:1px solid var(--line); border-radius:3px; padding:calc(var(--u)*1.5); }
-.way h3{ margin:0 0 calc(var(--u)*0.6); font-size:max(16px,calc(var(--u)*1.35)); }
-.way p{ margin:0; color:var(--muted); font-size:max(14px,calc(var(--u)*1.08)); }
-.way a{ display:inline-block; margin-top:calc(var(--u)*1); font-family:var(--mono);
-  font-size:max(10.5px,calc(var(--u)*0.74)); letter-spacing:.14em; text-transform:uppercase;
-  text-decoration:none; border-bottom:1px solid var(--gold-dim); }
-.src{ font-family:var(--mono); font-size:max(10px,calc(var(--u)*0.7));
-  letter-spacing:.1em; color:var(--faint); margin-top:calc(var(--u)*1.6); }
+.bank dd{ margin:calc(var(--u)*0.5) 0 0; font-family:var(--mono);
+  font-size:max(16px,calc(var(--u)*1.4)); font-weight:500; letter-spacing:.04em;
+  -webkit-user-select:all; user-select:all; }
 </style>
 </head>
 <body>
@@ -58,45 +48,15 @@
     charity spends goes on the things the classes need.</p>
 
   <section class="band">
-    <h2>Where the money goes</h2>
-    <p>Shaheedi Bunga is a Charitable Incorporated Organisation, registered since
-      2019 and up to date with its reporting. It owns no building and leases none;
-      the gurdware give the space. No trustee receives any payment or benefit,
-      and there are no salaries of any size on the register.</p>
-    <dl class="facts">
-      <div><dt>Income</dt><dd>&pound;25,126<small>Year to 5 April 2026</small></dd></div>
-      <div><dt>Spent</dt><dd>&pound;4,136<small>Same year</small></dd></div>
-      <div><dt>Paid trustees</dt><dd>None<small>Of seven</small></dd></div>
-      <div><dt>Charity number</dt><dd>1185103<small>England &amp; Wales</small></dd></div>
-    </dl>
-    <p class="src">Figures as published on the Charity Commission register.</p>
-  </section>
-
-  <section class="band">
     <h2>How to give</h2>
-    <p>There is no card form or donation page yet. Until there is, the way to
-      give &mdash; or to offer an instrument, a granth, or your time &mdash; is
-      to ask, and someone will tell you what is needed.</p>
-    <div class="ways">
-      <div class="way">
-        <h3>Message us</h3>
-        <p>The quickest way. Say what you would like to do and someone will
-          come back to you.</p>
-        <a href="https://wa.me/447394848407?text=Sat%20Sri%20Akal%20%E2%80%94%20I%27d%20like%20to%20support%20the%20Vidyala." target="_blank" rel="noopener">WhatsApp &rarr;</a>
-      </div>
-      <div class="way">
-        <h3>Email</h3>
-        <p>For anything that needs a paper trail &mdash; a standing order, a
-          company match, a bequest.</p>
-        <a href="mailto:gurmat@shaheedibunga.com">gurmat@shaheedibunga.com</a>
-      </div>
-      <div class="way">
-        <h3>Give your time</h3>
-        <p>Teachers, drivers and helpers at camps are worth as much as money,
-          and the charity is run entirely by volunteers.</p>
-        <a href="../contact/">Get in touch &rarr;</a>
-      </div>
-    </div>
+    <p>By bank transfer, straight to the charity&rsquo;s own account. There is
+      no form to fill in and nothing to sign up to.</p>
+    <dl class="bank">
+      <div><dt>Account name</dt><dd>Shaheedi Bunga</dd></div>
+      <div><dt>Sort code</dt><dd>60-15-48</dd></div>
+      <div><dt>Account number</dt><dd>71693440</dd></div>
+      <div><dt>Reference</dt><dd>Your name</dd></div>
+    </dl>
   </section>
 
   <section class="band">
@@ -107,7 +67,6 @@
       what is short changes term to term.</p>
   </section>
 
-  <p class="src"><a href="https://register-of-charities.charitycommission.gov.uk/en/charity-search/-/charity-details/5133183" target="_blank" rel="noopener">See Shaheedi Bunga on the Charity Commission register &rarr;</a></p>
 </main>
 
 <p class="foot">Shaheedi Bunga &middot; Registered charity in England &amp; Wales &middot; 1185103<br><a href="../privacy/">Privacy</a> &middot; <a href="../safeguarding/">Safeguarding</a></p>
