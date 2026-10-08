@@ -6,12 +6,10 @@
 #
 # Longest match wins, so the Allow lines below beat the Disallow above them.
 #
-# NOTE: crawlers read robots.txt from the HOST ROOT only. While the site is
-# served from schoolshaheedi.github.io/shaheedi-bunga-website/ this file sits
-# at a sub-path and is ignored - schoolshaheedi.github.io/robots.txt is a 404
-# and that is the one that counts. The noindex meta on each draft page is what
-# is actually keeping them out of search today. This file starts working the
-# day the site answers on its own domain, where / is the site's own root.
+# This file is now live at the host root, www.shaheedibunga.com/robots.txt,
+# so crawlers actually read it - that was not true while the site was served
+# from a github.io sub-path. The noindex meta tags on the draft pages are
+# still there and are still worth keeping as a second line of defence.
 
 User-agent: *
 
@@ -44,5 +42,10 @@ Allow: /Assets/Archery/
 Allow: /Assets/Santhiya/
 Allow: /Assets/Dilruba/
 Allow: /Assets/Brand/
+
+# working notes that live in the repo root beside the site; public, but there
+# is no reason for them to turn up in a search for the charity
+Disallow: /README.md
+Disallow: /DNS.md
 
 Sitemap: https://www.shaheedibunga.com/sitemap.xml
