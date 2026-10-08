@@ -75,3 +75,31 @@ through a side channel - confirm any change with the bank or a trustee
 directly.
 
 Gift Aid is still deliberately absent; the section above still applies.
+
+---
+
+## Gift Aid re-checked 2026-10-08
+
+Asked to add a Gift Aid declaration to the donate page. Checked the register
+again first, on the Governance tab for charity 1185103, and it still says:
+
+> Gift aid: **Not recognised by HMRC for gift aid**
+
+So the declaration was **not built**. Inviting Gift Aid declarations without
+HMRC recognition would collect paperwork the charity cannot claim on, and
+would tell donors their donation is worth 25% more than it is. That is a tax
+matter, not a wording choice, so it waits for the registration rather than
+being softened into a vaguer promise.
+
+**The order of operations is:** register with HMRC for Gift Aid first (free,
+done online, needs the charity number, bank details and trustee details), get
+the recognition showing on the register, and only then put a declaration on
+the site. On the £25,126 income recorded for the year ending 5 April 2026,
+the portion that is eligible donations from UK taxpayers would attract 25p in
+the £1. It remains the single highest-value piece of admin available to this
+charity.
+
+The same register page also lists the charity's **policies** - including a
+safeguarding policy and a complaints handling policy - which corrected a
+mistake on /safeguarding/ that said a safeguarding policy was still being
+drafted.
