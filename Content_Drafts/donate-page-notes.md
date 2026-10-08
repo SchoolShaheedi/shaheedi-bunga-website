@@ -57,15 +57,21 @@ Two changes, both asked for directly:
 `Seva in kind` is kept: it is about lending an instrument, not about giving
 money, and nothing in it is a form.
 
-### The numbers are not in the repo yet
+### The account details
 
-The four fields on the page are placeholders - `__ACCOUNT_NAME__`,
-`__SORT_CODE__`, `__ACCOUNT_NUMBER__`, `__REFERENCE__`. **This branch must not
-be merged until they are filled in.** Publishing a bank block with blanks in
-it is worse than publishing no block at all.
+Given by Hartegdeep on 8 Oct 2026: account name **Shaheedi Bunga**, sort code
+**60-15-48** (NatWest), account number **71693440**. Reference is "Your name" -
+that is guidance to the giver, not a bank fact, and can change freely.
 
-Get them from the charity's own bank, not from a message or a screenshot that
-was forwarded on - redirected-payment fraud against charities works exactly by
-supplying plausible details through a side channel.
+**The account name must match the bank's record character for character.**
+Confirmation of Payee compares it and warns the sender on a mismatch; a
+mismatch warning on a charity's own donate page reads as fraud and stops the
+transfer. If the page ever shows a different trading name, re-check it against
+a statement.
+
+Never change these from a forwarded message or screenshot. Redirected-payment
+fraud against charities works precisely by supplying plausible new details
+through a side channel - confirm any change with the bank or a trustee
+directly.
 
 Gift Aid is still deliberately absent; the section above still applies.
